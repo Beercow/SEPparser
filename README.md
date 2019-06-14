@@ -1,5 +1,8 @@
 # SEPparser
 
+Blog post
+https://malwaremaloney.blogspot.com/2019/06/introducing-sepparser.html
+
 Tested with python3.7
 
 SEPparser.py \-h
