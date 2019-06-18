@@ -162,10 +162,10 @@ def log_direction(_):
         return _
 
 def log_description(data):
-    if data[3].decode() is '2' and data[64].decode() is '1':
+    if data[3].decode("utf-8", "ignore") is '2' and data[64].decode("utf-8", "ignore") is '1':
         return 'AP realtime defferd scanning'
 
-    return data[13].decode().strip('"')
+    return data[13].decode("utf-8", "ignore").strip('"')
 
 def log_event(_):
     event = {
@@ -646,86 +646,86 @@ def read_log_data(data):
     # need to figure out flags
     entry = LogFields()
     data = data.split(b',')
-    entry.time = from_symantec_time(data[0].decode())
-    entry.event = log_event(data[1].decode())
-    entry.category = log_category(data[2].decode())
-    entry.logger = log_logger(data[3].decode())
-    entry.computer = data[4].decode()
-    entry.user = data[5].decode()
-    entry.virus = data[6].decode()
-    entry.file = data[7].decode()
-    entry.wantedaction1 = log_action(data[8].decode())
-    entry.wantedaction2 = log_action(data[9].decode())
-    entry.realaction = log_action(data[10].decode())
-    entry.virustype= log_virus_type(data[11].decode())
-    entry.flags = log_flags(int(data[12].decode()))
+    entry.time = from_symantec_time(data[0].decode("utf-8", "ignore"))
+    entry.event = log_event(data[1].decode("utf-8", "ignore"))
+    entry.category = log_category(data[2].decode("utf-8", "ignore"))
+    entry.logger = log_logger(data[3].decode("utf-8", "ignore"))
+    entry.computer = data[4].decode("utf-8", "ignore")
+    entry.user = data[5].decode("utf-8", "ignore")
+    entry.virus = data[6].decode("utf-8", "ignore")
+    entry.file = data[7].decode("utf-8", "ignore")
+    entry.wantedaction1 = log_action(data[8].decode("utf-8", "ignore"))
+    entry.wantedaction2 = log_action(data[9].decode("utf-8", "ignore"))
+    entry.realaction = log_action(data[10].decode("utf-8", "ignore"))
+    entry.virustype= log_virus_type(data[11].decode("utf-8", "ignore"))
+    entry.flags = log_flags(int(data[12].decode("utf-8", "ignore")))
     entry.description = log_description(data)
-    entry.scanid = data[14].decode()
-    entry.newext = data[15].decode()
-    entry.groupid = data[16].decode()
-    entry.eventdata = data[17].decode()
-    entry.vbinid = data[18].decode()
-    entry.virusid = data[19].decode()
-    entry.quarantineforwardstatus = data[20].decode()
-    entry.access = data[21].decode()
-    entry.sdnstatus = data[22].decode()
-    entry.compressed = data[23].decode()
-    entry.depth = data[24].decode()
-    entry.stillinfected = data[25].decode()
-    entry.definfo = data[26].decode()
-    entry.defsequincenumber = data[27].decode()
-    entry.cleaninfo = data[28].decode()
-    entry.deleteinfo = data[29].decode()
-    entry.backupod = data[30].decode()
-    entry.parent = data[31].decode()
-    entry.guid = data[32].decode()
-    entry.clientgroup = data[33].decode()
-    entry.address = data[34].decode()
-    entry.domainname = data[35].decode()
-    entry.ntdomain = data[36].decode()
-    entry.macaddress = data[37].decode()
-    entry.version = data[38].decode()
-    entry.remotemachine = data[39].decode()
-    entry.remotemachineip = data[40].decode()
-    entry.action1status = data[41].decode()
-    entry.action2status = data[42].decode()
-    entry.licensefeaturename = data[43].decode()
-    entry.licensefeatureversion = data[44].decode()
-    entry.licenseserialnumber = data[45].decode()
-    entry.licensefulfillmentid = data[46].decode()
-    entry.licensestartdate = data[47].decode()
-    entry.licenseexpirationdate = data[48].decode()
-    entry.licenselifecycle = data[49].decode()
-    entry.licenseseatstotal = data[50].decode()
-    entry.licenseseats = data[51].decode()
-    entry.errorcode = data[52].decode()
-    entry.licenseseatsdelta = data[53].decode()
-    entry.status = data[54].decode()
-    entry.domainguid = data[55].decode()
-    entry.sessionguid = data[56].decode()
-    entry.vbnsessionid = data[57].decode()
-    entry.logindomain = data[58].decode()
-    entry.eventdata2 = data[59].decode()
-    entry.erasercategoryid = log_eraser_category_id(data[60].decode())
-    entry.dynamiccategoryset = log_dynamic_categoryset_id(data[61].decode())
-    entry.subcategorysetid = data[62].decode()
-    entry.displaynametouse = data[63].decode()
-    entry.reputationdisposition = log_reputation_disposition(data[64].decode())
-    entry.reputationconfidence = data[65].decode()
-    entry.firsseen = data[66].decode()
-    entry.reputationprevalence = data[67].decode()
-    entry.downloadurl = data[68].decode()
-    entry.categoryfordropper = data[69].decode()
-    entry.cidsstate = data[70].decode()
-    entry.behaviorrisklevel = data[71].decode()
-    entry.detectiontype = log_detection_type(data[72].decode())
-    entry.acknowledgetext = data[73].decode()
-    entry.vsicstate = log_vsic_state(data[74].decode())
-    entry.scanguid = data[75].decode()
-    entry.scanduration = data[76].decode()
-    entry.scanstarttime = from_symantec_time(data[77].decode())
-    entry.targetapptype = log_target_app_type(data[78].decode())
-    entry.scancommandguid = data[79].decode()
+    entry.scanid = data[14].decode("utf-8", "ignore")
+    entry.newext = data[15].decode("utf-8", "ignore")
+    entry.groupid = data[16].decode("utf-8", "ignore")
+    entry.eventdata = data[17].decode("utf-8", "ignore")
+    entry.vbinid = data[18].decode("utf-8", "ignore")
+    entry.virusid = data[19].decode("utf-8", "ignore")
+    entry.quarantineforwardstatus = data[20].decode("utf-8", "ignore")
+    entry.access = data[21].decode("utf-8", "ignore")
+    entry.sdnstatus = data[22].decode("utf-8", "ignore")
+    entry.compressed = data[23].decode("utf-8", "ignore")
+    entry.depth = data[24].decode("utf-8", "ignore")
+    entry.stillinfected = data[25].decode("utf-8", "ignore")
+    entry.definfo = data[26].decode("utf-8", "ignore")
+    entry.defsequincenumber = data[27].decode("utf-8", "ignore")
+    entry.cleaninfo = data[28].decode("utf-8", "ignore")
+    entry.deleteinfo = data[29].decode("utf-8", "ignore")
+    entry.backupod = data[30].decode("utf-8", "ignore")
+    entry.parent = data[31].decode("utf-8", "ignore")
+    entry.guid = data[32].decode("utf-8", "ignore")
+    entry.clientgroup = data[33].decode("utf-8", "ignore")
+    entry.address = data[34].decode("utf-8", "ignore")
+    entry.domainname = data[35].decode("utf-8", "ignore")
+    entry.ntdomain = data[36].decode("utf-8", "ignore")
+    entry.macaddress = data[37].decode("utf-8", "ignore")
+    entry.version = data[38].decode("utf-8", "ignore")
+    entry.remotemachine = data[39].decode("utf-8", "ignore")
+    entry.remotemachineip = data[40].decode("utf-8", "ignore")
+    entry.action1status = data[41].decode("utf-8", "ignore")
+    entry.action2status = data[42].decode("utf-8", "ignore")
+    entry.licensefeaturename = data[43].decode("utf-8", "ignore")
+    entry.licensefeatureversion = data[44].decode("utf-8", "ignore")
+    entry.licenseserialnumber = data[45].decode("utf-8", "ignore")
+    entry.licensefulfillmentid = data[46].decode("utf-8", "ignore")
+    entry.licensestartdate = data[47].decode("utf-8", "ignore")
+    entry.licenseexpirationdate = data[48].decode("utf-8", "ignore")
+    entry.licenselifecycle = data[49].decode("utf-8", "ignore")
+    entry.licenseseatstotal = data[50].decode("utf-8", "ignore")
+    entry.licenseseats = data[51].decode("utf-8", "ignore")
+    entry.errorcode = data[52].decode("utf-8", "ignore")
+    entry.licenseseatsdelta = data[53].decode("utf-8", "ignore")
+    entry.status = data[54].decode("utf-8", "ignore")
+    entry.domainguid = data[55].decode("utf-8", "ignore")
+    entry.sessionguid = data[56].decode("utf-8", "ignore")
+    entry.vbnsessionid = data[57].decode("utf-8", "ignore")
+    entry.logindomain = data[58].decode("utf-8", "ignore")
+    entry.eventdata2 = data[59].decode("utf-8", "ignore")
+    entry.erasercategoryid = log_eraser_category_id(data[60].decode("utf-8", "ignore"))
+    entry.dynamiccategoryset = log_dynamic_categoryset_id(data[61].decode("utf-8", "ignore"))
+    entry.subcategorysetid = data[62].decode("utf-8", "ignore")
+    entry.displaynametouse = data[63].decode("utf-8", "ignore")
+    entry.reputationdisposition = log_reputation_disposition(data[64].decode("utf-8", "ignore"))
+    entry.reputationconfidence = data[65].decode("utf-8", "ignore")
+    entry.firsseen = data[66].decode("utf-8", "ignore")
+    entry.reputationprevalence = data[67].decode("utf-8", "ignore")
+    entry.downloadurl = data[68].decode("utf-8", "ignore")
+    entry.categoryfordropper = data[69].decode("utf-8", "ignore")
+    entry.cidsstate = data[70].decode("utf-8", "ignore")
+    entry.behaviorrisklevel = data[71].decode("utf-8", "ignore")
+    entry.detectiontype = log_detection_type(data[72].decode("utf-8", "ignore"))
+    entry.acknowledgetext = data[73].decode("utf-8", "ignore")
+    entry.vsicstate = log_vsic_state(data[74].decode("utf-8", "ignore"))
+    entry.scanguid = data[75].decode("utf-8", "ignore")
+    entry.scanduration = data[76].decode("utf-8", "ignore")
+    entry.scanstarttime = from_symantec_time(data[77].decode("utf-8", "ignore"))
+    entry.targetapptype = log_target_app_type(data[78].decode("utf-8", "ignore"))
+    entry.scancommandguid = data[79].decode("utf-8", "ignore")
 
     return f'"{entry.time}","{entry.event}","{entry.category}","{entry.logger}","{entry.computer}","{entry.user}","{entry.virus}","{entry.file}","{entry.wantedaction1}","{entry.wantedaction2}","{entry.realaction}","{entry.virustype}","{entry.flags}","{entry.description}","{entry.scanid}","{entry.newext}","{entry.groupid}","{entry.eventdata}","{entry.vbinid}","{entry.virusid}","{entry.quarantineforwardstatus}","{entry.access}","{entry.sdnstatus}","{entry.compressed}","{entry.depth}","{entry.stillinfected}","{entry.definfo}","{entry.defsequincenumber}","{entry.cleaninfo}","{entry.deleteinfo}","{entry.backupod}","{entry.parent}","{entry.guid}","{entry.clientgroup}","{entry.address}","{entry.domainname}","{entry.ntdomain}","{entry.macaddress}","{entry.version}","{entry.remotemachine}","{entry.remotemachineip}","{entry.action1status}","{entry.action2status}","{entry.licensefeaturename}","{entry.licensefeatureversion}","{entry.licenseserialnumber}","{entry.licensefulfillmentid}","{entry.licensestartdate}","{entry.licenseexpirationdate}","{entry.licenselifecycle}","{entry.licenseseatstotal}","{entry.licenseseats}","{entry.errorcode}","{entry.licenseseatsdelta}","{entry.status}","{entry.domainguid}","{entry.sessionguid}","{entry.vbnsessionid}","{entry.logindomain}","{entry.eventdata2}","{entry.erasercategoryid}","{entry.dynamiccategoryset}","{entry.subcategorysetid}","{entry.displaynametouse}","{entry.reputationdisposition}","{entry.reputationconfidence}","{entry.firsseen}","{entry.reputationprevalence}","{entry.downloadurl}","{entry.categoryfordropper}","{entry.cidsstate}","{entry.behaviorrisklevel}","{entry.detectiontype}","{entry.acknowledgetext}","{entry.vsicstate}","{entry.scanguid}","{entry.scanduration}","{entry.scanstarttime}","{entry.targetapptype}","{entry.scancommandguid}"'
 
@@ -741,7 +741,7 @@ def from_win_64_hex(dateAndTime):
     return datetime(1601,1,1) + timedelta(microseconds=base10_microseconds)
 
 def from_symantec_time(timestamp):
-#    timestamp = timestamp.decode()
+#    timestamp = timestamp.decode("utf-8", "ignore")
 
     year, month, day_of_month, hours, minutes, seconds = (
         int(hexdigit[0] + hexdigit[1], 16) for hexdigit in zip(
@@ -750,7 +750,7 @@ def from_symantec_time(timestamp):
     return datetime(year + 1970, month + 1, day_of_month, hours, minutes, seconds)        
 
 def from_hex_ip(ipHex):
-    ipHex = ipHex.decode()
+    ipHex = ipHex.decode("utf-8", "ignore")
 
     try:
         fourth, third, second, first = (
@@ -804,7 +804,7 @@ def parse_header(f):
         return logType, logEntries
 
     try:
-        from_symantec_time(f.readline().split(b',')[0].decode())
+        from_symantec_time(f.readline().split(b',')[0].decode("utf-8", "ignore"))
         return 6, 1
 
     except:
@@ -822,8 +822,8 @@ def parse_syslog(f, logEntries):
         logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t')
         entry.dateAndTime = from_win_64_hex(logEntry[1])
         entry.severity =  log_severity(int(logEntry[4], 16))
-        entry.summary = logEntry[6].decode().replace('"', '""')
-        entry.type = logEntry[7].decode()
+        entry.summary = logEntry[6].decode("utf-8", "ignore").replace('"', '""')
+        entry.type = logEntry[7].decode("utf-8", "ignore")
         entry.size = ''
 
         if len(logEntry[8]) == 13:
@@ -832,7 +832,7 @@ def parse_syslog(f, logEntries):
         if len(logEntry[8]) > 13:
             data = read_log_data(logEntry[8])
 
-        syslog.write(f'"{f.name}","{int(logEntry[0].decode(), 16)}","{entry.dateAndTime}","{logEntry[2].decode()}","{logEntry[3].decode()}","{entry.severity}","{entry.summary}","{logEntry[5].decode()}","{entry.type}","{entry.size}",{data}\n')
+        syslog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{logEntry[2].decode("utf-8", "ignore")}","{logEntry[3].decode("utf-8", "ignore")}","{entry.severity}","{entry.summary}","{logEntry[5].decode("utf-8", "ignore")}","{entry.type}","{entry.size}",{data}\n')
         count += 1
 
         if count == logEntries:
@@ -858,8 +858,8 @@ def parse_seclog(f, logEntries):
         entry.endtime = from_win_64_hex(logEntry[9])
         entry.begintime = from_win_64_hex(logEntry[10])
         entry.occurrences = int(logEntry[11], 16)
-        entry.description = logEntry[13].decode()
-        entry.application = logEntry[15].decode()
+        entry.description = logEntry[13].decode("utf-8", "ignore")
+        entry.application = logEntry[15].decode("utf-8", "ignore")
         entry.protocol = ''
         entry.localmac = logEntry[17].hex()
 
@@ -891,20 +891,20 @@ def parse_seclog(f, logEntries):
         else:
             entry.remotemac = from_hex_mac(logEntry[18].hex())
 
-        entry.location = logEntry[19].decode()
-        entry.user = logEntry[20].decode()
-        entry.userdomain = logEntry[21].decode()
+        entry.location = logEntry[19].decode("utf-8", "ignore")
+        entry.user = logEntry[20].decode("utf-8", "ignore")
+        entry.userdomain = logEntry[21].decode("utf-8", "ignore")
         entry.signatureid = int(logEntry[22], 16)
         entry.signaturesubid = int(logEntry[23], 16)
         entry.remoteport = int(logEntry[26], 16)
         entry.localport = int(logEntry[27], 16)
-        entry.signaturename = logEntry[30].decode()
-        entry.intrusionurl = logEntry[32].decode()
+        entry.signaturename = logEntry[30].decode("utf-8", "ignore")
+        entry.intrusionurl = logEntry[32].decode("utf-8", "ignore")
         entry.xintrusionpayloadurl = ''
         entry.eventtype = ''
         entry.protocol = ''
-        entry.hash = logEntry[38].decode().strip('\r')
-        seclog.write(f'"{f.name}","{int(logEntry[0].decode(), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}","{logEntry[2].decode()}","{logEntry[6].decode()}","{logEntry[7].decode()}","{logEntry[12].decode()}","{logEntry[14].decode()}","{logEntry[16].decode()}","{logEntry[24].decode()}","{logEntry[25].decode()}","{logEntry[28].decode()}","{logEntry[29].decode()}","{logEntry[31].decode()}","{logEntry[33].decode()}","{logEntry[34].decode()}","{logEntry[35].decode()}","{logEntry[36].decode()}","{logEntry[37].decode()}"\n')
+        entry.hash = logEntry[38].decode("utf-8", "ignore").strip('\r')
+        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}","{logEntry[2].decode("utf-8", "ignore")}","{logEntry[6].decode("utf-8", "ignore")}","{logEntry[7].decode("utf-8", "ignore")}","{logEntry[12].decode("utf-8", "ignore")}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry[16].decode("utf-8", "ignore")}","{logEntry[24].decode("utf-8", "ignore")}","{logEntry[25].decode("utf-8", "ignore")}","{logEntry[28].decode("utf-8", "ignore")}","{logEntry[29].decode("utf-8", "ignore")}","{logEntry[31].decode("utf-8", "ignore")}","{logEntry[33].decode("utf-8", "ignore")}","{logEntry[34].decode("utf-8", "ignore")}","{logEntry[35].decode("utf-8", "ignore")}","{logEntry[36].decode("utf-8", "ignore")}","{logEntry[37].decode("utf-8", "ignore")}"\n')
         count += 1
 
         if count == logEntries:
@@ -922,7 +922,7 @@ def parse_tralog(f, logEntries):
     while True:
         logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t')
         entry.dateAndTime = from_win_64_hex(logEntry[1])
-        entry.protocol = protocol(int(logEntry[2].decode(), 16))
+        entry.protocol = protocol(int(logEntry[2].decode("utf-8", "ignore"), 16))
         entry.localhost = from_hex_ip(logEntry[3])
         entry.remotehost = from_hex_ip(logEntry[4])
         entry.localport = int(logEntry[5], 16)
@@ -933,8 +933,8 @@ def parse_tralog(f, logEntries):
         entry.occurrences = int(logEntry[10], 16)
         entry.action = log_c_action(int(logEntry[11], 16))
         entry.severity = int(logEntry[13], 16)
-        entry.rule = logEntry[16].decode()
-        entry.application = logEntry[17].decode()
+        entry.rule = logEntry[16].decode("utf-8", "ignore")
+        entry.application = logEntry[17].decode("utf-8", "ignore")
         entry.localmac = logEntry[18].hex()
 
         if len(entry.localmac) < 32:
@@ -962,10 +962,10 @@ def parse_tralog(f, logEntries):
         else:
             entry.remotemac = from_hex_mac(logEntry[19].hex())
 
-        entry.location = logEntry[20].decode()
-        entry.user = logEntry[21].decode()
-        entry.userdomain = logEntry[22].decode()
-        tralog.write(f'"{f.name}","{int(logEntry[0].decode(), 16)}","{entry.dateAndTime}","{entry.action}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remotemac}","{entry.remoteport}","{entry.localhost}","{entry.localmac}","{entry.localport}","{entry.application}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.rule}","{logEntry[12].decode()}","{logEntry[14].decode()}","{logEntry[15].decode()}","{logEntry[23].decode()}","{logEntry[24].decode()}","{logEntry[25].decode()}","{logEntry[26].decode()}","{logEntry[27].decode()}","{logEntry[28].decode()}","{logEntry[29].decode()}","{logEntry[30].decode()}","{logEntry[31].decode()}"\n')
+        entry.location = logEntry[20].decode("utf-8", "ignore")
+        entry.user = logEntry[21].decode("utf-8", "ignore")
+        entry.userdomain = logEntry[22].decode("utf-8", "ignore")
+        tralog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.action}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remotemac}","{entry.remoteport}","{entry.localhost}","{entry.localmac}","{entry.localport}","{entry.application}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.rule}","{logEntry[12].decode("utf-8", "ignore")}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry[15].decode("utf-8", "ignore")}","{logEntry[23].decode("utf-8", "ignore")}","{logEntry[24].decode("utf-8", "ignore")}","{logEntry[25].decode("utf-8", "ignore")}","{logEntry[26].decode("utf-8", "ignore")}","{logEntry[27].decode("utf-8", "ignore")}","{logEntry[28].decode("utf-8", "ignore")}","{logEntry[29].decode("utf-8", "ignore")}","{logEntry[30].decode("utf-8", "ignore")}","{logEntry[31].decode("utf-8", "ignore")}"\n')
         count += 1
 
         if count == logEntries:
@@ -998,11 +998,11 @@ def parse_raw(f, logEntries):
         entry.remoteport = int(logEntry[6], 16)
         entry.direction = ''
         entry.action = ''
-        entry.application = logEntry[12].decode()
+        entry.application = logEntry[12].decode("utf-8", "ignore")
         entry.packetdecode = hexdump(logEntry[13]).replace('"', '""')
-        entry.rule = logEntry[14].decode()
+        entry.rule = logEntry[14].decode("utf-8", "ignore")
         entry.packetdump = ''
-        rawlog.write(f'"{f.name}","{int(logEntry[0].decode(), 16)}","{entry.dateAndTime}","{entry.remotehost}","{entry.remoteport}","{entry.localhost}","{entry.localport}","{entry.direction}","{entry.action}","{entry.application}","{entry.rule}","{entry.packetdump}","{entry.packetdecode}","{logEntry[2].decode()}","{logEntry[7].decode()}","{logEntry[8].decode()}","{logEntry[9].decode()}","{logEntry[10].decode()}","{logEntry[11].decode()}","{logEntry[15].decode()}","{logEntry[16].decode()}","{logEntry[17].decode()}","{logEntry[18].decode()}","{logEntry[19].decode()}"\n')
+        rawlog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.remotehost}","{entry.remoteport}","{entry.localhost}","{entry.localport}","{entry.direction}","{entry.action}","{entry.application}","{entry.rule}","{entry.packetdump}","{entry.packetdecode}","{logEntry[2].decode("utf-8", "ignore")}","{logEntry[7].decode("utf-8", "ignore")}","{logEntry[8].decode("utf-8", "ignore")}","{logEntry[9].decode("utf-8", "ignore")}","{logEntry[10].decode("utf-8", "ignore")}","{logEntry[11].decode("utf-8", "ignore")}","{logEntry[15].decode("utf-8", "ignore")}","{logEntry[16].decode("utf-8", "ignore")}","{logEntry[17].decode("utf-8", "ignore")}","{logEntry[18].decode("utf-8", "ignore")}","{logEntry[19].decode("utf-8", "ignore")}"\n')
         count += 1
 
         if count == logEntries:
@@ -1023,19 +1023,19 @@ def parse_processlog(f, logEntries):
         entry.severity = int(logEntry[3], 16)
         entry.action = log_c_action(int(logEntry[4], 16))
         entry.testmode = ''
-        entry.description = logEntry[6].decode()
-        entry.api = logEntry[7].decode()
-        entry.rulename = logEntry[11].decode()
+        entry.description = logEntry[6].decode("utf-8", "ignore")
+        entry.api = logEntry[7].decode("utf-8", "ignore")
+        entry.rulename = logEntry[11].decode("utf-8", "ignore")
         entry.callerprocessid = int(logEntry[12], 16)
-        entry.callerprocess = logEntry[13].decode()
-        entry.target = logEntry[16].decode()
-        entry.location = logEntry[17].decode()
-        entry.user = logEntry[18].decode()
-        entry.userdomain = logEntry[19].decode()
+        entry.callerprocess = logEntry[13].decode("utf-8", "ignore")
+        entry.target = logEntry[16].decode("utf-8", "ignore")
+        entry.location = logEntry[17].decode("utf-8", "ignore")
+        entry.user = logEntry[18].decode("utf-8", "ignore")
+        entry.userdomain = logEntry[19].decode("utf-8", "ignore")
         entry.ipaddress = from_hex_ip(logEntry[22])
-        entry.deviceinstanceid = logEntry[23].decode()
+        entry.deviceinstanceid = logEntry[23].decode("utf-8", "ignore")
         entry.filesize = ''
-        processlog.write(f'"{f.name}","{int(logEntry[0].decode(), 16)}","{entry.dateAndTime}","{entry.severity}","{entry.action}","{entry.testmode}","{entry.description}","{entry.api}","{entry.rulename}","{entry.ipaddress}","{entry.callerprocessid}","{entry.callerprocess}","{entry.deviceinstanceid}","{entry.target}","{entry.filesize}","{entry.user}","{entry.userdomain}","{entry.location}","{logEntry[2].decode()}","{logEntry[5].decode()}","{logEntry[8].decode()}","{logEntry[9].decode()}","{logEntry[10].decode()}","{logEntry[14].decode()}","{logEntry[15].decode()}","{logEntry[20].decode()}","{logEntry[21].decode()}","{logEntry[24].decode()}","{logEntry[25].decode()}","{logEntry[26]}"\n')
+        processlog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.severity}","{entry.action}","{entry.testmode}","{entry.description}","{entry.api}","{entry.rulename}","{entry.ipaddress}","{entry.callerprocessid}","{entry.callerprocess}","{entry.deviceinstanceid}","{entry.target}","{entry.filesize}","{entry.user}","{entry.userdomain}","{entry.location}","{logEntry[2].decode("utf-8", "ignore")}","{logEntry[5].decode("utf-8", "ignore")}","{logEntry[8].decode("utf-8", "ignore")}","{logEntry[9].decode("utf-8", "ignore")}","{logEntry[10].decode("utf-8", "ignore")}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry[15].decode("utf-8", "ignore")}","{logEntry[20].decode("utf-8", "ignore")}","{logEntry[21].decode("utf-8", "ignore")}","{logEntry[24].decode("utf-8", "ignore")}","{logEntry[25].decode("utf-8", "ignore")}","{logEntry[26]}"\n')
         count += 1
 
         if count == logEntries:
@@ -1062,18 +1062,18 @@ def parse_avman(f, logEntries):
         dataLog4 = [w.replace(b'"', b'""') for w in logEntry[31].split(b',')]
 
         timeline.write(f'"{f.name}",')
-        timeline.write(f'"{int(logEntry[0].decode(), 16)}","{from_win_64_hex(logEntry[1])}","{from_win_64_hex(logEntry[2])}","{from_win_64_hex(logEntry[3])}","{logEntry[4].decode()}",')
+        timeline.write(f'"{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{from_win_64_hex(logEntry[1])}","{from_win_64_hex(logEntry[2])}","{from_win_64_hex(logEntry[3])}","{logEntry[4].decode("utf-8", "ignore")}",')
 
-        if 'Summary' in log_category(dataLog[2].decode()):
+        if 'Summary' in log_category(dataLog[2].decode("utf-8", "ignore")):
             data = read_log_data(logEntry[5]).split(',')
             timeline.write(f'{",".join(data[0:18])},"","","","","","","","","","","","",{",".join(data[18:60])},"","","","","","","","","","","","","","",{",".join(data[60:81])}')
 
         else:
-            timeline.write(f'"{from_symantec_time(dataLog[0].decode())}","{log_event(dataLog[1].decode())}","{log_category(dataLog[2].decode())}","{log_logger(dataLog[3].decode())}","{dataLog[4].decode()}","{dataLog[5].decode()}","{dataLog[6].decode()}","{dataLog[7].decode()}","{log_action(dataLog[8].decode())}","{log_action(dataLog[9].decode())}","{log_action(dataLog[10].decode())}","{log_virus_type(dataLog[11].decode())}","{log_flags(int(dataLog[12].decode()))}","{dataLog[13].decode()}","{dataLog[14].decode()}","{dataLog[15].decode()}","{dataLog[16].decode()}","{dataLog[17].decode()}",')
-            timeline.write(f'"{logEntry[6].decode()}","{logEntry[7].decode()}","{log_tp_event(dataLog[17].decode(), logEntry[8].decode())}","{logEntry[9].decode()}","{logEntry[10].decode()}","{logEntry[11].decode()}","{logEntry[12].decode()}",')
+            timeline.write(f'"{from_symantec_time(dataLog[0].decode("utf-8", "ignore"))}","{log_event(dataLog[1].decode("utf-8", "ignore"))}","{log_category(dataLog[2].decode("utf-8", "ignore"))}","{log_logger(dataLog[3].decode("utf-8", "ignore"))}","{dataLog[4].decode("utf-8", "ignore")}","{dataLog[5].decode("utf-8", "ignore")}","{dataLog[6].decode("utf-8", "ignore")}","{dataLog[7].decode("utf-8", "ignore")}","{log_action(dataLog[8].decode("utf-8", "ignore"))}","{log_action(dataLog[9].decode("utf-8", "ignore"))}","{log_action(dataLog[10].decode("utf-8", "ignore"))}","{log_virus_type(dataLog[11].decode("utf-8", "ignore"))}","{log_flags(int(dataLog[12].decode("utf-8", "ignore")))}","{dataLog[13].decode("utf-8", "ignore")}","{dataLog[14].decode("utf-8", "ignore")}","{dataLog[15].decode("utf-8", "ignore")}","{dataLog[16].decode("utf-8", "ignore")}","{dataLog[17].decode("utf-8", "ignore")}",')
+            timeline.write(f'"{logEntry[6].decode("utf-8", "ignore")}","{logEntry[7].decode("utf-8", "ignore")}","{log_tp_event(dataLog[17].decode("utf-8", "ignore"), logEntry[8].decode("utf-8", "ignore"))}","{logEntry[9].decode("utf-8", "ignore")}","{logEntry[10].decode("utf-8", "ignore")}","{logEntry[11].decode("utf-8", "ignore")}","{logEntry[12].decode("utf-8", "ignore")}",')
 
-            if 'Security' in log_category(dataLog[2].decode()):
-                dataLog2 = [w.replace('"', '""') for w in re.split(r',(?! )', logEntry[13].decode())]
+            if 'Security' in log_category(dataLog[2].decode("utf-8", "ignore")):
+                dataLog2 = [w.replace('"', '""') for w in re.split(r',(?! )', logEntry[13].decode("utf-8", "ignore"))]
 
                 if len(dataLog2) < 74:
                     diff = 74 - len(dataLog2)
@@ -1083,21 +1083,21 @@ def parse_avman(f, logEntries):
                 timeline.write(f'"","","","{dataLog2[0]}","{dataLog2[0]}","{dataLog2[1]}","{dataLog2[2]}","{dataLog2[3]}","{dataLog2[4]}","{dataLog2[5]}","{dataLog2[6]}","{dataLog2[7]}","{dataLog2[8]}","{dataLog2[9]}","{dataLog2[10]}","{dataLog2[11]}","{dataLog2[12]}","{dataLog2[13]}","{dataLog2[14]}","{dataLog2[15]}","{dataLog2[16]}","{dataLog2[17]}","{dataLog2[18]}","{dataLog2[19]}","{dataLog2[20]}","{dataLog2[21]}","{dataLog2[22]}","{dataLog2[23]}","{dataLog2[24]}","{dataLog2[25]}","{dataLog2[26]}","{dataLog2[27]}","{dataLog2[28]}","{dataLog2[29]}","{dataLog2[30]}","{dataLog2[31]}","{dataLog2[32]}","{dataLog2[33]}","{dataLog2[34]}","{dataLog2[35]}","{dataLog2[36]}","{dataLog2[37]}","{dataLog2[38]}","{dataLog2[39]}","{dataLog2[40]}","{dataLog2[41]}","","","","","","","","","","","","","","","{dataLog2[42]}","{dataLog2[43]}","{log_dynamic_categoryset_id(dataLog2[44])}","{dataLog2[45]}","{dataLog2[46]}","{log_reputation_disposition(dataLog2[47])}","{dataLog2[48]}","{dataLog2[49]}","{dataLog2[50]}","{dataLog2[51]}","{dataLog2[52]}","{dataLog2[53]}","{dataLog2[54]}","{log_detection_type(dataLog2[55])}","{dataLog2[56]}","{log_vsic_state(dataLog2[57])}","{dataLog2[58]}","{dataLog2[59]}","{from_symantec_time(dataLog2[60])}","{dataLog2[61]}","{dataLog2[62]}","{dataLog2[63]}","{dataLog2[64]}","{dataLog2[65]}","{dataLog2[66]}","{dataLog2[67]}","{dataLog2[68]}","{dataLog2[69]}","{dataLog2[70]}","{from_unix_sec(dataLog2[71])}","{dataLog2[72]}","{dataLog2[73]}"')
 
             else:
-                timeline.write(f'"{logEntry[13].decode()}",')
-                timeline.write(f'"{logEntry[14].decode()}","{logEntry[15].decode()}","{logEntry[16].decode()}",')
+                timeline.write(f'"{logEntry[13].decode("utf-8", "ignore")}",')
+                timeline.write(f'"{logEntry[14].decode("utf-8", "ignore")}","{logEntry[15].decode("utf-8", "ignore")}","{logEntry[16].decode("utf-8", "ignore")}",')
 
                 for entry in dataLog3:
                     entry = entry.replace(b'"', b'""')
-                    timeline.write(f'"{entry.decode()}",')
+                    timeline.write(f'"{entry.decode("utf-8", "ignore")}",')
 
-                timeline.write(f'"{logEntry[18].decode()}","{logEntry[19].decode()}","{logEntry[20].decode()}","{logEntry[21].decode()}","{logEntry[22].decode()}","{logEntry[23].decode()}","{logEntry[24].decode()}","{logEntry[25].decode()}","{logEntry[26].decode()}","{logEntry[27].decode()}","{logEntry[28].decode()}","{logEntry[29].decode()}","{logEntry[30].decode()}",')
+                timeline.write(f'"{logEntry[18].decode("utf-8", "ignore")}","{logEntry[19].decode("utf-8", "ignore")}","{logEntry[20].decode("utf-8", "ignore")}","{logEntry[21].decode("utf-8", "ignore")}","{logEntry[22].decode("utf-8", "ignore")}","{logEntry[23].decode("utf-8", "ignore")}","{logEntry[24].decode("utf-8", "ignore")}","{logEntry[25].decode("utf-8", "ignore")}","{logEntry[26].decode("utf-8", "ignore")}","{logEntry[27].decode("utf-8", "ignore")}","{logEntry[28].decode("utf-8", "ignore")}","{logEntry[29].decode("utf-8", "ignore")}","{logEntry[30].decode("utf-8", "ignore")}",')
                 try:
-                    timeline.write(f'"{dataLog4[0].decode()}","{dataLog4[1].decode()}","{log_dynamic_categoryset_id(dataLog4[2].decode())}","{dataLog4[3].decode()}","{dataLog4[4].decode()}","{log_reputation_disposition(dataLog4[5].decode())}","{dataLog4[6].decode()}","{dataLog4[7].decode()}","{dataLog4[8].decode()}","{dataLog4[9].decode()}","{dataLog4[10].decode()}","{dataLog4[11].decode()}","{dataLog4[12].decode()}","{log_detection_type(dataLog4[13].decode())}","{dataLog4[14].decode()}","{log_vsic_state(dataLog4[15].decode())}","{dataLog4[16].decode()}","{dataLog4[17].decode()}","{from_symantec_time(dataLog4[18].decode())}","{log_target_app_type(dataLog4[19].decode())}","{dataLog4[20].decode()}","{dataLog4[21].decode()}","{dataLog4[22].decode()}","{dataLog4[23].decode()}","{dataLog4[24].decode()}","{dataLog4[25].decode()}","{dataLog4[26].decode()}","{dataLog4[27].decode()}","{dataLog4[28].decode()}","{from_unix_sec(int(dataLog4[29].decode()))}",')
+                    timeline.write(f'"{dataLog4[0].decode("utf-8", "ignore")}","{dataLog4[1].decode("utf-8", "ignore")}","{log_dynamic_categoryset_id(dataLog4[2].decode("utf-8", "ignore"))}","{dataLog4[3].decode("utf-8", "ignore")}","{dataLog4[4].decode("utf-8", "ignore")}","{log_reputation_disposition(dataLog4[5].decode("utf-8", "ignore"))}","{dataLog4[6].decode("utf-8", "ignore")}","{dataLog4[7].decode("utf-8", "ignore")}","{dataLog4[8].decode("utf-8", "ignore")}","{dataLog4[9].decode("utf-8", "ignore")}","{dataLog4[10].decode("utf-8", "ignore")}","{dataLog4[11].decode("utf-8", "ignore")}","{dataLog4[12].decode("utf-8", "ignore")}","{log_detection_type(dataLog4[13].decode("utf-8", "ignore"))}","{dataLog4[14].decode("utf-8", "ignore")}","{log_vsic_state(dataLog4[15].decode("utf-8", "ignore"))}","{dataLog4[16].decode("utf-8", "ignore")}","{dataLog4[17].decode("utf-8", "ignore")}","{from_symantec_time(dataLog4[18].decode("utf-8", "ignore"))}","{log_target_app_type(dataLog4[19].decode("utf-8", "ignore"))}","{dataLog4[20].decode("utf-8", "ignore")}","{dataLog4[21].decode("utf-8", "ignore")}","{dataLog4[22].decode("utf-8", "ignore")}","{dataLog4[23].decode("utf-8", "ignore")}","{dataLog4[24].decode("utf-8", "ignore")}","{dataLog4[25].decode("utf-8", "ignore")}","{dataLog4[26].decode("utf-8", "ignore")}","{dataLog4[27].decode("utf-8", "ignore")}","{dataLog4[28].decode("utf-8", "ignore")}","{from_unix_sec(int(dataLog4[29].decode("utf-8", "ignore")))}",')
 
                     iterdataLog = iter(dataLog4)
                     [next(iterdataLog) for x in range(30)]
                     for entry in iterdataLog:
-                        timeline.write(f'"{entry.decode()}",')
+                        timeline.write(f'"{entry.decode("utf-8", "ignore")}",')
                 except:
                     for entry in dataLog4:
                         entry = entry.replace(b'"', b'""')
@@ -1129,12 +1129,12 @@ def parse_tamper_protect(dataLog, logEntry, fname):
         entry.time = logEntry.split('","')[0].replace('"', '')
 
     else:
-        entry.computer = dataLog[4].decode()
-        entry.user = dataLog[5].decode()
-        entry.actor = f'{logEntry[7].decode()} (PID {logEntry[6].decode()})'
-        entry.targetprocess = f'{logEntry[10].decode()} (PID {logEntry[9].decode()})'
-        entry.target = logEntry[11].decode()
-        entry.time = from_symantec_time(dataLog[0].decode())
+        entry.computer = dataLog[4].decode("utf-8", "ignore")
+        entry.user = dataLog[5].decode("utf-8", "ignore")
+        entry.actor = f'{logEntry[7].decode("utf-8", "ignore")} (PID {logEntry[6].decode("utf-8", "ignore")})'
+        entry.targetprocess = f'{logEntry[10].decode("utf-8", "ignore")} (PID {logEntry[9].decode("utf-8", "ignore")})'
+        entry.target = logEntry[11].decode("utf-8", "ignore")
+        entry.time = from_symantec_time(dataLog[0].decode("utf-8", "ignore"))
 
     tamperProtect.write(f'"{fname}","{entry.computer}","{entry.user}","{entry.action}","{entry.objecttype}","{entry.event}","{entry.actor}","{entry.target}","{entry.targetprocess}","{entry.time}"\n')
 
