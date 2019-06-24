@@ -19,6 +19,8 @@ def csv_header():
     processlog.write('"File Name","Record Length","Date And Time","Severity","Action","Test Mode","Description","API","Rule Name","IP Address","Caller Process ID","Caller Process","Device Instance ID","Target","File Size","User","User Domain","Location","Field3","Field6","Field9","Field10","Field11","Field15","Field16","Field21","Field22","Field25","Field26","Field27"\n')
 
     timeline.write('"File Name","Record Length","Date/Time1","Date/Time2","Date/Time3","Field5","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8","LOG:Event_Data9","LOG:Event_Data10","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_4","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","Field113","Field114","Filed115","Digital_Signatures_Signer","Digital_Signatures_Issuer","Digital_Signatures_Certificate_Thumbprint","Field119","Digital_Signatures_Serial_Number","Digital_Signatures_Signing_Time","Field122","Field123"\n')
+    
+    tamperProtect.write('"File Name","Computer","User","Action Taken","Object Type","Event","Actor","Target","Target Process","Date and Time"\n')
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 
@@ -606,6 +608,18 @@ def log_tp_event(eventType, _):
     
     return _
 
+def log_tp_object_type(_):
+
+    objectType = {
+                 '0':'File'
+                 }
+
+    for k, v in objectType.items():
+        if k == str(len(_)):
+            return v
+     
+    return 'Process'
+
 def protocol(_):
     protocol = {
                 '301':'TCP',
@@ -643,7 +657,6 @@ def read_log_entry(f, loc, count):
     return f.read(count)
 
 def read_log_data(data):
-    # need to figure out flags
     entry = LogFields()
     data = data.split(b',')
     entry.time = from_symantec_time(data[0].decode("utf-8", "ignore"))
@@ -741,7 +754,6 @@ def from_win_64_hex(dateAndTime):
     return datetime(1601,1,1) + timedelta(microseconds=base10_microseconds)
 
 def from_symantec_time(timestamp):
-#    timestamp = timestamp.decode("utf-8", "ignore")
 
     year, month, day_of_month, hours, minutes, seconds = (
         int(hexdigit[0] + hexdigit[1], 16) for hexdigit in zip(
@@ -1060,7 +1072,10 @@ def parse_avman(f, logEntries):
 
         dataLog3 = [w.replace(b'"', b'""') for w in logEntry[17].split(b',')]
         dataLog4 = [w.replace(b'"', b'""') for w in logEntry[31].split(b',')]
-
+        
+        if dataLog[17].decode("utf-8", "ignore") == '301':
+            parse_tamper_protect(dataLog, logEntry, f.name)
+        
         timeline.write(f'"{f.name}",')
         timeline.write(f'"{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{from_win_64_hex(logEntry[1])}","{from_win_64_hex(logEntry[2])}","{from_win_64_hex(logEntry[3])}","{logEntry[4].decode("utf-8", "ignore")}",')
 
@@ -1114,23 +1129,27 @@ def parse_avman(f, logEntries):
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_tamper_protect(dataLog, logEntry, fname):
-    # need action, object type, event
+    # need action
     entry = LogFields()
     entry.action = ''
     entry.objecttype = ''
     entry.event = ''
 
     if dataLog[0] == '301':
-        entry.computer = logEntry.split('","')[4]
-        entry.user = logEntry.split('","')[5]
+        entry.computer = logEntry[4].replace('"', '')
+        entry.user = logEntry[5].replace('"', '')
+        entry.objecttype = log_tp_object_type(dataLog[5])
+        entry.event = log_tp_event(dataLog[0], logEntry[17].split('\t')[3])
         entry.actor = f'{dataLog[2]} (PID {dataLog[1]})'
         entry.targetprocess = f'{dataLog[5]} (PID {dataLog[4]})'
         entry.target = dataLog[6]
-        entry.time = logEntry.split('","')[0].replace('"', '')
+        entry.time = logEntry[0].replace('"', '')
 
     else:
         entry.computer = dataLog[4].decode("utf-8", "ignore")
         entry.user = dataLog[5].decode("utf-8", "ignore")
+        entry.objecttype = log_tp_object_type(logEntry[10].decode("utf-8", "ignore"))
+        entry.event = log_tp_event(dataLog[17].decode("utf-8", "ignore"), logEntry[8].decode("utf-8", "ignore"))
         entry.actor = f'{logEntry[7].decode("utf-8", "ignore")} (PID {logEntry[6].decode("utf-8", "ignore")})'
         entry.targetprocess = f'{logEntry[10].decode("utf-8", "ignore")} (PID {logEntry[9].decode("utf-8", "ignore")})'
         entry.target = logEntry[11].decode("utf-8", "ignore")
@@ -1156,6 +1175,10 @@ def parse_daily_av(f):
                 b = [''] * diff
                 eventData1.extend(b)
         entry1 = eventData1[0].replace('"', '')
+        
+        if entry1 == '301':
+            parse_tamper_protect(dataLog, logEntry, f.name)
+        
         timeline.write(f'"{entry1}","{eventData1[1]}","{eventData1[2]}","{log_tp_event(entry1, eventData1[3])}",')
 
         iterEventData1 = iter(eventData1)
@@ -1202,7 +1225,7 @@ def main():
                         print(f'Finished parsing {filename}\n')
 
                     if logType is 1:
-                        #missing eventtype, xintrusionpayloadurl
+                        #missing eventtype, protocol, xintrusionpayloadurl
 
                         parse_seclog(f, logEntries)
                         print(f'Finished parsing {filename}\n')
@@ -1280,6 +1303,7 @@ if args.output:
         processlog = open(args.output + '/Symantec_Client_Management_Control_Log.csv', 'w')
         timeline = open(args.output + '/Symantec_Timeline.csv', 'w')
         packet = open(args.output + '/packet.txt', 'w')
+        tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
     else:
         syslog = open(args.output + '/Symantec_Client_Management_System_Log.csv', 'a')
         seclog = open(args.output + '/Symantec_Client_Management_Security_Log.csv', 'a')
@@ -1287,8 +1311,8 @@ if args.output:
         rawlog = open(args.output + '/Symantec_Network_and_Host_Exploit_Mitigation_Packet_Log.csv', 'a')
         processlog = open(args.output + '/Symantec_Client_Management_Control_Log.csv', 'a')
         timeline = open(args.output + '/Symantec_Timeline.csv', 'a')
-
         packet = open(args.output + '/packet.txt', 'a')
+        tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
 else:
     if not args.append:
         syslog = open('Symantec_Client_Management_System_Log.csv', 'w')
@@ -1298,6 +1322,7 @@ else:
         processlog = open('Symantec_Client_Management_Control_Log.csv', 'w')
         timeline = open('Symantec_Timeline.csv', 'w')
         packet = open('packet.txt', 'w')
+        tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
     else:
         syslog = open('Symantec_Client_Management_System_Log.csv', 'a')
         seclog = open('Symantec_Client_Management_Security_Log.csv', 'a')
@@ -1306,6 +1331,7 @@ else:
         processlog = open('Symantec_Client_Management_Control_Log.csv', 'a')
         timeline = open('Symantec_Timeline.csv', 'a')
         packet = open('packet.txt', 'a')
+        tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
 
 
 
