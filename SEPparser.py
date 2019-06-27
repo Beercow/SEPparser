@@ -1327,18 +1327,30 @@ parser.add_argument("-o", "--output", help="directory to output files to. Defaul
 parser.add_argument("-a", "--append", help="append to output files.", action="store_true")
 args = parser.parse_args()
 
+sep = ['Symantec Endpoint Protection\\CurrentVersion\\Data\\Logs', 'Symantec Endpoint Protection\\Logs']
+filenames = []
+
 if not (args.file or args.dir):
-    parser.error('File or directory must be supplied')
+    print('Searching for Symantec logs.')
+    rootDir = '/' 
+    for path, subdirs, files in os.walk(rootDir):
+        if any(x in path for x in sep):
+            for name in files:
+                filenames.append(os.path.join(path, name))
+    
+    if not filenames:
+        print('No Symantec logs found.')
+        sys.exit()
 
 if args.file:
     filenames = [args.file]
 
 if args.dir:
-    filenames = []
     root = args.dir
     for path, subdirs, files in os.walk(root):
-        for name in files:
-            filenames.append(os.path.join(path, name))
+        if any(x in path for x in sep):
+            for name in files:
+                filenames.append(os.path.join(path, name))
 
 if args.output:
     if not os.path.exists(args.output):
