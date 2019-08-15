@@ -10,7 +10,7 @@ def csv_header():
 
     syslog.write('"File Name","Record Length","Date And Time","Field3","Field4","Severity","summary","Field6","Type","Size_(bytes)","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID"\n')
 
-    seclog.write('"File Name","Record Length","DateAndTime","Event Type","Severity","Direction","Protocol","Remote Host","Remote Port","Remote MAC","Local Host","Local Port","Local MAC","Application","Signature ID","Signature SubID","Signature Name","Intrusion-URL","X-Intrusion-Payload-URL","User","User Domain","Location","Occurrences","Begin Time","End Time","Hash","Description","Field3","Field7","Field8","Field13","Field15","Field17","Field25","Field26","Field29","Field30","Field34","LOG:Version","Field36","Field37","Field38"\n')
+    seclog.write('"File Name","Record Length","DateAndTime","Event Type","Severity","Direction","Protocol","Remote Host","Remote Port","Remote MAC","Local Host","Local Port","Local MAC","Application","Signature ID","Signature SubID","Signature Name","Intrusion-URL","X-Intrusion-Payload-URL","User","User Domain","Location","Occurrences","Begin Time","End Time","Hash","Description","Field7","Field8","Field13","Field15","Field17","Field25","Field26","Field29","Field30","Field34","LOG:Version","Profile_Serial_Number","Field37","Field38"\n')
 
     tralog.write('"File Name","Record Length","Date and Time","Action","Severity","Direction","Protocol","Remote Host","Remote MAC","Remote Port","Local Host","Local MAC","Local Port","Application","User","User Domain","Location","Occurrences","Begin Time","End Time","Rule","Field13","Field15","Field16","Field24","Field25","Field26","Field27","Field28","Field29","Field30","Field31","Field32"\n')
 
@@ -134,14 +134,45 @@ class LogFields:
     packetdump = ''
     packetdecode = ''
 
+def sec_event_type(_):
+    event_value = {
+                   '209':'Host Integrity Failed',
+                   '206':'Intrusion Prevention System',
+                   '210':'Host Integrity Passed'
+                   }
+                   
+    for k, v in event_value.items():
+        if k == str(_):
+            return v
+
+    else:
+        return _
+
+
+def sec_network_protocol(_): 
+    network_protocol = {
+                        '1':'OTHERS',
+                        '2':'TCP',
+                        '3':'UDP',
+                        '4':'ICMP'
+                        }
+                        
+    for k, v in network_protocol.items():
+        if k == str(_):
+            return v
+
+    else:
+        return _
+
 def log_severity(_):
     severity_value = {
                       '0':'Information',
+                      '15':'Information',
                       '1':'Warning',
                       '2':'Error',
                       '3':'Critical',
                       '7':'Major'
-                      }
+                     }
 
     for k, v in severity_value.items():
         if k == str(_):
@@ -152,6 +183,7 @@ def log_severity(_):
 
 def log_direction(_):
     direction = {
+                 '0':'Unknown',
                  '1':'Incoming',
                  '2':'Outgoing'
                 }
@@ -905,7 +937,7 @@ def parse_seclog(f, logEntries):
     while True:
         logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t')
         entry.dateAndTime = from_win_64_hex(logEntry[1])
-        entry.eventtype = ''
+        entry.eventtype = sec_event_type(int(logEntry[2], 16))
         entry.severity =  log_severity(int(logEntry[3], 16))
         entry.localhost = from_hex_ip(logEntry[4])
         entry.remotehost = from_hex_ip(logEntry[5])
@@ -956,10 +988,9 @@ def parse_seclog(f, logEntries):
         entry.signaturename = logEntry[30].decode("utf-8", "ignore")
         entry.intrusionurl = logEntry[32].decode("utf-8", "ignore")
         entry.xintrusionpayloadurl = logEntry[31].decode("utf-8", "ignore")
-        entry.eventtype = ''
         entry.protocol = ''
         entry.hash = logEntry[38].decode("utf-8", "ignore").strip('\r')
-        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}","{logEntry[2].decode("utf-8", "ignore")}","{logEntry[6].decode("utf-8", "ignore")}","{logEntry[7].decode("utf-8", "ignore")}","{logEntry[12].decode("utf-8", "ignore")}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry[16].decode("utf-8", "ignore")}","{logEntry[24].decode("utf-8", "ignore")}","{logEntry[25].decode("utf-8", "ignore")}","{logEntry[28].decode("utf-8", "ignore")}","{logEntry[29].decode("utf-8", "ignore")}","{logEntry[33].decode("utf-8", "ignore")}","{logEntry[34].decode("utf-8", "ignore")}","{logEntry[35].decode("utf-8", "ignore")}","{logEntry[36].decode("utf-8", "ignore")}","{logEntry[37].decode("utf-8", "ignore")}"\n')
+        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}","{logEntry[6].decode("utf-8", "ignore")}","{logEntry[7].decode("utf-8", "ignore")}","{logEntry[12].decode("utf-8", "ignore")}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry[16].decode("utf-8", "ignore")}","{logEntry[24].decode("utf-8", "ignore")}","{logEntry[25].decode("utf-8", "ignore")}","{logEntry[28].decode("utf-8", "ignore")}","{logEntry[29].decode("utf-8", "ignore")}","{logEntry[33].decode("utf-8", "ignore")}","{logEntry[34].decode("utf-8", "ignore")}","{logEntry[35].decode("utf-8", "ignore")}","{logEntry[36].decode("utf-8", "ignore")}","{logEntry[37].decode("utf-8", "ignore")}"\n')
         count += 1
 
         if count == logEntries:
