@@ -1383,7 +1383,10 @@ filenames = []
 
 if args.kape or not (args.file or args.dir):
     print('Searching for Symantec logs.')
-    rootDir = '/' 
+    if args.kape:
+        rootDir = args.dir
+    else:
+        rootDir = '/'
     for path, subdirs, files in os.walk(rootDir):
         if any(x in path for x in sep):
             for name in files:
@@ -1396,7 +1399,7 @@ if args.kape or not (args.file or args.dir):
 if args.file:
     filenames = [args.file]
 
-if args.dir:
+if args.dir and not args.kape:
     print('Searching for Symantec logs.')
     root = args.dir
     for path, subdirs, files in os.walk(root):
