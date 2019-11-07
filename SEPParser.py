@@ -8,7 +8,7 @@ from datetime import datetime,timedelta
 
 def csv_header():
 
-    syslog.write('"File Name","Record Length","Date And Time","Field3","Field4","Severity","summary","Field6","Type","Size_(bytes)","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID"\n')
+    syslog.write('"File Name","Record Length","Date And Time","Event ID","Field4","Severity","summary","Field6","Type","Size_(bytes)","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID"\n')
 
     seclog.write('"File Name","Record Length","DateAndTime","Event Type","Severity","Direction","Protocol","Remote Host","Remote Port","Remote MAC","Local Host","Local Port","Local MAC","Application","Signature ID","Signature SubID","Signature Name","Intrusion-URL","X-Intrusion-Payload-URL","User","User Domain","Location","Occurrences","Begin Time","End Time","Hash","Description","Field7","Field8","Field13","Field15","Field17","Field25","Field26","Field29","Field30","Field34","LOG:Version","Profile_Serial_Number","Field37","Field38"\n')
 
@@ -713,6 +713,154 @@ def test_mode(_):
             return v
             
     return _
+    
+def sec_event_id(_):
+    eventid = {
+                #Installation events Possible values are:
+                '12070001':'Internal error',
+                '12070101':'Install complete',
+                '12070102':'Restart recommended',
+                '12070103':'Restart required',
+                '12070104':'Installation failed',
+                '12070105':'Uninstallation complete',
+                '12070106':'Uninstallation failed',
+                '12071037':'Symantec Endpoint Protection installed',
+                '12071038':'Symantec Firewall installed',
+                '12071039':'Uninstall',
+                '1207103A':'Uninstall rolled-back',
+                #Service events Possible values are:
+                '12070201':'Service starting',
+                '12070202':'Service started',
+                '12070203':'Service start failure',
+                '12070204':'Service stopped',
+                '12070205':'Service stop failure',
+                '1207021A':'Attempt to stop service',
+                #Configuration events Possible values are:
+                '12070206':'Config import complete',
+                '12070207':'Config import error',
+                '12070208':'Config export complete',
+                '12070209':'Config export error',
+                #Host Integrity events Possible values are:
+                '12070210':'Host Integrity disabled',
+                '12070211':'Host Integrity enabled',
+                '12070220':'NAP integration enabled',
+                #Import events Possible values are:
+                '12070214':'Successfully imported advanced rule',
+                '12070215':'Failed to import advanced rule',
+                '12070216':'Successfully exported advanced rule',
+                '12070217':'Failed to export advanced rule',
+                '1207021B':'Imported sylink',
+                #Client events Possible values are:
+                '12070218':'Client Engine enabled',
+                '12070219':'Client Engine disabled',
+                '12071046':'Proactive Threat Scanning is not supported on this platform',
+                '12071047':'Proactive Threat Scanning load error',
+                '12071048':'SONAR content load error',
+                '12071049':'Allow application',
+                #Server events Possible values are:
+                '12070301':'Server connected',
+                '12070302':'No server response',
+                '12070303':'Server connection failed',
+                '12070304':'Server disconnected',
+                '120B0001':'Cannot reach server',
+                '120B0002':'Reconnected to the server',
+                '120b0003':'Automatic upgrade complete',
+                #Policy events Possible values are:
+                '12070306':'New policy received',
+                '12070307':'New policy applied',
+                '12070308':'New policy failed',
+                '12070309':'Cannot download policy',
+                '120B0005':'Cannot download policy',
+                '1207030A':'Have latest policy',
+                '120B0004':'Have latest policy',
+                #Antivirus engine events Possible values are:
+                '12071006':'Scan omission',
+                '12071007':'Definition file loaded',
+                '1207100B':'Virus behavior detected',
+                '1207100C':'Configuration changed',
+                '12071010':'Definition file download',
+                '12071012':'Sent to quarantine server',
+                '12071013':'Delivered to Symantec',
+                '12071014':'Security Response backup',
+                '12071015':'Scan aborted',
+                '12071016':'Symantec Endpoint Protection Auto-Protect Load error',
+                '12071017':'Symantec Endpoint Protection Auto-Protect enabled',
+                '12071018':'Symantec Endpoint Protection Auto-Protect disabled',
+                '1207101A':'Scan delayed',
+                '1207101B':'Scan restarted',
+                '12071027':'Symantec Endpoint Protection is using old virus definitions',
+                '12071041':'Scan suspended',
+                '12071042':'Scan resumed',
+                '12071043':'Scan duration too short',
+                '12071045':'Scan enhancements failed',
+                #Licensing events Possible values are:
+                '1207101E':'License warning',
+                '1207101F':'License error',
+                '12071020':'License in grace period',
+                '12071023':'License installed',
+                '12071025':'License up-to-date',
+                #Security events Possible values are:
+                '1207102B':'Computer not compliant with security policy',
+                '1207102C':'Computer compliant with security policy',
+                '1207102D':'Tamper attempt',
+                '12071034':'Login failed',
+                '12071035':'Login succeeded',
+                #Submission events Possible values are:
+                '12120001':'System message from centralized reputation',
+                '12120002':'Authentication token failure',
+                '12120003':'Reputation failure',
+                '12120004':'Reputation network failure',
+                '12130001':'System message from Submissions',
+                '12130002':'Submissions failure',
+                '12130003':'Intrusion prevention submission',
+                '12130004':'Antivirus detection submission',
+                '12130005':'Antivirus advanced heuristic detection submission',
+                '12130006':'Manual user submission',
+                '12130007':'SONAR heuristic submission',
+                '12130008':'SONAR detection submission',
+                '12130009':'File Reputation submission',
+                '1213000A':'Client authentication token request',
+                '1213000B':'LiveUpdate error submission',
+                '1213000C':'Process data submission',
+                '1213000D':'Configuration data submission',
+                '1213000E':'Network data submission',
+                #Other events Possible values are:
+                '1207020A':'Email post OK',
+                '1207020B':'Email post failure',
+                '1207020C':'Update complete',
+                '1207020D':'Update failure',
+                '1207020E':'Manual location change',
+                '1207020F':'Location changed',
+                '12070212':'Old rasdll version detected',
+                '12070213':'Auto-update postponed',
+                '12070305':'Mode changed',
+                '1207030B':'Cannot apply HI script',
+                '1207030C':'Content Update Server',
+                '1207030D':'Content Update Packet',
+                '12070500':'System message from device control',
+                '12070600':'System message from anti-buffer overflow driver',
+                '12070700':'System message from network access component',
+                '12070800':'System message from LiveUpdate',
+                '12070900':'System message from GUP',
+                '12072000':'System message from Memory Exploit Mitigation',
+                '12072009':'Intensive Protection disabled',
+                '1207200A':'Intensive Protection enabled',
+                '12071021':'Access denied warning',
+                '12071022':'Log forwarding error',
+                '12071044':'Client moved',
+                '12071036':'Access denied warning',
+                '12071000':'Message from Intrusion Prevention',
+                '12071050':'SONAR disabled',
+                '12071051':'SONAR enabled'
+                }            
+
+    for k, v in eventid.items():
+
+        if k == _.upper():
+            return v
+            
+    return _
+
 
 def read_unpack_hex(f, loc, count):
     
@@ -924,7 +1072,7 @@ def parse_syslog(f, logEntries):
         if len(logEntry[8]) > 13:
             data = read_log_data(logEntry[8])
 
-        syslog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{logEntry[2].decode("utf-8", "ignore")}","{logEntry[3].decode("utf-8", "ignore")}","{entry.severity}","{entry.summary}","{logEntry[5].decode("utf-8", "ignore")}","{entry.type}","{entry.size}",{data}\n')
+        syslog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{sec_event_id(logEntry[2].decode("utf-8", "ignore"))}","{logEntry[3].decode("utf-8", "ignore")}","{entry.severity}","{entry.summary}","{logEntry[5].decode("utf-8", "ignore")}","{entry.type}","{entry.size}",{data}\n')
         count += 1
 
         if count == logEntries:
