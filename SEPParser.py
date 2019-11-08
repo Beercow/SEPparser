@@ -12,7 +12,7 @@ def csv_header():
 
     seclog.write('"File Name","Record Length","DateAndTime","Event Type","Severity","Direction","Protocol","Remote Host","Remote Port","Remote MAC","Local Host","Local Port","Local MAC","Application","Signature ID","Signature SubID","Signature Name","Intrusion-URL","X-Intrusion-Payload-URL","User","User Domain","Location","Occurrences","Begin Time","End Time","Hash","Description","Field7","Field8","Field13","Field15","Field17","Field25","Field26","Field29","Field30","Field34","LOG:Version","Profile_Serial_Number","Field37","Field38"\n')
 
-    tralog.write('"File Name","Record Length","Date and Time","Action","Severity","Direction","Protocol","Remote Host","Remote MAC","Remote Port","Local Host","Local MAC","Local Port","Application","User","User Domain","Location","Occurrences","Begin Time","End Time","Rule","Field13","Field15","Field16","Field24","Field25","Field26","Field27","Field28","Field29","Field30","Field31","Field32"\n')
+    tralog.write('"File Name","Record Length","Date and Time","Action","Severity","Direction","Protocol","Remote Host","Remote MAC","Remote Port","Local Host","Local MAC","Local Port","Application","User","User Domain","Location","Occurrences","Begin Time","End Time","Rule","Field13","Rule ID","Field16","Field24","Field25","Field26","Field27","Field28","Field29","Field30","Field31","Field32"\n')
 
     rawlog.write('"File Name","Recode Length","Date and Time","Remote Host","Remote Port","Local Host","Local Port","Direction","Action","Application","Rule","Packet Dump","Packet Decode","Field3","Field8","Field9","Field10","Field11","Field12","Field16","Field17","Field18","Field19","Field20"\n')
 
@@ -641,6 +641,12 @@ def remediation_type_desc(_):
                '2010':'Layered Service Provider',
                '2011':'Internet Browser Cache'
                }
+
+    for k, v in remType.items():
+        if k == _:
+            return v
+
+    return _
 
 def hash_type(_):
 
@@ -1413,10 +1419,10 @@ def parse_daily_av(f, logType):
                 eventData1.extend(b)
         entry1 = eventData1[0].replace('"', '')
         
-        timeline.write(f'"{entry1}","{eventData1[1]}","{eventData1[2]}","{log_tp_event(entry1, eventData1[3])}",')
+        timeline.write(f'"{entry1}","{eventData1[1]}","{eventData1[2]}","{log_tp_event(entry1, eventData1[3])}","{eventData1[4]}","{eventData1[5]}","{eventData1[6]}","{eventData1[7]}","{eventData1[8]}","{remediation_type_desc(eventData1[9])}",')
 
         iterEventData1 = iter(eventData1)
-        [next(iterEventData1) for x in range(4)]
+        [next(iterEventData1) for x in range(10)]
         for entry in iterEventData1:
             entry = entry.replace('"', '')
             timeline.write(f'"{entry}",')
