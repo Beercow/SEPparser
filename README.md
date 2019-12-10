@@ -14,6 +14,6 @@ optional arguments:\
   -d DIR, --dir DIR     directory to be parsed\
   -k, --kape            kape mode\
   -o OUTPUT, --output OUTPUT\
-                        directory to output files to. Default is current\
-                        directory.\
+                        directory to output files to. Default is current\
+                        directory.\
   -a, --append          append to output files.
