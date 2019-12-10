@@ -133,6 +133,12 @@ class LogFields:
     targetprocess = ''
     packetdump = ''
     packetdecode = ''
+    digitalsigner = ''
+    digitalissuer = ''
+    digitalthumbprint = ''
+    digitalsn = ''
+    digitaltime = ''
+    
 
 def sec_event_type(_):
     event_value = {
@@ -890,7 +896,13 @@ def read_log_entry(f, loc, count):
 
 def read_log_data(data):
     entry = LogFields()
-    data = data.split(b',')
+    data = re.split(b',(?=(?:"[^"]*?(?: [^"]*)*))|,(?=[^",]+(?:,|$))|,(?=,)|,(?<=,)', data)
+    field113 = ''
+    field114 = ''
+    field115 = ''
+    field119 = ''
+    field122 = ''
+    field123 = ''
     entry.time = from_symantec_time(data[0].decode("utf-8", "ignore"))
     entry.event = log_event(data[1].decode("utf-8", "ignore"))
     entry.category = log_category(data[2].decode("utf-8", "ignore"))
@@ -950,8 +962,8 @@ def read_log_data(data):
     entry.sessionguid = data[56].decode("utf-8", "ignore")
     entry.vbnsessionid = data[57].decode("utf-8", "ignore")
     entry.logindomain = data[58].decode("utf-8", "ignore")
-    entry.eventdata2 = data[59].decode("utf-8", "ignore")
     try:
+        entry.eventdata2 = data[59].decode("utf-8", "ignore")
         entry.erasercategoryid = log_eraser_category_id(data[60].decode("utf-8", "ignore"))
         entry.dynamiccategoryset = log_dynamic_categoryset_id(data[61].decode("utf-8", "ignore"))
         entry.subcategorysetid = data[62].decode("utf-8", "ignore")
@@ -974,8 +986,22 @@ def read_log_data(data):
         entry.scancommandguid = data[79].decode("utf-8", "ignore")
     except:
         pass
-        
-    return f'"{entry.time}","{entry.event}","{entry.category}","{entry.logger}","{entry.computer}","{entry.user}","{entry.virus}","{entry.file}","{entry.wantedaction1}","{entry.wantedaction2}","{entry.realaction}","{entry.virustype}","{entry.flags}","{entry.description}","{entry.scanid}","{entry.newext}","{entry.groupid}","{entry.eventdata}","{entry.vbinid}","{entry.virusid}","{entry.quarantineforwardstatus}","{entry.access}","{entry.sdnstatus}","{entry.compressed}","{entry.depth}","{entry.stillinfected}","{entry.definfo}","{entry.defsequincenumber}","{entry.cleaninfo}","{entry.deleteinfo}","{entry.backupod}","{entry.parent}","{entry.guid}","{entry.clientgroup}","{entry.address}","{entry.domainname}","{entry.ntdomain}","{entry.macaddress}","{entry.version}","{entry.remotemachine}","{entry.remotemachineip}","{entry.action1status}","{entry.action2status}","{entry.licensefeaturename}","{entry.licensefeatureversion}","{entry.licenseserialnumber}","{entry.licensefulfillmentid}","{entry.licensestartdate}","{entry.licenseexpirationdate}","{entry.licenselifecycle}","{entry.licenseseatstotal}","{entry.licenseseats}","{entry.errorcode}","{entry.licenseseatsdelta}","{entry.status}","{entry.domainguid}","{entry.sessionguid}","{entry.vbnsessionid}","{entry.logindomain}","{entry.eventdata2}","{entry.erasercategoryid}","{entry.dynamiccategoryset}","{entry.subcategorysetid}","{entry.displaynametouse}","{entry.reputationdisposition}","{entry.reputationconfidence}","{entry.firsseen}","{entry.reputationprevalence}","{entry.downloadurl}","{entry.categoryfordropper}","{entry.cidsstate}","{entry.behaviorrisklevel}","{entry.detectiontype}","{entry.acknowledgetext}","{entry.vsicstate}","{entry.scanguid}","{entry.scanduration}","{entry.scanstarttime}","{entry.targetapptype}","{entry.scancommandguid}"'
+    try:
+        field113 = data[80].decode("utf-8", "ignore")
+        field114 = data[81].decode("utf-8", "ignore")
+        field115 = data[82].decode("utf-8", "ignore")
+        entry.digitalsigner = data[83].decode("utf-8", "ignore").replace('"', '')
+        entry.digitalissuer = data[84].decode("utf-8", "ignore")
+        entry.digitalthumbprint = data[85].decode("utf-8", "ignore")
+        field119 = data[86].decode("utf-8", "ignore")
+        entry.digitalsn = data[87].decode("utf-8", "ignore")
+        entry.digitaltime = data[88].decode("utf-8", "ignore")
+        field122 = data[89].decode("utf-8", "ignore")
+        field123 = data[90].decode("utf-8", "ignore")
+    except:
+        pass
+     
+    return f'"{entry.time}","{entry.event}","{entry.category}","{entry.logger}","{entry.computer}","{entry.user}","{entry.virus}","{entry.file}","{entry.wantedaction1}","{entry.wantedaction2}","{entry.realaction}","{entry.virustype}","{entry.flags}","{entry.description}","{entry.scanid}","{entry.newext}","{entry.groupid}","{entry.eventdata}","{entry.vbinid}","{entry.virusid}","{entry.quarantineforwardstatus}","{entry.access}","{entry.sdnstatus}","{entry.compressed}","{entry.depth}","{entry.stillinfected}","{entry.definfo}","{entry.defsequincenumber}","{entry.cleaninfo}","{entry.deleteinfo}","{entry.backupod}","{entry.parent}","{entry.guid}","{entry.clientgroup}","{entry.address}","{entry.domainname}","{entry.ntdomain}","{entry.macaddress}","{entry.version}","{entry.remotemachine}","{entry.remotemachineip}","{entry.action1status}","{entry.action2status}","{entry.licensefeaturename}","{entry.licensefeatureversion}","{entry.licenseserialnumber}","{entry.licensefulfillmentid}","{entry.licensestartdate}","{entry.licenseexpirationdate}","{entry.licenselifecycle}","{entry.licenseseatstotal}","{entry.licenseseats}","{entry.errorcode}","{entry.licenseseatsdelta}","{entry.status}","{entry.domainguid}","{entry.sessionguid}","{entry.vbnsessionid}","{entry.logindomain}","{entry.eventdata2}","{entry.erasercategoryid}","{entry.dynamiccategoryset}","{entry.subcategorysetid}","{entry.displaynametouse}","{entry.reputationdisposition}","{entry.reputationconfidence}","{entry.firsseen}","{entry.reputationprevalence}","{entry.downloadurl}","{entry.categoryfordropper}","{entry.cidsstate}","{entry.behaviorrisklevel}","{entry.detectiontype}","{entry.acknowledgetext}","{entry.vsicstate}","{entry.scanguid}","{entry.scanduration}","{entry.scanstarttime}","{entry.targetapptype}","{entry.scancommandguid}","{field113}","{field114}","{field115}","{entry.digitalsigner}","{entry.digitalissuer}","{entry.digitalthumbprint}","{field119}","{entry.digitalsn}","{entry.digitaltime}","{field122}","{field123}"'
 
 def from_unix_sec(_):
     try:
@@ -1464,10 +1490,9 @@ def parse_daily_av(f, logType):
             entry = entry.replace('"', '')
             timeline.write(f'"{entry}",')
 
-        timeline.write(f'{logEntry[60]},{logEntry[61]},{logEntry[62]},{logEntry[63]},{logEntry[64]},{logEntry[65]},{logEntry[66]},{logEntry[67]},{logEntry[68]},{logEntry[69]},{logEntry[70]},{logEntry[71]},{logEntry[72]},{logEntry[73]},{logEntry[74]},{logEntry[75]},{logEntry[76]},{logEntry[77]},{logEntry[78]},{logEntry[79]}')
+        timeline.write(f'{logEntry[60]},{logEntry[61]},{logEntry[62]},{logEntry[63]},{logEntry[64]},{logEntry[65]},{logEntry[66]},{logEntry[67]},{logEntry[68]},{logEntry[69]},{logEntry[70]},{logEntry[71]},{logEntry[72]},{logEntry[73]},{logEntry[74]},{logEntry[75]},{logEntry[76]},{logEntry[77]},{logEntry[78]},{logEntry[79]},{logEntry[80]},{logEntry[81]},{logEntry[82]},{logEntry[83]},{logEntry[84]},{logEntry[85]},{logEntry[86]},{logEntry[87]},{logEntry[88]},{logEntry[89]},{logEntry[90]}')
 
         timeline.write('\n')
-
         if logType == 7 or 8:
             break
             
