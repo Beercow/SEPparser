@@ -995,7 +995,7 @@ def read_log_data(data):
         entry.digitalthumbprint = data[85].decode("utf-8", "ignore")
         field119 = data[86].decode("utf-8", "ignore")
         entry.digitalsn = data[87].decode("utf-8", "ignore")
-        entry.digitaltime = data[88].decode("utf-8", "ignore")
+        entry.digitaltime = from_unix_sec(data[88].decode("utf-8", "ignore"))
         field122 = data[89].decode("utf-8", "ignore")
         field123 = data[90].decode("utf-8", "ignore")
     except:
@@ -1061,6 +1061,9 @@ def hexdump(buf, length=16):
 
 def parse_header(f):
     headersize = len(f.readline())
+    if headersize == 0:
+        print(f'Skipping {f.name}. Unknown File Type.\n')
+        return 9, 1
     f.seek(0)
     if headersize == 55:
         logType = 5
@@ -1077,26 +1080,23 @@ def parse_header(f):
         return logType, logEntries
 
     try:
-        try:
-            from_symantec_time(f.readline().split(b',')[0].decode("utf-8", "ignore"))
-            return 6, 1
-        except:
-            pass
-        try:
-            f.seek(388, 0)
-            from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"))
-            return 7, 1
-        except:
-            pass
-        try:
-            f.seek(4100, 0)
-            from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"))
-            return 8, 1
-        except:
-            pass
+        from_symantec_time(f.readline().split(b',')[0].decode("utf-8", "ignore"))
+        return 6, 1
+    except:
+        pass
+    try:
+        f.seek(388, 0)
+        from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"))
+        return 7, 1
+    except:
+        pass
+    try:
+        f.seek(4100, 0)
+        from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"))
+        return 8, 1
     except:
         print(f'Skipping {f.name}. Unknown File Type.\n')
-        return 8, 1
+        return 9, 1
 
 def parse_syslog(f, logEntries):
     startEntry = 72
@@ -1349,7 +1349,7 @@ def parse_avman(f, logEntries):
 
         dataLog3 = [w.replace(b'"', b'""') for w in logEntry[17].split(b',')]
         dataLog4 = [w.replace(b'"', b'""') for w in logEntry[31].split(b',')]
-
+        
         timeline.write(f'"{f.name}",')
         timeline.write(f'"{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{from_win_64_hex(logEntry[1])}","{from_win_64_hex(logEntry[2])}","{from_win_64_hex(logEntry[3])}","{logEntry[4].decode("utf-8", "ignore")}",')
 
@@ -1455,24 +1455,25 @@ def parse_daily_av(f, logType):
         if logEntry[1] == '"SECURITY_SYMPROTECT_POLICYVIOLATION"':
             parse_tamper_protect(dataLog, logEntry, f.name)
 
-        timeline.write(f'"{f.name}","","","","","",{logEntry[0]},{logEntry[1]},{logEntry[2]},{logEntry[3]},{logEntry[4]},{logEntry[5]},{logEntry[6]},{logEntry[7]},{logEntry[8]},{logEntry[9]},{logEntry[10]},{logEntry[11]},{logEntry[12]},{logEntry[13]},{logEntry[14]},{logEntry[15]},{logEntry[16]},')
+        timeline.write(f'"{f.name}","","","","","",{",".join(logEntry[0:17])},')
 
-        eventData1 = logEntry[17].split('\t')
+        eventData1 = logEntry[17].replace('"', '').split('\t')
         if len(eventData1) < 13:
                 diff = 13 - len(eventData1)
                 b = [''] * diff
                 eventData1.extend(b)
+
         entry1 = eventData1[0].replace('"', '')
 
-        timeline.write(f'"{entry1}","{eventData1[1]}","{eventData1[2]}","{log_tp_event(entry1, eventData1[3])}","{eventData1[4]}","{eventData1[5]}","{eventData1[6]}","{eventData1[7]}","{eventData1[8]}","{remediation_type_desc(eventData1[9])}",')
-
+        timeline.write(f'"{entry1}",')
+        
         iterEventData1 = iter(eventData1)
-        [next(iterEventData1) for x in range(10)]
+        [next(iterEventData1) for x in range(1)]
         for entry in iterEventData1:
             entry = entry.replace('"', '')
             timeline.write(f'"{entry}",')
 
-        timeline.write(f'{logEntry[18]},{logEntry[19]},{logEntry[20]},{logEntry[21]},{logEntry[22]},{logEntry[23]},{logEntry[24]},{logEntry[25]},{logEntry[26]},{logEntry[27]},{logEntry[28]},{logEntry[28]},{logEntry[30]},{logEntry[31]},{logEntry[32]},{logEntry[33]},{logEntry[34]},{logEntry[35]},{logEntry[36]},{logEntry[37]},{logEntry[38]},{logEntry[39]},{logEntry[40]},{logEntry[41]},{logEntry[42]},{logEntry[43]},{logEntry[44]},{logEntry[45]},{logEntry[46]},{logEntry[47]},{logEntry[48]},{logEntry[49]},{logEntry[50]},{logEntry[51]},{logEntry[52]},{logEntry[53]},{logEntry[54]},{logEntry[55]},{logEntry[56]},{logEntry[57]},{logEntry[58]},')
+        timeline.write(f'{",".join(logEntry[18:59])},')
 
         eventData2 = logEntry[59].split('\t')
         if len(eventData1) < 15:
@@ -1490,7 +1491,7 @@ def parse_daily_av(f, logType):
             entry = entry.replace('"', '')
             timeline.write(f'"{entry}",')
 
-        timeline.write(f'{logEntry[60]},{logEntry[61]},{logEntry[62]},{logEntry[63]},{logEntry[64]},{logEntry[65]},{logEntry[66]},{logEntry[67]},{logEntry[68]},{logEntry[69]},{logEntry[70]},{logEntry[71]},{logEntry[72]},{logEntry[73]},{logEntry[74]},{logEntry[75]},{logEntry[76]},{logEntry[77]},{logEntry[78]},{logEntry[79]},{logEntry[80]},{logEntry[81]},{logEntry[82]},{logEntry[83]},{logEntry[84]},{logEntry[85]},{logEntry[86]},{logEntry[87]},{logEntry[88]},{logEntry[89]},{logEntry[90]}')
+        timeline.write(f'{",".join(logEntry[60:91])}')
 
         timeline.write('\n')
         if logType == 7 or 8:
@@ -1506,7 +1507,6 @@ def main():
         try:
             with open(filename, 'rb') as f:
                 logType, logEntries = parse_header(f)
-
                 try:
                     if logEntries == 0:
                         print(f'Skipping {filename}. Log is empty.\n')
