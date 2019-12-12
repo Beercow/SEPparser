@@ -5,8 +5,8 @@ https://malwaremaloney.blogspot.com/2019/06/introducing-sepparser.html
 
 Tested with python3.7
 
-SEPParser.py \-h\
-usage: SEPParser.py [\-h] [\-f FILE] [\-d DIR] [\-k] [\-o OUTPUT] [\-a]
+SEPparser.py \-h\
+usage: SEPparser.py [\-h] [\-f FILE] [\-d DIR] [\-k] [\-o OUTPUT] [\-a]
 
 optional arguments:\
   -h, --help            show this help message and exit\
