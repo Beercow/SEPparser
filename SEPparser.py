@@ -1129,13 +1129,20 @@ def parse_syslog(f, logEntries):
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_seclog(f, logEntries):
+    #logEntry[12] is the event data size
     startEntry = 72
     nextEntry = read_unpack_hex(f, startEntry, 8)
     entry = LogFields()
     count = 0
 
     while True:
-        logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t')
+        logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t',16)
+        if int(logEntry[12], 16) is 0:
+            logData = ''
+        else:
+            logData = read_log_data(logEntry[16][:int(logEntry[12], 16)])
+        logEntry2 = logEntry[16][int(logEntry[12], 16):].split(b'\t')
+        print(len(logEntry2))
         entry.dateAndTime = from_win_64_hex(logEntry[1])
         entry.eventtype = sec_event_type(int(logEntry[2], 16))
         entry.severity =  log_severity(int(logEntry[3], 16))
@@ -1148,49 +1155,55 @@ def parse_seclog(f, logEntries):
         entry.description = logEntry[13].decode("utf-8", "ignore")
         entry.application = logEntry[15].decode("utf-8", "ignore")
         entry.protocol = ''
-        entry.localmac = logEntry[17].hex()
+        entry.localmac = from_hex_mac(logEntry2[1].hex())
+        entry.remotemac = from_hex_mac(logEntry2[2].hex())
+#        entry.localmac = logEntry[17].hex()
 
-        if len(entry.localmac) < 32:
-            while True:
-                logEntry[17] = logEntry[18] + b'\t'
-                logEntry[17:19] = [b''.join(logEntry[17:19])]
-                entry.localmac = logEntry[17].hex()
+#        if len(entry.localmac) < 32:
+#            while True:
+#                logEntry[17] = logEntry[18] + b'\t'
+#                logEntry[17:19] = [b''.join(logEntry[17:19])]
+#                entry.localmac = logEntry[17].hex()
 
-                if len(entry.localmac) == 32:
-                    entry.localmac = from_hex_mac(logEntry[17].hex())
-                    break
+#                if len(entry.localmac) == 32:
+#                    entry.localmac = from_hex_mac(logEntry[17].hex())
+#                    break
 
-        else:
-            entry.localmac = from_hex_mac(logEntry[17].hex())
+#        else:
+#            entry.localmac = from_hex_mac(logEntry[17].hex())
 
-        entry.remotemac = logEntry[18].hex()
+#        entry.remotemac = logEntry[18].hex()
 
-        if len(entry.remotemac) < 32:
-            while True:
-                logEntry[18] = logEntry[18] + b'\t'
-                logEntry[18:20] = [b''.join(logEntry[18:20])]
-                entry.remotemac = logEntry[18].hex()
+#        if len(entry.remotemac) < 32:
+#            while True:
+#                logEntry[18] = logEntry[18] + b'\t'
+#                logEntry[18:20] = [b''.join(logEntry[18:20])]
+#                entry.remotemac = logEntry[18].hex()
 
-                if len(entry.remotemac) == 32:
-                    entry.remotemac = from_hex_mac(logEntry[18].hex())
-                    break
+#                if len(entry.remotemac) == 32:
+#                    entry.remotemac = from_hex_mac(logEntry[18].hex())
+#                    break
 
-        else:
-            entry.remotemac = from_hex_mac(logEntry[18].hex())
+#        else:
+#            entry.remotemac = from_hex_mac(logEntry[18].hex())
 
-        entry.location = logEntry[19].decode("utf-8", "ignore")
-        entry.user = logEntry[20].decode("utf-8", "ignore")
-        entry.userdomain = logEntry[21].decode("utf-8", "ignore")
-        entry.signatureid = int(logEntry[22], 16)
-        entry.signaturesubid = int(logEntry[23], 16)
-        entry.remoteport = int(logEntry[26], 16)
-        entry.localport = int(logEntry[27], 16)
-        entry.signaturename = logEntry[30].decode("utf-8", "ignore")
-        entry.intrusionurl = logEntry[32].decode("utf-8", "ignore")
-        entry.xintrusionpayloadurl = logEntry[31].decode("utf-8", "ignore")
+        entry.location = logEntry2[3].decode("utf-8", "ignore")
+        entry.user = logEntry2[4].decode("utf-8", "ignore")
+        entry.userdomain = logEntry2[5].decode("utf-8", "ignore")
+        entry.signatureid = int(logEntry2[6], 16)
+        entry.signaturesubid = int(logEntry2[7], 16)
+        entry.remoteport = int(logEntry2[10], 16)
+        entry.localport = int(logEntry2[11], 16)
+        entry.signaturename = logEntry2[14].decode("utf-8", "ignore")
+        entry.intrusionurl = logEntry2[16].decode("utf-8", "ignore")
+        entry.xintrusionpayloadurl = logEntry2[15].decode("utf-8", "ignore")
         entry.protocol = ''
-        entry.hash = logEntry[38].decode("utf-8", "ignore").strip('\r')
-        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}","{logEntry[6].decode("utf-8", "ignore")}","{logEntry[7].decode("utf-8", "ignore")}","{logEntry[12].decode("utf-8", "ignore")}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry[16].decode("utf-8", "ignore")}","{logEntry[24].decode("utf-8", "ignore")}","{logEntry[25].decode("utf-8", "ignore")}","{logEntry[28].decode("utf-8", "ignore")}","{logEntry[29].decode("utf-8", "ignore")}","{logEntry[33].decode("utf-8", "ignore")}","{logEntry[34].decode("utf-8", "ignore")}","{logEntry[35].decode("utf-8", "ignore")}","{logEntry[36].decode("utf-8", "ignore")}","{logEntry[37].decode("utf-8", "ignore")}"\n')
+        entry.hash = logEntry2[22].decode("utf-8", "ignore").strip('\r')
+#        entry.hash = logEntry[38].decode("utf-8", "ignore").strip('\r')
+#        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}","{logEntry[6].decode("utf-8", "ignore")}","{logEntry[7].decode("utf-8", "ignore")}","{logEntry[12].decode("utf-8", "ignore")}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry[16].decode("utf-8", "ignore")}","{logEntry[24].decode("utf-8", "ignore")}","{logEntry[25].decode("utf-8", "ignore")}","{logEntry[28].decode("utf-8", "ignore")}","{logEntry[29].decode("utf-8", "ignore")}","{logEntry[33].decode("utf-8", "ignore")}","{logEntry[34].decode("utf-8", "ignore")}","{logEntry[35].decode("utf-8", "ignore")}","{logEntry[36].decode("utf-8", "ignore")}","{logEntry[37].decode("utf-8", "ignore")}"\n')
+
+        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}"\n')
+
         count += 1
 
         if count == logEntries:
