@@ -142,9 +142,29 @@ class LogFields:
 
 def sec_event_type(_):
     event_value = {
-                   '209':'Host Integrity Failed',
-                   '206':'Intrusion Prevention System',
-                   '210':'Host Integrity Passed'
+                   '209':'Host Integrity failed (TSLOG_SEC_NO_AV)',
+                   '210':'Host Integrity passed (TSLOG_SEC_AV)',
+                   '221':'Host Integrity failed but it was reported as PASS',
+                   '237':'Host Integrity custom log entry',
+                   #Firewall and IPS events:
+                   '207':'Active Response',
+                   '211':'Active Response Disengaged',
+                   '219':'Active Response Canceled',
+                   '205':'Executable file changed',
+                   '216':'Executable file change detected',
+                   '217':'Executable file change accepted',
+                   '218':'Executable file change denied',
+                   '220':'Application Hijacking',
+                   '201':'Invalid traffic by rule',
+                   '202':'Port Scan',
+                   '203':'Denial-of-service attack',
+                   '204':'Trojan horse',
+                   '206':'Intrusion Prevention System (Intrusion Detected,TSLOG_SEC_INTRUSION_DETECTED)',
+                   '208':'MAC Spoofing',
+                   #Application and Device control:
+                   '238':'Device control disabled device',
+                   '239':'Buffer Overflow Event',
+                   '240':'Software protection has thrown an exception'
                    }
 
     for k, v in event_value.items():
@@ -379,6 +399,7 @@ def log_action(_):
                 '12':'Error',
                 '13':'Backup to quarantine (backup view)',
                 '14':'Pending Analysis',
+                '15':'Partial Analysis',
                 '16':'Terminate Process Required',
                 '17':'Exclude from Scanning',
                 '18':'Reboot Processing',
