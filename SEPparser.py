@@ -10,7 +10,7 @@ def csv_header():
 
     syslog.write('"File Name","Record Length","Date And Time","Event ID","Field4","Severity","summary","Field6","Type","Size_(bytes)","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID"\n')
 
-    seclog.write('"File Name","Record Length","DateAndTime","Event Type","Severity","Direction","Protocol","Remote Host","Remote Port","Remote MAC","Local Host","Local Port","Local MAC","Application","Signature ID","Signature SubID","Signature Name","Intrusion-URL","X-Intrusion-Payload-URL","User","User Domain","Location","Occurrences","End Time","Begin Time","Hash","Description","Field7","Field8","Field13","Field15","Field17","Field25","Field26","Field29","Field30","Field34","LOG:Version","Profile_Serial_Number","Field37","Field38"\n')
+    seclog.write('"File Name","Record Length","DateAndTime","Event Type","Severity","Direction","Protocol","Remote Host","Remote Port","Remote MAC","Local Host","Local Port","Local MAC","Application","Signature ID","Signature SubID","Signature Name","Intrusion-URL","X-Intrusion-Payload-URL","User","User Domain","Location","Occurrences","End Time","Begin Time","Hash","Description","Field7","Field8","Event_Data_Size","Field15","Field17","Field18","Field26","Field27","Field30","Field31","Field35","Version","Profile_Serial_Number","Field38","Field39","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8","LOG:Event_Data9","LOG:Event_Data10","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","Field115","Field116","Filed117","Digital_Signatures_Signer","Digital_Signatures_Issuer","Digital_Signatures_Certificate_Thumbprint","Field121","Digital_Signatures_Serial_Number","Digital_Signatures_Signing_Time","Field124","Field125"\n')
 
     tralog.write('"File Name","Record Length","Date and Time","Action","Severity","Direction","Protocol","Remote Host","Remote MAC","Remote Port","Local Host","Local MAC","Local Port","Application","User","User Domain","Location","Occurrences","Begin Time","End Time","Rule","Field13","Rule ID","Field16","Field24","Field25","Field26","Field27","Field28","Field29","Hash:MD5","Hash:SHA256","Field32"\n')
 
@@ -1129,7 +1129,6 @@ def parse_syslog(f, logEntries):
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_seclog(f, logEntries):
-    #logEntry[12] is the event data size
     startEntry = 72
     nextEntry = read_unpack_hex(f, startEntry, 8)
     entry = LogFields()
@@ -1137,12 +1136,14 @@ def parse_seclog(f, logEntries):
 
     while True:
         logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t',16)
+        logData = []
         if int(logEntry[12], 16) is 0:
-            logData = ''
+            b = [''] * 91
+            logData.extend(b)
         else:
-            logData = read_log_data(logEntry[16][:int(logEntry[12], 16)])
+            logData = read_log_data(logEntry[16][:int(logEntry[12], 16)]).split(",")
+
         logEntry2 = logEntry[16][int(logEntry[12], 16):].split(b'\t')
-        print(len(logEntry2))
         entry.dateAndTime = from_win_64_hex(logEntry[1])
         entry.eventtype = sec_event_type(int(logEntry[2], 16))
         entry.severity =  log_severity(int(logEntry[3], 16))
@@ -1155,37 +1156,35 @@ def parse_seclog(f, logEntries):
         entry.description = logEntry[13].decode("utf-8", "ignore")
         entry.application = logEntry[15].decode("utf-8", "ignore")
         entry.protocol = ''
-        entry.localmac = from_hex_mac(logEntry2[1].hex())
-        entry.remotemac = from_hex_mac(logEntry2[2].hex())
-#        entry.localmac = logEntry[17].hex()
+        entry.localmac = logEntry2[1].hex()
 
-#        if len(entry.localmac) < 32:
-#            while True:
-#                logEntry[17] = logEntry[18] + b'\t'
-#                logEntry[17:19] = [b''.join(logEntry[17:19])]
-#                entry.localmac = logEntry[17].hex()
+        if len(entry.localmac) < 32:
+            while True:
+                logEntry2[1] = logEntry2[2] + b'\t'
+                logEntry2[1:3] = [b''.join(logEntry2[1:3])]
+                entry.localmac = logEntry2[1].hex()
 
-#                if len(entry.localmac) == 32:
-#                    entry.localmac = from_hex_mac(logEntry[17].hex())
-#                    break
+                if len(entry.localmac) == 32:
+                    entry.localmac = from_hex_mac(logEntry2[1].hex())
+                    break
 
-#        else:
-#            entry.localmac = from_hex_mac(logEntry[17].hex())
+        else:
+            entry.localmac = from_hex_mac(logEntry2[1].hex())
 
-#        entry.remotemac = logEntry[18].hex()
+        entry.remotemac = logEntry2[2].hex()
 
-#        if len(entry.remotemac) < 32:
-#            while True:
-#                logEntry[18] = logEntry[18] + b'\t'
-#                logEntry[18:20] = [b''.join(logEntry[18:20])]
-#                entry.remotemac = logEntry[18].hex()
+        if len(entry.remotemac) < 32:
+            while True:
+                logEntry2[2] = logEntry2[2] + b'\t'
+                logEntry2[2:4] = [b''.join(logEntry2[2:4])]
+                entry.remotemac = logEntry2[2].hex()
 
-#                if len(entry.remotemac) == 32:
-#                    entry.remotemac = from_hex_mac(logEntry[18].hex())
-#                    break
+                if len(entry.remotemac) == 32:
+                    entry.remotemac = from_hex_mac(logEntry2[2].hex())
+                    break
 
-#        else:
-#            entry.remotemac = from_hex_mac(logEntry[18].hex())
+        else:
+            entry.remotemac = from_hex_mac(logEntry2[2].hex())
 
         entry.location = logEntry2[3].decode("utf-8", "ignore")
         entry.user = logEntry2[4].decode("utf-8", "ignore")
@@ -1197,12 +1196,47 @@ def parse_seclog(f, logEntries):
         entry.signaturename = logEntry2[14].decode("utf-8", "ignore")
         entry.intrusionurl = logEntry2[16].decode("utf-8", "ignore")
         entry.xintrusionpayloadurl = logEntry2[15].decode("utf-8", "ignore")
-        entry.protocol = ''
         entry.hash = logEntry2[22].decode("utf-8", "ignore").strip('\r')
-#        entry.hash = logEntry[38].decode("utf-8", "ignore").strip('\r')
-#        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}","{logEntry[6].decode("utf-8", "ignore")}","{logEntry[7].decode("utf-8", "ignore")}","{logEntry[12].decode("utf-8", "ignore")}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry[16].decode("utf-8", "ignore")}","{logEntry[24].decode("utf-8", "ignore")}","{logEntry[25].decode("utf-8", "ignore")}","{logEntry[28].decode("utf-8", "ignore")}","{logEntry[29].decode("utf-8", "ignore")}","{logEntry[33].decode("utf-8", "ignore")}","{logEntry[34].decode("utf-8", "ignore")}","{logEntry[35].decode("utf-8", "ignore")}","{logEntry[36].decode("utf-8", "ignore")}","{logEntry[37].decode("utf-8", "ignore")}"\n')
+        placeholder = ''
 
-        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}"\n')
+        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}","{logEntry[6].decode("utf-8", "ignore")}","{logEntry[7].decode("utf-8", "ignore")}","{int(logEntry[12], 16)}","{logEntry[14].decode("utf-8", "ignore")}","{placeholder}","{logEntry2[0].decode("utf-8", "ignore")}","{logEntry2[8].decode("utf-8", "ignore")}","{logEntry2[9].decode("utf-8", "ignore")}","{logEntry2[12].decode("utf-8", "ignore")}","{logEntry2[13].decode("utf-8", "ignore")}","{logEntry2[17].decode("utf-8", "ignore")}","{logEntry2[18].decode("utf-8", "ignore")}","{logEntry2[19].decode("utf-8", "ignore")}","{logEntry2[20].decode("utf-8", "ignore")}","{logEntry2[21].decode("utf-8", "ignore")}",{",".join(logData[0:17])},')
+        
+        eventData1 = logData[17].replace('"', '').split('\t')
+        if len(eventData1) < 13:
+                diff = 13 - len(eventData1)
+                b = [''] * diff
+                eventData1.extend(b)
+
+        entry1 = eventData1[0].replace('"', '')
+
+        seclog.write(f'"{entry1}",')
+        
+        iterEventData1 = iter(eventData1)
+        [next(iterEventData1) for x in range(1)]
+        for event in iterEventData1:
+            event = event.replace('"', '')
+            seclog.write(f'"{event}",')
+
+        seclog.write(f'{",".join(logData[18:59])},')
+        
+        eventData2 = logData[59].split('\t')
+        if len(eventData2) < 17:
+                diff = 17 - len(eventData2)
+                b = [''] * diff
+                eventData2.extend(b)
+                
+        eventData2[0] = eventData2[0].replace('"', '')
+        seclog.write(f'"{eventData2[0]}","{eventData2[1]}","{eventData2[2]}","{hash_type(eventData2[3])}",')
+
+        iterEventData2 = iter(eventData2)
+        [next(iterEventData2) for x in range(4)]
+        for event in iterEventData2:
+            event = event.replace('"', '')
+            seclog.write(f'"{event}",')
+        
+        seclog.write(f'{",".join(logData[60:91])}')
+
+        seclog.write(f'\n')
 
         count += 1
 
@@ -1489,7 +1523,7 @@ def parse_daily_av(f, logType):
         timeline.write(f'{",".join(logEntry[18:59])},')
 
         eventData2 = logEntry[59].split('\t')
-        if len(eventData1) < 17:
+        if len(eventData2) < 17:
                 diff = 17 - len(eventData2)
                 b = [''] * diff
                 eventData2.extend(b)
