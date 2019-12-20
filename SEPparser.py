@@ -1171,6 +1171,16 @@ def parse_syslog(f, logEntries):
             break
 
         startEntry = startEntry + nextEntry
+#        f.seek(startEntry)
+#        check = f.read(1)
+#        while check is not b'0':
+#            print(f'{check}\n')
+#            startEntry += 1
+#            f.seek(startEntry)
+#            check = f.read(1)
+#            if check is b'0':
+#                startEntry -= 1
+        
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_seclog(f, logEntries):
@@ -1253,6 +1263,16 @@ def parse_seclog(f, logEntries):
             break
 
         startEntry = startEntry + nextEntry
+        f.seek(startEntry)
+        check = f.read(1)
+        while check is not b'0':
+ #           print(f'{check}\n')
+            startEntry += 1
+            f.seek(startEntry)
+            check = f.read(1)
+            if check is b'0':
+                startEntry -= 1
+
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_tralog(f, logEntries):
@@ -1314,6 +1334,15 @@ def parse_tralog(f, logEntries):
             break
 
         startEntry = startEntry + nextEntry
+#        f.seek(startEntry)
+#        check = f.read(1)
+#        while check is not b'0':
+#            print(f'{check}\n')
+#            startEntry += 1
+#            f.seek(startEntry)
+#            check = f.read(1)
+#            if check is b'0':
+#                startEntry -= 1
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_raw(f, logEntries):
@@ -1351,6 +1380,15 @@ def parse_raw(f, logEntries):
             break
 
         startEntry = startEntry + nextEntry
+#        f.seek(startEntry)
+#        check = f.read(1)
+#        while check is not b'0':
+#            print(f'{check}\n')
+#            startEntry += 1
+#            f.seek(startEntry)
+#            check = f.read(1)
+#            if check is b'0':
+#                startEntry -= 1
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_processlog(f, logEntries):
@@ -1384,6 +1422,15 @@ def parse_processlog(f, logEntries):
             break
 
         startEntry = startEntry + nextEntry
+#        f.seek(startEntry)
+#        check = f.read(1)
+#        while check is not b'0':
+#            print(f'{check}\n')
+#            startEntry += 1
+#            f.seek(startEntry)
+#            check = f.read(1)
+#            if check is b'0':
+#                startEntry -= 1
         nextEntry = read_unpack_hex(f, startEntry, 3)
 
 def parse_avman(f, logEntries):
@@ -1406,6 +1453,16 @@ def parse_avman(f, logEntries):
             break
 
         startEntry = startEntry + nextEntry + 1
+#        f.seek(startEntry)
+#        check = f.read(1)
+#        while check is not b'0':
+#            print(f'{startEntry}\n')
+#            startEntry += 1
+#            f.seek(startEntry)
+#            check = f.read(1)
+#            print(f'{check}\n')
+#            if check is b'0':
+#                startEntry -= 1
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_tamper_protect(logData, logEntry, fname):
@@ -1532,7 +1589,6 @@ args = parser.parse_args()
 sep = ['Symantec Endpoint Protection\\CurrentVersion\\Data\\Logs', 'Symantec Endpoint Protection\\CurrentVersion\\Data\\Quarantine', 'Symantec Endpoint Protection\\Logs']
 filenames = []
 
-print(args.timezone)
 if args.kape or not (args.file or args.dir):
     print('Searching for Symantec logs.')
     rootDir = '/'
