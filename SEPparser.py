@@ -10,7 +10,7 @@ def csv_header():
 
     syslog.write('"File Name","Record Length","Date And Time","Event ID","Field4","Severity","summary","Field6","Type","Size_(bytes)","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8","LOG:Event_Data9","LOG:Event_Data10","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","Field115","Field116","Filed117","Digital_Signatures_Signer","Digital_Signatures_Issuer","Digital_Signatures_Certificate_Thumbprint","Field121","Digital_Signatures_Serial_Number","Digital_Signatures_Signing_Time","Field124","Field125"\n')
 
-    seclog.write('"File Name","Record Length","DateAndTime","Event Type","Severity","Direction","Protocol","Remote Host","Remote Port","Remote MAC","Local Host","Local Port","Local MAC","Application","Signature ID","Signature SubID","Signature Name","Intrusion-URL","X-Intrusion-Payload-URL","User","User Domain","Location","Occurrences","End Time","Begin Time","Hash","Description","Field7","Field8","Event_Data_Size","Field15","Field17","Field18","Field26","Field27","Field30","Field31","Field35","Version","Profile_Serial_Number","Field38","Field39","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8","LOG:Event_Data9","LOG:Event_Data10","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","Field115","Field116","Filed117","Digital_Signatures_Signer","Digital_Signatures_Issuer","Digital_Signatures_Certificate_Thumbprint","Field121","Digital_Signatures_Serial_Number","Digital_Signatures_Signing_Time","Field124","Field125"\n')
+    seclog.write('"File Name","Record Length","DateAndTime","Event Type","Severity","Direction","Protocol","Remote Host","Remote Port","Remote MAC","Local Host","Local Port","Local MAC","Application","Signature ID","Signature SubID","Signature Name","Intrusion-URL","X-Intrusion-Payload-URL","User","User Domain","Location","Occurrences","End Time","Begin Time","Hash","Description","Field7","Field8","Event_Data_Size","Field15","Field18","Field26","Field27","Field30","Field31","Field35","Version","Profile_Serial_Number","Field38","Field39","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8","LOG:Event_Data9","LOG:Event_Data10","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","Field115","Field116","Filed117","Digital_Signatures_Signer","Digital_Signatures_Issuer","Digital_Signatures_Certificate_Thumbprint","Field121","Digital_Signatures_Serial_Number","Digital_Signatures_Signing_Time","Field124","Field125"\n')
 
     tralog.write('"File Name","Record Length","Date and Time","Action","Severity","Direction","Protocol","Remote Host","Remote MAC","Remote Port","Local Host","Local MAC","Local Port","Application","User","User Domain","Location","Occurrences","Begin Time","End Time","Rule","Field13","Rule ID","Field16","Field24","Field25","Field26","Field27","Field28","Field29","Hash:MD5","Hash:SHA256","Field32"\n')
 
@@ -138,7 +138,6 @@ class LogFields:
     digitalthumbprint = ''
     digitalsn = ''
     digitaltime = ''
-    
 
 def sec_event_type(_):
     event_value = {
@@ -173,7 +172,6 @@ def sec_event_type(_):
 
     else:
         return _
-
 
 def sec_network_protocol(_):
     network_protocol = {
@@ -422,7 +420,6 @@ def log_action(_):
 
     else:
         return _
-
 
 def log_c_action(_):
     action = {
@@ -915,7 +912,7 @@ def read_log_entry(f, loc, count):
 
     return f.read(count)
 
-def read_log_data(data):
+def read_log_data(data, tz):
     entry = LogFields()
     data = re.split(b',(?=(?:"[^"]*?(?: [^"]*)*))|,(?=[^",]+(?:,|$))|,(?=,)|,(?<=,)', data)
     field113 = ''
@@ -924,116 +921,7 @@ def read_log_data(data):
     field119 = ''
     field122 = ''
     field123 = ''
-    entry.time = from_symantec_time(data[0].decode("utf-8", "ignore"))
-    entry.event = log_event(data[1].decode("utf-8", "ignore"))
-    entry.category = log_category(data[2].decode("utf-8", "ignore"))
-    entry.logger = log_logger(data[3].decode("utf-8", "ignore"))
-    entry.computer = data[4].decode("utf-8", "ignore")
-    entry.user = data[5].decode("utf-8", "ignore")
-    entry.virus = data[6].decode("utf-8", "ignore")
-    entry.file = data[7].decode("utf-8", "ignore")
-    entry.wantedaction1 = log_action(data[8].decode("utf-8", "ignore"))
-    entry.wantedaction2 = log_action(data[9].decode("utf-8", "ignore"))
-    entry.realaction = log_action(data[10].decode("utf-8", "ignore"))
-    entry.virustype= log_virus_type(data[11].decode("utf-8", "ignore"))
-    entry.flags = log_flags(int(data[12].decode("utf-8", "ignore")))
-    entry.description = log_description(data)
-    entry.scanid = data[14].decode("utf-8", "ignore")
-    entry.newext = data[15].decode("utf-8", "ignore")
-    entry.groupid = data[16].decode("utf-8", "ignore")
-    entry.eventdata = data[17].decode("utf-8", "ignore")
-    entry.vbinid = data[18].decode("utf-8", "ignore")
-    entry.virusid = data[19].decode("utf-8", "ignore")
-    entry.quarantineforwardstatus = data[20].decode("utf-8", "ignore")
-    entry.access = data[21].decode("utf-8", "ignore")
-    entry.sdnstatus = data[22].decode("utf-8", "ignore")
-    entry.compressed = data[23].decode("utf-8", "ignore")
-    entry.depth = data[24].decode("utf-8", "ignore")
-    entry.stillinfected = data[25].decode("utf-8", "ignore")
-    entry.definfo = data[26].decode("utf-8", "ignore")
-    entry.defsequincenumber = data[27].decode("utf-8", "ignore")
-    entry.cleaninfo = data[28].decode("utf-8", "ignore")
-    entry.deleteinfo = data[29].decode("utf-8", "ignore")
-    entry.backupod = data[30].decode("utf-8", "ignore")
-    entry.parent = data[31].decode("utf-8", "ignore")
-    entry.guid = data[32].decode("utf-8", "ignore")
-    entry.clientgroup = data[33].decode("utf-8", "ignore")
-    entry.address = data[34].decode("utf-8", "ignore")
-    entry.domainname = data[35].decode("utf-8", "ignore")
-    entry.ntdomain = data[36].decode("utf-8", "ignore")
-    entry.macaddress = data[37].decode("utf-8", "ignore")
-    entry.version = data[38].decode("utf-8", "ignore")
-    entry.remotemachine = data[39].decode("utf-8", "ignore")
-    entry.remotemachineip = data[40].decode("utf-8", "ignore")
-    entry.action1status = data[41].decode("utf-8", "ignore")
-    entry.action2status = data[42].decode("utf-8", "ignore")
-    entry.licensefeaturename = data[43].decode("utf-8", "ignore")
-    entry.licensefeatureversion = data[44].decode("utf-8", "ignore")
-    entry.licenseserialnumber = data[45].decode("utf-8", "ignore")
-    entry.licensefulfillmentid = data[46].decode("utf-8", "ignore")
-    entry.licensestartdate = data[47].decode("utf-8", "ignore")
-    entry.licenseexpirationdate = data[48].decode("utf-8", "ignore")
-    entry.licenselifecycle = data[49].decode("utf-8", "ignore")
-    entry.licenseseatstotal = data[50].decode("utf-8", "ignore")
-    entry.licenseseats = data[51].decode("utf-8", "ignore")
-    entry.errorcode = data[52].decode("utf-8", "ignore")
-    entry.licenseseatsdelta = data[53].decode("utf-8", "ignore")
-    entry.status = data[54].decode("utf-8", "ignore")
-    entry.domainguid = data[55].decode("utf-8", "ignore")
-    entry.sessionguid = data[56].decode("utf-8", "ignore")
-    entry.vbnsessionid = data[57].decode("utf-8", "ignore")
-    entry.logindomain = data[58].decode("utf-8", "ignore")
-    try:
-        entry.eventdata2 = data[59].decode("utf-8", "ignore")
-        entry.erasercategoryid = log_eraser_category_id(data[60].decode("utf-8", "ignore"))
-        entry.dynamiccategoryset = log_dynamic_categoryset_id(data[61].decode("utf-8", "ignore"))
-        entry.subcategorysetid = data[62].decode("utf-8", "ignore")
-        entry.displaynametouse = data[63].decode("utf-8", "ignore")
-        entry.reputationdisposition = log_reputation_disposition(data[64].decode("utf-8", "ignore"))
-        entry.reputationconfidence = data[65].decode("utf-8", "ignore")
-        entry.firsseen = data[66].decode("utf-8", "ignore")
-        entry.reputationprevalence = data[67].decode("utf-8", "ignore")
-        entry.downloadurl = data[68].decode("utf-8", "ignore")
-        entry.categoryfordropper = data[69].decode("utf-8", "ignore")
-        entry.cidsstate = data[70].decode("utf-8", "ignore")
-        entry.behaviorrisklevel = data[71].decode("utf-8", "ignore")
-        entry.detectiontype = log_detection_type(data[72].decode("utf-8", "ignore"))
-        entry.acknowledgetext = data[73].decode("utf-8", "ignore")
-        entry.vsicstate = log_vsic_state(data[74].decode("utf-8", "ignore"))
-        entry.scanguid = data[75].decode("utf-8", "ignore")
-        entry.scanduration = data[76].decode("utf-8", "ignore")
-        entry.scanstarttime = from_symantec_time(data[77].decode("utf-8", "ignore"))
-        entry.targetapptype = log_target_app_type(data[78].decode("utf-8", "ignore"))
-        entry.scancommandguid = data[79].decode("utf-8", "ignore")
-    except:
-        pass
-    try:
-        field113 = data[80].decode("utf-8", "ignore")
-        field114 = data[81].decode("utf-8", "ignore")
-        field115 = data[82].decode("utf-8", "ignore")
-        entry.digitalsigner = data[83].decode("utf-8", "ignore").replace('"', '')
-        entry.digitalissuer = data[84].decode("utf-8", "ignore")
-        entry.digitalthumbprint = data[85].decode("utf-8", "ignore")
-        field119 = data[86].decode("utf-8", "ignore")
-        entry.digitalsn = data[87].decode("utf-8", "ignore")
-        entry.digitaltime = from_unix_sec(data[88].decode("utf-8", "ignore"))
-        field122 = data[89].decode("utf-8", "ignore")
-        field123 = data[90].decode("utf-8", "ignore")
-    except:
-        pass
-     
-    return f'"{entry.time}","{entry.event}","{entry.category}","{entry.logger}","{entry.computer}","{entry.user}","{entry.virus}","{entry.file}","{entry.wantedaction1}","{entry.wantedaction2}","{entry.realaction}","{entry.virustype}","{entry.flags}","{entry.description}","{entry.scanid}","{entry.newext}","{entry.groupid}","{entry.eventdata}","{entry.vbinid}","{entry.virusid}","{entry.quarantineforwardstatus}","{entry.access}","{entry.sdnstatus}","{entry.compressed}","{entry.depth}","{entry.stillinfected}","{entry.definfo}","{entry.defsequincenumber}","{entry.cleaninfo}","{entry.deleteinfo}","{entry.backupod}","{entry.parent}","{entry.guid}","{entry.clientgroup}","{entry.address}","{entry.domainname}","{entry.ntdomain}","{entry.macaddress}","{entry.version}","{entry.remotemachine}","{entry.remotemachineip}","{entry.action1status}","{entry.action2status}","{entry.licensefeaturename}","{entry.licensefeatureversion}","{entry.licenseserialnumber}","{entry.licensefulfillmentid}","{entry.licensestartdate}","{entry.licenseexpirationdate}","{entry.licenselifecycle}","{entry.licenseseatstotal}","{entry.licenseseats}","{entry.errorcode}","{entry.licenseseatsdelta}","{entry.status}","{entry.domainguid}","{entry.sessionguid}","{entry.vbnsessionid}","{entry.logindomain}","{entry.eventdata2}","{entry.erasercategoryid}","{entry.dynamiccategoryset}","{entry.subcategorysetid}","{entry.displaynametouse}","{entry.reputationdisposition}","{entry.reputationconfidence}","{entry.firsseen}","{entry.reputationprevalence}","{entry.downloadurl}","{entry.categoryfordropper}","{entry.cidsstate}","{entry.behaviorrisklevel}","{entry.detectiontype}","{entry.acknowledgetext}","{entry.vsicstate}","{entry.scanguid}","{entry.scanduration}","{entry.scanstarttime}","{entry.targetapptype}","{entry.scancommandguid}","{field113}","{field114}","{field115}","{entry.digitalsigner}","{entry.digitalissuer}","{entry.digitalthumbprint}","{field119}","{entry.digitalsn}","{entry.digitaltime}","{field122}","{field123}"'
-
-def read_log_data2(data):
-    entry = LogFields()
-    data = re.split(b',(?=(?:"[^"]*?(?: [^"]*)*))|,(?=[^",]+(?:,|$))|,(?=,)|,(?<=,)', data)
-    field113 = ''
-    field114 = ''
-    field115 = ''
-    field119 = ''
-    field122 = ''
-    field123 = ''
-    entry.time = from_symantec_time(data[0].decode("utf-8", "ignore"))
+    entry.time = from_symantec_time(data[0].decode("utf-8", "ignore"), tz)
     entry.event = log_event(data[1].decode("utf-8", "ignore"))
     entry.category = log_category(data[2].decode("utf-8", "ignore"))
     entry.logger = log_logger(data[3].decode("utf-8", "ignore"))
@@ -1111,7 +999,7 @@ def read_log_data2(data):
         entry.vsicstate = log_vsic_state(data[74].decode("utf-8", "ignore"))
         entry.scanguid = data[75].decode("utf-8", "ignore")
         entry.scanduration = data[76].decode("utf-8", "ignore")
-        entry.scanstarttime = from_symantec_time(data[77].decode("utf-8", "ignore"))
+        entry.scanstarttime = from_symantec_time(data[77].decode("utf-8", "ignore"), tz)
         entry.targetapptype = log_target_app_type(data[78].decode("utf-8", "ignore"))
         entry.scancommandguid = data[79].decode("utf-8", "ignore")
     except:
@@ -1142,15 +1030,7 @@ def event_data1(_):
             _.extend(b)
 
     _ = '","'.join(_)
-#    entry1 = eventData1[0].replace('"', '')
 
-#    timeline.write(f'"{entry1}",')
-        
-#    iterEventData1 = iter(eventData1)
-#    [next(iterEventData1) for x in range(1)]
-#    for entry in iterEventData1:
-#        entry = entry.replace('"', '')
-#        timeline.write(f'"{entry}",')
     return _
 
 def event_data2(_):
@@ -1161,21 +1041,7 @@ def event_data2(_):
             _.extend(b)
 
     _ = '","'.join(_)
-#        eventData2 = logEntry[59].split('\t')
-#        if len(eventData2) < 17:
-#                diff = 17 - len(eventData2)
-#                b = [''] * diff
-#                eventData2.extend(b)
 
-#        eventData2[0] = eventData2[0].replace('"', '')
-
-#        timeline.write(f'"{eventData2[0]}","{eventData2[1]}","{eventData2[2]}","{hash_type(eventData2[3])}",')
-
-#        iterEventData2 = iter(eventData2)
-#        [next(iterEventData2) for x in range(4)]
-#        for entry in iterEventData2:
-#            entry = entry.replace('"', '')
-#            timeline.write(f'"{entry}",')
     return _
 
 def from_unix_sec(_):
@@ -1189,13 +1055,13 @@ def from_win_64_hex(dateAndTime):
     base10_microseconds = int(dateAndTime, 16) / 10
     return datetime(1601,1,1) + timedelta(microseconds=base10_microseconds)
 
-def from_symantec_time(timestamp):
+def from_symantec_time(timestamp, tz):
 
     year, month, day_of_month, hours, minutes, seconds = (
         int(hexdigit[0] + hexdigit[1], 16) for hexdigit in zip(
             timestamp[::2], timestamp[1::2]))
 
-    return datetime(year + 1970, month + 1, day_of_month, hours, minutes, seconds)
+    return datetime(year + 1970, month + 1, day_of_month, hours, minutes, seconds) + timedelta(hours=tz)
 
 def from_hex_ip(ipHex):
     ipHex = ipHex.decode("utf-8", "ignore")
@@ -1255,19 +1121,19 @@ def parse_header(f):
         return logType, logEntries
 
     try:
-        from_symantec_time(f.readline().split(b',')[0].decode("utf-8", "ignore"))
+        from_symantec_time(f.readline().split(b',')[0].decode("utf-8", "ignore"), 0)
         return 6, 1
     except:
         pass
     try:
         f.seek(388, 0)
-        from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"))
+        from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"), 0)
         return 7, 1
     except:
         pass
     try:
         f.seek(4100, 0)
-        from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"))
+        from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"), 0)
         return 8, 1
     except:
         print(f'Skipping {f.name}. Unknown File Type.\n')
@@ -1292,7 +1158,7 @@ def parse_syslog(f, logEntries):
             entry.size = int(logEntry[8][2:-3], 16)
 
         if len(logEntry[8]) > 13:
-            data = read_log_data2(logEntry[8])
+            data = read_log_data(logEntry[8], 0)
 
         syslog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{sec_event_id(logEntry[2].decode("utf-8", "ignore"))}","{logEntry[3].decode("utf-8", "ignore")}","{entry.severity}","{entry.summary}","{logEntry[5].decode("utf-8", "ignore")}","{entry.type}","{entry.size}",{data}\n')
         
@@ -1308,7 +1174,6 @@ def parse_syslog(f, logEntries):
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_seclog(f, logEntries):
-    #need to fix timeline for blanks
     startEntry = 72
     nextEntry = read_unpack_hex(f, startEntry, 8)
     entry = LogFields()
@@ -1318,10 +1183,9 @@ def parse_seclog(f, logEntries):
         logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t',16)
         logData = []
         if int(logEntry[12], 16) is 0:
-            b = [''] * 91
-            logData.extend(b)
+            logData = ['']
         else:
-            logData = read_log_data2(logEntry[16][:int(logEntry[12], 16)]).split(",")
+            logData = read_log_data(logEntry[16][:int(logEntry[12], 16)], 0).split(",")
 
         logEntry2 = logEntry[16][int(logEntry[12], 16):].split(b'\t')
         entry.dateAndTime = from_win_64_hex(logEntry[1])
@@ -1377,11 +1241,11 @@ def parse_seclog(f, logEntries):
         entry.intrusionurl = logEntry2[16].decode("utf-8", "ignore")
         entry.xintrusionpayloadurl = logEntry2[15].decode("utf-8", "ignore")
         entry.hash = logEntry2[22].decode("utf-8", "ignore").strip('\r')
-        placeholder = ''
-
-        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}","{logEntry[6].decode("utf-8", "ignore")}","{logEntry[7].decode("utf-8", "ignore")}","{int(logEntry[12], 16)}","{logEntry[14].decode("utf-8", "ignore")}","{placeholder}","{logEntry2[0].decode("utf-8", "ignore")}","{logEntry2[8].decode("utf-8", "ignore")}","{logEntry2[9].decode("utf-8", "ignore")}","{logEntry2[12].decode("utf-8", "ignore")}","{logEntry2[13].decode("utf-8", "ignore")}","{logEntry2[17].decode("utf-8", "ignore")}","{logEntry2[18].decode("utf-8", "ignore")}","{logEntry2[19].decode("utf-8", "ignore")}","{logEntry2[20].decode("utf-8", "ignore")}","{logEntry2[21].decode("utf-8", "ignore")}",{",".join(logData)}\n')
         
-        timeline.write(f'"{f.name}","","","","","",{",".join(logData)}\n')
+        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}","{logEntry[6].decode("utf-8", "ignore")}","{logEntry[7].decode("utf-8", "ignore")}","{int(logEntry[12], 16)}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry2[0].decode("utf-8", "ignore")}","{logEntry2[8].decode("utf-8", "ignore")}","{logEntry2[9].decode("utf-8", "ignore")}","{logEntry2[12].decode("utf-8", "ignore")}","{logEntry2[13].decode("utf-8", "ignore")}","{logEntry2[17].decode("utf-8", "ignore")}","{logEntry2[18].decode("utf-8", "ignore")}","{logEntry2[19].decode("utf-8", "ignore")}","{logEntry2[20].decode("utf-8", "ignore")}","{logEntry2[21].decode("utf-8", "ignore")}",{",".join(logData)}\n')
+
+        if len(logData) > 1:
+            timeline.write(f'"{f.name}","{int(logEntry[12], 16)}","","","","",{",".join(logData)}\n')
 
         count += 1
 
@@ -1523,70 +1387,18 @@ def parse_processlog(f, logEntries):
         nextEntry = read_unpack_hex(f, startEntry, 3)
 
 def parse_avman(f, logEntries):
-    #need to update to read_log_data2
     startEntry = 55
     nextEntry = read_unpack_hex(f, startEntry, 8)
     entry = LogFields()
     count = 0
     while True:
-        logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t')
-        dataLog = [w.replace(b'"', b'""') for w in logEntry[5].split(b',')]
+        logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t', 5)
+        logData = read_log_data(logEntry[5], 0)
 
-        if log_event(dataLog[1].decode("utf-8", "ignore")) == 'SECURITY_SYMPROTECT_POLICYVIOLATION':
-            parse_tamper_protect(dataLog, logEntry, f.name)
-
-        if len(logEntry) < 32:
-            diff = 32 - len(logEntry)
-            b = [b''] * diff
-            logEntry.extend(b)
-
-        dataLog3 = [w.replace(b'"', b'""') for w in logEntry[17].split(b',')]
-        dataLog4 = [w.replace(b'"', b'""') for w in logEntry[31].split(b',')]
+        if logData.split('","')[1] == 'SECURITY_SYMPROTECT_POLICYVIOLATION':
+            parse_tamper_protect(logData.split('","'), logEntry, f.name)
         
-        timeline.write(f'"{f.name}",')
-        timeline.write(f'"{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{from_win_64_hex(logEntry[1])}","{from_win_64_hex(logEntry[2])}","{from_win_64_hex(logEntry[3])}","{logEntry[4].decode("utf-8", "ignore")}",')
-
-        if 'Summary' in log_category(dataLog[2].decode("utf-8", "ignore")):
-            data = read_log_data(logEntry[5]).split(',')
-            timeline.write(f'{",".join(data[0:18])},"","","","","","","","","","","","",{",".join(data[18:60])},"","","","","","","","","","","","","","","","",{",".join(data[60:81])}')
-
-        else:
-            timeline.write(f'"{from_symantec_time(dataLog[0].decode("utf-8", "ignore"))}","{log_event(dataLog[1].decode("utf-8", "ignore"))}","{log_category(dataLog[2].decode("utf-8", "ignore"))}","{log_logger(dataLog[3].decode("utf-8", "ignore"))}","{dataLog[4].decode("utf-8", "ignore")}","{dataLog[5].decode("utf-8", "ignore")}","{dataLog[6].decode("utf-8", "ignore")}","{dataLog[7].decode("utf-8", "ignore")}","{log_action(dataLog[8].decode("utf-8", "ignore"))}","{log_action(dataLog[9].decode("utf-8", "ignore"))}","{log_action(dataLog[10].decode("utf-8", "ignore"))}","{log_virus_type(dataLog[11].decode("utf-8", "ignore"))}","{log_flags(int(dataLog[12].decode("utf-8", "ignore")))}","{dataLog[13].decode("utf-8", "ignore")}","{dataLog[14].decode("utf-8", "ignore")}","{dataLog[15].decode("utf-8", "ignore")}","{dataLog[16].decode("utf-8", "ignore")}","{dataLog[17].decode("utf-8", "ignore")}",')
-            timeline.write(f'"{logEntry[6].decode("utf-8", "ignore")}","{logEntry[7].decode("utf-8", "ignore")}","{log_tp_event(dataLog[17].decode("utf-8", "ignore"), logEntry[8].decode("utf-8", "ignore"))}","{logEntry[9].decode("utf-8", "ignore")}","{logEntry[10].decode("utf-8", "ignore")}","{logEntry[11].decode("utf-8", "ignore")}","{logEntry[12].decode("utf-8", "ignore")}",')
-
-            if 'Security' in log_category(dataLog[2].decode("utf-8", "ignore")):
-                dataLog2 = [w.replace('"', '""') for w in re.split(r',(?! )', logEntry[13].decode("utf-8", "ignore"))]
-
-                if len(dataLog2) < 74:
-                    diff = 74 - len(dataLog2)
-                    b = [''] * diff
-                    dataLog2.extend(b)
-
-                timeline.write(f'"","","","{dataLog2[0]}","{dataLog2[0]}","{dataLog2[1]}","{dataLog2[2]}","{dataLog2[3]}","{dataLog2[4]}","{dataLog2[5]}","{dataLog2[6]}","{dataLog2[7]}","{dataLog2[8]}","{dataLog2[9]}","{dataLog2[10]}","{dataLog2[11]}","{dataLog2[12]}","{dataLog2[13]}","{dataLog2[14]}","{dataLog2[15]}","{dataLog2[16]}","{dataLog2[17]}","{dataLog2[18]}","{dataLog2[19]}","{dataLog2[20]}","{dataLog2[21]}","{dataLog2[22]}","{dataLog2[23]}","{dataLog2[24]}","{dataLog2[25]}","{dataLog2[26]}","{dataLog2[27]}","{dataLog2[28]}","{dataLog2[29]}","{dataLog2[30]}","{dataLog2[31]}","{dataLog2[32]}","{dataLog2[33]}","{dataLog2[34]}","{dataLog2[35]}","{dataLog2[36]}","{dataLog2[37]}","{dataLog2[38]}","{dataLog2[39]}","{dataLog2[40]}","{dataLog2[41]}","","","","","","","","","","","","","","","","","{dataLog2[42]}","{dataLog2[43]}","{log_dynamic_categoryset_id(dataLog2[44])}","{dataLog2[45]}","{dataLog2[46]}","{log_reputation_disposition(dataLog2[47])}","{dataLog2[48]}","{dataLog2[49]}","{dataLog2[50]}","{dataLog2[51]}","{dataLog2[52]}","{dataLog2[53]}","{dataLog2[54]}","{log_detection_type(dataLog2[55])}","{dataLog2[56]}","{log_vsic_state(dataLog2[57])}","{dataLog2[58]}","{dataLog2[59]}","{from_symantec_time(dataLog2[60])}","{dataLog2[61]}","{dataLog2[62]}","{dataLog2[63]}","{dataLog2[64]}","{dataLog2[65]}","{dataLog2[66]}","{dataLog2[67]}","{dataLog2[68]}","{dataLog2[69]}","{dataLog2[70]}","{from_unix_sec(dataLog2[71])}","{dataLog2[72]}","{dataLog2[73]}"')
-
-            else:
-                timeline.write(f'"{logEntry[13].decode("utf-8", "ignore")}",')
-                timeline.write(f'"{logEntry[14].decode("utf-8", "ignore")}","{logEntry[15].decode("utf-8", "ignore")}","{logEntry[16].decode("utf-8", "ignore")}",')
-
-                for entry in dataLog3:
-                    entry = entry.replace(b'"', b'""')
-                    timeline.write(f'"{entry.decode("utf-8", "ignore")}",')
-
-                timeline.write(f'"{logEntry[18].decode("utf-8", "ignore")}","{logEntry[19].decode("utf-8", "ignore")}","{hash_type(logEntry[20].decode("utf-8", "ignore"))}","{logEntry[21].decode("utf-8", "ignore")}","{logEntry[22].decode("utf-8", "ignore")}","{logEntry[23].decode("utf-8", "ignore")}","{logEntry[24].decode("utf-8", "ignore")}","{logEntry[25].decode("utf-8", "ignore")}","{logEntry[26].decode("utf-8", "ignore")}","{logEntry[27].decode("utf-8", "ignore")}","{logEntry[28].decode("utf-8", "ignore")}","{logEntry[29].decode("utf-8", "ignore")}","{logEntry[30].decode("utf-8", "ignore")}","","",')
-
-                try:
-                    timeline.write(f'"{dataLog4[0].decode("utf-8", "ignore")}","{dataLog4[1].decode("utf-8", "ignore")}","{log_dynamic_categoryset_id(dataLog4[2].decode("utf-8", "ignore"))}","{dataLog4[3].decode("utf-8", "ignore")}","{dataLog4[4].decode("utf-8", "ignore")}","{log_reputation_disposition(dataLog4[5].decode("utf-8", "ignore"))}","{dataLog4[6].decode("utf-8", "ignore")}","{dataLog4[7].decode("utf-8", "ignore")}","{dataLog4[8].decode("utf-8", "ignore")}","{dataLog4[9].decode("utf-8", "ignore")}","{dataLog4[10].decode("utf-8", "ignore")}","{dataLog4[11].decode("utf-8", "ignore")}","{dataLog4[12].decode("utf-8", "ignore")}","{log_detection_type(dataLog4[13].decode("utf-8", "ignore"))}","{dataLog4[14].decode("utf-8", "ignore")}","{log_vsic_state(dataLog4[15].decode("utf-8", "ignore"))}","{dataLog4[16].decode("utf-8", "ignore")}","{dataLog4[17].decode("utf-8", "ignore")}","{from_symantec_time(dataLog4[18].decode("utf-8", "ignore"))}","{log_target_app_type(dataLog4[19].decode("utf-8", "ignore"))}","{dataLog4[20].decode("utf-8", "ignore")}","{dataLog4[21].decode("utf-8", "ignore")}","{dataLog4[22].decode("utf-8", "ignore")}","{dataLog4[23].decode("utf-8", "ignore")}","{dataLog4[24].decode("utf-8", "ignore")}","{dataLog4[25].decode("utf-8", "ignore")}","{dataLog4[26].decode("utf-8", "ignore")}","{dataLog4[27].decode("utf-8", "ignore")}","{dataLog4[28].decode("utf-8", "ignore")}","{from_unix_sec(int(dataLog4[29].decode("utf-8", "ignore")))}",')
-
-                    iterdataLog = iter(dataLog4)
-                    [next(iterdataLog) for x in range(30)]
-                    for entry in iterdataLog:
-                        timeline.write(f'"{entry.decode("utf-8", "ignore")}",')
-                except:
-                    for entry in dataLog4:
-                        entry = entry.replace(b'"', b'""')
-                        timeline.write(f'"{entry}",')
-
-        timeline.write('\n')
+        timeline.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{from_win_64_hex(logEntry[1])}","{from_win_64_hex(logEntry[2])}","{from_win_64_hex(logEntry[3])}","{logEntry[4].decode("utf-8", "ignore")}",{logData}\n')
 
         count += 1
 
@@ -1596,37 +1408,25 @@ def parse_avman(f, logEntries):
         startEntry = startEntry + nextEntry + 1
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
-def parse_tamper_protect(dataLog, logEntry, fname):
+def parse_tamper_protect(logData, logEntry, fname):
     # need action
     entry = LogFields()
     entry.action = ''
     entry.objecttype = ''
     entry.event = ''
+    
+    entry.computer = logData[4]
+    entry.user = logData[5]
+    entry.objecttype = log_tp_object_type(logData[22])
+    entry.event = log_tp_event(logData[17], logData[20])
+    entry.actor = f'{logData[19]} (PID {logData[18]})'
+    entry.targetprocess = f'{logData[22]} (PID {logData[21]})'
+    entry.target = logData[23]
+    entry.time = logData[0]
 
-    if dataLog[0] == '301':
-        entry.computer = logEntry[4].replace('"', '')
-        entry.user = logEntry[5].replace('"', '')
-        entry.objecttype = log_tp_object_type(dataLog[5])
-        entry.event = log_tp_event(dataLog[0], logEntry[17].split('\t')[3])
-        entry.actor = f'{dataLog[2]} (PID {dataLog[1]})'
-        entry.targetprocess = f'{dataLog[5]} (PID {dataLog[4]})'
-        entry.target = dataLog[6]
-        entry.time = logEntry[0].replace('"', '')
+    tamperProtect.write(f'"{fname}","{entry.computer}","{entry.user}","{entry.action}","{entry.objecttype}","{entry.event}","{entry.actor}","{entry.target}","{entry.targetprocess}","{entry.time}\n')
 
-    else:
-        entry.computer = dataLog[4].decode("utf-8", "ignore")
-        entry.user = dataLog[5].decode("utf-8", "ignore")
-        entry.objecttype = log_tp_object_type(logEntry[10].decode("utf-8", "ignore"))
-        entry.event = log_tp_event(dataLog[17].decode("utf-8", "ignore"), logEntry[8].decode("utf-8", "ignore"))
-        entry.actor = f'{logEntry[7].decode("utf-8", "ignore")} (PID {logEntry[6].decode("utf-8", "ignore")})'
-        entry.targetprocess = f'{logEntry[10].decode("utf-8", "ignore")} (PID {logEntry[9].decode("utf-8", "ignore")})'
-        entry.target = logEntry[11].decode("utf-8", "ignore")
-        entry.time = from_symantec_time(dataLog[0].decode("utf-8", "ignore"))
-
-    tamperProtect.write(f'"{fname}","{entry.computer}","{entry.user}","{entry.action}","{entry.objecttype}","{entry.event}","{entry.actor}","{entry.target}","{entry.targetprocess}","{entry.time}"\n')
-
-def parse_daily_av(f, logType):
-
+def parse_daily_av(f, logType, tz):
     if logType is 6:
         f.seek(0)
         logEntry = f.readline()
@@ -1640,7 +1440,7 @@ def parse_daily_av(f, logType):
         logEntry = f.read(2048).split(b'\x00')[0]
 
     while logEntry:       
-        logEntry = read_log_data2(logEntry)
+        logEntry = read_log_data(logEntry, tz)
         timeline.write(f'"{f.name}","","","","","",{logEntry}\n')
 
         if logType == 7 or 8:
@@ -1649,7 +1449,6 @@ def parse_daily_av(f, logType):
         logEntry = f.readline()
 
 def main():
-
 
     for filename in filenames:
         print(f'Started parsing {filename}\n')
@@ -1694,17 +1493,17 @@ def main():
 
                     if logType is 6:
 
-                        parse_daily_av(f, logType)
+                        parse_daily_av(f, logType, args.timezone)
                         print(f'Finished parsing {filename}\n')
 
                     if logType is 7:
 
-                        parse_daily_av(f, logType)
+                        parse_daily_av(f, logType, args.timezone)
                         print(f'Finished parsing {filename}\n')
                         
                     if logType is 8:
 
-                        parse_daily_av(f, logType)
+                        parse_daily_av(f, logType, args.timezone)
                         print(f'Finished parsing {filename}\n')
 #                        print('This is a quarantine file.')
 
@@ -1718,14 +1517,13 @@ def main():
         except Exception as e:
             print(f'Skipping {filename}. {e}\n')
 
-
-
     print(f'Processed {len(filenames)} file(s) in {format((time.time() - start), ".4f")} seconds')
 
 start = time.time()
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--file", help="file to be parsed")
 parser.add_argument("-d", "--dir", help="directory to be parsed")
+parser.add_argument("-tz", "--timezone", type=int, default=0, help="offset from UTC")
 parser.add_argument("-k", "--kape", help="kape mode", action="store_true")
 parser.add_argument("-o", "--output", help="directory to output files to. Default is current directory.")
 parser.add_argument("-a", "--append", help="append to output files.", action="store_true")
@@ -1734,6 +1532,7 @@ args = parser.parse_args()
 sep = ['Symantec Endpoint Protection\\CurrentVersion\\Data\\Logs', 'Symantec Endpoint Protection\\CurrentVersion\\Data\\Quarantine', 'Symantec Endpoint Protection\\Logs']
 filenames = []
 
+print(args.timezone)
 if args.kape or not (args.file or args.dir):
     print('Searching for Symantec logs.')
     rootDir = '/'
@@ -1797,8 +1596,6 @@ else:
         timeline = open('Symantec_Timeline.csv', 'a')
         packet = open('packet.txt', 'a')
         tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
-
-
 
 if os.stat(timeline.name).st_size == 0:
     csv_header()
