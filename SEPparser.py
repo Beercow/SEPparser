@@ -5,6 +5,11 @@ import time
 import argparse
 import binascii
 from datetime import datetime,timedelta
+import ctypes
+
+if os.name == 'nt':
+    kernel32 = ctypes.windll.kernel32
+    kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
 
 def csv_header():
 
@@ -138,6 +143,8 @@ class LogFields:
     digitalthumbprint = ''
     digitalsn = ''
     digitaltime = ''
+    action = ''
+    objecttype = ''
 
 def sec_event_type(_):
     event_value = {
@@ -914,7 +921,7 @@ def read_log_entry(f, loc, count):
 
 def read_log_data(data, tz):
     entry = LogFields()
-    data = re.split(b',(?=(?:"[^"]*?(?: [^"]*)*))|,(?=[^",]+(?:,|$))|,(?=,)|,(?<=,)', data)
+    data = re.split(b',(?=(?:"[^"]*?(?: [^"]*)*))|,(?=[^",]+(?:,|$))|,(?=,)', data)
     field113 = ''
     field114 = ''
     field115 = ''
@@ -1039,7 +1046,8 @@ def event_data2(_):
             diff = 17 - len(_)
             b = [''] * diff
             _.extend(b)
-
+    
+    _[3] = hash_type(_[3])
     _ = '","'.join(_)
 
     return _
@@ -1103,7 +1111,7 @@ def hexdump(buf, length=16):
 def parse_header(f):
     headersize = len(f.readline())
     if headersize == 0:
-        print(f'Skipping {f.name}. Unknown File Type.\n')
+        print(f'\033[1;33mSkipping {f.name}. Unknown File Type. \033[1;0m\n')
         return 9, 1
     f.seek(0)
     if headersize == 55:
@@ -1136,7 +1144,7 @@ def parse_header(f):
         from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"), 0)
         return 8, 1
     except:
-        print(f'Skipping {f.name}. Unknown File Type.\n')
+        print(f'\033[1;33mSkipping {f.name}. Unknown File Type. \033[1;0m\n')
         return 9, 1
 
 def parse_syslog(f, logEntries):
@@ -1465,9 +1473,6 @@ def parse_avman(f, logEntries):
 def parse_tamper_protect(logData, logEntry, fname):
     # need action
     entry = LogFields()
-    entry.action = ''
-    entry.objecttype = ''
-    entry.event = ''
     
     entry.computer = logData[4]
     entry.user = logData[5]
@@ -1505,73 +1510,75 @@ def parse_daily_av(f, logType, tz):
 def main():
 
     for filename in filenames:
-        print(f'Started parsing {filename}\n')
+        print(f'\033[1;35mStarted parsing {filename} \033[1;0m\n')
         try:
             with open(filename, 'rb') as f:
                 logType, logEntries = parse_header(f)
                 try:
                     if logEntries == 0:
-                        print(f'Skipping {filename}. Log is empty.\n')
+                        print(f'\033[1;33mSkipping {filename}. Log is empty. \033[1;0m\n')
                         continue
 
                     if logType is 0:
                         parse_syslog(f, logEntries)
-                        print(f'Finished parsing {filename}\n')
+#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 1:
                         #missing eventtype, protocol, xintrusionpayloadurl
 
                         parse_seclog(f, logEntries)
-                        print(f'Finished parsing {filename}\n')
+#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 2:
 
                         parse_tralog(f, logEntries)
-                        print(f'Finished parsing {filename}\n')
+#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 3:
 
                         parse_raw(f, logEntries)
-                        print(f'Finished parsing {filename}\n')
+#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 4:
                         # file size unknown yet
 
                         parse_processlog(f, logEntries)
-                        print(f'Finished parsing {filename}\n')
+#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 5:
 
                         parse_avman(f, logEntries)
-                        print(f'Finished parsing {filename}\n')
+#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 6:
 
                         parse_daily_av(f, logType, args.timezone)
-                        print(f'Finished parsing {filename}\n')
+#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 7:
 
                         parse_daily_av(f, logType, args.timezone)
-                        print(f'Finished parsing {filename}\n')
+#                        print(f'Finished parsing {filename}\n')
                         
                     if logType is 8:
 
                         parse_daily_av(f, logType, args.timezone)
-                        print(f'Finished parsing {filename}\n')
+#                        print(f'Finished parsing {filename}\n')
 #                        print('This is a quarantine file.')
 
-                    else:
+                    if logType is 9:
                         continue
+                    
+                    print(f'\033[1;32mFinished parsing {filename} \033[1;0m\n')
 
                 except Exception as e:
-                    print(f'Problem parsing {filename}: {e}\n')
+                    print(f'\033[1;31mProblem parsing {filename}: {e} \033[1;0m\n')
                     continue
 
         except Exception as e:
             print(f'Skipping {filename}. {e}\n')
 
-    print(f'Processed {len(filenames)} file(s) in {format((time.time() - start), ".4f")} seconds')
+    print(f'\033[1;37mProcessed {len(filenames)} file(s) in {format((time.time() - start), ".4f")} seconds \033[1;0m')
 
 start = time.time()
 parser = argparse.ArgumentParser()
@@ -1587,7 +1594,7 @@ sep = ['Symantec Endpoint Protection\\CurrentVersion\\Data\\Logs', 'Symantec End
 filenames = []
 
 if args.kape or not (args.file or args.dir):
-    print('Searching for Symantec logs.')
+    print('\nSearching for Symantec logs.\n')
     rootDir = '/'
     for path, subdirs, files in os.walk(rootDir):
         if any(x in path for x in sep):
@@ -1602,7 +1609,7 @@ if args.file:
     filenames = [args.file]
 
 if args.dir:
-    print('Searching for Symantec logs.')
+    print('\nSearching for Symantec logs.\n')
     root = args.dir
     for path, subdirs, files in os.walk(root):
         for name in files:
