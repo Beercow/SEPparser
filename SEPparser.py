@@ -1521,50 +1521,40 @@ def main():
 
                     if logType is 0:
                         parse_syslog(f, logEntries)
-#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 1:
                         #missing eventtype, protocol, xintrusionpayloadurl
 
                         parse_seclog(f, logEntries)
-#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 2:
 
                         parse_tralog(f, logEntries)
-#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 3:
 
                         parse_raw(f, logEntries)
-#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 4:
                         # file size unknown yet
 
                         parse_processlog(f, logEntries)
-#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 5:
 
                         parse_avman(f, logEntries)
-#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 6:
 
                         parse_daily_av(f, logType, args.timezone)
-#                        print(f'Finished parsing {filename}\n')
 
                     if logType is 7:
 
                         parse_daily_av(f, logType, args.timezone)
-#                        print(f'Finished parsing {filename}\n')
                         
                     if logType is 8:
 
                         parse_daily_av(f, logType, args.timezone)
-#                        print(f'Finished parsing {filename}\n')
-#                        print('This is a quarantine file.')
 
                     if logType is 9:
                         continue
@@ -1590,17 +1580,18 @@ parser.add_argument("-o", "--output", help="directory to output files to. Defaul
 parser.add_argument("-a", "--append", help="append to output files.", action="store_true")
 args = parser.parse_args()
 
-sep = ['Symantec Endpoint Protection\\CurrentVersion\\Data\\Logs', 'Symantec Endpoint Protection\\CurrentVersion\\Data\\Quarantine', 'Symantec Endpoint Protection\\Logs']
+regex =  re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine)')
 filenames = []
 
 if args.kape or not (args.file or args.dir):
     print('\nSearching for Symantec logs.\n')
     rootDir = '/'
+    if args.dir:
+        rootDir = args.dir
     for path, subdirs, files in os.walk(rootDir):
-        if any(x in path for x in sep):
+        if regex.findall(path):
             for name in files:
                 filenames.append(os.path.join(path, name))
-
     if not filenames:
         print('No Symantec logs found.')
         sys.exit()
@@ -1608,7 +1599,7 @@ if args.kape or not (args.file or args.dir):
 if args.file:
     filenames = [args.file]
 
-if args.dir:
+if args.dir and not args.kape:
     print('\nSearching for Symantec logs.\n')
     root = args.dir
     for path, subdirs, files in os.walk(root):
