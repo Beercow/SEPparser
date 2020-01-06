@@ -1457,16 +1457,16 @@ def parse_avman(f, logEntries):
             break
 
         startEntry = startEntry + nextEntry + 1
-#        f.seek(startEntry)
-#        check = f.read(1)
-#        while check is not b'0':
-#            print(f'{startEntry}\n')
-#            startEntry += 1
-#            f.seek(startEntry)
-#            check = f.read(1)
-#            print(f'{check}\n')
-#            if check is b'0':
-#                startEntry -= 1
+        f.seek(startEntry)
+        check = f.read(1)
+        while check is not b'0':
+            print(f'{startEntry}\n')
+            startEntry += 1
+            f.seek(startEntry)
+            check = f.read(1)
+            print(f'{check}\n')
+            if check is b'0':
+                f.seek(startEntry)
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_tamper_protect(logData, logEntry, fname):
