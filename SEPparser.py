@@ -1339,15 +1339,14 @@ def parse_tralog(f, logEntries):
             break
 
         startEntry = startEntry + nextEntry
-#        f.seek(startEntry)
-#        check = f.read(1)
-#        while check is not b'0':
-#            print(f'{check}\n')
-#            startEntry += 1
-#            f.seek(startEntry)
-#            check = f.read(1)
-#            if check is b'0':
-#                startEntry -= 1
+        f.seek(startEntry)
+        check = f.read(1)
+        while check is not b'0':
+            startEntry += 1
+            f.seek(startEntry)
+            check = f.read(1)
+            if check is b'0':
+                startEntry -= 1
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_raw(f, logEntries):
