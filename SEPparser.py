@@ -217,6 +217,21 @@ def log_severity(_):
 
     else:
         return _
+        
+def sys_severity(_):
+    severity_value = {
+                      '0':'Information',
+                      '1':'Warning',
+                      '2':'Error',
+                      '3':'Fatal'
+                     }
+
+    for k, v in severity_value.items():
+        if k == str(_):
+            return v
+
+    else:
+        return _
 
 def log_direction(_):
     direction = {
@@ -1163,7 +1178,7 @@ def parse_syslog(f, logEntries):
         data = '""'
         logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t')
         entry.dateAndTime = from_win_64_hex(logEntry[1])
-        entry.severity =  log_severity(int(logEntry[4], 16))
+        entry.severity =  sys_severity(int(logEntry[4], 16))
         entry.summary = logEntry[6].decode("utf-8", "ignore").replace('"', '""')
         entry.type = logEntry[7].decode("utf-8", "ignore")
         entry.size = ''
