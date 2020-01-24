@@ -1,5 +1,7 @@
 # SEPparser
 
+Please use the WIP branch. It is the most up to date code. I haven't had time to compile the binaries yet. 
+
 Blog post
 https://malwaremaloney.blogspot.com/2019/06/introducing-sepparser.html
 
