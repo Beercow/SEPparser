@@ -6,6 +6,7 @@ import argparse
 import binascii
 from datetime import datetime,timedelta
 import ctypes
+import ipaddress
 
 if os.name == 'nt':
     kernel32 = ctypes.windll.kernel32
@@ -1109,9 +1110,9 @@ def from_hex_ipv6(ipHex):
     ipHex = ipHex.decode("utf-8", "ignore")
     chunks = [ipHex[i:i+2] for i in range(0, len(ipHex), 2)]
     try:
-        test = ( x[0] + x[1] for x in zip(
+        ipv6 = ( x[0] + x[1] for x in zip(
             chunks[1::2],chunks[::2]))
-        return ':'.join(test)
+        return ipaddress.ip_address(':'.join(ipv6)).compressed
 
     except:
         return '::'
