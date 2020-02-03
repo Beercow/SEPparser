@@ -1140,7 +1140,8 @@ def from_symantec_time(timestamp, tz):
 
 def from_hex_ip(ipHex):
     ipHex = ipHex.decode("utf-8", "ignore")
-
+    if len(ipHex) is not 8:
+        ipHex = '0' + ipHex
     try:
         ipv4 = (
             int(hexdigit[0] + hexdigit[1], 16) for hexdigit in zip(
@@ -1632,7 +1633,7 @@ def parse_daily_av(f, logType, tz):
         logEntry = read_log_data(logEntry, tz)
         timeline.write(f'"{f.name}","","","","","",{logEntry}\n')
 
-        if logType == 7 or 8:
+        if logType is (7 or 8):
             break
             
         logEntry = f.readline()
