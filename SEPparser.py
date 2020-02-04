@@ -7,6 +7,7 @@ import binascii
 from datetime import datetime,timedelta
 import ctypes
 import ipaddress
+import xml.etree.ElementTree as ET
 
 if os.name == 'nt':
     kernel32 = ctypes.windll.kernel32
@@ -18,9 +19,9 @@ def csv_header():
 
     seclog.write('"File Name","Record Length","DateAndTime","Event Type","Severity","Direction","Protocol","Remote Host","Remote Port","Remote MAC","Local Host","Local Port","Local MAC","Application","Signature ID","Signature SubID","Signature Name","Intrusion-URL","X-Intrusion-Payload-URL","User","User Domain","Location","Occurrences","End Time","Begin Time","SHA256_Hash","Description","Field8","Event_Data_Size","Field15","Field18","Field26","Field27","Remote Host IPV6","Local Host IPV6","Field35","Version","Profile_Serial_Number","Field38","MD5_Hash","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8","LOG:Event_Data9","LOG:Event_Data10","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","Field115","Field116","Filed117","Digital_Signatures_Signer","Digital_Signatures_Issuer","Digital_Signatures_Certificate_Thumbprint","Field121","Digital_Signatures_Serial_Number","Digital_Signatures_Signing_Time","Field124","Field125"\n')
 
-    tralog.write('"File Name","Record Length","Date and Time","Action","Severity","Direction","Protocol","Remote Host","Remote MAC","Remote Port","Local Host","Local MAC","Local Port","Application","User","User Domain","Location","Occurrences","Begin Time","End Time","Rule","Event Data Size","Rule ID","Event Data","Field24","Field25","Field26 IPV6","Field27 IPV6","Field28","Field29","Hash:MD5","Hash:SHA256","Field32"\n')
+    tralog.write('"File Name","Record Length","Date and Time","Action","Severity","Direction","Protocol","Remote Host","Remote MAC","Remote Port","Local Host","Local MAC","Local Port","Application","User","User Domain","Location","Occurrences","Begin Time","End Time","Rule","Event Data Size","Rule ID","Event Data","Field24","Field25","Remote Host IPV6","Local Host IPV6","Field28","Field29","Hash:MD5","Hash:SHA256","Field32"\n')
 
-    rawlog.write('"File Name","Recode Length","Date and Time","Remote Host","Remote Port","Local Host","Local Port","Direction","Action","Application","Rule","Packet Dump","Packet Decode","Event ID","Field8","Field9","Field10","Event Data Size","Event Data","Field16","Field17","Field18 IPV6","Field19 IPV6","Rule ID"\n')
+    rawlog.write('"File Name","Recode Length","Date and Time","Remote Host","Remote Port","Local Host","Local Port","Direction","Action","Application","Rule","Packet Dump","Packet Decode","Event ID","Field8","Field9","Field10","Event Data Size","Event Data","Field16","Field17","Remote Host IPV6","Local Host IPV6","Rule ID"\n')
 
     processlog.write('"File Name","Record Length","Date And Time","Severity","Action","Test Mode","Description","API","Rule Name","IP Address","Caller Process ID","Caller Process","Device Instance ID","Target","File Size","User","User Domain","Location","Event ID","Field9","Begin Time","End Time","Field15","Field16","Field21","Field22","Field25","Field26","Field27"\n')
 
@@ -561,6 +562,41 @@ def log_reputation_disposition(_):
     else:
         return _
 
+def log_reputation_confidence(_):
+    conf = {
+           range(0, 10):'Unknown',
+           range(10, 25):'Low',
+           range(25, 65):'Medium',
+           range(65, 100):'High',
+           range(100, 200):'Extremely High'
+           }
+
+    for k in conf:
+        if int(_) in k:
+            return conf[k]
+
+    else:
+        return _
+
+def log_reputation_prevalence(_):
+    prev = {
+           range(0, 1):'Unknown',
+           range(1, 51):'Very Low',
+           range(51, 101):'Low',
+           range(101, 151):'Moderate',
+           range(151, 201):'High',
+           range(201, 256):'Very High',
+           range(256, 356):'Extremely High'
+           }
+
+    for k in prev:
+        if int(_) in k:
+            return prev[k]
+
+    else:
+        return _
+
+
 def log_detection_type(_):
     dtype = {
             '0':'Traditional',
@@ -595,6 +631,24 @@ def log_target_app_type(_):
              }
 
     for k, v in target.items():
+        if k == _:
+            return v
+
+    else:
+        return _
+        
+def cids_state(_):
+    status = {
+             '0':'Disabled',
+             '1':'On',
+             '2':'Not Installed',
+             '3':'Disabled By Policy',
+             '4':'Malfunctioning',
+             '5':'Disabled As Unlicensed',
+             '127':'Status Not Reported'
+             }
+
+    for k, v in status.items():
         if k == _:
             return v
 
@@ -1061,12 +1115,12 @@ def read_log_data(data, tz):
         entry.subcategorysetid = data[62].decode("utf-8", "ignore")
         entry.displaynametouse = data[63].decode("utf-8", "ignore")
         entry.reputationdisposition = log_reputation_disposition(data[64].decode("utf-8", "ignore"))
-        entry.reputationconfidence = data[65].decode("utf-8", "ignore")
+        entry.reputationconfidence = log_reputation_confidence(data[65].decode("utf-8", "ignore"))
         entry.firsseen = data[66].decode("utf-8", "ignore")
-        entry.reputationprevalence = data[67].decode("utf-8", "ignore")
+        entry.reputationprevalence = log_reputation_prevalence(data[67].decode("utf-8", "ignore"))
         entry.downloadurl = data[68].decode("utf-8", "ignore")
         entry.categoryfordropper = data[69].decode("utf-8", "ignore")
-        entry.cidsstate = data[70].decode("utf-8", "ignore")
+        entry.cidsstate = cids_state(data[70].decode("utf-8", "ignore"))
         entry.behaviorrisklevel = data[71].decode("utf-8", "ignore")
         entry.detectiontype = log_detection_type(data[72].decode("utf-8", "ignore"))
         entry.acknowledgetext = data[73].decode("utf-8", "ignore")
@@ -1248,7 +1302,7 @@ def parse_syslog(f, logEntries):
             data = read_log_data(logEntry[8], 0)
 
         syslog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{sec_event_id(logEntry[2].decode("utf-8", "ignore"))}","{logEntry[3].decode("utf-8", "ignore")}","{entry.severity}","{entry.summary}","{int(logEntry[5].decode("utf-8", "ignore"), 16)}","{entry.type}","{entry.size}",{data}\n')
-        
+
         if len(data) > 2:
             timeline.write(f'"{f.name}","","","","","",{data}\n')
         
@@ -1260,22 +1314,22 @@ def parse_syslog(f, logEntries):
         startEntry = startEntry + nextEntry
         f.seek(startEntry)
         check = f.read(1)
-        
+
         while check is not b'0':
             startEntry += 1
             f.seek(startEntry)
             check = f.read(1)
-            
+
             if len(check) is 0:
                 break
-            
+
             if check is b'0':
                 f.seek(startEntry)
-                
+
         if len(check) is 0:
             print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
             break
-        
+
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_seclog(f, logEntries):
@@ -1362,15 +1416,15 @@ def parse_seclog(f, logEntries):
         startEntry = startEntry + nextEntry
         f.seek(startEntry)
         check = f.read(1)
-        
+
         while check is not b'0':
             startEntry += 1
             f.seek(startEntry)
             check = f.read(1)
-            
+
             if len(check) is 0:
                 break
-            
+
             if check is b'0':
                 startEntry -= 1
 
@@ -1638,6 +1692,14 @@ def parse_daily_av(f, logType, tz):
             
         logEntry = f.readline()
 
+def utc_offset(_):
+    tree = ET.parse(_)
+    root = tree.getroot()
+    
+    for SSAUTC in root.iter('SSAUTC'):
+        utc = SSAUTC.get('Bias')
+        return int(utc)
+
 def main():
 
     for filename in filenames:
@@ -1728,6 +1790,9 @@ if args.dir and not args.kape:
     root = args.dir
     for path, subdirs, files in os.walk(root):
         for name in files:
+            if name == 'registrationInfo.xml':
+                print('\033[1;36mregistrationInfo.xml found. Applying timezone offset.\n \033[1;0m')
+                args.timezone = utc_offset(os.path.join(path, name))
             filenames.append(os.path.join(path, name))
 
 if args.output:
