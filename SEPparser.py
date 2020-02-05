@@ -1698,7 +1698,8 @@ def utc_offset(_):
     
     for SSAUTC in root.iter('SSAUTC'):
         utc = SSAUTC.get('Bias')
-        return int(utc)
+
+    return int(utc)
 
 def main():
 
@@ -1760,10 +1761,10 @@ start = time.time()
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--file", help="file to be parsed")
 parser.add_argument("-d", "--dir", help="directory to be parsed")
-parser.add_argument("-tz", "--timezone", type=int, default=0, help="offset from UTC")
+parser.add_argument("-tz", "--timezone", type=int, help="offset from UTC")
 parser.add_argument("-k", "--kape", help="kape mode", action="store_true")
-parser.add_argument("-o", "--output", help="directory to output files to. Default is current directory.")
-parser.add_argument("-a", "--append", help="append to output files.", action="store_true")
+parser.add_argument("-o", "--output", help="Directory to output files to. Default is current directory.")
+parser.add_argument("-a", "--append", help="Append to output files.", action="store_true")
 args = parser.parse_args()
 
 regex =  re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine)')
@@ -1775,9 +1776,21 @@ if args.kape or not (args.file or args.dir):
     if args.dir:
         rootDir = args.dir
     for path, subdirs, files in os.walk(rootDir):
+        if args.timezone is None and 'Symantec Endpoint Protection' in path and 'registrationInfo.xml' in files:
+            for name in files:
+                if name == 'registrationInfo.xml':
+                    try:
+                        print(f'\033[1;36m{os.path.join(path, name)} found. Attempting to apply timezone offset.\n \033[1;0m')
+                        args.timezone = utc_offset(os.path.join(path, name))
+                        print(f'\033[1;32mTimezone offset of {args.timezone} applied successfully. \033[1;0m\n')
+                    except Exception as e:
+                        print(f'\033[1;31mUnable to apply offset. Timestamps will not be adjusted. {e}\033[1;0m\n')
+                        pass
+
         if regex.findall(path):
             for name in files:
                 filenames.append(os.path.join(path, name))
+
     if not filenames:
         print('No Symantec logs found.')
         sys.exit()
@@ -1790,10 +1803,19 @@ if args.dir and not args.kape:
     root = args.dir
     for path, subdirs, files in os.walk(root):
         for name in files:
-            if name == 'registrationInfo.xml':
-                print('\033[1;36mregistrationInfo.xml found. Applying timezone offset.\n \033[1;0m')
-                args.timezone = utc_offset(os.path.join(path, name))
+            if args.timezone is None and name == 'registrationInfo.xml':
+                try:
+                    print(f'\033[1;36m{os.path.join(path, name)} found. Attempting to apply timezone offset.\n \033[1;0m')
+                    args.timezone = utc_offset(os.path.join(path, name))
+                    print(f'\033[1;32mTimezone offset of {args.timezone} applied successfully. \033[1;0m\n')
+                except Exception as e:
+                    print(f'\033[1;31mUnable to apply offset. Timestamps will not be adjusted. {e}\033[1;0m\n')
+                    pass
+
             filenames.append(os.path.join(path, name))
+
+if args.timezone is None:
+    args.timezone = 0
 
 if args.output:
     if not os.path.exists(args.output):
