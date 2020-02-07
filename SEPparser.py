@@ -1759,16 +1759,26 @@ def main():
 
 start = time.time()
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "--file", help="file to be parsed")
-parser.add_argument("-d", "--dir", help="directory to be parsed")
-parser.add_argument("-tz", "--timezone", type=int, help="offset from UTC")
-parser.add_argument("-k", "--kape", help="kape mode", action="store_true")
+parser.add_argument("-f", "--file", help="File to be parsed")
+parser.add_argument("-d", "--dir", help="Directory to be parsed")
 parser.add_argument("-o", "--output", help="Directory to output files to. Default is current directory.")
 parser.add_argument("-a", "--append", help="Append to output files.", action="store_true")
+parser.add_argument("-r", "--registrationInfo", help="Path to registrationInfo.xml")
+parser.add_argument("-tz", "--timezone", type=int, help="UTC offset")
+parser.add_argument("-k", "--kape", help="Kape mode", action="store_true")
 args = parser.parse_args()
 
 regex =  re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine)')
 filenames = []
+
+if args.registrationInfo:
+    try:
+        print('\033[1;36mAttempting to apply timezone offset.\n \033[1;0m')
+        args.timezone = utc_offset(args.registrationInfo)
+        print(f'\033[1;32mTimezone offset of {args.timezone} applied successfully. \033[1;0m\n')
+    except Exception as e:
+        print(f'\033[1;31mUnable to apply offset. Timestamps will not be adjusted. {e}\033[1;0m\n')
+        pass
 
 if args.kape or not (args.file or args.dir):
     print('\nSearching for Symantec logs.\n')
