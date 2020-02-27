@@ -28,6 +28,8 @@ def csv_header():
     timeline.write('"File Name","Record Length","Date/Time1","Date/Time2","Date/Time3","Field5","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8","LOG:Event_Data9","LOG:Event_Data10","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","Field115","Field116","Filed117","Digital_Signatures_Signer","Digital_Signatures_Issuer","Digital_Signatures_Certificate_Thumbprint","Field121","Digital_Signatures_Serial_Number","Digital_Signatures_Signing_Time","Field124","Field125"\n')
 
     tamperProtect.write('"File Name","Computer","User","Action Taken","Object Type","Event","Actor","Target","Target Process","Date and Time"\n')
+    
+    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","Folder Name","Wide Description"\n')
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 
@@ -548,6 +550,19 @@ def log_dynamic_categoryset_id(_):
     else:
         return _
 
+def log_display_name_to_use(_):
+    display = {
+              '0':'Application Name',
+              '1':'VID Virus Name'
+              }
+
+    for k, v in display.items():
+        if k == _:
+            return v
+
+    else:
+        return _
+
 def log_reputation_disposition(_):
     rep = {
            '0':'Good',
@@ -1042,7 +1057,8 @@ def read_log_entry(f, loc, count):
 
 def read_log_data(data, tz):
     entry = LogFields()
-    data = re.split(b',(?=(?:"[^"]*?(?: [^"]*)*))|,(?=[^",]+(?:,|$))|,(?=,)', data)
+    #data = re.split(b',(?=(?:"[^"]*?(?: [^"]*)*))|,(?=[^",]+(?:,|$))|,(?=,)', data)
+    data = re.split(b',(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)', data)
     field113 = ''
     field114 = ''
     field115 = ''
@@ -1113,7 +1129,7 @@ def read_log_data(data, tz):
         entry.erasercategoryid = log_eraser_category_id(data[60].decode("utf-8", "ignore"))
         entry.dynamiccategoryset = log_dynamic_categoryset_id(data[61].decode("utf-8", "ignore"))
         entry.subcategorysetid = data[62].decode("utf-8", "ignore")
-        entry.displaynametouse = data[63].decode("utf-8", "ignore")
+        entry.displaynametouse = log_display_name_to_use(data[63].decode("utf-8", "ignore"))
         entry.reputationdisposition = log_reputation_disposition(data[64].decode("utf-8", "ignore"))
         entry.reputationconfidence = log_reputation_confidence(data[65].decode("utf-8", "ignore"))
         entry.firsseen = data[66].decode("utf-8", "ignore")
@@ -1182,7 +1198,8 @@ def from_unix_sec(_):
 def from_win_64_hex(dateAndTime):
     """Convert a Windows 64 Hex Big-Endian value to a date"""
     base10_microseconds = int(dateAndTime, 16) / 10
-    return datetime(1601,1,1) + timedelta(microseconds=base10_microseconds)
+    dateAndTime = datetime(1601,1,1) + timedelta(microseconds=base10_microseconds)
+    return dateAndTime.strftime('%Y-%m-%d %H:%M:%S.%f')
 
 def from_symantec_time(timestamp, tz):
 
@@ -1190,8 +1207,22 @@ def from_symantec_time(timestamp, tz):
         int(hexdigit[0] + hexdigit[1], 16) for hexdigit in zip(
             timestamp[::2], timestamp[1::2]))
 
-    return datetime(year + 1970, month + 1, day_of_month, hours, minutes, seconds) + timedelta(hours=tz)
+    timestamp = datetime(year + 1970, month + 1, day_of_month, hours, minutes, seconds) + timedelta(hours=tz)
+    return timestamp.strftime('%Y-%m-%d %H:%M:%S')
 
+def from_unix_32_hex(_):
+    _ = (hexdigit[0] + hexdigit[1] for hexdigit in zip(
+        _[::2], _[1::2]))
+    _ = ''.join(map(str, reversed(list(_))))
+    return datetime.utcfromtimestamp(float(int(_,16))).strftime('%Y-%m-%d %H:%M:%S')
+
+def from_filetime(_):
+    try:
+        _ = datetime.utcfromtimestamp(float(_ - 116444736000000000) / 10000000).strftime('%Y-%m-%d %H:%M:%S.%f')
+    except:
+        _ = datetime(1601, 1, 1).strftime('%Y-%m-%d %H:%M:%S')
+    return _
+    
 def from_hex_ip(ipHex):
     ipHex = ipHex.decode("utf-8", "ignore")
     if len(ipHex) is not 8:
@@ -1241,6 +1272,12 @@ def hexdump(buf, length=16):
     packet.write('\n'.join(res))
     packet.write('\n\n')
     return '\n'.join(res)
+
+def flip(_):
+    _ = (hexdigit[0] + hexdigit[1] for hexdigit in zip(
+        _[::2], _[1::2]))
+    _ = ''.join(map(str, reversed(list(_))))
+    return _
 
 def parse_header(f):
     headersize = len(f.readline())
@@ -1692,6 +1729,41 @@ def parse_daily_av(f, logType, tz):
             
         logEntry = f.readline()
 
+def parse_vbn(f):   
+    f.seek(4, 0)
+    description = f.read(384).split(b'\x00')[0].decode("utf-8", "ignore")
+    f.seek(2440, 0)
+    recordId = int(flip(f.read(4).hex()), 16)
+    f.seek(2444, 0)
+    modifiedDate1 = from_filetime(int(flip(f.read(8).hex()), 16))
+    f.seek(2452, 0)
+    creationDate1 = from_filetime(int(flip(f.read(8).hex()), 16))
+    f.seek(2460, 0)
+    accessedDate1 = from_filetime(int(flip(f.read(8).hex()), 16))
+    f.seek(2956, 0)
+    storageName = f.read(48).split(b'\x00')[0].decode("utf-8", "ignore")
+    f.seek(3004, 0)
+    storageInstanceId = int(flip(f.read(4).hex()), 16)
+    f.seek(3008, 0)
+    storageKey = f.read(384).split(b'\x00')[0].decode("utf-8", "ignore")
+    f.seek(3412, 0)
+    fileSize = int(flip(f.read(4).hex()), 16)
+    f.seek(3416, 0)
+    creationDate2 = from_unix_32_hex(f.read(4).hex())
+    f.seek(3424, 0)
+    accessedDate2 = from_unix_32_hex(f.read(4).hex())
+    f.seek(3432, 0)
+    modifiedDate2 = from_unix_32_hex(f.read(4).hex())
+    f.seek(3440, 0)
+    vbinTime = from_unix_32_hex(f.read(4).hex())
+    f.seek(3452, 0)
+    uniqueId = '{' + '-'.join([flip(f.read(4).hex()), flip(f.read(2).hex()), flip(f.read(2).hex()), f.read(2).hex(), f.read(6).hex()]) + '}'
+    f.seek(3736, 0)
+    folderName = flip(f.read(4).hex())
+    f.seek(3772, 0)
+    wDescription = f.read(768).replace(b'\x00', b'').decode("utf-8", "ignore")
+    quarantine.write(f'"{f.name}","{description}","{recordId}","{modifiedDate1}","{creationDate1}","{accessedDate1}","{storageName}","{storageInstanceId}","{storageKey}","{fileSize}","{creationDate2}","{accessedDate2}","{modifiedDate2}","{vbinTime}","{uniqueId}","{folderName}","{wDescription}"\n')
+
 def utc_offset(_):
     tree = ET.parse(_)
     root = tree.getroot()
@@ -1738,6 +1810,7 @@ def main():
                         parse_daily_av(f, logType, args.timezone)
 
                     if logType is 7:
+                        parse_vbn(f)
                         parse_daily_av(f, logType, args.timezone)
                         
                     if logType is 8:
@@ -1753,9 +1826,10 @@ def main():
                     continue
 
         except Exception as e:
-            print(f'Skipping {filename}. {e}\n')
+            print(f'\033[1;33mSkipping {filename}. \033[1;31m{e}\033[1;0m\n')
 
     print(f'\033[1;37mProcessed {len(filenames)} file(s) in {format((time.time() - start), ".4f")} seconds \033[1;0m')
+    sys.exit()
 
 start = time.time()
 parser = argparse.ArgumentParser()
@@ -1840,6 +1914,7 @@ if args.output:
         timeline = open(args.output + '/Symantec_Timeline.csv', 'w')
         packet = open(args.output + '/packet.txt', 'w')
         tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
+        quarantine = open(args.output + '/quarantine.csv', 'w')
     else:
         syslog = open(args.output + '/Symantec_Client_Management_System_Log.csv', 'a')
         seclog = open(args.output + '/Symantec_Client_Management_Security_Log.csv', 'a')
@@ -1849,6 +1924,7 @@ if args.output:
         timeline = open(args.output + '/Symantec_Timeline.csv', 'a')
         packet = open(args.output + '/packet.txt', 'a')
         tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
+        quarantine = open(args.output + '/quarantine.csv', 'a')
 else:
     if not args.append:
         syslog = open('Symantec_Client_Management_System_Log.csv', 'w')
@@ -1859,6 +1935,7 @@ else:
         timeline = open('Symantec_Timeline.csv', 'w')
         packet = open('packet.txt', 'w')
         tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
+        quarantine = open('quarantine.csv', 'w')
     else:
         syslog = open('Symantec_Client_Management_System_Log.csv', 'a')
         seclog = open('Symantec_Client_Management_Security_Log.csv', 'a')
@@ -1868,6 +1945,7 @@ else:
         timeline = open('Symantec_Timeline.csv', 'a')
         packet = open('packet.txt', 'a')
         tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
+        quarantine = open('quarantine.csv', 'a')
 
 if os.stat(timeline.name).st_size == 0:
     csv_header()
