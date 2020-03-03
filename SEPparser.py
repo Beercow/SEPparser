@@ -8,6 +8,7 @@ from datetime import datetime,timedelta
 import ctypes
 import ipaddress
 import xml.etree.ElementTree as ET
+from dissect import cstruct
 
 if os.name == 'nt':
     kernel32 = ctypes.windll.kernel32
@@ -29,7 +30,7 @@ def csv_header():
 
     tamperProtect.write('"File Name","Computer","User","Action Taken","Object Type","Event","Actor","Target","Target Process","Date and Time"\n')
     
-    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","Folder Name","Wide Description"\n')
+    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","VBN Type","Folder Name","Wide Description"\n')
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 
@@ -149,6 +150,54 @@ class LogFields:
     digitaltime = ''
     action = ''
     objecttype = ''
+
+VBN_DEF = """
+
+typedef struct _VBN_METADATA {
+    int32 QMF_HEADER_Offset;
+    char Description[384];
+    char Log_line[2048];
+    int32 Data_Type1; //if 0x2 contains dates, if 0x1 no dates
+    long Record_ID;
+    char Date_Modified[8];
+    char Date_Created[8];
+    char Date_Accessed[8];
+    int32 Data_Type2; //if 0x2 contains storage info, if 0x0 no storage info
+    char Unknown1[484];
+    char Storage_Name[48];
+    int32 Storage_Instance_ID;
+    char Storage_Key[384];
+    int32 Data_Type3;
+    int32 Unknown3;
+    char Unknown4[8];
+    int32 Data_Type4;
+    int32 Quarantine_File_Size;
+    int64 Date_Created_UTC;
+    int64 Date_Accessed_UTC;
+    int64 Date_Modified_UTC;
+    int64 Date_Quarantined;
+    char Unknown5[4];
+    char Unique_ID[16];
+    char Unknown6[260];
+    int32 Unknown7;
+    int32 VBN_Type; 
+    int32 Folder_Name;
+    int32 Unknown8;
+    int32 Unknown9;
+    int32 Unknown10;
+    int32 Unknown11;
+    int32 Unknown12;
+    int32 Unknown13;
+    int32 Unknown14;
+    int32 Unknown15;
+    wchar WDescription[384];
+    char Unknown16[212];
+} VBN_METADATA;
+
+"""
+
+vbnstruct = cstruct.cstruct()
+vbnstruct.load(VBN_DEF)
 
 def sec_event_type(_):
     event_value = {
@@ -1729,40 +1778,16 @@ def parse_daily_av(f, logType, tz):
             
         logEntry = f.readline()
 
-def parse_vbn(f):   
-    f.seek(4, 0)
-    description = f.read(384).split(b'\x00')[0].decode("utf-8", "ignore")
-    f.seek(2440, 0)
-    recordId = int(flip(f.read(4).hex()), 16)
-    f.seek(2444, 0)
-    modifiedDate1 = from_filetime(int(flip(f.read(8).hex()), 16))
-    f.seek(2452, 0)
-    creationDate1 = from_filetime(int(flip(f.read(8).hex()), 16))
-    f.seek(2460, 0)
-    accessedDate1 = from_filetime(int(flip(f.read(8).hex()), 16))
-    f.seek(2956, 0)
-    storageName = f.read(48).split(b'\x00')[0].decode("utf-8", "ignore")
-    f.seek(3004, 0)
-    storageInstanceId = int(flip(f.read(4).hex()), 16)
-    f.seek(3008, 0)
-    storageKey = f.read(384).split(b'\x00')[0].decode("utf-8", "ignore")
-    f.seek(3412, 0)
-    fileSize = int(flip(f.read(4).hex()), 16)
-    f.seek(3416, 0)
-    creationDate2 = from_unix_32_hex(f.read(4).hex())
-    f.seek(3424, 0)
-    accessedDate2 = from_unix_32_hex(f.read(4).hex())
-    f.seek(3432, 0)
-    modifiedDate2 = from_unix_32_hex(f.read(4).hex())
-    f.seek(3440, 0)
-    vbinTime = from_unix_32_hex(f.read(4).hex())
-    f.seek(3452, 0)
-    uniqueId = '{' + '-'.join([flip(f.read(4).hex()), flip(f.read(2).hex()), flip(f.read(2).hex()), f.read(2).hex(), f.read(6).hex()]) + '}'
-    f.seek(3736, 0)
-    folderName = flip(f.read(4).hex())
-    f.seek(3772, 0)
-    wDescription = f.read(768).replace(b'\x00', b'').decode("utf-8", "ignore")
-    quarantine.write(f'"{f.name}","{description}","{recordId}","{modifiedDate1}","{creationDate1}","{accessedDate1}","{storageName}","{storageInstanceId}","{storageKey}","{fileSize}","{creationDate2}","{accessedDate2}","{modifiedDate2}","{vbinTime}","{uniqueId}","{folderName}","{wDescription}"\n')
+def parse_vbn(f):
+    f.seek(0, 0)
+    vbnmeta = vbnstruct.VBN_METADATA(f)
+#    cstruct.dumpstruct(vbnmeta)
+    wDescription = vbnmeta.WDescription.rstrip('\0')
+    description = vbnmeta.Description.rstrip(b'\x00').decode("utf-8", "ignore")
+    storageName = vbnmeta.Storage_Name.rstrip(b'\x00').decode("utf-8", "ignore")
+    storageKey = vbnmeta.Storage_Key.rstrip(b'\x00').decode("utf-8", "ignore")
+    uniqueId = '{' + '-'.join([flip(vbnmeta.Unique_ID.hex()[:8]), flip(vbnmeta.Unique_ID.hex()[8:12]), flip(vbnmeta.Unique_ID.hex()[12:16]), vbnmeta.Unique_ID.hex()[16:20], vbnmeta.Unique_ID.hex()[20:32]]).upper() + '}'
+    quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{from_filetime(int(flip(vbnmeta.Date_Modified.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Created.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Accessed.hex()), 16))}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_UTC)}","{from_unix_sec(vbnmeta.Date_Accessed_UTC)}","{from_unix_sec(vbnmeta.Date_Modified_UTC)}","{from_unix_sec(vbnmeta.Date_Quarantined)}","{uniqueId}","{vbnmeta.VBN_Type}","{hex(vbnmeta.Folder_Name)[2:].upper()}","{wDescription}"\n')
 
 def utc_offset(_):
     tree = ET.parse(_)
