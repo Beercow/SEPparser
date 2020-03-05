@@ -1812,71 +1812,89 @@ def parse_daily_av(f, logType, tz):
 
 def parse_vbn(f):
     qfile = ''
+    garbage = 0
     f.seek(0, 0)
     vbnmeta = vbnstruct.VBN_METADATA(f)
-#    cstruct.dumpstruct(vbnmeta)
     wDescription = vbnmeta.WDescription.rstrip('\0')
     description = vbnmeta.Description.rstrip(b'\x00').decode("utf-8", "ignore")
     storageName = vbnmeta.Storage_Name.rstrip(b'\x00').decode("utf-8", "ignore")
     storageKey = vbnmeta.Storage_Key.rstrip(b'\x00').decode("utf-8", "ignore")
     uniqueId = '{' + '-'.join([flip(vbnmeta.Unique_ID.hex()[:8]), flip(vbnmeta.Unique_ID.hex()[8:12]), flip(vbnmeta.Unique_ID.hex()[12:16]), vbnmeta.Unique_ID.hex()[16:20], vbnmeta.Unique_ID.hex()[20:32]]).upper() + '}'
     
-    if vbnmeta.VBN_Type is 2:
-        f.seek(vbnmeta.QMF_HEADER_Offset, 0)
-        f.seek(24, 1)
-        qfm_size = xor(f.read(8), 0x5A).encode('latin-1')
-        qfm_size = struct.unpack('q', qfm_size)[0]
-        f.seek(-32, 1)
-        qfm = vbnstruct.Quarantine_File_Metadata(xor(f.read(qfm_size), 0x5A).encode('latin-1'))
-#        cstruct.dumpstruct(qfm)
-        pos = qfm.QMF_Size_Header_Size + vbnmeta.QMF_HEADER_Offset
-        f.seek(pos)
-        f.seek(8, 1)
-        qfi_size = xor(f.read(4), 0x5A).encode('latin-1')
-        qfi_size = struct.unpack('i', qfi_size)[0]
-        f.seek(pos)
-        qfi = vbnstruct.Quarantine_File_Info(xor(f.read(qfi_size + 35), 0x5A).encode('latin-1'))
-#        cstruct.dumpstruct(qfi)
-        
-        if xor(f.read(1), 0x5A).encode('latin-1') is b'\x08':
-            pos += 35 + qfi.Hash_Size
-            f.seek(pos)
-            qfi2_size = xor(f.read(4), 0x5A).encode('latin-1')
-            qfi2_size = struct.unpack('i', qfi2_size)[0]
-            f.seek(pos)
-            qfi2 =  vbnstruct.Quarantine_File_Info2(xor(f.read(qfi2_size + 18), 0x5A).encode('latin-1'))
-#            cstruct.dumpstruct(qfi2)
-            pos += 19 + qfi2.Security_Descriptor_Size
-            f.seek(pos)
-            
-        elif xor(f.read(1), 0x5A).encode('latin-1') is b'\x09':
-            pos += 35 + qfi.Hash_Size
-            f.seek(pos)
-
-        chunk = vbnstruct.chunk(xor(f.read(5), 0x5A).encode('latin-1'))
-        pos += 5
-        f.seek(pos)
-        
-        while True:
-            if chunk.Data_Type is 9:
-#                cstruct.dumpstruct(chunk)
-                qfile += f.read(chunk.Chunk_Size).decode('latin-1')
-
-                try:
-                    pos += chunk.Chunk_Size
-                    chunk = vbnstruct.chunk(xor(f.read(5), 0x5A).encode('latin-1'))
-                    pos += 5
-                    f.seek(pos)
-
-                except:
-                    break
-
-            else:
-                break
-    output = open('test.vbn','wb+')
-    output.write(qfile.encode('latin-1'))
-        
     quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{from_filetime(int(flip(vbnmeta.Date_Modified.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Created.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Accessed.hex()), 16))}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_UTC)}","{from_unix_sec(vbnmeta.Date_Accessed_UTC)}","{from_unix_sec(vbnmeta.Date_Modified_UTC)}","{from_unix_sec(vbnmeta.Date_Quarantined)}","{uniqueId}","{vbnmeta.VBN_Type}","{hex(vbnmeta.Folder_Name)[2:].upper()}","{wDescription}"\n')
+    
+    if args.extract or args.hex_dump:
+        if args.hex_dump:
+            cstruct.dumpstruct(vbnmeta)
+    
+        if vbnmeta.VBN_Type is 2:
+            f.seek(vbnmeta.QMF_HEADER_Offset, 0)
+            f.seek(24, 1)
+            qfm_size = xor(f.read(8), 0x5A).encode('latin-1')
+            qfm_size = struct.unpack('q', qfm_size)[0]
+            f.seek(-32, 1)
+            qfm = vbnstruct.Quarantine_File_Metadata(xor(f.read(qfm_size), 0x5A).encode('latin-1'))
+            if args.hex_dump:
+                cstruct.dumpstruct(qfm)
+            pos = qfm.QMF_Size_Header_Size + vbnmeta.QMF_HEADER_Offset
+            f.seek(pos)
+            f.seek(8, 1)
+            qfi_size = xor(f.read(4), 0x5A).encode('latin-1')
+            qfi_size = struct.unpack('i', qfi_size)[0]
+            f.seek(pos)
+            qfi = vbnstruct.Quarantine_File_Info(xor(f.read(qfi_size + 35), 0x5A).encode('latin-1'))
+            
+            if args.hex_dump:
+                cstruct.dumpstruct(qfi)
+            
+            dataType = xor(f.read(1), 0x5A).encode('latin-1')
+#            print(dataType)
+            
+            if dataType is b'\x08':
+                pos += 35 + qfi.Hash_Size
+                f.seek(pos)
+                qfi2_size = xor(f.read(4), 0x5A).encode('latin-1')
+                qfi2_size = struct.unpack('i', qfi2_size)[0]
+                f.seek(pos)
+                qfi2 =  vbnstruct.Quarantine_File_Info2(xor(f.read(qfi2_size + 18), 0x5A).encode('latin-1'))
+                if args.hex_dump:
+                    cstruct.dumpstruct(qfi2)
+                pos += 19 + qfi2.Security_Descriptor_Size
+                f.seek(pos)
+            
+            elif dataType is b'\t':
+                garbage = int.from_bytes(qfi.Quarantine_File_Size, 'little') - vbnmeta.Quarantine_File_Size
+                pos += 35 + qfi.Hash_Size
+                f.seek(pos)
+
+            chunk = vbnstruct.chunk(xor(f.read(5), 0x5A).encode('latin-1'))
+            pos += 5
+            f.seek(pos)
+#            print(garbage)
+
+            while True:
+                if chunk.Data_Type is 9:
+                    if args.hex_dump:
+                        cstruct.dumpstruct(chunk)
+                    qfile += xor(f.read(chunk.Chunk_Size), 0xA5)
+#                    print(qfile[312:])
+#                    input()
+
+                    try:
+                        pos += chunk.Chunk_Size
+                        chunk = vbnstruct.chunk(xor(f.read(5), 0x5A).encode('latin-1'))
+                        pos += 5
+                        f.seek(pos)
+
+                    except:
+                        break
+
+                else:
+                    break
+    
+    if args.extract:
+        output = open(os.path.basename(description) + '.vbn','wb+')
+        output.write(bytes(qfile[garbage:], encoding= 'latin-1'))
 
 def utc_offset(_):
     tree = ET.parse(_)
@@ -1949,6 +1967,8 @@ start = time.time()
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--file", help="File to be parsed")
 parser.add_argument("-d", "--dir", help="Directory to be parsed")
+parser.add_argument("-e", "--extract", help="Extract quarantine file from VBN if present.", action="store_true")
+parser.add_argument("-hd", "--hex-dump", help="Dump hex output of VBN to screen.", action="store_true")
 parser.add_argument("-o", "--output", help="Directory to output files to. Default is current directory.")
 parser.add_argument("-a", "--append", help="Append to output files.", action="store_true")
 parser.add_argument("-r", "--registrationInfo", help="Path to registrationInfo.xml")
@@ -1958,6 +1978,10 @@ args = parser.parse_args()
 
 regex =  re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine)')
 filenames = []
+
+if (args.extract or args.hex_dump) and not args.file:
+    print("\n\033[1;31m-e, --extract must be used with -f, --file.\033[1;0m\n")
+    sys.exit()
 
 if args.registrationInfo:
     try:
