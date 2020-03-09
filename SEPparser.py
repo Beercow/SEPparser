@@ -31,7 +31,7 @@ def csv_header():
 
     tamperProtect.write('"File Name","Computer","User","Action Taken","Object Type","Event","Actor","Target","Target Process","Date and Time"\n')
     
-    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","VBN Type","Folder Name","Wide Description"\n')
+    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","Record Type","Folder Name","Wide Description"\n')
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 
@@ -176,12 +176,12 @@ typedef struct _VBN_METADATA {
     int64 Date_Created_UTC;
     int64 Date_Accessed_UTC;
     int64 Date_Modified_UTC;
-    int64 Date_Quarantined;
+    int64 VBin_Time;
     char Unknown5[4];
     char Unique_ID[16];
     char Unknown6[260];
     int32 Unknown7;
-    int32 VBN_Type; 
+    int32 Record_Type; 
     int32 Folder_Name;
     int32 Unknown8;
     int32 Unknown9;
@@ -228,6 +228,20 @@ typedef struct _Chunk {
     byte Data_Type;
     int32 Chunk_Size;
 } Chunk;
+
+typedef struct _Junk_Header {
+    int64 Unknown1;
+    int64 Size;
+    char Unknown2[Size];
+    char Unknown3[24];
+} Junk_Header;
+
+typedef struct _Junk_Footer {
+    int64 Unknown1;
+    int64 Size;
+    int32 Unknown2;
+    char Unknown3[Size];
+} Junk_Footer;
 
 """
 
@@ -1812,7 +1826,9 @@ def parse_daily_av(f, logType, tz):
 
 def parse_vbn(f):
     qfile = ''
-    garbage = 0
+    garbage = None
+    header = 0
+    footer = 0
     f.seek(0, 0)
     vbnmeta = vbnstruct.VBN_METADATA(f)
     wDescription = vbnmeta.WDescription.rstrip('\0')
@@ -1821,13 +1837,13 @@ def parse_vbn(f):
     storageKey = vbnmeta.Storage_Key.rstrip(b'\x00').decode("utf-8", "ignore")
     uniqueId = '{' + '-'.join([flip(vbnmeta.Unique_ID.hex()[:8]), flip(vbnmeta.Unique_ID.hex()[8:12]), flip(vbnmeta.Unique_ID.hex()[12:16]), vbnmeta.Unique_ID.hex()[16:20], vbnmeta.Unique_ID.hex()[20:32]]).upper() + '}'
     
-    quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{from_filetime(int(flip(vbnmeta.Date_Modified.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Created.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Accessed.hex()), 16))}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_UTC)}","{from_unix_sec(vbnmeta.Date_Accessed_UTC)}","{from_unix_sec(vbnmeta.Date_Modified_UTC)}","{from_unix_sec(vbnmeta.Date_Quarantined)}","{uniqueId}","{vbnmeta.VBN_Type}","{hex(vbnmeta.Folder_Name)[2:].upper()}","{wDescription}"\n')
+    quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{from_filetime(int(flip(vbnmeta.Date_Modified.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Created.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Accessed.hex()), 16))}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_UTC)}","{from_unix_sec(vbnmeta.Date_Accessed_UTC)}","{from_unix_sec(vbnmeta.Date_Modified_UTC)}","{from_unix_sec(vbnmeta.VBin_Time)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Folder_Name)[2:].upper()}","{wDescription}"\n')
     
     if args.extract or args.hex_dump:
         if args.hex_dump:
             cstruct.dumpstruct(vbnmeta)
     
-        if vbnmeta.VBN_Type is 2:
+        if vbnmeta.Record_Type is 2:
             f.seek(vbnmeta.QMF_HEADER_Offset, 0)
             f.seek(24, 1)
             qfm_size = xor(f.read(8), 0x5A).encode('latin-1')
@@ -1840,15 +1856,23 @@ def parse_vbn(f):
             f.seek(pos)
             f.seek(8, 1)
             qfi_size = xor(f.read(4), 0x5A).encode('latin-1')
-            qfi_size = struct.unpack('i', qfi_size)[0]
-            f.seek(pos)
-            qfi = vbnstruct.Quarantine_File_Info(xor(f.read(qfi_size + 35), 0x5A).encode('latin-1'))
+            try:
+                qfi_size = struct.unpack('i', qfi_size)[0]
+                f.seek(pos)
+                qfi = vbnstruct.Quarantine_File_Info(xor(f.read(qfi_size + 35), 0x5A).encode('latin-1'))
+                qfs = int.from_bytes(qfi.Quarantine_File_Size, 'little')
+            except:
+                f.seek(pos) 
+                qfi = vbnstruct.Quarantine_File_Info(xor(f.read(7), 0x5A).encode('latin-1') + (b'\x00' * 20))
+                if args.hex_dump:
+                    cstruct.dumpstruct(qfi)
+                print(f'\033[1;31mDoes not contain quarantine data. Clean by Deletion.\033[1;0m\n')
+                sys.exit()
             
             if args.hex_dump:
                 cstruct.dumpstruct(qfi)
             
             dataType = xor(f.read(1), 0x5A).encode('latin-1')
-#            print(dataType)
             
             if dataType is b'\x08':
                 pos += 35 + qfi.Hash_Size
@@ -1862,23 +1886,23 @@ def parse_vbn(f):
                 pos += 19 + qfi2.Security_Descriptor_Size
                 f.seek(pos)
             
-            elif dataType is b'\t':
-                garbage = int.from_bytes(qfi.Quarantine_File_Size, 'little') - vbnmeta.Quarantine_File_Size
+            elif dataType is b'\t':  #actually \x09
+                garbage = qfs - vbnmeta.Quarantine_File_Size
                 pos += 35 + qfi.Hash_Size
                 f.seek(pos)
-
             chunk = vbnstruct.chunk(xor(f.read(5), 0x5A).encode('latin-1'))
             pos += 5
             f.seek(pos)
-#            print(garbage)
+            if garbage is not None:
+                junk = vbnstruct.Junk_Header(xor(f.read(1000), 0xA5).encode('latin-1'))
+                cstruct.dumpstruct(junk)
+                f.seek(pos)
 
             while True:
                 if chunk.Data_Type is 9:
                     if args.hex_dump:
                         cstruct.dumpstruct(chunk)
                     qfile += xor(f.read(chunk.Chunk_Size), 0xA5)
-#                    print(qfile[312:])
-#                    input()
 
                     try:
                         pos += chunk.Chunk_Size
@@ -1891,10 +1915,21 @@ def parse_vbn(f):
 
                 else:
                     break
-    
+            
+            if garbage is not None:
+                header = junk.Size + 40
+                footer = garbage - header
+                qfs = len(qfile) - footer
+                f.seek(-footer, 2)
+                try:
+                    jf = vbnstruct.Junk_Footer(xor(f.read(footer), 0xA5).encode('latin-1'))
+                    cstruct.dumpstruct(jf)
+                except:
+                    pass
+ 
     if args.extract:
         output = open(os.path.basename(description) + '.vbn','wb+')
-        output.write(bytes(qfile[garbage:], encoding= 'latin-1'))
+        output.write(bytes(qfile[header:qfs], encoding= 'latin-1'))
 
 def utc_offset(_):
     tree = ET.parse(_)
