@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 from dissect import cstruct
 import struct
 import SDDL3
+import io
 
 if os.name == 'nt':
     kernel32 = ctypes.windll.kernel32
@@ -32,7 +33,7 @@ def csv_header():
 
     tamperProtect.write('"File Name","Computer","User","Action Taken","Object Type","Event","Actor","Target","Target Process","Date and Time"\n')
     
-    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","Record Type","Folder Name","Wide Description","SDDL","SHA1","Quarantine Container Size","File Size 2"\n')
+    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","Record Type","Folder Name","Wide Description","SDDL","SHA1","Quarantine Container Size","File Size 2","file Path 1","File Path 2","File Path 3","Detection Digest"\n')
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 
@@ -256,6 +257,12 @@ typedef struct _Virus {
     int32 Virus_Type_Section_Size;
     char Virus_Type_Section[Virus_Type_Section_Size];  // Full structure to end of Virus_Type
 } Virus;
+
+typedef struct _QMF_Tag {
+    byte Data_Type;
+    int32 Size;
+    char Data[Size];
+} QMF_Tag;
 
 """
 
@@ -1468,6 +1475,33 @@ def parse_header(f):
         print(f'\033[1;33mSkipping {f.name}. Unknown File Type. \033[1;0m\n')
         return 9, 1
 
+def parse_qfm(_, tag):
+    _ = io.BytesIO(_)
+    if tag is 'sddl':
+        pattern = b'\x03#\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
+    if tag is 'DetectionDigest':
+        pattern = b'\x03\x01\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
+    if tag is 'FilePath1':
+        pattern = b'\x03\x00\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
+    if tag is 'FilePath2':
+        pattern = b'\x03\x02\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
+    if tag is 'FilePath3':
+        pattern = b'\x03\x27\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
+    if tag is 'FilePath4':
+        pattern = b'\x03\x01\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
+    if tag is 'FilePath5':
+        pattern = b'\x03\x01\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'       
+    
+    regex = re.compile(pattern)
+    hit = regex.search(_.read())
+    if hit is None:
+        return ''
+    offset = hit.end() + 15
+    _.seek(offset, 0)
+    _ = vbnstruct.QMF_Tag(_.read())
+    _ = _.Data.decode('latin-1').replace("\x00", "")
+    return _
+
 def parse_syslog(f, logEntries):
     startEntry = 72
     nextEntry = read_unpack_hex(f, startEntry, 8)
@@ -1883,6 +1917,10 @@ def parse_vbn(f):
     qfile = ''
     sddl = ''
     sha1 = ''
+    fpath1 = ''
+    fpath2 = ''
+    fpath3 = ''
+    dd = ''
     garbage = None
     header = 0
     footer = 0
@@ -1924,6 +1962,14 @@ def parse_vbn(f):
         qfm_size = struct.unpack('q', qfm_size)[0]
         f.seek(-32, 1)
         qfm = vbnstruct.Quarantine_File_Metadata(xor(f.read(qfm_size), 0x5A).encode('latin-1'))
+        sddl = parse_qfm(qfm.QFM, 'sddl')
+        if len(sddl) > 0:
+            sddl = sddl_translate(sddl)
+        fpath1 = parse_qfm(qfm.QFM, 'FilePath1')
+        fpath2 = parse_qfm(qfm.QFM, 'FilePath2')
+        fpath3 = parse_qfm(qfm.QFM, 'FilePath3')
+        dd = parse_qfm(qfm.QFM, 'DetectionDigest')
+        
         if args.hex_dump:
             cstruct.dumpstruct(qfm)
         pos = qfm.QMF_Size_Header_Size + vbnmeta.QMF_HEADER_Offset
@@ -2016,7 +2062,7 @@ def parse_vbn(f):
         output = open(os.path.basename(description) + '.vbn','wb+')
         output.write(bytes(qfile[header:qfs], encoding= 'latin-1'))
         
-    quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{from_filetime(int(flip(vbnmeta.Date_Modified.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Created.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Accessed.hex()), 16))}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_UTC)}","{from_unix_sec(vbnmeta.Date_Accessed_UTC)}","{from_unix_sec(vbnmeta.Date_Modified_UTC)}","{from_unix_sec(vbnmeta.VBin_Time)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Folder_Name)[2:].upper()}","{wDescription}","{sddl}","{sha1}","{qfs}","{junkfs}"\n')
+    quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{from_filetime(int(flip(vbnmeta.Date_Modified.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Created.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Accessed.hex()), 16))}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_UTC)}","{from_unix_sec(vbnmeta.Date_Accessed_UTC)}","{from_unix_sec(vbnmeta.Date_Modified_UTC)}","{from_unix_sec(vbnmeta.VBin_Time)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Folder_Name)[2:].upper()}","{wDescription}","{sddl}","{sha1}","{qfs}","{junkfs}","{fpath1}","{fpath2}","{fpath3}","{dd}"\n')
 
 def utc_offset(_):
     tree = ET.parse(_)
