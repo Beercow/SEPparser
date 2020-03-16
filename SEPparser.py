@@ -264,6 +264,18 @@ typedef struct _QMF_Tag {
     char Data[Size];
 } QMF_Tag;
 
+typedef struct _URL_Tag {
+    byte Data_Type1;
+    int32 DT1_Size;
+    char Unknonw1[5];
+    byte Data_Type2;
+    int32 DT2_Size;
+    char Unknonw[DT2_Size];
+    byte Data_Type3
+    int16 DT3_Size
+    char Unknonw1[DT3_Size]
+} URL_Tag;
+
 """
 
 vbnstruct = cstruct.cstruct()
@@ -1490,16 +1502,26 @@ def parse_qfm(_, tag):
     if tag is 'FilePath4':
         pattern = b'\x03\x01\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
     if tag is 'FilePath5':
-        pattern = b'\x03\x01\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'       
+        pattern = b'\x03\x01\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
+    if tag is 'URL1':
+        pattern = b'\x03/\x00\x00\x00\x01\x11\t\x10\x00\x00\x00dE21\x13;3E\x89\x993\x99\x06\x88\xf5\xa9'
     
     regex = re.compile(pattern)
     hit = regex.search(_.read())
     if hit is None:
         return ''
-    offset = hit.end() + 15
-    _.seek(offset, 0)
-    _ = vbnstruct.QMF_Tag(_.read())
-    _ = _.Data.decode('latin-1').replace("\x00", "")
+    if tag is 'URL1':
+        offset = hit.end()
+        _.seek(offset, 0)
+        _ = vbnstruct.URL_Tag(_.read())
+        cstruct.dumpstruct(_)
+        return ''
+        
+    else:
+        offset = hit.end() + 15
+        _.seek(offset, 0)
+        _ = vbnstruct.QMF_Tag(_.read())
+        _ = _.Data.decode('latin-1').replace("\x00", "")
     return _
 
 def parse_syslog(f, logEntries):
@@ -1968,7 +1990,10 @@ def parse_vbn(f):
         fpath1 = parse_qfm(qfm.QFM, 'FilePath1')
         fpath2 = parse_qfm(qfm.QFM, 'FilePath2')
         fpath3 = parse_qfm(qfm.QFM, 'FilePath3')
-        dd = parse_qfm(qfm.QFM, 'DetectionDigest')
+        dd = parse_qfm(qfm.QFM, 'DetectionDigest').replace('"', '""')
+#        url1 = parse_qfm(qfm.QFM, 'URL1')
+#        print(url1)
+#        input()
         
         if args.hex_dump:
             cstruct.dumpstruct(qfm)
