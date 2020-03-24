@@ -33,7 +33,7 @@ def csv_header():
 
     tamperProtect.write('"File Name","Computer","User","Action Taken","Object Type","Event","Actor","Target","Target Process","Date and Time"\n')
     
-    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","Record Type","Folder Name","Wide Description","SDDL","SHA1","Quarantine Container Size","File Size 2","file Path 1","File Path 2","File Path 3","Detection Digest"\n')
+    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","Record Type","Folder Name","Wide Description","SDDL","SHA1","Quarantine Container Size","File Size 2","Detection Digest","Virus","GUID","Info 3","Info 4","Info 5","Info 6","Info 7","Owner SID"\n')
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 
@@ -207,22 +207,29 @@ typedef struct _Quarantine_File_Metadata {
 } Quarantine_File_Metadata;
 
 typedef struct _Quarantine_File_Info {
-    char Header[7];
-    byte Data_Type1;
+    byte Tag1;
+    int32 Tag1_Data;
+    byte Tag2;
+    byte Tag2_Data;
+    byte Tag3;
     int32 Hash_Size;
     char SHA1[Hash_Size]; //need to fix for wchar
-    char Unknown[10];
-    byte Data_Type2;
+    byte Tag4;
+    int32 Tag4_Data;
+    byte Tag5;
+    int32 Tag5_Data;
+    byte Tag6;
     int32 QFS_Size;
     char Quarantine_File_Size[QFS_Size];
 } Quarantine_File_Info;
 
 typedef struct _Quarantine_File_Info2 {
-    byte Data_Type;
+    byte Tag1;
     int32 Security_Descriptor_Size;
     char Security_Descriptor[Security_Descriptor_Size]; //need to fix for wchar
-    char Unknown[5];
-    byte Data_Type1;
+    byte Tag2;
+    int32 Tag2_Data;
+    byte Tag3;
     int64 Quarantine_File_Size;
 } Quarantine_File_Info2;
 
@@ -256,25 +263,38 @@ typedef struct _Virus {
     byte Data_Type2;
     int32 Virus_Type_Section_Size;
     char Virus_Type_Section[Virus_Type_Section_Size];  // Full structure to end of Virus_Type
+    char Virus_Type_Section_Header[10]
+    byte Data_Type3
+    int32 Virus_Type_Size
+    char Virus_Type[Virus_Type_Size]
+    char Unknown3[7]
+    byte Data_Type4
+    int32 DT4_Size
+    char DT4[DT4_Size]
 } Virus;
 
-typedef struct _QMF_Tag {
+typedef struct _UUID {
+    byte Data_Type1;
+    int32 UUID_Section_Size;
+    char UUID_Section[UUID_Section_Size]  //Full structure to end of UUID
+    char UUID_Section_Header[10];
+    byte Data_Type2;
+    int32 UUID_Size;
+    char UUID[UUID_Size];
+    char Unknown[7];
+    byte Data_Type3;
+    int32 DT3_Size;
+    char DT3[DT3_Size];
+    byte Data_Type4;
+    int32 DT4_Size;
+    char DT4[DT4_Size];
+} UUID;
+
+typedef struct _Tag {
     byte Data_Type;
     int32 Size;
     char Data[Size];
-} QMF_Tag;
-
-typedef struct _URL_Tag {
-    byte Data_Type1;
-    int32 DT1_Size;
-    char Unknonw1[5];
-    byte Data_Type2;
-    int32 DT2_Size;
-    char Unknonw[DT2_Size];
-    byte Data_Type3
-    int16 DT3_Size
-    char Unknonw1[DT3_Size]
-} URL_Tag;
+} Tag;
 
 """
 
@@ -1486,43 +1506,24 @@ def parse_header(f):
     except:
         print(f'\033[1;33mSkipping {f.name}. Unknown File Type. \033[1;0m\n')
         return 9, 1
-
-def parse_qfm(_, tag):
+    
+def parse_tags(_):
     _ = io.BytesIO(_)
-    if tag is 'sddl':
-        pattern = b'\x03#\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
-    if tag is 'DetectionDigest':
-        pattern = b'\x03\x01\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
-    if tag is 'FilePath1':
-        pattern = b'\x03\x00\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
-    if tag is 'FilePath2':
-        pattern = b'\x03\x02\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
-    if tag is 'FilePath3':
-        pattern = b'\x03\x27\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
-    if tag is 'FilePath4':
-        pattern = b'\x03\x01\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
-    if tag is 'FilePath5':
-        pattern = b'\x03\x01\x00\x00\x00\x01\x11\t\x10\x00\x00\x00!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
-    if tag is 'URL1':
-        pattern = b'\x03/\x00\x00\x00\x01\x11\t\x10\x00\x00\x00dE21\x13;3E\x89\x993\x99\x06\x88\xf5\xa9'
+
+    pattern = b'!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
+#    pattern = b'\xfd\xa8\xa7aZ\xe1\xcbO\x8a9\xa8\x8b\$\xd2\xa7c'
     
     regex = re.compile(pattern)
-    hit = regex.search(_.read())
-    if hit is None:
-        return ''
-    if tag is 'URL1':
-        offset = hit.end()
+    match = []
+    for m in regex.finditer(_.read()):
+        if m is None:
+            match.append('')
+        offset = m.end() + 15
         _.seek(offset, 0)
-        _ = vbnstruct.URL_Tag(_.read())
-        cstruct.dumpstruct(_)
-        return ''
-        
-    else:
-        offset = hit.end() + 15
-        _.seek(offset, 0)
-        _ = vbnstruct.QMF_Tag(_.read())
-        _ = _.Data.decode('latin-1').replace("\x00", "")
-    return _
+        tagMatch = vbnstruct.Tag(_.read())
+        tagMatch = tagMatch.Data.decode('latin-1').replace("\x00", "")
+        match.append(tagMatch)
+    return match
 
 def parse_syslog(f, logEntries):
     startEntry = 72
@@ -1943,6 +1944,7 @@ def parse_vbn(f):
     fpath2 = ''
     fpath3 = ''
     dd = ''
+    qfmInfo = ''
     garbage = None
     header = 0
     footer = 0
@@ -1971,7 +1973,23 @@ def parse_vbn(f):
         if args.hex_dump:
             virus = vbnstruct.Virus(f)
             cstruct.dumpstruct(virus)
+#            UUID = vbnstruct.UUID(f)
+#            cstruct.dumpstruct(UUID)
             print(f'\033[1;31mRecord type 1 is not supported yet. End of hex output.\033[1;0m\n')
+        qfmInfo = parse_tags(f.read())
+#        print(qfmInfo)
+        for a in qfmInfo:
+            if 'Detection Digest:' in a:
+                qfmInfo.remove(a)
+                dd = a.replace('"', '""')
+            try:
+                sddl = sddl_translate(a)
+                qfmInfo.remove(a)
+            except:
+                pass
+        a = [''] * (7 - len(qfmInfo))
+        qfmInfo = a + qfmInfo
+        qfmInfo = '","'.join(qfmInfo)
         if args.extract:
             print(f'\033[1;31mRecord type 1 does not contain quarantine data. Unable to extract file.\033[1;0m\n')
             print(f'\033[1;32mFinished parsing {f.name} \033[1;0m\n')
@@ -1984,16 +2002,20 @@ def parse_vbn(f):
         qfm_size = struct.unpack('q', qfm_size)[0]
         f.seek(-32, 1)
         qfm = vbnstruct.Quarantine_File_Metadata(xor(f.read(qfm_size), 0x5A).encode('latin-1'))
-        sddl = parse_qfm(qfm.QFM, 'sddl')
-        if len(sddl) > 0:
-            sddl = sddl_translate(sddl)
-        fpath1 = parse_qfm(qfm.QFM, 'FilePath1')
-        fpath2 = parse_qfm(qfm.QFM, 'FilePath2')
-        fpath3 = parse_qfm(qfm.QFM, 'FilePath3')
-        dd = parse_qfm(qfm.QFM, 'DetectionDigest').replace('"', '""')
-#        url1 = parse_qfm(qfm.QFM, 'URL1')
-#        print(url1)
-#        input()
+        qfmInfo = parse_tags(qfm.QFM)
+#        print(qfmInfo)
+        for a in qfmInfo:
+            if 'Detection Digest:' in a:
+                qfmInfo.remove(a)
+                dd = a.replace('"', '""')
+            try:
+                sddl = sddl_translate(a)
+                qfmInfo.remove(a)
+            except:
+                pass
+        a = [''] * (7 - len(qfmInfo))
+        qfmInfo = a + qfmInfo
+        qfmInfo = '","'.join(qfmInfo)
         
         if args.hex_dump:
             cstruct.dumpstruct(qfm)
@@ -2087,7 +2109,7 @@ def parse_vbn(f):
         output = open(os.path.basename(description) + '.vbn','wb+')
         output.write(bytes(qfile[header:qfs], encoding= 'latin-1'))
         
-    quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{from_filetime(int(flip(vbnmeta.Date_Modified.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Created.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Accessed.hex()), 16))}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_UTC)}","{from_unix_sec(vbnmeta.Date_Accessed_UTC)}","{from_unix_sec(vbnmeta.Date_Modified_UTC)}","{from_unix_sec(vbnmeta.VBin_Time)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Folder_Name)[2:].upper()}","{wDescription}","{sddl}","{sha1}","{qfs}","{junkfs}","{fpath1}","{fpath2}","{fpath3}","{dd}"\n')
+    quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{from_filetime(int(flip(vbnmeta.Date_Modified.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Created.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Accessed.hex()), 16))}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_UTC)}","{from_unix_sec(vbnmeta.Date_Accessed_UTC)}","{from_unix_sec(vbnmeta.Date_Modified_UTC)}","{from_unix_sec(vbnmeta.VBin_Time)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Folder_Name)[2:].upper()}","{wDescription}","{sddl}","{sha1}","{qfs}","{junkfs}","{dd}","{qfmInfo}"\n')
 
 def utc_offset(_):
     tree = ET.parse(_)
