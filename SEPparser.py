@@ -197,14 +197,35 @@ typedef struct _VBN_METADATA {
     char Unknown16[212];
 } VBN_METADATA;
 
-typedef struct _Quarantine_File_Metadata {
+typedef struct _Quarantine_File_Metadata_Header {
     int64 QMF_Header;
     int64 QMF_Header_Size;
     int64 QMF_Size;
     int64 QMF_Size_Header_Size;
     int64 Data_Size_From_End_of_QMF-to_End_of_VBN;
-    char QFM[QMF_Size];  //Full structure to end
-} Quarantine_File_Metadata;
+    char QFM[QMF_Size]  //Full structure to end
+} Quarantine_File_Metadata_Header;
+
+typedef struct _ASN1_1 {
+    byte Tag;
+    char Value[1];
+} ASN1_1;
+
+typedef struct _ASN1_4 {
+    byte Tag;
+    char Value[4];
+} ASN1_4;
+
+typedef struct _ASN1_8 {
+    byte Tag;
+    char Value[8];
+} ASN1_8;
+
+typedef struct _ASN1_String {
+    byte Tag;
+    int32 Data_Length;
+    char Data[Data_Length];
+} ASN1_String;
 
 typedef struct _Quarantine_File_Info {
     byte Tag1;
@@ -1360,8 +1381,37 @@ def read_log_data(data, tz):
      
     return f'"{entry.time}","{entry.event}","{entry.category}","{entry.logger}","{entry.computer}","{entry.user}","{entry.virus}","{entry.file}","{entry.wantedaction1}","{entry.wantedaction2}","{entry.realaction}","{entry.virustype}","{entry.flags}","{entry.description}","{entry.scanid}","{entry.newext}","{entry.groupid}","{entry.eventdata}","{entry.vbinid}","{entry.virusid}","{entry.quarantineforwardstatus}","{entry.access}","{entry.sdnstatus}","{entry.compressed}","{entry.depth}","{entry.stillinfected}","{entry.definfo}","{entry.defsequincenumber}","{entry.cleaninfo}","{entry.deleteinfo}","{entry.backupod}","{entry.parent}","{entry.guid}","{entry.clientgroup}","{entry.address}","{entry.domainname}","{entry.ntdomain}","{entry.macaddress}","{entry.version}","{entry.remotemachine}","{entry.remotemachineip}","{entry.action1status}","{entry.action2status}","{entry.licensefeaturename}","{entry.licensefeatureversion}","{entry.licenseserialnumber}","{entry.licensefulfillmentid}","{entry.licensestartdate}","{entry.licenseexpirationdate}","{entry.licenselifecycle}","{entry.licenseseatstotal}","{entry.licenseseats}","{entry.errorcode}","{entry.licenseseatsdelta}","{entry.status}","{entry.domainguid}","{entry.sessionguid}","{entry.vbnsessionid}","{entry.logindomain}","{entry.eventdata2}","{entry.erasercategoryid}","{entry.dynamiccategoryset}","{entry.subcategorysetid}","{entry.displaynametouse}","{entry.reputationdisposition}","{entry.reputationconfidence}","{entry.firsseen}","{entry.reputationprevalence}","{entry.downloadurl}","{entry.categoryfordropper}","{entry.cidsstate}","{entry.behaviorrisklevel}","{entry.detectiontype}","{entry.acknowledgetext}","{entry.vsicstate}","{entry.scanguid}","{entry.scanduration}","{entry.scanstarttime}","{entry.targetapptype}","{entry.scancommandguid}","{field113}","{field114}","{field115}","{entry.digitalsigner}","{entry.digitalissuer}","{entry.digitalthumbprint}","{field119}","{entry.digitalsn}","{entry.digitaltime}","{field122}","{field123}"'
 
-def event_data1(_):
+def read_sep_tag(_):
+    _ = io.BytesIO(_)
+    while True:
+        try:
+            code = struct.unpack("B", _.read(1))[0]
+        except:
+            break
+        if code == 1 or code == 10:
+            _.seek(-1,1)
+            tag = vbnstruct.ASN1_1(_.read(2))
+            if args.hex_dump:
+                cstruct.dumpstruct(tag)
+        elif code == 3 or code == 6:
+            _.seek(-1,1)
+            tag = vbnstruct.ASN1_4(_.read(5))
+            if args.hex_dump:
+                cstruct.dumpstruct(tag)
+        elif code == 4:
+            _.seek(-1,1)
+            tag = vbnstruct.ASN1_8(_.read(9))
+            if args.hex_dump:
+                cstruct.dumpstruct(tag)
+        else:
+            size = struct.unpack("<I", _.read(4))[0]
+            _.seek(-5,1)
+            tag = vbnstruct.ASN1_String(_.read(5 + size))
+            if args.hex_dump:
+                cstruct.dumpstruct(tag)
 
+def event_data1(_):
+#
     _ = _.replace('"', '').split('\t')
     if len(_) < 13:
             diff = 13 - len(_)
@@ -1971,25 +2021,25 @@ def parse_vbn(f):
     
     if vbnmeta.Record_Type is 1:
         if args.hex_dump:
-            virus = vbnstruct.Virus(f)
-            cstruct.dumpstruct(virus)
+            read_sep_tag(f.read())
+#            virus = vbnstruct.Virus(f)
+#            cstruct.dumpstruct(virus)
 #            UUID = vbnstruct.UUID(f)
 #            cstruct.dumpstruct(UUID)
-            print(f'\033[1;31mRecord type 1 is not supported yet. End of hex output.\033[1;0m\n')
-        qfmInfo = parse_tags(f.read())
+#        qfmInfo = parse_tags(f.read())
 #        print(qfmInfo)
-        for a in qfmInfo:
-            if 'Detection Digest:' in a:
-                qfmInfo.remove(a)
-                dd = a.replace('"', '""')
-            try:
-                sddl = sddl_translate(a)
-                qfmInfo.remove(a)
-            except:
-                pass
-        a = [''] * (7 - len(qfmInfo))
-        qfmInfo = a + qfmInfo
-        qfmInfo = '","'.join(qfmInfo)
+#        for a in qfmInfo:
+#            if 'Detection Digest:' in a:
+#                qfmInfo.remove(a)
+#                dd = a.replace('"', '""')
+#            try:
+#                sddl = sddl_translate(a)
+#                qfmInfo.remove(a)
+#            except:
+#                pass
+#        a = [''] * (7 - len(qfmInfo))
+#        qfmInfo = a + qfmInfo
+#        qfmInfo = '","'.join(qfmInfo)
         if args.extract:
             print(f'\033[1;31mRecord type 1 does not contain quarantine data. Unable to extract file.\033[1;0m\n')
             print(f'\033[1;32mFinished parsing {f.name} \033[1;0m\n')
@@ -1997,28 +2047,45 @@ def parse_vbn(f):
     
     if vbnmeta.Record_Type is 2:
         f.seek(vbnmeta.QMF_HEADER_Offset, 0)
-        f.seek(24, 1)
+        f.seek(8, 1)
         qfm_size = xor(f.read(8), 0x5A).encode('latin-1')
         qfm_size = struct.unpack('q', qfm_size)[0]
-        f.seek(-32, 1)
-        qfm = vbnstruct.Quarantine_File_Metadata(xor(f.read(qfm_size), 0x5A).encode('latin-1'))
-        qfmInfo = parse_tags(qfm.QFM)
-#        print(qfmInfo)
-        for a in qfmInfo:
-            if 'Detection Digest:' in a:
-                qfmInfo.remove(a)
-                dd = a.replace('"', '""')
-            try:
-                sddl = sddl_translate(a)
-                qfmInfo.remove(a)
-            except:
-                pass
-        a = [''] * (7 - len(qfmInfo))
-        qfmInfo = a + qfmInfo
-        qfmInfo = '","'.join(qfmInfo)
-        
+        f.seek(-16, 1)
+        qfm = vbnstruct.Quarantine_File_Metadata_Header(xor(f.read(qfm_size), 0x5A).encode('latin-1'))
         if args.hex_dump:
+            print('\n           #######################################################')
+            print('           #######################################################')
+            print('           ##                                                   ##')
+            print('           ## The following data structures are xored with 0x5A ##')
+            print('           ##                                                   ##')
+            print('           #######################################################')
+            print('           #######################################################\n')
             cstruct.dumpstruct(qfm)
+            print('\n           #######################################################')
+            print('           #######################################################')
+            print('           ##                                                   ##')
+            print('           ##         Quarantine File Metadata Structure        ##')
+            print('           ##                                                   ##')
+            print('           #######################################################')
+            print('           #######################################################\n')
+        read_sep_tag(xor(f.read(qfm.QMF_Size), 0x5A).encode('latin-1'))
+#        qfmInfo = parse_tags(qfm.QFM)
+#        print(qfmInfo)
+#        for a in qfmInfo:
+#            if 'Detection Digest:' in a:
+#                qfmInfo.remove(a)
+#                dd = a.replace('"', '""')
+#            try:
+#                sddl = sddl_translate(a)
+#                qfmInfo.remove(a)
+#            except:
+#                pass
+#        a = [''] * (7 - len(qfmInfo))
+#        qfmInfo = a + qfmInfo
+#        qfmInfo = '","'.join(qfmInfo)
+        
+#        if args.hex_dump:
+#            cstruct.dumpstruct(qfm)
         pos = qfm.QMF_Size_Header_Size + vbnmeta.QMF_HEADER_Offset
         f.seek(pos)
         f.seek(8, 1)

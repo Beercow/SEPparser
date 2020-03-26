@@ -1,0 +1,19 @@
+Container (Unicode string)
+21 a3 05 3f b7 43 78 45  93 c8 cd c5 f6 4a 14 9a
+b'!\xa3\x05?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
+
+Container (Owner SID)
+fd a8 a7 61 5a e1 cb 4f  8a 39 a8 8b 24 d2 a7 63
+b'\xfd\xa8\xa7aZ\xe1\xcbO\x8a9\xa8\x8b$\xd2\xa7c'
+
+Container (More info)
+6f b4 50 c8 6e 64 9d 4e  80 86 9f 71 0c 44 b3 7c
+b'o\xb4P\xc8nd\x9dN\x80\x86\x9fq\x0cD\xb3|'
+
+Container (More info)
+64 45 32 31 13 3b 33 45  89 99 33 99 06 88 f5 a9
+b'dE21\x13;3E\x89\x993\x99\x06\x88\xf5\xa9'
+
+Container (More info)
+1d b6 0a 74 4a 8b cc 46  9d 82 86 f7 2e 05 54 77
+b'\x1d\xb6\ntJ\x8b\xccF\x9d\x82\x86\xf7.\x05Tw'
