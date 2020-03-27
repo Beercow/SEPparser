@@ -10,10 +10,14 @@ Container (More info)
 6f b4 50 c8 6e 64 9d 4e  80 86 9f 71 0c 44 b3 7c
 b'o\xb4P\xc8nd\x9dN\x80\x86\x9fq\x0cD\xb3|'
 
-Container (More info)
+Container (More info) ###Does not want to play nice#####
 64 45 32 31 13 3b 33 45  89 99 33 99 06 88 f5 a9
 b'dE21\x13;3E\x89\x993\x99\x06\x88\xf5\xa9'
 
 Container (More info)
 1d b6 0a 74 4a 8b cc 46  9d 82 86 f7 2e 05 54 77
 b'\x1d\xb6\ntJ\x8b\xccF\x9d\x82\x86\xf7.\x05Tw'
+
+Container (More info)
+bb 81 1a 3a 8f c1 be 48  82 2c 8b 62 63 a5 20 4d
+b'\xbb\x81\x1a:\x8f\xc1\xbeH\x82,\x8bbc\xa5 M'

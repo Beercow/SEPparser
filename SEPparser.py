@@ -33,7 +33,7 @@ def csv_header():
 
     tamperProtect.write('"File Name","Computer","User","Action Taken","Object Type","Event","Actor","Target","Target Process","Date and Time"\n')
     
-    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","Record Type","Folder Name","Wide Description","SDDL","SHA1","Quarantine Container Size","File Size 2","Detection Digest","Virus","GUID","Info 3","Info 4","Info 5","Info 6","Info 7","Owner SID"\n')
+    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","Record Type","Folder Name","Wide Description","SDDL","SHA1","Quarantine Container Size","File Size 2","Detection Digest","Virus","GUID","Info 3","Info 4","Info 5","Info 6","Info 7","Info 8","Owner SID"\n')
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 
@@ -1383,6 +1383,8 @@ def read_log_data(data, tz):
 
 def read_sep_tag(_):
     _ = io.BytesIO(_)
+    extra = False
+    match = []
     while True:
         try:
             code = struct.unpack("B", _.read(1))[0]
@@ -1404,14 +1406,29 @@ def read_sep_tag(_):
             if args.hex_dump:
                 cstruct.dumpstruct(tag)
         else:
-            size = struct.unpack("<I", _.read(4))[0]
-            _.seek(-5,1)
-            tag = vbnstruct.ASN1_String(_.read(5 + size))
-            if args.hex_dump:
-                cstruct.dumpstruct(tag)
+            if extra:
+                size = struct.unpack("<I", _.read(4))[0]
+                _.seek(-5,1)
+                if code is 9 and size is 16:
+                    tag = vbnstruct.ASN1_String(_.read(5 + size))
+                else:
+                    tag = vbnstruct.ASN1_4(_.read(5))
+                if args.hex_dump:
+                    cstruct.dumpstruct(tag)
+                extra = False
+            else:
+                size = struct.unpack("<I", _.read(4))[0]
+                _.seek(-5,1)
+                if code is 9 and size is 16:
+                    extra = True
+                tag = vbnstruct.ASN1_String(_.read(5 + size))
+                if code is 7 or code is 8:
+                    match.append(tag.Data.decode('latin-1').replace("\x00", ""))
+                if args.hex_dump:
+                    cstruct.dumpstruct(tag)
+    return match
 
 def event_data1(_):
-#
     _ = _.replace('"', '').split('\t')
     if len(_) < 13:
             diff = 13 - len(_)
@@ -1556,24 +1573,6 @@ def parse_header(f):
     except:
         print(f'\033[1;33mSkipping {f.name}. Unknown File Type. \033[1;0m\n')
         return 9, 1
-    
-def parse_tags(_):
-    _ = io.BytesIO(_)
-
-    pattern = b'!\xa3\x05\?\xb7CxE\x93\xc8\xcd\xc5\xf6J\x14\x9a'
-#    pattern = b'\xfd\xa8\xa7aZ\xe1\xcbO\x8a9\xa8\x8b\$\xd2\xa7c'
-    
-    regex = re.compile(pattern)
-    match = []
-    for m in regex.finditer(_.read()):
-        if m is None:
-            match.append('')
-        offset = m.end() + 15
-        _.seek(offset, 0)
-        tagMatch = vbnstruct.Tag(_.read())
-        tagMatch = tagMatch.Data.decode('latin-1').replace("\x00", "")
-        match.append(tagMatch)
-    return match
 
 def parse_syslog(f, logEntries):
     startEntry = 72
@@ -1994,7 +1993,7 @@ def parse_vbn(f):
     fpath2 = ''
     fpath3 = ''
     dd = ''
-    qfmInfo = ''
+    tags = ''
     garbage = None
     header = 0
     footer = 0
@@ -2020,26 +2019,19 @@ def parse_vbn(f):
             sys.exit()
     
     if vbnmeta.Record_Type is 1:
-        if args.hex_dump:
-            read_sep_tag(f.read())
-#            virus = vbnstruct.Virus(f)
-#            cstruct.dumpstruct(virus)
-#            UUID = vbnstruct.UUID(f)
-#            cstruct.dumpstruct(UUID)
-#        qfmInfo = parse_tags(f.read())
-#        print(qfmInfo)
-#        for a in qfmInfo:
-#            if 'Detection Digest:' in a:
-#                qfmInfo.remove(a)
-#                dd = a.replace('"', '""')
-#            try:
-#                sddl = sddl_translate(a)
-#                qfmInfo.remove(a)
-#            except:
-#                pass
-#        a = [''] * (7 - len(qfmInfo))
-#        qfmInfo = a + qfmInfo
-#        qfmInfo = '","'.join(qfmInfo)
+        tags = read_sep_tag(f.read())
+        for a in tags:
+            if 'Detection Digest:' in a:
+                tags.remove(a)
+                dd = a.replace('"', '""')
+            try:
+                sddl = sddl_translate(a)
+                tags.remove(a)
+            except:
+                pass
+        a = [''] * (7 - len(tags))
+        tags = a + tags
+        tags = '","'.join(tags)
         if args.extract:
             print(f'\033[1;31mRecord type 1 does not contain quarantine data. Unable to extract file.\033[1;0m\n')
             print(f'\033[1;32mFinished parsing {f.name} \033[1;0m\n')
@@ -2068,24 +2060,21 @@ def parse_vbn(f):
             print('           ##                                                   ##')
             print('           #######################################################')
             print('           #######################################################\n')
-        read_sep_tag(xor(f.read(qfm.QMF_Size), 0x5A).encode('latin-1'))
-#        qfmInfo = parse_tags(qfm.QFM)
-#        print(qfmInfo)
-#        for a in qfmInfo:
-#            if 'Detection Digest:' in a:
-#                qfmInfo.remove(a)
-#                dd = a.replace('"', '""')
-#            try:
-#                sddl = sddl_translate(a)
-#                qfmInfo.remove(a)
-#            except:
-#                pass
-#        a = [''] * (7 - len(qfmInfo))
-#        qfmInfo = a + qfmInfo
-#        qfmInfo = '","'.join(qfmInfo)
+        tags = read_sep_tag(xor(f.read(qfm.QMF_Size), 0x5A).encode('latin-1'))
+
+        for a in tags:
+            if 'Detection Digest:' in a:
+                tags.remove(a)
+                dd = a.replace('"', '""')
+            try:
+                sddl = sddl_translate(a)
+                tags.remove(a)
+            except:
+                pass
+        a = [''] * (7 - len(tags))
+        tags = a + tags
+        tags = '","'.join(tags)
         
-#        if args.hex_dump:
-#            cstruct.dumpstruct(qfm)
         pos = qfm.QMF_Size_Header_Size + vbnmeta.QMF_HEADER_Offset
         f.seek(pos)
         f.seek(8, 1)
@@ -2176,7 +2165,7 @@ def parse_vbn(f):
         output = open(os.path.basename(description) + '.vbn','wb+')
         output.write(bytes(qfile[header:qfs], encoding= 'latin-1'))
         
-    quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{from_filetime(int(flip(vbnmeta.Date_Modified.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Created.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Accessed.hex()), 16))}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_UTC)}","{from_unix_sec(vbnmeta.Date_Accessed_UTC)}","{from_unix_sec(vbnmeta.Date_Modified_UTC)}","{from_unix_sec(vbnmeta.VBin_Time)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Folder_Name)[2:].upper()}","{wDescription}","{sddl}","{sha1}","{qfs}","{junkfs}","{dd}","{qfmInfo}"\n')
+    quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{from_filetime(int(flip(vbnmeta.Date_Modified.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Created.hex()), 16))}","{from_filetime(int(flip(vbnmeta.Date_Accessed.hex()), 16))}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_UTC)}","{from_unix_sec(vbnmeta.Date_Accessed_UTC)}","{from_unix_sec(vbnmeta.Date_Modified_UTC)}","{from_unix_sec(vbnmeta.VBin_Time)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Folder_Name)[2:].upper()}","{wDescription}","{sddl}","{sha1}","{qfs}","{junkfs}","{dd}","{tags}"\n')
 
 def utc_offset(_):
     tree = ET.parse(_)
