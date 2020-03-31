@@ -1,0 +1,9 @@
+#  Code    Value Length   Extra Data
+#  0x01         1            None
+#  0x0A         1            None
+#  0x03         4            None
+#  0x06         4            None
+#  0x04         8            None
+#  0x07         4            NUL-terminated ASCII String (of length controlled by dword following 0x07 code)
+#  0x08         4            NUL-terminated Unicode String (of length controlled by dword following 0x08 code)
+#  0x09         4            Container (of length controlled by dword following 0x09 code)
