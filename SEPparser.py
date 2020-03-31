@@ -1385,6 +1385,8 @@ def read_sep_tag(_):
     _ = io.BytesIO(_)
     extra = False
     match = []
+    dd = ''
+    sddl = ''
     while True:
         try:
             code = struct.unpack("B", _.read(1))[0]
@@ -1426,7 +1428,20 @@ def read_sep_tag(_):
                     match.append(tag.Data.decode('latin-1').replace("\x00", ""))
                 if args.hex_dump:
                     cstruct.dumpstruct(tag)
-    return match
+
+    for a in match:
+        if 'Detection Digest:' in a:
+            match.remove(a)
+            dd = a.replace('"', '""')
+        try:
+            sddl = sddl_translate(a)
+            match.remove(a)
+        except:
+            pass
+    a = [''] * (7 - len(match))
+    match = a + match
+    match = '","'.join(match)
+    return match, dd, sddl
 
 def event_data1(_):
     _ = _.replace('"', '').split('\t')
@@ -2019,19 +2034,8 @@ def parse_vbn(f):
             sys.exit()
     
     if vbnmeta.Record_Type is 1:
-        tags = read_sep_tag(f.read())
-        for a in tags:
-            if 'Detection Digest:' in a:
-                tags.remove(a)
-                dd = a.replace('"', '""')
-            try:
-                sddl = sddl_translate(a)
-                tags.remove(a)
-            except:
-                pass
-        a = [''] * (7 - len(tags))
-        tags = a + tags
-        tags = '","'.join(tags)
+        tags, dd, sddl = read_sep_tag(f.read())
+
         if args.extract:
             print(f'\033[1;31mRecord type 1 does not contain quarantine data. Unable to extract file.\033[1;0m\n')
             print(f'\033[1;32mFinished parsing {f.name} \033[1;0m\n')
@@ -2060,20 +2064,7 @@ def parse_vbn(f):
             print('           ##                                                   ##')
             print('           #######################################################')
             print('           #######################################################\n')
-        tags = read_sep_tag(xor(f.read(qfm.QMF_Size), 0x5A).encode('latin-1'))
-
-        for a in tags:
-            if 'Detection Digest:' in a:
-                tags.remove(a)
-                dd = a.replace('"', '""')
-            try:
-                sddl = sddl_translate(a)
-                tags.remove(a)
-            except:
-                pass
-        a = [''] * (7 - len(tags))
-        tags = a + tags
-        tags = '","'.join(tags)
+        tags, dd, sddl= read_sep_tag(xor(f.read(qfm.QMF_Size), 0x5A).encode('latin-1'))
         
         pos = qfm.QMF_Size_Header_Size + vbnmeta.QMF_HEADER_Offset
         f.seek(pos)
