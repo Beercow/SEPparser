@@ -12,6 +12,7 @@ from dissect import cstruct
 import struct
 import SDDL3
 import io
+import ntpath
 
 if os.name == 'nt':
     kernel32 = ctypes.windll.kernel32
@@ -29,11 +30,11 @@ def csv_header():
 
     processlog.write('"File Name","Record Length","Date And Time","Severity","Action","Test Mode","Description","API","Rule Name","IP Address","Caller Process ID","Caller Process","Device Instance ID","Target","File Size","User","User Domain","Location","Event ID","Field9","Begin Time","End Time","Field15","Field16","Field21","Field22","Field25","Field26","Field27"\n')
 
-    timeline.write('"File Name","Record Length","Date/Time1","Date/Time2","Date/Time3","Field5","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8","LOG:Event_Data9","LOG:Event_Data10","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","Field115","Field116","Filed117","Digital_Signatures_Signer","Digital_Signatures_Issuer","Digital_Signatures_Certificate_Thumbprint","Field121","Digital_Signatures_Serial_Number","Digital_Signatures_Signing_Time","Field124","Field125"\n')
+    timeline.write('"File Name","Record Length","Date/Time1","Date/Time2","Date/Time3","Field5","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8 (101_Virus)","LOG:Event_Data9","LOG:Event_Data10 (101_Remediation Type ID)","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","Field115","Field116","Filed117","Digital_Signatures_Signer","Digital_Signatures_Issuer","Digital_Signatures_Certificate_Thumbprint","Field121","Digital_Signatures_Serial_Number","Digital_Signatures_Signing_Time","Field124","Field125"\n')
 
     tamperProtect.write('"File Name","Computer","User","Action Taken","Object Type","Event","Actor","Target","Target Process","Date and Time"\n')
     
-    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","VBin Time 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time 2 UTC","Unique ID","Record Type","Folder Name","Wide Description","SDDL","SHA1","Quarantine Container Size","File Size 2","Detection Digest","Virus","GUID","Additional Info","Owner SID"\n')
+    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","VBin Time 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time 2 UTC","Unique ID","Record Type","Quarantine Session ID","Remediation Type","Wide Description","SDDL","SHA1","Quarantine Container Size","File Size 2","Detection Digest","Virus","GUID","Additional Info","Owner SID"\n')
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 
@@ -184,8 +185,8 @@ typedef struct _VBN_METADATA_V1{
     char Unknown6[260];
     int32 Unknown7;
     int32 Record_Type; 
-    int32 Folder_Name;
-    int32 Unknown8;
+    int32 Quarantine_Session_ID;
+    int32 Remediation_Type;
     int32 Unknown9;
     int32 Unknown10;
     int32 Unknown11;
@@ -225,8 +226,8 @@ typedef struct _VBN_METADATA_V2 {
     char Unknown6[260];
     int32 Unknown7;
     int32 Record_Type; 
-    int32 Folder_Name;
-    int32 Unknown8;
+    int32 Quarantine_Session_ID;
+    int32 Remediation_Type;
     int32 Unknown9;
     int32 Unknown10;
     int32 Unknown11;
@@ -268,8 +269,8 @@ typedef struct _VBN_METADATA_Linux{
     char Unknown6[4096];
     int32 Unknown7;
     int32 Record_Type; 
-    int32 Folder_Name;
-    int32 Unknown8;
+    int32 Quarantine_Session_ID;
+    int32 Remediation_Type;
     int32 Unknown9;
     int32 Unknown10;
     int32 Unknown11;
@@ -1046,7 +1047,9 @@ def log_flags(_):
 
 def remediation_type_desc(_):
 #LOG:Event_Data10
+#VBN Remediation Type ID
     remType = {
+               '0':'',
                '2000':'Registry',
                '2001':'File',
                '2002':'Process',
@@ -1062,7 +1065,7 @@ def remediation_type_desc(_):
                }
 
     for k, v in remType.items():
-        if k == _:
+        if k == str(_):
             return v
 
     return _
@@ -1892,12 +1895,12 @@ def parse_tralog(f, logEntries):
                 break
             
             if check is b'0':
-                startEntry -= 1
-        
+                f.seek(startEntry)
+
         if len(check) is 0:
                 print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
                 break
-        
+
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_raw(f, logEntries):
@@ -2113,6 +2116,7 @@ def parse_vbn(f):
     storageName = vbnmeta.Storage_Name.rstrip(b'\x00').decode("utf-8", "ignore")
     storageKey = vbnmeta.Storage_Key.rstrip(b'\x00').decode("utf-8", "ignore")
     uniqueId = '{' + '-'.join([flip(vbnmeta.Unique_ID.hex()[:8]), flip(vbnmeta.Unique_ID.hex()[8:12]), flip(vbnmeta.Unique_ID.hex()[12:16]), vbnmeta.Unique_ID.hex()[16:20], vbnmeta.Unique_ID.hex()[20:32]]).upper() + '}'
+    rtid = remediation_type_desc(vbnmeta.Remediation_Type)
     
     if args.hex_dump:
         cstruct.dumpstruct(vbnmeta)
@@ -2279,7 +2283,7 @@ def parse_vbn(f):
             pass
  
     if args.extract and len(qfile) > 0:
-        output = open(os.path.basename(description) + '.vbn','wb+')
+        output = open(ntpath.basename(description) + '.vbn','wb+')
         if (header or qfs) == 0:
             output.write(bytes(qfile, encoding= 'latin-1'))
         else:
@@ -2296,7 +2300,7 @@ def parse_vbn(f):
             access = from_unix_sec(vbnmeta.Date_Accessed)
             vbin = from_unix_sec(vbnmeta.VBin_Time)
             
-        quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{modify}","{create}","{access}","{vbin}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_2)}","{from_unix_sec(vbnmeta.Date_Accessed_2)}","{from_unix_sec(vbnmeta.Date_Modified_2)}","{from_unix_sec(vbnmeta.VBin_Time_2)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Folder_Name)[2:].upper()}","{wDescription}","{sddl}","{sha1}","{qfs}","{junkfs}","{dd}","{virus}","{guid}","{tags}","{sid}"\n')
+        quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{modify}","{create}","{access}","{vbin}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_2)}","{from_unix_sec(vbnmeta.Date_Accessed_2)}","{from_unix_sec(vbnmeta.Date_Modified_2)}","{from_unix_sec(vbnmeta.VBin_Time_2)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Quarantine_Session_ID)[2:].upper()}","{rtid}","{wDescription}","{sddl}","{sha1}","{qfs}","{junkfs}","{dd}","{virus}","{guid}","{tags}","{sid}"\n')
 
 def utc_offset(_):
     tree = ET.parse(_)
@@ -2407,8 +2411,8 @@ if args.kape or not (args.file or args.dir):
             for name in files:
                 if name == 'registrationInfo.xml':
                     try:
-                        print(f'\033[1;36m{os.path.join(path, name)} found. Attempting to apply timezone offset.\n \033[1;0m')
-                        args.timezone = utc_offset(os.path.join(path, name))
+                        print(f'\033[1;36m{ntpath.join(path, name)} found. Attempting to apply timezone offset.\n \033[1;0m')
+                        args.timezone = utc_offset(ntpath.join(path, name))
                         print(f'\033[1;32mTimezone offset of {args.timezone} applied successfully. \033[1;0m\n')
                     except Exception as e:
                         print(f'\033[1;31mUnable to apply offset. Timestamps will not be adjusted. {e}\033[1;0m\n')
@@ -2416,7 +2420,7 @@ if args.kape or not (args.file or args.dir):
 
         if regex.findall(path):
             for name in files:
-                filenames.append(os.path.join(path, name))
+                filenames.append(ntpath.join(path, name))
 
     if not filenames:
         print('No Symantec logs found.')
@@ -2432,20 +2436,20 @@ if args.dir and not args.kape:
         for name in files:
             if args.timezone is None and name == 'registrationInfo.xml':
                 try:
-                    print(f'\033[1;36m{os.path.join(path, name)} found. Attempting to apply timezone offset.\n \033[1;0m')
-                    args.timezone = utc_offset(os.path.join(path, name))
+                    print(f'\033[1;36m{ntpath.join(path, name)} found. Attempting to apply timezone offset.\n \033[1;0m')
+                    args.timezone = utc_offset(ntpath.join(path, name))
                     print(f'\033[1;32mTimezone offset of {args.timezone} applied successfully. \033[1;0m\n')
                 except Exception as e:
                     print(f'\033[1;31mUnable to apply offset. Timestamps will not be adjusted. {e}\033[1;0m\n')
                     pass
 
-            filenames.append(os.path.join(path, name))
+            filenames.append(ntpath.join(path, name))
 
 if args.timezone is None:
     args.timezone = 0
 
 if args.output and not (args.extract or args.hex_dump):
-    if not os.path.exists(args.output):
+    if not ntpath.exists(args.output):
             os.makedirs(args.output)
 
     if not args.append:
