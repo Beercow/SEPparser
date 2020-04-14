@@ -1090,28 +1090,28 @@ def log_tp_event(eventType, _):
 
     if eventType == '301':
         event = {
-                 '1':'Create',
-                 '55':'Open',
-                 '56':'Duplicate'
+                 '1':'File","Create',
+                 '2':'File","Delete',
+                 '3':'File","Open',
+                 '6':'Directory","Create',
+                 '7':'Directory","Delete',
+                 '14':'Registry Key","Create',
+                 '15':'Registry Key","Delete',
+                 '16':'Registry Value","Delete',
+                 '17':'Registry Value","Set',
+                 '18':'Registry Key","Rename',
+                 '19':'Registry Key","Set Security',
+                 '45':'File","Set Security',
+                 '46':'Directory","Set Security',
+                 '55':'Process","Open',
+                 '56':'Process","Duplicate'
                 }
 
         for k, v in event.items():
             if k == _:
                 return v
 
-    return _
-
-def log_tp_object_type(_):
-
-    objectType = {
-                 '0':'File'
-                 }
-
-    for k, v in objectType.items():
-        if k == str(len(_)):
-            return v
-
-    return 'Process'
+    return str('","'+_)
 
 def protocol(_):
     protocol = {
@@ -1335,7 +1335,6 @@ def read_log_entry(f, loc, count):
 def read_log_data(data, tz):
     entry = LogFields()
     data = re.split(b',(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)', data)
-    print(len(data))
     field113 = ''
     field114 = ''
     field115 = ''
@@ -2070,13 +2069,12 @@ def parse_tamper_protect(logData, logEntry, fname):
     entry.time = logData[0]
     entry.computer = logData[4]
     entry.user = logData[5]
-    entry.objecttype = log_tp_object_type(logData[22])
     entry.event = log_tp_event(logData[17], logData[20])
     entry.actor = f'{logData[19]} (PID {logData[18]})'
     entry.targetprocess = f'{logData[22]} (PID {logData[21]})'
     entry.target = logData[23]
 
-    tamperProtect.write(f'"{fname}","{entry.computer}","{entry.user}","{entry.action}","{entry.objecttype}","{entry.event}","{entry.actor}","{entry.target}","{entry.targetprocess}","{entry.time}\n')
+    tamperProtect.write(f'"{fname}","{entry.computer}","{entry.user}","{entry.action}","{entry.event}","{entry.actor}","{entry.target}","{entry.targetprocess}","{entry.time}\n')
 
 def parse_daily_av(f, logType, tz):
     if logType is 6:
@@ -2093,9 +2091,13 @@ def parse_daily_av(f, logType, tz):
 
     while logEntry:
         logEntry = read_log_data(logEntry, tz)
+        
+        if logEntry.split('","')[1] == 'SECURITY_SYMPROTECT_POLICYVIOLATION':
+            parse_tamper_protect(logEntry.split('","'), logEntry, f.name)
+        
         timeline.write(f'"{f.name}","","","","","",{logEntry}\n')
 
-        if logType is 7 or 8:
+        if logType is 7 or logType is 8:
             break
             
         logEntry = f.readline()
