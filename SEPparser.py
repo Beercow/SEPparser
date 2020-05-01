@@ -545,7 +545,7 @@ def log_direction(_):
 
 def log_description(data):
     try:
-        if data[3].decode("utf-8", "ignore") is '2' and data[64].decode("utf-8", "ignore") is '1':
+        if data[3].decode("utf-8", "ignore") == '2' and data[64].decode("utf-8", "ignore") == '1':
             return 'AP realtime defferd scanning'
     except:
         pass
@@ -1483,7 +1483,7 @@ def read_sep_tag(_):
             if extra:
                 size = struct.unpack("<I", _.read(4))[0]
                 _.seek(-5,1)
-                if code is 9 and size is 16:
+                if code == 9 and size == 16:
                     tag = vbnstruct.ASN1_String(_.read(5 + size))
 #                    if re.match(b'dE21\x13;3E\x89\x993\x99\x06\x88\xf5\xa9', tag.Data):
 #                        print('yes')
@@ -1495,15 +1495,15 @@ def read_sep_tag(_):
             else:
                 size = struct.unpack("<I", _.read(4))[0]
                 _.seek(-5,1)
-                if code is 9 and size is 16:
+                if code == 9 and size == 16:
                     extra = True
                 tag = vbnstruct.ASN1_String(_.read(5 + size))
                 if re.match(b'\xb9\x1f\x8a\\\\\xb75\\\D\x98\x03%\xfc\xa1W\^q', tag.Data):
                     hit = 'virus'
 #                if re.match(b'dE21\x13;3E\x89\x993\x99\x06\x88\xf5\xa9', tag.Data):
 #                    print('yes')
-                if code is 7 or code is 8:
-                    if hit is 'virus':
+                if code == 7 or code == 8:
+                    if hit == 'virus':
                         virus = tag.Data.decode('latin-1').replace("\x00", "")
                         hit = None
                     else:
@@ -1588,9 +1588,9 @@ def from_filetime(_):
     
 def from_hex_ip(ipHex):
     ipHex = ipHex.decode("utf-8", "ignore")
-    if ipHex is '0':
+    if ipHex == '0':
         return '0.0.0.0'
-    if len(ipHex) is not 8:
+    if len(ipHex) != 8:
         ipHex = '0' + ipHex
     try:
         ipv4 = (
@@ -1723,18 +1723,18 @@ def parse_syslog(f, logEntries):
         f.seek(startEntry)
         check = f.read(1)
 
-        while check is not b'0':
+        while check != b'0':
             startEntry += 1
             f.seek(startEntry)
             check = f.read(1)
 
-            if len(check) is 0:
+            if len(check) == 0:
                 break
 
-            if check is b'0':
+            if check == b'0':
                 f.seek(startEntry)
 
-        if len(check) is 0:
+        if len(check) == 0:
             print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
             break
 
@@ -1750,7 +1750,7 @@ def parse_seclog(f, logEntries):
         logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t',16)
         logData = []
         data = ''
-        if int(logEntry[12], 16) is 0:
+        if int(logEntry[12], 16) == 0:
             logData = ['']
         else:
             #Field27 might be a better indicator of data type (0=logline ,2=base64)?
@@ -1780,10 +1780,9 @@ def parse_seclog(f, logEntries):
 
         if len(entry.localmac) < 32:
             while True:
-                logEntry2[1] = logEntry2[2] + b'\t'
+                logEntry2[1] = logEntry2[1] + b'\t'
                 logEntry2[1:3] = [b''.join(logEntry2[1:3])]
                 entry.localmac = logEntry2[1].hex()
-
                 if len(entry.localmac) == 32:
                     entry.localmac = from_hex_mac(logEntry2[1].hex())
                     break
@@ -1820,7 +1819,7 @@ def parse_seclog(f, logEntries):
         entry.intrusionurl = logEntry2[16].decode("utf-8", "ignore")
         entry.hash = logEntry2[22].decode("utf-8", "ignore").strip('\r')
         
-        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}","{logEntry[7].decode("utf-8", "ignore")}","{int(logEntry[12], 16)}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry2[0].decode("utf-8", "ignore")}","{logEntry2[8].decode("utf-8", "ignore")}","{logEntry2[9].decode("utf-8", "ignore")}","{REMOTE_HOST_IPV6}","{from_hex_ipv6(logEntry2[12])}","{logEntry2[17].decode("utf-8", "ignore")}","{logEntry2[18].decode("utf-8", "ignore")}","{logEntry2[19].decode("utf-8", "ignore")}","{logEntry2[20].decode("utf-8", "ignore")}","{logEntry2[21].decode("utf-8", "ignore")}","{data}",{",".join(logData)}\n')
+        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}","{logEntry[7].decode("utf-8", "ignore")}","{int(logEntry[12], 16)}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry2[0].decode("utf-8", "ignore")}","{logEntry2[8].decode("utf-8", "ignore")}","{logEntry2[9].decode("utf-8", "ignore")}","{REMOTE_HOST_IPV6}","{LOCAL_HOST_IPV6}","{logEntry2[17].decode("utf-8", "ignore")}","{logEntry2[18].decode("utf-8", "ignore")}","{logEntry2[19].decode("utf-8", "ignore")}","{logEntry2[20].decode("utf-8", "ignore")}","{logEntry2[21].decode("utf-8", "ignore")}","{data}",{",".join(logData)}\n')
 
         if len(logData) > 1:
             timeline.write(f'"{f.name}","{int(logEntry[12], 16)}","","","","",{",".join(logData)}\n')
@@ -1834,18 +1833,18 @@ def parse_seclog(f, logEntries):
         f.seek(startEntry)
         check = f.read(1)
 
-        while check is not b'0':
+        while check != b'0':
             startEntry += 1
             f.seek(startEntry)
             check = f.read(1)
 
-            if len(check) is 0:
+            if len(check) == 0:
                 break
 
-            if check is b'0':
+            if check == b'0':
                 startEntry -= 1
 
-        if len(check) is 0:
+        if len(check) == 0:
             print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
             break
 
@@ -1913,18 +1912,18 @@ def parse_tralog(f, logEntries):
         f.seek(startEntry)
         check = f.read(1)
             
-        while check is not b'0':
+        while check != b'0':
             startEntry += 1
             f.seek(startEntry)
             check = f.read(1)
             
-            if len(check) is 0:
+            if len(check) == 0:
                 break
             
-            if check is b'0':
+            if check == b'0':
                 f.seek(startEntry)
 
-        if len(check) is 0:
+        if len(check) == 0:
                 print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
                 break
 
@@ -1944,7 +1943,7 @@ def parse_raw(f, logEntries):
                 logEntry[13] = logEntry[13] + b'\t'
                 logEntry[13:15] = [b''.join(logEntry[13:15])]
 
-                if len(logEntry) is 20:
+                if len(logEntry) == 20:
                     break
 
         entry.dateAndTime = from_win_64_hex(logEntry[1])
@@ -1978,7 +1977,7 @@ def parse_raw(f, logEntries):
 #            if check is b'0':
 #                startEntry -= 1
 
-        if len(check) is 0:
+        if len(check) == 0:
             print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
             break
 
@@ -2027,7 +2026,7 @@ def parse_processlog(f, logEntries):
 #            if check is b'0':
 #                startEntry -= 1
 
-        if len(check) is 0:
+        if len(check) == 0:
             print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
             break
 
@@ -2056,18 +2055,18 @@ def parse_avman(f, logEntries):
         f.seek(startEntry)
         check = f.read(1)
             
-        while check is not b'0':
+        while check != b'0':
             startEntry += 1
             f.seek(startEntry)
             check = f.read(1)
 
-            if len(check) is 0:
+            if len(check) == 0:
                 break
 
-            if check is b'0':
+            if check == b'0':
                 f.seek(startEntry)
                 
-        if len(check) is 0:
+        if len(check) == 0:
             print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
             break
                 
@@ -2088,15 +2087,15 @@ def parse_tamper_protect(logData, logEntry, fname):
     tamperProtect.write(f'"{fname}","{entry.computer}","{entry.user}","{entry.action}","{entry.event}","{entry.actor}","{entry.target}","{entry.targetprocess}","{entry.time}\n')
 
 def parse_daily_av(f, logType, tz):
-    if logType is 6:
+    if logType == 6:
         f.seek(0)
         logEntry = f.readline()
 
-    if logType is 7:
+    if logType == 7:
         f.seek(388, 0)
         logEntry = f.read(2048).split(b'\x00\x00')[0]
 
-    if logType is 8:
+    if logType == 8:
         f.seek(4100, 0)
         logEntry = f.read(1112).split(b'\x00\x00')[0]
 
@@ -2108,7 +2107,7 @@ def parse_daily_av(f, logType, tz):
         
         timeline.write(f'"{f.name}","","","","","",{logEntry}\n')
 
-        if logType is 7 or logType is 8:
+        if logType == 7 or logType == 8:
             break
             
         logEntry = f.readline()
@@ -2152,7 +2151,7 @@ def parse_vbn(f):
     if args.hex_dump:
         cstruct.dumpstruct(vbnmeta)
     
-    if vbnmeta.Record_Type is 0:
+    if vbnmeta.Record_Type == 0:
         test = xor(f.read(8), 0x5A).encode('latin-1')
         if test == b'\xce \xaa\xaa\x06\x00\x00\x00':
             if args.hex_dump:
@@ -2194,13 +2193,13 @@ def parse_vbn(f):
                 qfile = xor(f.read(), 0x5A)
 
     
-    if vbnmeta.Record_Type is 1:
+    if vbnmeta.Record_Type == 1:
         tags, dd, sddl, sid, virus, guid = read_sep_tag(f.read())
 
         if args.extract:
             print(f'\033[1;31mRecord type 1 does not contain quarantine data. Unable to extract file.\033[1;0m\n')
     
-    if vbnmeta.Record_Type is 2:
+    if vbnmeta.Record_Type == 2:
         f.seek(vbnmeta.QFM_HEADER_Offset, 0)
         f.seek(8, 1)
         qfm_size = xor(f.read(8), 0x5A).encode('latin-1')
@@ -2244,7 +2243,7 @@ def parse_vbn(f):
             
         dataType = xor(f.read(1), 0x5A).encode('latin-1')
         
-        if dataType is b'\x08':
+        if dataType == b'\x08':
             pos += 35 + qfi.Hash_Size
             f.seek(pos)
             qfi2_size = xor(f.read(4), 0x5A).encode('latin-1')
@@ -2257,7 +2256,7 @@ def parse_vbn(f):
             pos += 19 + qfi2.Security_Descriptor_Size
             f.seek(pos)
             
-        elif dataType is b'\t':  #actually \x09
+        elif dataType == b'\t':  #actually \x09
             garbage = qfs - vbnmeta.Quarantine_File_Size
             pos += 35 + qfi.Hash_Size
             f.seek(pos)
@@ -2275,7 +2274,7 @@ def parse_vbn(f):
 
             if args.hex_dump or args.extract:
                 while True:
-                    if chunk.Data_Type is 9:
+                    if chunk.Data_Type == 9:
                         if args.hex_dump:
                             cstruct.dumpstruct(chunk)
                         qfile += xor(f.read(chunk.Chunk_Size), 0xA5)
@@ -2353,41 +2352,41 @@ def main():
                         print(f'\033[1;33mSkipping {filename}. Log is empty. \033[1;0m\n')
                         continue
 
-                    if logType is 0:
+                    if logType == 0:
                         parse_syslog(f, logEntries)
 
-                    if logType is 1:
+                    if logType == 1:
                         parse_seclog(f, logEntries)
 
-                    if logType is 2:
+                    if logType == 2:
                         parse_tralog(f, logEntries)
 
-                    if logType is 3:
+                    if logType == 3:
                         #missing direction, action, which ipv6 is which
                         parse_raw(f, logEntries)
 
-                    if logType is 4:
+                    if logType == 4:
                         # file size unknown yet
                         #need better parsing(missing data)
                         parse_processlog(f, logEntries)
 
-                    if logType is 5:
+                    if logType == 5:
                         parse_avman(f, logEntries)
 
-                    if logType is 6:
+                    if logType == 6:
                         parse_daily_av(f, logType, args.timezone)
 
-                    if logType is 7:
+                    if logType == 7:
                         parse_vbn(f)
                         if not (args.extract or args.hex_dump):
                             parse_daily_av(f, logType, args.timezone)
                         
-                    if logType is 8:
+                    if logType == 8:
                         parse_vbn(f)
                         if not (args.extract or args.hex_dump):
                             parse_daily_av(f, logType, args.timezone)
 
-                    if logType is 9:
+                    if logType == 9:
                         continue
                     
                     print(f'\033[1;32mFinished parsing {filename} \033[1;0m\n')
