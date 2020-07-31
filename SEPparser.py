@@ -38,7 +38,7 @@ def csv_header():
 
     quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","VBin Time 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time 2 UTC","Unique ID","Record Type","Quarantine Session ID","Remediation Type","Wide Description","SDDL","SHA1","Quarantine Container Size","File Size 2","Detection Digest","Virus","GUID","Additional Info","Owner SID"\n')
     
-    settings.write('"Log Name","Max Log Size","# of Logs","Max Log Days","Field3","Field5","Field6"\n')
+    settings.write('"Log Name","Max Log Size","# of Logs","Running Total of Logs","Max Log Days","Field3","Field5","Field6"\n')
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 
@@ -1647,46 +1647,48 @@ def parse_header(f):
     headersize = len(f.readline())
     if headersize == 0:
         print(f'\033[1;33mSkipping {f.name}. Unknown File Type. \033[1;0m\n')
-        return 9, 0, 0, 1, 0, 0, 0
+        return 9, 0, 0, 1, 0, 0, 0, 0
     f.seek(0)
     if headersize == 55:
         logType = 5
         maxSize = read_unpack_hex(f, 0, 8)
         field3 = read_unpack_hex(f, 9, 8)
-        logEntries = read_unpack_hex(f, 18, 8)
+        cLogEntries = read_unpack_hex(f, 18, 8)
         field5 = read_unpack_hex(f, 27, 8)
         field6 = read_unpack_hex(f, 36, 8)
+        tLogEntries = 'N\A'
         maxDays = read_unpack_hex(f, 45, 8)
-        return logType, maxSize, field3, logEntries, field5, field6, maxDays
+        return logType, maxSize, field3, cLogEntries, field5, field6, tLogEntries, maxDays
 
     if headersize == 72:
         logType = read_unpack_hex(f, 0, 8)
         maxSize = read_unpack_hex(f, 9, 8)
         field3 = read_unpack_hex(f, 18, 8)
-        logEntries = read_unpack_hex(f, 27, 8)
+        cLogEntries = read_unpack_hex(f, 27, 8)
         field5 = read_unpack_hex(f, 36, 8)
-        field6 = read_unpack_hex(f, 45, 16)
+        field6 = 'N\A'
+        tLogEntries = read_unpack_hex(f, 45, 16)
         maxDays = read_unpack_hex(f, 62, 8)
-        return logType, maxSize, field3, logEntries, field5, field6, maxDays
+        return logType, maxSize, field3, cLogEntries, field5, field6, tLogEntries, maxDays
 
     try:
         from_symantec_time(f.readline().split(b',')[0].decode("utf-8", "ignore"), 0)
-        return 6, 0, 0, 1, 0, 0, 0
+        return 6, 0, 0, 1, 0, 0, 0, 0
     except:
         pass
     try:
         f.seek(388, 0)
         from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"), 0)
-        return 7, 0, 0, 1, 0, 0, 0
+        return 7, 0, 0, 1, 0, 0, 0, 0
     except:
         pass
     try:
         f.seek(4100, 0)
         from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"), 0)
-        return 8, 0, 0, 1, 0, 0, 0
+        return 8, 0, 0, 1, 0, 0, 0, 0
     except:
         print(f'\033[1;33mSkipping {f.name}. Unknown File Type. \033[1;0m\n')
-        return 9, 0, 0, 1, 0, 0, 0
+        return 9, 0, 0, 1, 0, 0, 0, 0
         
 def parse_syslog(f, logEntries):
     startEntry = 72
@@ -1870,6 +1872,8 @@ def parse_tralog(f, logEntries):
         entry.remotehost = from_hex_ip(logEntry[4])
         entry.localport = int(logEntry[5], 16)
         entry.remoteport = int(logEntry[6], 16)
+        if entry.protocol == "ICMP":
+            entry.protocol = f'{entry.protocol} [type={hex(entry.localport)}, code={hex(entry.remoteport)}]'
         entry.direction = log_direction(int(logEntry[7], 16))
         entry.endtime = from_win_64_hex(logEntry[8])
         entry.begintime = from_win_64_hex(logEntry[9])
@@ -2357,33 +2361,33 @@ def main():
         print(f'\033[1;35mStarted parsing {filename} \033[1;0m\n')
         try:
             with open(filename, 'rb') as f:
-                logType, maxSize, field3, logEntries, field5, field6, maxDays = parse_header(f)
+                logType, maxSize, field3, cLogEntries, field5, field6, tLogEntries, maxDays = parse_header(f)
                 try:
                     if logType <= 5:
-                            settings.write(f'"{filename}","{maxSize}","{logEntries}","{maxDays}","{field3}","{field5}","{field6}"\n')
-                    if logEntries == 0:
+                            settings.write(f'"{filename}","{maxSize}","{cLogEntries}","{tLogEntries}","{maxDays}","{field3}","{field5}","{field6}"\n')
+                    if cLogEntries == 0:
                         print(f'\033[1;33mSkipping {filename}. Log is empty. \033[1;0m\n')
                         continue
 
                     if logType == 0:
-                        parse_syslog(f, logEntries)
+                        parse_syslog(f, cLogEntries)
 
                     if logType == 1:
-                        parse_seclog(f, logEntries)
+                        parse_seclog(f, cLogEntries)
 
                     if logType == 2:
-                        parse_tralog(f, logEntries)
+                        parse_tralog(f, cLogEntries)
 
                     if logType == 3:
-                        parse_raw(f, logEntries)
+                        parse_raw(f, cLogEntries)
 
                     if logType == 4:
                         # file size unknown yet
                         #need better parsing(missing data)
-                        parse_processlog(f, logEntries)
+                        parse_processlog(f, cLogEntries)
 
                     if logType == 5:
-                        parse_avman(f, logEntries)
+                        parse_avman(f, cLogEntries)
 
                     if logType == 6:
                         parse_daily_av(f, logType, args.timezone)
