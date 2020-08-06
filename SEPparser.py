@@ -1132,7 +1132,414 @@ def protocol(_):
 
     else:
         return _
+        
+def eth_type(_):
+    type = {
+            range(257, 512):'Experimental',
+            512:'XEROX PUP (see 0A00)',
+            513:'PUP Addr Trans (see 0A01)',
+            1024:'Nixdorf',
+            1536:'XEROX NS IDP',
+            1632:'DLOG',
+            1633:'DLOG',
+            2048:'Internet Protocol version 4 (IPv4)',
+            2049:'X.75 Internet',
+            2050:'NBS Internet',
+            2051:'ECMA Internet',
+            2052:'Chaosnet',
+            2053:'X.25 Level 3',
+            2054:'Address Resolution Protocol (ARP)',
+            2055:'XNS Compatability',
+            2056:'Frame Relay ARP',
+            2076:'Symbolics Private',
+            range(2184, 2187):'Xyplex',
+            2304:'Ungermann-Bass net debugr',
+            2560:'Xerox IEEE802.3 PUP',
+            2561:'PUP Addr Trans',
+            2989:'Banyan VINES',
+            2990:'VINES Loopback',
+            2991:'VINES Echo',
+            4096:'Berkeley Trailer nego',
+            range(4097, 4112):'Berkeley Trailer encap/IP',
+            5632:'Valid Systems',
+            8947:'TRILL',
+            8948:'L2-IS-IS',
+            16962:'PCS Basic Block Protocol',
+            21000:'BBN Simnet',
+            24576:'DEC Unassigned (Exp.)',
+            24577:'DEC MOP Dump/Load',
+            24578:'DEC MOP Remote Console',
+            24579:'DEC DECNET Phase IV Route',
+            24580:'DEC LAT',
+            24581:'DEC Diagnostic Protocol',
+            24582:'DEC Customer Protocol',
+            24583:'DEC LAVC; SCA',
+            range(24584, 24586):'DEC Unassigned',
+            range(24592, 24597):'3Com Corporation',
+            25944:'Trans Ether Bridging',
+            25945:'Raw Frame Relay',
+            28672:'Ungermann-Bass download',
+            28674:'Ungermann-Bass dia/loop',
+            range(28704, 28714):'LRT',
+            28720:'Proteon',
+            28724:'Cabletron',
+            32771:'Cronus VLN',
+            32772:'Cronus Direct',
+            32773:'HP Probe',
+            32774:'Nestar',
+            32776:'AT&T',
+            32784:'Excelan',
+            32787:'SGI diagnostics',
+            32788:'SGI network games',
+            32789:'SGI reserved',
+            32790:'SGI bounce server',
+            32793:'Apollo Domain',
+            32814:'Tymshare',
+            32815:'Tigan; Inc.',
+            32821:'Reverse Address Resolution Protocol (RARP)',
+            32822:'Aeonic Systems',
+            32824:'DEC LANBridge',
+            range(32825, 32829):'DEC Unassigned',
+            32829:'DEC Ethernet Encryption',
+            32830:'DEC Unassigned',
+            32831:'DEC LAN Traffic Monitor',
+            range(32832, 32835):'DEC Unassigned',
+            32836:'Planning Research Corp.',
+            32838:'AT&T',
+            32839:'AT&T',
+            32841:'ExperData',
+            32859:'Stanford V Kernel exp.',
+            32860:'Stanford V Kernel prod.',
+            32861:'Evans & Sutherland',
+            32864:'Little Machines',
+            32866:'Counterpoint Computers',
+            32869:'Univ. of Mass. @ Amherst',
+            32870:'Univ. of Mass. @ Amherst',
+            32871:'Veeco Integrated Auto.',
+            32872:'General Dynamics',
+            32873:'AT&T',
+            32874:'Autophon',
+            32876:'ComDesign',
+            32877:'Computgraphic Corp.',
+            range(32878, 32888):'Landmark Graphics Corp.',
+            32890:'Matra',
+            32891:'Dansk Data Elektronik',
+            32892:'Merit Internodal',
+            range(32893, 32896):'Vitalink Communications',
+            32896:'Vitalink TransLAN III',
+            range(32897, 32900):'Counterpoint Computers',
+            32923:'Appletalk',
+            range(32924, 32927):'Datability',
+            32927:'Spider Systems Ltd.',
+            32931:'Nixdorf Computers',
+            range(32932, 32948):'Siemens Gammasonics Inc.',
+            range(32960, 32964):'DCA Data Exchange Cluster',
+            32964:'Banyan Systems',
+            32965:'Banyan Systems',
+            32966:'Pacer Software',
+            32967:'Applitek Corporation',
+            range(32968, 32973):'Intergraph Corporation',
+            range(32973, 32975):'Harris Corporation',
+            range(32975, 32979):'Taylor Instrument',
+            range(32979, 32981):'Rosemount Corporation',
+            32981:'IBM SNA Service on Ether',
+            32989:'Varian Associates',
+            range(32990, 32992):'Integrated Solutions TRFS',
+            range(128, 524289):'Allen-Bradley',
+            range(8388608, 33009):'Datability',
+            33010:'Retix',
+            33011:'AppleTalk AARP (Kinetics)',
+            range(33012, 33014):'Kinetics',
+            33015:'Apollo Computer',
+            33023:'Wellfleet Communications',
+            33024:'Customer VLAN Tag Type (C-Tag; formerly called the Q-Tag) (initially Wellfleet)',
+            range(33025, 33028):'Wellfleet Communications',
+            range(33031, 33034):'Symbolics Private',
+            33072:'Hayes Microcomputers',
+            33073:'VG Laboratory Systems',
+            range(33074, 33079):'Bridge Communications',
+            range(33079, 33081):'Novell; Inc.',
+            range(33081, 33086):'KTI',
+            33096:'Logicraft',
+            33097:'Network Computing Devices',
+            33098:'Alpha Micro',
+            33100:'SNMP',
+            33101:'BIIN',
+            33102:'BIIN',
+            33103:'Technically Elite Concept',
+            33104:'Rational Corp',
+            range(33105, 33108):'Qualcomm',
+            range(33116, 33119):'Computer Protocol Pty Ltd',
+            range(33124, 33127):'Charles River Data System',
+            33149:'XTP',
+            33150:'SGI/Time Warner prop.',
+            33152:'HIPPI-FP encapsulation',
+            33153:'STP; HIPPI-ST',
+            33154:'Reserved for HIPPI-6400',
+            33155:'Reserved for HIPPI-6400',
+            range(33156, 33165):'Silicon Graphics prop.',
+            33165:'Motorola Computer',
+            range(33178, 33188):'Qualcomm',
+            33188:'ARAI Bunkichi',
+            range(33189, 33199):'RAD Network Devices',
+            range(33207, 33210):'Xyplex',
+            range(33228, 33238):'Apricot Computers',
+            range(33238, 33246):'Artisoft',
+            range(33254, 33264):'Polygon',
+            range(33264, 33267):'Comsat Labs',
+            range(33267, 33270):'SAIC',
+            range(33270, 33273):'VG Analytical',
+            range(33283, 33286):'Quantum Software',
+            range(33313, 33315):'Ascom Banking Systems',
+            range(33342, 33345):'Advanced Encryption Syste',
+            range(33407, 33411):'Athena Programming',
+            range(33379, 33387):'Charles River Data System',
+            range(33434, 33436):'Inst Ind Info Tech',
+            range(33436, 33452):'Taurus Controls',
+            range(33452, 34452):'Walker Richer & Quinn',
+            range(34452, 34462):'Idea Courier',
+            range(34462, 34466):'Computer Network Tech',
+            range(34467, 34477):'Gateway Communications',
+            34523:'SECTRA',
+            34526:'Delta Controls',
+            34525:'Internet Protocol version 6 (IPv6)',
+            34527:'ATOMIC',
+            range(34528, 34544):'Landis & Gyr Powers',
+            range(34560, 34577):'Motorola',
+            34667:'TCP/IP Compression',
+            34668:'IP Autonomous Systems',
+            34669:'Secure Data',
+            34824:'IEEE Std 802.3 - Ethernet Passive Optical Network (EPON)',
+            34827:'Point-to-Point Protocol (PPP)',
+            34828:'General Switch Management Protocol (GSMP)',
+            34887:'MPLS',
+            34888:'MPLS with upstream-assigned label',
+            34913:'Multicast Channel Allocation Protocol (MCAP)',
+            34915:'PPP over Ethernet (PPPoE) Discovery Stage',
+            34916:'PPP over Ethernet (PPPoE) Session Stage',
+            34958:'IEEE Std 802.1X - Port-based network access control',
+            34984:'IEEE Std 802.1Q - Service VLAN tag identifier (S-Tag)',
+            range(35478, 35480):'Invisible Software',
+            34997:'IEEE Std 802 - Local Experimental Ethertype',
+            34998:'IEEE Std 802 - Local Experimental Ethertype',
+            34999:'IEEE Std 802 - OUI Extended Ethertype',
+            35015:'IEEE Std 802.11 - Pre-Authentication (802.11i)',
+            35020:'IEEE Std 802.1AB - Link Layer Discovery Protocol (LLDP)',
+            35045:'IEEE Std 802.1AE - Media Access Control Security',
+            35047:'Provider Backbone Bridging Instance tag',
+            35061:'IEEE Std 802.1Q  - Multiple VLAN Registration Protocol (MVRP)',
+            35062:'IEEE Std 802.1Q - Multiple Multicast Registration Protocol (MMRP)',
+            35085:'IEEE Std 802.11 - Fast Roaming Remote Request (802.11r)',
+            35095:'IEEE Std 802.21 - Media Independent Handover Protocol',
+            35113:'IEEE Std 802.1Qbe - Multiple I-SID Registration Protocol',
+            35131:'TRILL Fine Grained Labeling (FGL)',
+            35136:'IEEE Std 802.1Qbg - ECP Protocol (also used in 802.1BR)',
+            35142:'TRILL RBridge Channel',
+            35143:'GeoNetworking as defined in ETSI EN 302 636-4-1',
+            35151:'NSH (Network Service Header)',
+            36864:'Loopback',
+            36865:'3Com(Bridge) XNS Sys Mgmt',
+            36866:'3Com(Bridge) TCP-IP Sys',
+            36867:'3Com(Bridge) loop detect',
+            39458:'Multi-Topology',
+            41197:'LoWPAN encapsulation',
+            47082:'The Ethertype will be used to identify a Channel in which control messages are encapsulated as payload of GRE packets. When a GRE packet tagged with the Ethertype is received; the payload will be handed to the network processor for processing.',
+            65280:'BBN VITAL-LanBridge cache',
+            range(65280, 65296):'ISC Bunker Ramo',
+            65535:'Reserved'
+            }
 
+    for k,v in type.items():
+        if k == _:
+            return v
+
+    return _
+
+def icmp_type_code(type, code):
+    typeName = ''
+    codeDescription = ''
+    types = {
+             0: {
+                 'type':'Echo Reply',
+                 0:'No Code'
+                },
+             1: {
+                 'type':'Unassigned'
+                },
+             2: {
+                 'type':'Unassigned'
+                },
+             3: {
+                 'type':'Destination Unreachable',
+                 0:'Net Unreachable',
+                 1:'Host Unreachable',
+                 2:'Protocol Unreachable',
+                 3:'Port Unreachable',
+                 4:'Fragmentation Needed and Do not Fragment was Set',
+                 5:'Source Route Failed',
+                 6:'Destination Network Unknown',
+                 7:'Destination Host Unknown',
+                 8:'Source Host Isolated',
+                 9:'Communication with Destination Network is Administratively Prohibited',
+                 10:'Communication with Destination Host is Administratively Prohibited',
+                 11:'Destination Network Unreachable for Type of Service',
+                 12:'Destination Host Unreachable for Type of Service',
+                 13:'Communication Administratively Prohibited',
+                 14:'Host Precedence Violation',
+                 15:'Precedence cutoff in effect'
+                },
+             4: {
+                 'type':'Source Quench (Deprecated)',
+                 0:'No Code'
+                },
+             5: {
+                 'type':'Redirect',
+                 0:'Redirect Datagram for the Network (or subnet)',
+                 1:'Redirect Datagram for the Host',
+                 2:'Redirect Datagram for the Type of Service and Network',
+                 3:'Redirect Datagram for the Type of Service and Host'
+                },
+             6: {
+                 'type':'Alternate Host Address (Deprecated)',
+                 0:'Alternate Address for Host'
+                },
+             7: {
+                 'type':'Unassigned'
+                },
+             8: {
+                 'type':'Echo',
+                 0:'No Code'
+                },
+             9: {
+                 'type':'Router Advertisement',
+                 0:'Normal router advertisement',
+                 16:'Does not route common traffic'
+                },
+             10: {
+                 'type':'Router Solicitation',
+                 0:'No Code'
+                },
+             11: {
+                 'type':'Time Exceeded',
+                 0:'Time to Live exceeded in Transit',
+                 1:'Fragment Reassembly Time Exceeded'
+                },
+             12: {
+                 'type':'Parameter Problem',
+                 0:'Pointer indicates the error',
+                 1:'Missing a Required Option',
+                 2:'Bad Length'
+                },
+             13: {
+                 'type':'Timestamp',
+                 0:'No Code'
+                },
+             14: {
+                 'type':'Timestamp Reply',
+                 0:'No Code'
+                },
+             15: {
+                 'type':'Information Request (Deprecated)',
+                 0:'No Code'
+                },
+             16: {
+                 'type':'Information Reply (Deprecated)',
+                 0:'No Code'
+                },
+             17: {
+                 'type':'Address Mask Request (Deprecated)',
+                 0:'No Code'
+                },
+             18: {
+                 'type':'Address Mask Reply (Deprecated)',
+                 0:'No Code'
+                },
+             19: {
+                 'type':'Reserved (for Security)'
+                },
+             range(20, 30): {
+                 'type':'Reserved (for Robustness Experiment)'
+                },
+             30: {
+                 'type':'Traceroute (Deprecated)'
+                },
+             31: {
+                 'type':'Datagram Conversion Error (Deprecated)'
+                },
+             32: {
+                 'type':'Mobile Host Redirect (Deprecated)'
+                },
+             33: {
+                 'type':'IPv6 Where-Are-You (Deprecated)'
+                },
+             34: {
+                 'type':'IPv6 I-Am-Here (Deprecated)'
+                },
+             35: {
+                 'type':'Mobile Registration Request (Deprecated)'
+                },
+             36: {
+                 'type':'Mobile Registration Reply (Deprecated)'
+                },
+             37: {
+                 'type':'Domain Name Request (Deprecated)'
+                },
+             38: {
+                 'type':'Domain Name Reply (Deprecated))'
+                },
+             39: {
+                 'type':'SKIP (Deprecated)'
+                },
+             40: {
+                 'type':'Photuris',
+                 0:'Bad SPI',
+                 1:'Authentication Failed',
+                 2:'Decompression Failed',
+                 3:'Decryption Failed',
+                 4:'Need Authentication',
+                 5:'Need Authorization'
+                },
+             41: {
+                 'type':'ICMP messages utilized by experimental mobility protocols such as Seamoby'
+                },
+             42: {
+                 'type':'Extended Echo Request',
+                 0:'No Error',
+                 range(1, 256):'Unassigned'
+                },
+             43: {
+                 'type':'Extended Echo Reply',
+                 0:'No Error',
+                 1:'Malformed Query',
+                 2:'No Such Interface',
+                 3:'No Such Table Entry',
+                 4:'Multiple Interfaces Satisfy Query',
+                 range(5, 256):'Unassigned'
+                },
+             range(44, 253): {
+                 'type':'Unassigned'
+                },
+             253: {
+                 'type':'RFC3692-style Experiment 1'
+                },
+             254: {
+                 'type':'RFC3692-style Experiment 2'
+                },
+             255: {
+                 'type':'Reserved'
+                }
+            }
+
+    for k, v in types.items():
+        if k == type:
+            typeName = types[type]['type']
+            
+    for k, v in types[type].items():
+        if k == code:
+            codeDescription = types[type][code]
+            
+    return typeName, codeDescription
+    
 def test_mode(_):
     testMode = {
                 '0':'Production',
@@ -1873,11 +2280,12 @@ def parse_tralog(f, logEntries):
         entry.localport = int(logEntry[5], 16)
         entry.remoteport = int(logEntry[6], 16)
         if entry.protocol == "ICMP":
-            entry.protocol = f'{entry.protocol} [type={entry.localport}, code={entry.remoteport}]'
+            typeName, codeDescription = icmp_type_code(entry.localport, entry.remoteport)
+            entry.protocol = f'{entry.protocol} [type={entry.localport}, code={entry.remoteport}]\r\nName:{typeName}\r\nDescription:{codeDescription}'
             entry.localport = 0
             entry.remoteport = 0
         if entry.protocol == "ETHERNET":
-            entry.protocol = f'{entry.protocol} [type={hex(entry.localport)}]'
+            entry.protocol = f'{entry.protocol} [type={hex(entry.localport)}]\r\nDescription: {eth_type(entry.localport)}'
             entry.localport = 0
         entry.direction = log_direction(int(logEntry[7], 16))
         entry.endtime = from_win_64_hex(logEntry[8])
