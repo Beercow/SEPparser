@@ -1122,7 +1122,7 @@ def protocol(_):
                 '304':'TCP',
                 '305':'Other',
                 '306':'ICMP',
-                '307':'Ethernet',
+                '307':'ETHERNET',
                 '308':'IP'
                 }
 
@@ -1873,7 +1873,12 @@ def parse_tralog(f, logEntries):
         entry.localport = int(logEntry[5], 16)
         entry.remoteport = int(logEntry[6], 16)
         if entry.protocol == "ICMP":
-            entry.protocol = f'{entry.protocol} [type={hex(entry.localport)}, code={hex(entry.remoteport)}]'
+            entry.protocol = f'{entry.protocol} [type={entry.localport}, code={entry.remoteport}]'
+            entry.localport = 0
+            entry.remoteport = 0
+        if entry.protocol == "ETHERNET":
+            entry.protocol = f'{entry.protocol} [type={hex(entry.localport)}]'
+            entry.localport = 0
         entry.direction = log_direction(int(logEntry[7], 16))
         entry.endtime = from_win_64_hex(logEntry[8])
         entry.begintime = from_win_64_hex(logEntry[9])
