@@ -15,6 +15,7 @@ import io
 import ntpath
 import base64
 import json
+import blowfish
 
 if os.name == 'nt':
     kernel32 = ctypes.windll.kernel32
@@ -39,6 +40,19 @@ def csv_header():
     quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","VBin Time 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time 2 UTC","Unique ID","Record Type","Quarantine Session ID","Remediation Type","Wide Description","SDDL","SHA1","Quarantine Container Size","File Size 2","Detection Digest","Virus","GUID","Additional Info","Owner SID"\n')
     
     settings.write('"Log Name","Max Log Size","# of Logs","Running Total of Logs","Max Log Days","Field3","Field5","Field6"\n')
+    
+    if args.struct:
+        rt0v1.write('"File Name","QFM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QData_Location_Header","QData_Location_Offset","QData_Location_Size","EOF","Unknown15","QData_Info_Header","QData_Info_Size","Data"\n')
+        
+        rt0v2.write('"File Name","QFM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QData_Location_Header","QData_Location_Offset","QData_Location_Size","EOF","Unknown15","QData_Info_Header","QData_Info_Size","Data"\n')
+        
+        rt1v1.write('"File Name","QFM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14"\n')
+        
+        rt1v2.write('"File Name","QFM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14"\n')
+        
+        rt2v1.write('"File Name","QFM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QFM_Header","QFM_Header_Size","QFM_Size","QFM_Size_Header_Size","Data_Size_From_End_of_QFM-to_End_of_VBN","Tag1","Tag1_Data","Tag2","Tag2_Data","Tag3","Hash_Size","SHA1","Tag4","Tag4_Data","Tag5","Tag5_Data","Tag6","QFS_Size","Quarantine_File_Info_Size","Tag7","Security_Descriptor_Size","Security_Descriptor","Tag8","Tag8_Data","Tag9","Quarantine_File_Info_Size_2","Unknown15","Size","Unknown16","Unknown17","File_Size","Unknown18","Unknown19","Size2","Unknown20","Unknown21"\n')
+        
+        rt2v2.write('"File Name","QFM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QFM_Header","QFM_Header_Size","QFM_Size","QFM_Size_Header_Size","Data_Size_From_End_of_QFM-to_End_of_VBN","Tag1","Tag1_Data","Tag2","Tag2_Data","Tag3","Hash_Size","SHA1","Tag4","Tag4_Data","Tag5","Tag5_Data","Tag6","QFS_Size","Quarantine_File_Info_Size","Tag7","Security_Descriptor_Size","Security_Descriptor","Tag8","Tag8_Data","Tag9","Quarantine_File_Info_Size_2","Unknown15","Size","Unknown16","Unknown17","File_Size","Unknown18","Unknown19","Size2","Unknown20","Unknown21"\n')
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 
@@ -300,6 +314,16 @@ typedef struct _ASN1_1 {
     char Value[1];
 } ASN1_1;
 
+typedef struct _ASN1_2 {
+    byte Tag;
+    char Value[2];
+} ASN1_2;
+
+typedef struct _ASN1_3 {
+    byte Tag;
+    char Value[3];
+} ASN1_3;
+
 typedef struct _ASN1_4 {
     byte Tag;
     char Value[4];
@@ -316,6 +340,12 @@ typedef struct _ASN1_String {
     char Data[Data_Length];
 } ASN1_String;
 
+typedef struct _ASN1_String2 {
+    byte Tag;
+    int16 Data_Length;
+    char Data[Data_Length];
+} ASN1_String2;
+
 typedef struct _Quarantine_File_Info {
     byte Tag1;
     int32 Tag1_Data;
@@ -330,17 +360,17 @@ typedef struct _Quarantine_File_Info {
     int32 Tag5_Data;
     byte Tag6;
     int32 QFS_Size;
-    char Quarantine_File_Size[QFS_Size];
+    char Quarantine_File_Info_Size[QFS_Size];
 } Quarantine_File_Info;
 
 typedef struct _Quarantine_File_Info2 {
-    byte Tag1;
+    byte Tag7;
     int32 Security_Descriptor_Size;
     char Security_Descriptor[Security_Descriptor_Size]; //need to fix for wchar
-    byte Tag2;
-    int32 Tag2_Data;
-    byte Tag3;
-    int64 Quarantine_File_Size;
+    byte Tag8;
+    int32 Tag8_Data;
+    byte Tag9;
+    int64 Quarantine_File_Info_Size_2;
 } Quarantine_File_Info2;
 
 typedef struct _Chunk {
@@ -349,31 +379,31 @@ typedef struct _Chunk {
 } Chunk;
 
 typedef struct _Junk_Header {
-    int64 Unknown1;
+    int64 Unknown15;
     int64 Size;
-    char Unknown2[Size];
-    char Unknown3[12];
+    char Unknown16[Size];
+    char Unknown17[12];
     int32 File_Size;
-    int64 Unknown4;
+    int64 Unknown18;
 } Junk_Header;
 
 typedef struct _Junk_Footer {
-    int64 Unknown1;
-    int64 Size;
-    int32 Unknown2;
-    char Unknown3[Size];
+    int64 Unknown19;
+    int64 Size2;
+    int32 Unknown20;
+    char Unknown21[Size2];
 } Junk_Footer;
 
 typedef struct _QData_Location {
     int64 Header;
-    int64 Data_Offset;
-    int64 Data_Size;
+    int64 QData_Location_Offset;
+    int64 QData_Location_Size;
     int32 EOF;
-    char Unknown2[Data_Offset -28];
+    char Unknown15[QData_Location_Offset -28];
 } QData_Location;
 
 typedef struct _QData_Info {
-    int64 Header;
+    int64 QData_Info_Header;
     int64 QData_Info_Size;
     char Data[QData_Info_Size -16];
 } QData_Info;
@@ -1964,6 +1994,28 @@ def event_data2(_):
 
     return _
 
+def entry_check(f, startEntry, nextEntry):
+    startEntry = startEntry + nextEntry
+    f.seek(startEntry)
+    check = f.read(1)
+
+    while check != b'0':
+        startEntry += 1
+        f.seek(startEntry)
+        check = f.read(1)
+
+        if len(check) == 0:
+            break
+
+        if check == b'0':
+            f.seek(startEntry)
+
+    if len(check) == 0:
+#        print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
+        return startEntry, False
+
+    return startEntry, True
+
 def from_unix_sec(_):
     try:
         return datetime.utcfromtimestamp(int(_)).strftime('%Y-%m-%d %H:%M:%S')
@@ -2134,22 +2186,9 @@ def parse_syslog(f, logEntries):
         if count == logEntries:
             break
 
-        startEntry = startEntry + nextEntry
-        f.seek(startEntry)
-        check = f.read(1)
-
-        while check != b'0':
-            startEntry += 1
-            f.seek(startEntry)
-            check = f.read(1)
-
-            if len(check) == 0:
-                break
-
-            if check == b'0':
-                f.seek(startEntry)
-
-        if len(check) == 0:
+        startEntry, moreData = entry_check(f, startEntry, nextEntry)
+        
+        if moreData == False:
             print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
             break
 
@@ -2243,23 +2282,10 @@ def parse_seclog(f, logEntries):
 
         if count == logEntries:
             break
-
-        startEntry = startEntry + nextEntry
-        f.seek(startEntry)
-        check = f.read(1)
-
-        while check != b'0':
-            startEntry += 1
-            f.seek(startEntry)
-            check = f.read(1)
-
-            if len(check) == 0:
-                break
-
-            if check == b'0':
-                startEntry -= 1
-
-        if len(check) == 0:
+       
+        startEntry, moreData = entry_check(f, startEntry, nextEntry)
+        
+        if moreData == False:
             print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
             break
 
@@ -2354,8 +2380,8 @@ def parse_tralog(f, logEntries):
                 f.seek(startEntry)
 
         if len(check) == 0:
-                print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
-                break
+            print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
+            break
 
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
@@ -2481,26 +2507,13 @@ def parse_avman(f, logEntries):
 
         if count == logEntries:
             break
-
-        startEntry = startEntry + nextEntry + 1
-        f.seek(startEntry)
-        check = f.read(1)
-            
-        while check != b'0':
-            startEntry += 1
-            f.seek(startEntry)
-            check = f.read(1)
-
-            if len(check) == 0:
-                break
-
-            if check == b'0':
-                f.seek(startEntry)
-                
-        if len(check) == 0:
+ 
+        startEntry, moreData = entry_check(f, startEntry, nextEntry)
+        
+        if moreData == False:
             print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
             break
-                
+
         nextEntry = read_unpack_hex(f, startEntry, 8)
 
 def parse_tamper_protect(logData, logEntry, fname):
@@ -2556,6 +2569,7 @@ def parse_vbn(f):
     sid = ''
     virus = ''
     guid = ''
+    vbnv = ''
     garbage = None
     header = 0
     footer = 0
@@ -2567,11 +2581,18 @@ def parse_vbn(f):
 
     if qfm_offset == 3676:
         vbnmeta = vbnstruct.VBN_METADATA_V1(f)
+        vbnv = 1
     if qfm_offset == 4752:
         vbnmeta = vbnstruct.VBN_METADATA_V2(f)
+        vbnv = 2
     if qfm_offset == 15100:
         vbnmeta = vbnstruct.VBN_METADATA_Linux(f)
-        
+
+    if args.struct:
+        sout = ''
+        for k, v in vbnmeta._values.items():
+            sout += str(v).replace('"', '""')+'","'
+
     wDescription = vbnmeta.WDescription.rstrip('\0')
     description = vbnmeta.Description.rstrip(b'\x00').decode("utf-8", "ignore")
     storageName = vbnmeta.Storage_Name.rstrip(b'\x00').decode("utf-8", "ignore")
@@ -2597,10 +2618,13 @@ def parse_vbn(f):
             qdata_location_size = struct.unpack('i', qdata_location_size)[0]
             f.seek(-12, 1)
             qdata_location = vbnstruct.QData_Location(xor(f.read(qdata_location_size), 0x5A).encode('latin-1'))
+            if args.struct:
+                for k, v in qdata_location._values.items():
+                    sout += str(v).replace('"', '""')+'","'
             if args.hex_dump:
                 cstruct.dumpstruct(qdata_location)
-            pos = vbnmeta.QFM_HEADER_Offset + qdata_location.Data_Offset
-            file_size = qdata_location.Data_Size - qdata_location.Data_Offset
+            pos = vbnmeta.QFM_HEADER_Offset + qdata_location.QData_Location_Offset
+            file_size = qdata_location.QData_Location_Size - qdata_location.QData_Location_Offset
             f.seek(pos)
             if args.extract:
                 print('\n           #######################################################')
@@ -2615,6 +2639,9 @@ def parse_vbn(f):
             f.seek(pos + file_size)
             #need to properly parse
             qdata_info = vbnstruct.QData_Info(xor(f.read(), 0x5A).encode('latin-1'))
+            if args.struct:
+                for k, v in qdata_info._values.items():
+                    sout += str(v).replace('"', '""')+'","'
             if args.hex_dump:
                 cstruct.dumpstruct(qdata_info)
 
@@ -2622,10 +2649,29 @@ def parse_vbn(f):
             f.seek(-8, 1)
             if args.extract:
                 qfile = xor(f.read(), 0x5A)
+        if args.struct:
+            if vbnv == 1:
+                rt0v1.write(f'"{f.name}","{sout[:-2]}\n')
+            if vbnv == 2:
+                rt0v2.write(f'"{f.name}","{sout[:-2]}\n')
 
     if vbnmeta.Record_Type == 1:
+        if args.hex_dump:
+            print('\n           #######################################################')
+            print('           #######################################################')
+            print('           ##                                                   ##')
+            print('           ##     Quarantine File Metadata Structure (ASN1)     ##')
+            print('           ##                                                   ##')
+            print('           #######################################################')
+            print('           #######################################################\n')
         tags, dd, sddl, sid, virus, guid = read_sep_tag(f.read())
 
+        if args.struct:
+            if vbnv == 1:
+                rt1v1.write(f'"{f.name}","{sout[:-2]}\n')
+            if vbnv == 2:
+                rt1v2.write(f'"{f.name}","{sout[:-2]}\n')
+        
         if args.extract:
             print(f'\033[1;31mRecord type 1 does not contain quarantine data. Unable to extract file.\033[1;0m\n')
     
@@ -2636,6 +2682,9 @@ def parse_vbn(f):
         qfm_size = struct.unpack('q', qfm_size)[0]
         f.seek(-16, 1)
         qfm = vbnstruct.Quarantine_File_Metadata_Header(xor(f.read(qfm_size), 0x5A).encode('latin-1'))
+        if args.struct:
+            for k, v in qfm._values.items():
+                sout += str(v).replace('"', '""')+'","'
         if args.hex_dump:
             print('\n           #######################################################')
             print('           #######################################################')
@@ -2662,11 +2711,17 @@ def parse_vbn(f):
             qfi_size = struct.unpack('i', qfi_size)[0]
             f.seek(pos)
             qfi = vbnstruct.Quarantine_File_Info(xor(f.read(qfi_size + 35), 0x5A).encode('latin-1'))
+            if args.struct:
+                for k, v in qfi._values.items():
+                    sout += str(v).replace('"', '""')+'","'
             sha1 = qfi.SHA1.decode('latin-1').replace("\x00", "")
-            qfs = int.from_bytes(qfi.Quarantine_File_Size, 'little')
+            qfs = int.from_bytes(qfi.Quarantine_File_Info_Size, 'little')
         except:
             f.seek(pos) 
             qfi = vbnstruct.Quarantine_File_Info(xor(f.read(7), 0x5A).encode('latin-1') + (b'\x00' * 20))
+            if args.struct:
+                for k, v in qfi._values.items():
+                    sout += str(v).replace('"', '""')+'","'
             
         if args.hex_dump:
             cstruct.dumpstruct(qfi)
@@ -2680,13 +2735,20 @@ def parse_vbn(f):
             qfi2_size = struct.unpack('i', qfi2_size)[0]
             f.seek(pos)
             qfi2 =  vbnstruct.Quarantine_File_Info2(xor(f.read(qfi2_size + 18), 0x5A).encode('latin-1'))
+            if args.struct:
+                for k, v in qfi2._values.items():
+                    sout += str(v).replace('"', '""')+'","'
             sddl = sddl_translate(qfi2.Security_Descriptor.decode('latin-1').replace("\x00", ""))
             if args.hex_dump:
                 cstruct.dumpstruct(qfi2)
             pos += 19 + qfi2.Security_Descriptor_Size
             f.seek(pos)
-
-        elif dataType == b'\t':  #actually \x09
+        
+        else:
+            if args.struct:
+                sout += '","","","","","","","'
+        
+        if dataType == b'\t':  #actually \x09
             garbage = qfs - vbnmeta.Quarantine_File_Size
             pos += 35 + qfi.Hash_Size
             f.seek(pos)
@@ -2697,12 +2759,16 @@ def parse_vbn(f):
             f.seek(pos)
             if garbage is not None:
                 junk = vbnstruct.Junk_Header(xor(f.read(1000), 0xA5).encode('latin-1'))
+                if args.struct:
+                    for k, v in junk._values.items():
+                        sout += str(v).replace('"', '""')+'","'
+                    
                 junkfs = junk.File_Size
                 if args.hex_dump:
                     cstruct.dumpstruct(junk)
                 f.seek(pos)
 
-            if args.hex_dump or args.extract:
+            if args.hex_dump or args.extract or args.struct:
                 while True:
                     if chunk.Data_Type == 9:
                         if args.hex_dump:
@@ -2728,16 +2794,25 @@ def parse_vbn(f):
                     f.seek(-footer, 2)
                     try:
                         jf = vbnstruct.Junk_Footer(xor(f.read(footer), 0xA5).encode('latin-1'))
+                        if args.struct:
+                            for k, v in jf._values.items():
+                                sout += str(v).replace('"', '""')+'","'
                         if args.hex_dump:
                             cstruct.dumpstruct(jf)
                     except:
                         pass
-
+                
         except:
             if args.extract:
                 print(f'\033[1;31mDoes not contain quarantine data. Clean by Deletion.\033[1;0m\n')
                 print(f'\033[1;32mFinished parsing {f.name} \033[1;0m\n')
             pass
+            
+        if args.struct:
+            if vbnv == 1:
+                rt2v1.write(f'"{f.name}","{sout[:-2]}\n')
+            if vbnv == 2:
+                rt2v2.write(f'"{f.name}","{sout[:-2]}\n')
 
     if args.extract and len(qfile) > 0:
         output = open(ntpath.basename(description) + '.vbn','wb+')
@@ -2759,6 +2834,34 @@ def parse_vbn(f):
 
         quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{modify}","{create}","{access}","{vbin}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_2)}","{from_unix_sec(vbnmeta.Date_Accessed_2)}","{from_unix_sec(vbnmeta.Date_Modified_2)}","{from_unix_sec(vbnmeta.VBin_Time_2)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Quarantine_Session_ID)[2:].upper()}","{rtid}","{wDescription}","{sddl}","{sha1}","{qfs}","{junkfs}","{dd}","{virus}","{guid}","{tags}","{sid}"\n')
 
+def extract_sym_submissionsidx(_):
+    _.seek(48)
+    cnt = 0
+    while _.read(4) == b'@\x99\xc6\x89':
+        _.seek(20,1)
+        len1 = struct.unpack('i', _.read(4))[0]
+        len2 = struct.unpack('i', _.read(4))[0]
+        _.seek(8,1)
+        key = _.read(16)
+        data = _.read(len1)
+        dec = blowfishit(data,key,len1)
+        print(dec)
+        input()
+        _.seek(-16,1)
+        cnt += 1
+
+def blowfishit(data,key,len1):
+    dec = ''
+    cipher = blowfish.Cipher(key, byte_order = "little")
+    data = io.BytesIO(data)
+    while data:
+        dec += str(cipher.decrypt_block(data.read(8)).decode('latin-1'))
+        check = data.read(1)
+        if len(check) == 0:
+            break
+        data.seek(-1,1)
+    return dec
+
 def utc_offset(_):
     tree = ET.parse(_)
     root = tree.getroot()
@@ -2774,6 +2877,9 @@ def main():
         print(f'\033[1;35mStarted parsing {filename} \033[1;0m\n')
         try:
             with open(filename, 'rb') as f:
+                if 'submissions.idx' in filename:
+                    extract_sym_submissionsidx(f)
+                    continue
                 logType, maxSize, field3, cLogEntries, field5, field6, tLogEntries, maxDays = parse_header(f)
                 try:
                     if logType <= 5:
@@ -2795,7 +2901,6 @@ def main():
                         parse_raw(f, cLogEntries)
 
                     if logType == 4:
-                        # file size unknown yet
                         #need better parsing(missing data)
                         parse_processlog(f, cLogEntries)
 
@@ -2841,6 +2946,7 @@ parser.add_argument("-a", "--append", help="Append to output files.", action="st
 parser.add_argument("-r", "--registrationInfo", help="Path to registrationInfo.xml")
 parser.add_argument("-tz", "--timezone", type=int, help="UTC offset")
 parser.add_argument("-k", "--kape", help="Kape mode", action="store_true")
+parser.add_argument("-s", "--struct", help="Output structures to csv", action="store_true")
 args = parser.parse_args()
 
 regex =  re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine)')
@@ -2908,7 +3014,7 @@ if args.timezone is None:
 
 if args.output and not (args.extract or args.hex_dump):
     if not ntpath.exists(args.output):
-            os.makedirs(args.output)
+        os.makedirs(args.output)
 
     if not args.append:
         syslog = open(args.output + '/Symantec_Client_Management_System_Log.csv', 'w')
@@ -2921,6 +3027,17 @@ if args.output and not (args.extract or args.hex_dump):
         tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
         quarantine = open(args.output + '/quarantine.csv', 'w')
         settings = open(args.output + '/settings.csv', 'w')
+        if args.struct:
+            if not ntpath.exists(args.output + '/VBN(V1)'):
+                os.makedirs(args.output + '/VBN(V1)')
+            if not ntpath.exists(args.output + '/VBN(V2)'):
+                os.makedirs(args.output + '/VBN(V2)')
+            rt0v1 = open(args.output + '/VBN(V1)/Record_type_0.csv', 'w')
+            rt1v1 = open(args.output + '/VBN(V1)/Record_type_1.csv', 'w')
+            rt2v1 = open(args.output + '/VBN(V1)/Record_type_2.csv', 'w')
+            rt0v2 = open(args.output + '/VBN(V2)/Record_type_0.csv', 'w')
+            rt1v2 = open(args.output + '/VBN(V2)/Record_type_1.csv', 'w')
+            rt2v2 = open(args.output + '/VBN(V2)/Record_type_2.csv', 'w')
     else:
         syslog = open(args.output + '/Symantec_Client_Management_System_Log.csv', 'a')
         seclog = open(args.output + '/Symantec_Client_Management_Security_Log.csv', 'a')
@@ -2932,6 +3049,17 @@ if args.output and not (args.extract or args.hex_dump):
         tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
         quarantine = open(args.output + '/quarantine.csv', 'a')
         settings = open(args.output + '/settings.csv', 'a')
+        if args.struct:
+            if not ntpath.exists(args.output + '/VBN(V1)'):
+                os.makedirs(args.output + '/VBN(V1)')
+            if not ntpath.exists(args.output + '/VBN(V2)'):
+                os.makedirs(args.output + '/VBN(V2)')
+            rt0v1 = open(args.output + '/VBN(V1)/Record_type_0.csv', 'a')
+            rt1v1 = open(args.output + '/VBN(V1)/Record_type_1.csv', 'a')
+            rt2v1 = open(args.output + '/VBN(V1)/Record_type_2.csv', 'a')
+            rt0v2 = open(args.output + '/VBN(V2)/Record_type_0.csv', 'a')
+            rt1v2 = open(args.output + '/VBN(V2)/Record_type_1.csv', 'a')
+            rt2v2 = open(args.output + '/VBN(V2)/Record_type_2.csv', 'a')
 
     if os.stat(timeline.name).st_size == 0:
         csv_header()
@@ -2948,6 +3076,17 @@ elif not (args.extract or args.hex_dump):
         tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
         quarantine = open('quarantine.csv', 'w')
         settings = open('settings.csv', 'w')
+        if args.struct:
+            if not ntpath.exists('VBN(V1)'):
+                os.makedirs('VBN(V1)')
+            if not ntpath.exists('VBN(V2)'):
+                os.makedirs('VBN(V2)')
+            rt0v1 = open('VBN(V1)/Record_type_0.csv', 'w')
+            rt1v1 = open('VBN(V1)/Record_type_1.csv', 'w')
+            rt2v1 = open('VBN(V1)/Record_type_2.csv', 'w')
+            rt0v2 = open('VBN(V2)/Record_type_0.csv', 'w')
+            rt1v2 = open('VBN(V2)/Record_type_1.csv', 'w')
+            rt2v2 = open('VBN(V2)/Record_type_2.csv', 'w')
     else:
         syslog = open('Symantec_Client_Management_System_Log.csv', 'a')
         seclog = open('Symantec_Client_Management_Security_Log.csv', 'a')
@@ -2959,6 +3098,17 @@ elif not (args.extract or args.hex_dump):
         tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
         quarantine = open('quarantine.csv', 'a')
         settings = open('settings.csv', 'a')
+        if args.struct:
+            if not ntpath.exists('VBN(V1)'):
+                os.makedirs('VBN(V1)')
+            if not ntpath.exists('VBN(V2)'):
+                os.makedirs('VBN(V2)')
+            rt0v1 = open('VBN(V1)/Record_type_0.csv', 'a')
+            rt1v1 = open('VBN(V1)/Record_type_1.csv', 'a')
+            rt2v1 = open('VBN(V1)/Record_type_2.csv', 'a')
+            rt0v2 = open('VBN(V2)/Record_type_0.csv', 'a')
+            rt1v2 = open('VBN(V2)/Record_type_1.csv', 'a')
+            rt2v2 = open('VBN(V2)/Record_type_2.csv', 'a')
 
     if os.stat(timeline.name).st_size == 0:
         csv_header()
