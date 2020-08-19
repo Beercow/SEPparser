@@ -2103,10 +2103,26 @@ def flip(_):
     return _
 
 def parse_header(f):
+    guid = [
+            '2B5CA624B61E3F408B994BF679001DC2', #BHSvcPlg.dll
+            '334FC1F5F2DA574E9BE8A16049417506',
+            '38ACED4CA8B2134D83ED4D35F94338BD',
+            '5E6E81A4A77338449805BB2B7AB12FB4',
+            '6AB68FC93C09E744B828A598179EFC83',
+            '95AAE6FD76558D439889B9D02BE0B850',
+            '8EF95B94E971E842BAC952B02E79FB74'  #AVModule.dll
+           ]
+           
     headersize = len(f.readline())
     if headersize == 0:
         print(f'\033[1;33mSkipping {f.name}. Unknown File Type. \033[1;0m\n')
+        return 11, 0, 0, 1, 0, 0, 0, 0
+    f.seek(0)
+    sheader = f.read(16).hex()
+    if sheader[0:16] == '3216144c01000000':
         return 9, 0, 0, 1, 0, 0, 0, 0
+    if sheader.upper() in guid:
+        return 10, 0, 0, 1, 0, 0, 0, 0
     f.seek(0)
     if headersize == 55:
         logType = 5
@@ -2144,10 +2160,10 @@ def parse_header(f):
     try:
         f.seek(4100, 0)
         from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"), 0)
-        return 8, 0, 0, 1, 0, 0, 0, 0
+        return 8, 0, 0, 1, 0, 0, 0, 0  
     except:
         print(f'\033[1;33mSkipping {f.name}. Unknown File Type. \033[1;0m\n')
-        return 9, 0, 0, 1, 0, 0, 0, 0
+        return 11, 0, 0, 1, 0, 0, 0, 0
         
 def parse_syslog(f, logEntries):
     startEntry = 72
@@ -2834,23 +2850,44 @@ def parse_vbn(f):
 
         quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{modify}","{create}","{access}","{vbin}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_2)}","{from_unix_sec(vbnmeta.Date_Accessed_2)}","{from_unix_sec(vbnmeta.Date_Modified_2)}","{from_unix_sec(vbnmeta.VBin_Time_2)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Quarantine_Session_ID)[2:].upper()}","{rtid}","{wDescription}","{sddl}","{sha1}","{qfs}","{junkfs}","{dd}","{virus}","{guid}","{tags}","{sid}"\n')
 
-def extract_sym_submissionsidx(_):
-    _.seek(48)
+def extract_sym_submissionsidx(f):
+    f.seek(48)
     cnt = 0
-    while _.read(4) == b'@\x99\xc6\x89':
-        _.seek(20,1)
-        len1 = struct.unpack('i', _.read(4))[0]
-        len2 = struct.unpack('i', _.read(4))[0]
-        _.seek(8,1)
-        key = _.read(16)
-        data = _.read(len1)
-        dec = blowfishit(data,key,len1)
-        print(dec)
-        input()
-        _.seek(-16,1)
+    while f.read(4) == b'@\x99\xc6\x89':
+        f.seek(20,1)
+        len1 = struct.unpack('i', f.read(4))[0]
+        len2 = struct.unpack('i', f.read(4))[0]
+        print(f'\033[1;35m\tSubmission {cnt} len1={len1} len2={len2}\033[1;0m\n')
+        f.seek(8,1)
+        if args.output:
+            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
+        else:
+            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
+        key = f.read(16)
+        data = f.read(len1)
+        dec = blowfishit(data,key)
+        newfilename.write(dec.encode('latin-1'))
+        print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
+        f.seek(-16,1)
         cnt += 1
 
-def blowfishit(data,key,len1):
+def extract_sym_ccSubSDK(f):
+    f.seek(0)
+    GUID = f.read(16).hex()
+    if args.output:
+        if not ntpath.exists(args.output+'/ccSubSDK/'+GUID):
+            os.makedirs(args.output+'/ccSubSDK/'+GUID)
+        newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name)+'_Symantec_ccSubSDK.out', 'wb')
+    else:
+        if not ntpath.exists('ccSubSDK/'+GUID):
+            os.makedirs('ccSubSDK/'+GUID)
+        newfilename = open('ccSubSDK/' + GUID + '/' + os.path.basename(f.name)+'_Symantec_ccSubSDK.out', 'wb')
+    key = f.read(16)
+    data = f.read()
+    dec = blowfishit(data,key)
+    newfilename.write(dec.encode('latin-1'))
+
+def blowfishit(data,key):
     dec = ''
     cipher = blowfish.Cipher(key, byte_order = "little")
     data = io.BytesIO(data)
@@ -2877,9 +2914,9 @@ def main():
         print(f'\033[1;35mStarted parsing {filename} \033[1;0m\n')
         try:
             with open(filename, 'rb') as f:
-                if 'submissions.idx' in filename:
-                    extract_sym_submissionsidx(f)
-                    continue
+#                if 'submissions.idx' in filename:
+#                    extract_sym_submissionsidx(f)
+#                    continue
                 logType, maxSize, field3, cLogEntries, field5, field6, tLogEntries, maxDays = parse_header(f)
                 try:
                     if logType <= 5:
@@ -2921,6 +2958,12 @@ def main():
                             parse_daily_av(f, logType, args.timezone)
 
                     if logType == 9:
+                        extract_sym_submissionsidx(f)
+                        
+                    if logType == 10:
+                        extract_sym_ccSubSDK(f)
+
+                    if logType == 11:
                         continue
 
                     print(f'\033[1;32mFinished parsing {filename} \033[1;0m\n')
@@ -2949,7 +2992,7 @@ parser.add_argument("-k", "--kape", help="Kape mode", action="store_true")
 parser.add_argument("-s", "--struct", help="Output structures to csv", action="store_true")
 args = parser.parse_args()
 
-regex =  re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine)')
+regex =  re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine|.*\\Data\\CmnClnt\\ccSubSDK)')
 filenames = []
 
 if args.hex_dump and not args.file:
@@ -3015,6 +3058,9 @@ if args.timezone is None:
 if args.output and not (args.extract or args.hex_dump):
     if not ntpath.exists(args.output):
         os.makedirs(args.output)
+        os.makedirs(args.output + '/VBN(V1)')
+        os.makedirs(args.output + '/VBN(V2)')
+        os.makedirs(args.output + '/ccSubSDK')
 
     if not args.append:
         syslog = open(args.output + '/Symantec_Client_Management_System_Log.csv', 'w')
@@ -3028,10 +3074,6 @@ if args.output and not (args.extract or args.hex_dump):
         quarantine = open(args.output + '/quarantine.csv', 'w')
         settings = open(args.output + '/settings.csv', 'w')
         if args.struct:
-            if not ntpath.exists(args.output + '/VBN(V1)'):
-                os.makedirs(args.output + '/VBN(V1)')
-            if not ntpath.exists(args.output + '/VBN(V2)'):
-                os.makedirs(args.output + '/VBN(V2)')
             rt0v1 = open(args.output + '/VBN(V1)/Record_type_0.csv', 'w')
             rt1v1 = open(args.output + '/VBN(V1)/Record_type_1.csv', 'w')
             rt2v1 = open(args.output + '/VBN(V1)/Record_type_2.csv', 'w')
@@ -3050,10 +3092,6 @@ if args.output and not (args.extract or args.hex_dump):
         quarantine = open(args.output + '/quarantine.csv', 'a')
         settings = open(args.output + '/settings.csv', 'a')
         if args.struct:
-            if not ntpath.exists(args.output + '/VBN(V1)'):
-                os.makedirs(args.output + '/VBN(V1)')
-            if not ntpath.exists(args.output + '/VBN(V2)'):
-                os.makedirs(args.output + '/VBN(V2)')
             rt0v1 = open(args.output + '/VBN(V1)/Record_type_0.csv', 'a')
             rt1v1 = open(args.output + '/VBN(V1)/Record_type_1.csv', 'a')
             rt2v1 = open(args.output + '/VBN(V1)/Record_type_2.csv', 'a')
@@ -3065,6 +3103,11 @@ if args.output and not (args.extract or args.hex_dump):
         csv_header()
 
 elif not (args.extract or args.hex_dump):
+    if not ntpath.exists('VBN(V1)'):
+        os.makedirs('VBN(V1)')
+        os.makedirs('VBN(V2)')
+        os.makedirs('ccSubSDK')
+        
     if not args.append:
         syslog = open('Symantec_Client_Management_System_Log.csv', 'w')
         seclog = open('Symantec_Client_Management_Security_Log.csv', 'w')
@@ -3077,10 +3120,6 @@ elif not (args.extract or args.hex_dump):
         quarantine = open('quarantine.csv', 'w')
         settings = open('settings.csv', 'w')
         if args.struct:
-            if not ntpath.exists('VBN(V1)'):
-                os.makedirs('VBN(V1)')
-            if not ntpath.exists('VBN(V2)'):
-                os.makedirs('VBN(V2)')
             rt0v1 = open('VBN(V1)/Record_type_0.csv', 'w')
             rt1v1 = open('VBN(V1)/Record_type_1.csv', 'w')
             rt2v1 = open('VBN(V1)/Record_type_2.csv', 'w')
@@ -3099,10 +3138,6 @@ elif not (args.extract or args.hex_dump):
         quarantine = open('quarantine.csv', 'a')
         settings = open('settings.csv', 'a')
         if args.struct:
-            if not ntpath.exists('VBN(V1)'):
-                os.makedirs('VBN(V1)')
-            if not ntpath.exists('VBN(V2)'):
-                os.makedirs('VBN(V2)')
             rt0v1 = open('VBN(V1)/Record_type_0.csv', 'a')
             rt1v1 = open('VBN(V1)/Record_type_1.csv', 'a')
             rt2v1 = open('VBN(V1)/Record_type_2.csv', 'a')
