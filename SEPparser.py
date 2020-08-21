@@ -334,6 +334,11 @@ typedef struct _ASN1_8 {
     char Value[8];
 } ASN1_8;
 
+typedef struct _ASN1_16 {
+    byte Tag;
+    char Value[16];
+} ASN1_16;
+
 typedef struct _ASN1_String {
     byte Tag;
     int32 Data_Length;
@@ -1893,12 +1898,17 @@ def read_sep_tag(_):
     sddl = ''
     sid = ''
     guid = ''
+    dec = ''
+    lasttoken = 0
     hit = None
     virus = None
     while True:
         try:
             code = struct.unpack("B", _.read(1))[0]
         except:
+            break
+
+        if code == 0:
             break
         if code == 1 or code == 10:
             _.seek(-1,1)
@@ -1915,6 +1925,24 @@ def read_sep_tag(_):
             tag = vbnstruct.ASN1_8(_.read(9))
             if args.hex_dump:
                 cstruct.dumpstruct(tag)
+        elif code == 15:
+            _.seek(-1,1)
+            if extra:
+                tag = vbnstruct.ASN1_16(_.read(17))
+                if args.hex_dump:
+                    cstruct.dumpstruct(tag)
+                extra = False
+            else:
+                tag = vbnstruct.ASN1_16(_.read(17))
+                if args.hex_dump:
+                    cstruct.dumpstruct(tag)
+                extra = True
+        elif code == 16:
+            _.seek(-1,1)
+            tag = vbnstruct.ASN1_16(_.read(17))
+            if args.hex_dump:
+                cstruct.dumpstruct(tag)
+            
         else:
             if extra:
                 size = struct.unpack("<I", _.read(4))[0]
@@ -1946,6 +1974,16 @@ def read_sep_tag(_):
                         match.append(tag.Data.decode('latin-1').replace("\x00", ""))
                 if args.hex_dump:
                     cstruct.dumpstruct(tag)
+        lasttoken = code
+        for k, v in tag._values.items():
+            if type(v) == bytes:
+                dec += v.decode('latin-1').replace("\x00", "")
+                dec += '\n'
+            if type(v) == int:
+                v = '{:02x}'.format(v)
+                v = v.zfill(len(v) + len(v) % 2)
+                dec += ' '.join(v[i: i+2] for i in range(0, len(v), 2))
+                dec += '\n'
 
     for a in match:
         if 'Detection Digest:' in a:
@@ -1969,7 +2007,7 @@ def read_sep_tag(_):
         virus = match[0]
         del match[0]
 
-    return match, dd, sddl, sid, virus, guid
+    return match, dd, sddl, sid, virus, guid, dec
 
 def event_data1(_):
     _ = _.replace('"', '').split('\t')
@@ -2105,11 +2143,11 @@ def flip(_):
 def parse_header(f):
     guid = [
             '2B5CA624B61E3F408B994BF679001DC2', #BHSvcPlg.dll
-            '334FC1F5F2DA574E9BE8A16049417506',
-            '38ACED4CA8B2134D83ED4D35F94338BD',
-            '5E6E81A4A77338449805BB2B7AB12FB4',
-            '6AB68FC93C09E744B828A598179EFC83',
-            '95AAE6FD76558D439889B9D02BE0B850',
+            '334FC1F5F2DA574E9BE8A16049417506', #SubmissionsEim.dll
+            '38ACED4CA8B2134D83ED4D35F94338BD', #SubmissionsEim.dll
+            '5E6E81A4A77338449805BB2B7AB12FB4', #AtpiEim.dll ReportSubmission.dll
+            '6AB68FC93C09E744B828A598179EFC83', #IDSxpx86.dll
+            '95AAE6FD76558D439889B9D02BE0B850', #IDSxpx86.dll
             '8EF95B94E971E842BAC952B02E79FB74'  #AVModule.dll
            ]
            
@@ -2680,7 +2718,7 @@ def parse_vbn(f):
             print('           ##                                                   ##')
             print('           #######################################################')
             print('           #######################################################\n')
-        tags, dd, sddl, sid, virus, guid = read_sep_tag(f.read())
+        tags, dd, sddl, sid, virus, guid, dec = read_sep_tag(f.read())
 
         if args.struct:
             if vbnv == 1:
@@ -2717,7 +2755,7 @@ def parse_vbn(f):
             print('           ##                                                   ##')
             print('           #######################################################')
             print('           #######################################################\n')
-        tags, dd, sddl, sid, virus, guid = read_sep_tag(xor(f.read(qfm.QFM_Size), 0x5A).encode('latin-1'))
+        tags, dd, sddl, sid, virus, guid, dec = read_sep_tag(xor(f.read(qfm.QFM_Size), 0x5A).encode('latin-1'))
 
         pos = qfm.QFM_Size_Header_Size + vbnmeta.QFM_HEADER_Offset
         f.seek(pos)
@@ -2867,6 +2905,12 @@ def extract_sym_submissionsidx(f):
         data = f.read(len1)
         dec = blowfishit(data,key)
         newfilename.write(dec.encode('latin-1'))
+#        dec = read_sep_tag(dec.encode('latin-1'))
+#        if args.output:
+#            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
+#        else:
+#            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
+#        newfilename.write(dec[6].encode('latin-1'))
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
         f.seek(-16,1)
         cnt += 1
@@ -2886,7 +2930,13 @@ def extract_sym_ccSubSDK(f):
     data = f.read()
     dec = blowfishit(data,key)
     newfilename.write(dec.encode('latin-1'))
-
+    dec = read_sep_tag(dec.encode('latin-1'))
+    if args.output:
+        newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name)+'_Symantec_ccSubSDK.met', 'wb')
+    else:
+        newfilename = open('ccSubSDK/' + GUID + '/' + os.path.basename(f.name)+'_Symantec_ccSubSDK.met', 'wb')
+    newfilename.write(dec[6].encode('latin-1'))
+    
 def blowfishit(data,key):
     dec = ''
     cipher = blowfish.Cipher(key, byte_order = "little")
@@ -2914,9 +2964,9 @@ def main():
         print(f'\033[1;35mStarted parsing {filename} \033[1;0m\n')
         try:
             with open(filename, 'rb') as f:
-#                if 'submissions.idx' in filename:
-#                    extract_sym_submissionsidx(f)
-#                    continue
+ #               if 'server.dat' in filename:
+ #                   extract_rule(f)
+ #                   continue
                 logType, maxSize, field3, cLogEntries, field5, field6, tLogEntries, maxDays = parse_header(f)
                 try:
                     if logType <= 5:
@@ -2995,9 +3045,9 @@ args = parser.parse_args()
 regex =  re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine|.*\\Data\\CmnClnt\\ccSubSDK)')
 filenames = []
 
-if args.hex_dump and not args.file:
-    print("\n\033[1;31m-e, --extract and/or -hd, --hexdump can only be used with -f, --file.\033[1;0m\n")
-    sys.exit()
+#if args.hex_dump and not args.file:
+#    print("\n\033[1;31m-e, --extract and/or -hd, --hexdump can only be used with -f, --file.\033[1;0m\n")
+#    sys.exit()
 
 if args.registrationInfo:
     try:
