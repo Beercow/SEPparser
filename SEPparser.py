@@ -336,8 +336,20 @@ typedef struct _ASN1_8 {
 
 typedef struct _ASN1_16 {
     byte Tag;
-    char Value[16];
+    char GUID[16];
 } ASN1_16;
+
+typedef struct _ASN1_String_A {
+    byte Tag;
+    int32 Data_Length;
+    char String-A[Data_Length];
+} ASN1_String_A;
+
+typedef struct _ASN1_String_W {
+    byte Tag;
+    int32 Data_Length;
+    char String-W[Data_Length];
+} ASN1_String_W;
 
 typedef struct _ASN1_String {
     byte Tag;
@@ -1907,12 +1919,161 @@ def read_sep_tag(_):
             code = struct.unpack("B", _.read(1))[0]
         except:
             break
+#        print(code)
+        if code == 0:
+            break
+        if code == 1 or code == 10:
+            _.seek(-1,1)
+            tag = vbnstruct.ASN1_1(_.read(2))
+            
+        elif code == 2:
+            _.seek(-1,1)
+            tag = vbnstruct.ASN1_2(_.read(3))
+            
+        elif code == 3 or code == 6:
+            _.seek(-1,1)
+            tag = vbnstruct.ASN1_4(_.read(5))
+
+        elif code == 4:
+            _.seek(-1,1)
+            tag = vbnstruct.ASN1_8(_.read(9))
+        
+        elif code == 7:
+            size = struct.unpack("<I", _.read(4))[0]
+            _.seek(-5,1)
+            tag = vbnstruct.ASN1_String_A(_.read(5 + size))
+
+        elif code == 8:
+            size = struct.unpack("<I", _.read(4))[0]
+            _.seek(-5,1)
+            tag = vbnstruct.ASN1_String_W(_.read(5 + size))
+
+        elif code == 9:
+            size = struct.unpack("<I", _.read(4))[0]
+            _.seek(-5,1)
+            if size == 16:
+                tag = vbnstruct.ASN1_String(_.read(5 + size))
+            else:
+                tag = vbnstruct.ASN1_4(_.read(5))
+                
+        elif code == 15:
+            _.seek(-1,1)
+            tag = vbnstruct.ASN1_16(_.read(17))
+#            if extra:
+#                tag = vbnstruct.ASN1_16(_.read(17))
+#                extra = False
+#            else:
+#                tag = vbnstruct.ASN1_16(_.read(17))
+#                extra = True
+        
+        elif code == 16:
+            _.seek(-1,1)
+            tag = vbnstruct.ASN1_16(_.read(17))
+            
+        else:
+            if lasttoken != 9:
+                input('Error')
+                break
+#            if args.hex_dump:
+#                cstruct.dumpstruct(tag)
+            
+#        else:
+#            if extra:
+#                size = struct.unpack("<I", _.read(4))[0]
+#                _.seek(-5,1)
+#                if code == 9 and size == 16:
+#                    tag = vbnstruct.ASN1_String(_.read(5 + size))
+#                    if re.match(b'dE21\x13;3E\x89\x993\x99\x06\x88\xf5\xa9', tag.Data):
+#                        print('yes')
+#                else:
+#                    tag = vbnstruct.ASN1_4(_.read(5))
+#                if args.hex_dump:
+#                    cstruct.dumpstruct(tag)
+#                extra = False
+#            else:
+#                size = struct.unpack("<I", _.read(4))[0]
+#                _.seek(-5,1)
+#                if code == 9 and size == 16:
+#                    extra = True
+#                tag = vbnstruct.ASN1_String(_.read(5 + size))
+#                if re.match(b'\xb9\x1f\x8a\\\\\xb75\\\D\x98\x03%\xfc\xa1W\^q', tag.Data):
+#                    hit = 'virus'
+#                if re.match(b'dE21\x13;3E\x89\x993\x99\x06\x88\xf5\xa9', tag.Data):
+#                    print('yes')
+#                if code == 7 or code == 8:
+#                    if hit == 'virus':
+#                        virus = tag.Data.decode('latin-1').replace("\x00", "")
+#                        hit = None
+#                    else:
+#                        match.append(tag.Data.decode('latin-1').replace("\x00", ""))
+#                if args.hex_dump:
+#                    cstruct.dumpstruct(tag)
+        lasttoken = code
+        for k, v in tag._values.items():
+            if type(v) == bytes:
+                dec += v.decode('latin-1').replace("\x00", "")
+                dec += '\n'
+            if type(v) == int:
+                v = '{:02x}'.format(v)
+                v = v.zfill(len(v) + len(v) % 2)
+                dec += ' '.join(v[i: i+2] for i in range(0, len(v), 2))
+                dec += '\n'
+        if args.hex_dump:
+            cstruct.dumpstruct(tag)
+
+
+    for a in match:
+        if 'Detection Digest:' in a:
+            match.remove(a)
+            dd = a.replace('"', '""')
+        try:
+            sddl = sddl_translate(a)
+            match.remove(a)
+        except:
+            pass
+        rsid = re.match('^S-\d-(\d+-){1,14}\d+$', a)
+        if rsid:
+            sid = a
+            match.remove(a)
+        rguid = re.match('^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$', a)
+        if rguid:
+            guid = a
+            match.remove(a)
+
+    if virus is None and len(match) >= 6:
+        virus = match[0]
+        del match[0]
+
+    return match, dd, sddl, sid, virus, guid, dec
+
+def read_sep_tag_old(_):
+    _ = io.BytesIO(_)
+    extra = False
+    match = []
+    dd = ''
+    sddl = ''
+    sid = ''
+    guid = ''
+    dec = ''
+    lasttoken = 0
+    hit = None
+    virus = None
+    while True:
+        try:
+            code = struct.unpack("B", _.read(1))[0]
+        except:
+            break
 
         if code == 0:
             break
         if code == 1 or code == 10:
             _.seek(-1,1)
             tag = vbnstruct.ASN1_1(_.read(2))
+            if args.hex_dump:
+                cstruct.dumpstruct(tag)
+        elif code == 2:
+            _.seek(-1,1)
+            tag = vbnstruct.ASN1_2(_.read(3))
             if args.hex_dump:
                 cstruct.dumpstruct(tag)
         elif code == 3 or code == 6:
@@ -2897,22 +3058,29 @@ def extract_sym_submissionsidx(f):
         len2 = struct.unpack('i', f.read(4))[0]
         print(f'\033[1;35m\tSubmission {cnt} len1={len1} len2={len2}\033[1;0m\n')
         f.seek(8,1)
+        if len2 == 0:
+            f.seek(len1, 1)
+            cnt += 1
+            continue
+        else:    
+            if args.output:
+                newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
+            else:
+                newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
+            key = f.read(16)
+            data = f.read(len1 - 16)
+            dec = blowfishit(data,key)
+            newfilename.write(dec.encode('latin-1'))
+            dec = read_sep_tag(dec.encode('latin-1'))
+#        input()
         if args.output:
-            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
+            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
         else:
-            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
-        key = f.read(16)
-        data = f.read(len1)
-        dec = blowfishit(data,key)
-        newfilename.write(dec.encode('latin-1'))
-#        dec = read_sep_tag(dec.encode('latin-1'))
-#        if args.output:
-#            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
-#        else:
-#            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
-#        newfilename.write(dec[6].encode('latin-1'))
+            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
+        newfilename.write(dec[6].encode('latin-1'))
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
-        f.seek(-16,1)
+#        f.seek(-16,1)
+#        print(hex(f.tell()))
         cnt += 1
 
 def extract_sym_ccSubSDK(f):
