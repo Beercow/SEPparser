@@ -16,6 +16,7 @@ import ntpath
 import base64
 import json
 import blowfish
+import zlib
 
 if os.name == 'nt':
     kernel32 = ctypes.windll.kernel32
@@ -311,12 +312,12 @@ typedef struct _Quarantine_File_Metadata_Header {
 
 typedef struct _ASN1_1 {
     byte Tag;
-    char Value[1];
+    byte Value;
 } ASN1_1;
 
 typedef struct _ASN1_2 {
     byte Tag;
-    char Value[2];
+    short Value;
 } ASN1_2;
 
 typedef struct _ASN1_3 {
@@ -326,7 +327,7 @@ typedef struct _ASN1_3 {
 
 typedef struct _ASN1_4 {
     byte Tag;
-    char Value[4];
+    long Value;
 } ASN1_4;
 
 typedef struct _ASN1_8 {
@@ -351,11 +352,17 @@ typedef struct _ASN1_String_W {
     char String-W[Data_Length];
 } ASN1_String_W;
 
-typedef struct _ASN1_String {
+typedef struct _ASN1_GUID {
     byte Tag;
     int32 Data_Length;
-    char Data[Data_Length];
-} ASN1_String;
+    char GUID[Data_Length];
+} ASN1_GUID;
+
+typedef struct _ASN1_BLOB {
+    byte Tag;
+    int32 Data_Length;
+    char BLOB[Data_Length];
+} ASN1_BLOB;
 
 typedef struct _ASN1_String2 {
     byte Tag;
@@ -1904,7 +1911,7 @@ def read_log_data(data, tz):
 
 def read_sep_tag(_):
     _ = io.BytesIO(_)
-    extra = False
+    blob = False
     match = []
     dd = ''
     sddl = ''
@@ -1952,19 +1959,18 @@ def read_sep_tag(_):
             size = struct.unpack("<I", _.read(4))[0]
             _.seek(-5,1)
             if size == 16:
-                tag = vbnstruct.ASN1_String(_.read(5 + size))
+                tag = vbnstruct.ASN1_GUID(_.read(5 + size))
+                blob = False
+            if blob == True:
+                tag = vbnstruct.ASN1_BLOB(_.read(5 + size))
+                blob = False
             else:
                 tag = vbnstruct.ASN1_4(_.read(5))
+                blob = True
                 
         elif code == 15:
             _.seek(-1,1)
             tag = vbnstruct.ASN1_16(_.read(17))
-#            if extra:
-#                tag = vbnstruct.ASN1_16(_.read(17))
-#                extra = False
-#            else:
-#                tag = vbnstruct.ASN1_16(_.read(17))
-#                extra = True
         
         elif code == 16:
             _.seek(-1,1)
@@ -1974,50 +1980,31 @@ def read_sep_tag(_):
             if lasttoken != 9:
                 input('Error')
                 break
-#            if args.hex_dump:
-#                cstruct.dumpstruct(tag)
-            
-#        else:
-#            if extra:
-#                size = struct.unpack("<I", _.read(4))[0]
-#                _.seek(-5,1)
-#                if code == 9 and size == 16:
-#                    tag = vbnstruct.ASN1_String(_.read(5 + size))
-#                    if re.match(b'dE21\x13;3E\x89\x993\x99\x06\x88\xf5\xa9', tag.Data):
-#                        print('yes')
-#                else:
-#                    tag = vbnstruct.ASN1_4(_.read(5))
-#                if args.hex_dump:
-#                    cstruct.dumpstruct(tag)
-#                extra = False
-#            else:
-#                size = struct.unpack("<I", _.read(4))[0]
-#                _.seek(-5,1)
-#                if code == 9 and size == 16:
-#                    extra = True
-#                tag = vbnstruct.ASN1_String(_.read(5 + size))
-#                if re.match(b'\xb9\x1f\x8a\\\\\xb75\\\D\x98\x03%\xfc\xa1W\^q', tag.Data):
-#                    hit = 'virus'
-#                if re.match(b'dE21\x13;3E\x89\x993\x99\x06\x88\xf5\xa9', tag.Data):
-#                    print('yes')
-#                if code == 7 or code == 8:
-#                    if hit == 'virus':
-#                        virus = tag.Data.decode('latin-1').replace("\x00", "")
-#                        hit = None
-#                    else:
-#                        match.append(tag.Data.decode('latin-1').replace("\x00", ""))
-#                if args.hex_dump:
-#                    cstruct.dumpstruct(tag)
+
         lasttoken = code
         for k, v in tag._values.items():
             if type(v) == bytes:
-                dec += v.decode('latin-1').replace("\x00", "")
+                dec += '\t\t'
+                if v.startswith(b'CMPR'):
+                    dec += str(zlib.decompress(v[8:]))
+                else:
+                    dec += v.decode('latin-1').replace("\x00", "")
                 dec += '\n'
             if type(v) == int:
-                v = '{:02x}'.format(v)
+                if k == 'Tag':
+                    v = '{:02x}'.format(v)
+                elif lasttoken == 1 or lasttoken == 10:
+                    v = '{:02x}'.format(v)
+                    dec += '\t'
+                elif k == 'Data_Length' or lasttoken == 3 or lasttoken == 6 or (k == 'Value' and lasttoken == 9):
+                    v = '{:<08x}'.format(v)
+                    dec += '\t'
+                else:
+                    v = '{:<04x}'.format(v)
+                    dec += '\t'
                 v = v.zfill(len(v) + len(v) % 2)
                 dec += ' '.join(v[i: i+2] for i in range(0, len(v), 2))
-                dec += '\n'
+                dec += '\n\n'
         if args.hex_dump:
             cstruct.dumpstruct(tag)
 
@@ -3059,6 +3046,7 @@ def extract_sym_submissionsidx(f):
         print(f'\033[1;35m\tSubmission {cnt} len1={len1} len2={len2}\033[1;0m\n')
         f.seek(8,1)
         if len2 == 0:
+            print(hex(f.tell()))
             f.seek(len1, 1)
             cnt += 1
             continue
