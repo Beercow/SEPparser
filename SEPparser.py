@@ -1978,7 +1978,7 @@ def read_sep_tag(_):
             
         else:
             if lasttoken != 9:
-                input('Error')
+#                input('Error')
                 break
 
         lasttoken = code
@@ -3044,32 +3044,75 @@ def extract_sym_submissionsidx(f):
         len1 = struct.unpack('i', f.read(4))[0]
         len2 = struct.unpack('i', f.read(4))[0]
         print(f'\033[1;35m\tSubmission {cnt} len1={len1} len2={len2}\033[1;0m\n')
-        f.seek(8,1)
-        if len2 == 0:
-            print(hex(f.tell()))
-            f.seek(len1, 1)
+        f.seek(8,1)   
+        if args.output:
+            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
+        else:
+            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
+        key = f.read(16)
+        data = f.read(len1 - 16)
+        dec = blowfishit(data,key)
+        newfilename.write(dec.encode('latin-1'))
+        dec = read_sep_tag(dec.encode('latin-1'))
+        if dec[6] == '':
+            newfilename.close()
+            os.remove(newfilename.name)
+            f.seek(-len1 - 40, 1)
+            data = f.read(len1 + 40)
+            extract_sym_submissionsidx_sub(data, cnt, len1)
             cnt += 1
             continue
-        else:    
-            if args.output:
-                newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
-            else:
-                newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
-            key = f.read(16)
-            data = f.read(len1 - 16)
-            dec = blowfishit(data,key)
-            newfilename.write(dec.encode('latin-1'))
-            dec = read_sep_tag(dec.encode('latin-1'))
-#        input()
         if args.output:
             newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
         else:
             newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
-#        f.seek(-16,1)
-#        print(hex(f.tell()))
         cnt += 1
+        
+def extract_sym_submissionsidx_sub(f, cnt, len1):
+    print(f'\033[1;32m\t\tParsing sub-entries for Submission {cnt}\033[1;0m\n')
+    print(f'\033[1;35m\t\tSubmission {cnt}-0\033[1;0m\n')
+    if args.output:
+            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-0]_idx.out', 'wb')
+    else:
+        newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-0]_idx.out', 'wb')
+    subcnt = 1
+    f = io.BytesIO(f)
+    try:
+        pos = [(m.start(0)) for m in re.finditer(b'@\x99\xc6\x89', f.read())][1]
+        print(f'\033[1;35m\t\tSubmission {cnt}-0 len1={pos} len2=0\033[1;0m\n')
+    except:
+        f.seek(0)
+        print(f'\033[1;35m\t\tSubmission {cnt}-0 len1={len1} len2=0\033[1;0m\n')
+        newfilename.write(f.read())
+        print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-0\033[1;0m\n')
+        return
+    f.seek(0)   
+    newfilename.write(f.read(pos))
+    print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-0\033[1;0m\n')
+    while f.read(4) == b'@\x99\xc6\x89':
+        f.seek(20,1)
+        len1 = struct.unpack('i', f.read(4))[0]
+        len2 = struct.unpack('i', f.read(4))[0]
+        print(f'\033[1;35m\t\tSubmission {cnt}-{subcnt} len1={len1} len2={len2}\033[1;0m\n')
+        f.seek(8,1)   
+        if args.output:
+            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.out', 'wb')
+        else:
+            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.out', 'wb')
+        key = f.read(16)
+        data = f.read(len1 - 16)
+        dec = blowfishit(data,key)
+        newfilename.write(dec.encode('latin-1'))
+        dec = read_sep_tag(dec.encode('latin-1'))
+        if args.output:
+            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
+        else:
+            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
+        newfilename.write(dec[6].encode('latin-1'))
+        print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-{subcnt}\033[1;0m\n')
+        subcnt += 1
 
 def extract_sym_ccSubSDK(f):
     f.seek(0)
