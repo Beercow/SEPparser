@@ -1910,6 +1910,7 @@ def read_log_data(data, tz):
     return f'"{entry.time}","{entry.event}","{entry.category}","{entry.logger}","{entry.computer}","{entry.user}","{entry.virus}","{entry.file}","{entry.wantedaction1}","{entry.wantedaction2}","{entry.realaction}","{entry.virustype}","{entry.flags}","{entry.description}","{entry.scanid}","{entry.newext}","{entry.groupid}","{entry.eventdata}","{entry.vbinid}","{entry.virusid}","{entry.quarantineforwardstatus}","{entry.access}","{entry.sdnstatus}","{entry.compressed}","{entry.depth}","{entry.stillinfected}","{entry.definfo}","{entry.defsequincenumber}","{entry.cleaninfo}","{entry.deleteinfo}","{entry.backupod}","{entry.parent}","{entry.guid}","{entry.clientgroup}","{entry.address}","{entry.domainname}","{entry.ntdomain}","{entry.macaddress}","{entry.version}","{entry.remotemachine}","{entry.remotemachineip}","{entry.action1status}","{entry.action2status}","{entry.licensefeaturename}","{entry.licensefeatureversion}","{entry.licenseserialnumber}","{entry.licensefulfillmentid}","{entry.licensestartdate}","{entry.licenseexpirationdate}","{entry.licenselifecycle}","{entry.licenseseatstotal}","{entry.licenseseats}","{entry.errorcode}","{entry.licenseseatsdelta}","{entry.status}","{entry.domainguid}","{entry.sessionguid}","{entry.vbnsessionid}","{entry.logindomain}","{entry.eventdata2}","{entry.erasercategoryid}","{entry.dynamiccategoryset}","{entry.subcategorysetid}","{entry.displaynametouse}","{entry.reputationdisposition}","{entry.reputationconfidence}","{entry.firsseen}","{entry.reputationprevalence}","{entry.downloadurl}","{entry.categoryfordropper}","{entry.cidsstate}","{entry.behaviorrisklevel}","{entry.detectiontype}","{entry.acknowledgetext}","{entry.vsicstate}","{entry.scanguid}","{entry.scanduration}","{entry.scanstarttime}","{entry.targetapptype}","{entry.scancommandguid}","{field113}","{field114}","{field115}","{entry.digitalsigner}","{entry.digitalissuer}","{entry.digitalthumbprint}","{field119}","{entry.digitalsn}","{entry.digitaltime}","{field122}","{field123}","{field124}","{field125}","{field126}"'
 
 def read_sep_tag(_):
+    #quarantine.csv broken for the moment
     _ = io.BytesIO(_)
     blob = False
     match = []
@@ -1926,87 +1927,113 @@ def read_sep_tag(_):
             code = struct.unpack("B", _.read(1))[0]
         except:
             break
-#        print(code)
+        dec += '{:02x}\n'.format(code)
         if code == 0:
             break
         if code == 1 or code == 10:
             _.seek(-1,1)
             tag = vbnstruct.ASN1_1(_.read(2))
+            dec += hexdump_tag(tag.dumps()[1:])
             
         elif code == 2:
             _.seek(-1,1)
             tag = vbnstruct.ASN1_2(_.read(3))
+            dec += hexdump_tag(tag.dumps()[1:])
             
         elif code == 3 or code == 6:
             _.seek(-1,1)
             tag = vbnstruct.ASN1_4(_.read(5))
+            dec += hexdump_tag(tag.dumps()[1:])
 
         elif code == 4:
             _.seek(-1,1)
             tag = vbnstruct.ASN1_8(_.read(9))
+            dec += hexdump_tag(tag.dumps()[1:])
         
         elif code == 7:
             size = struct.unpack("<I", _.read(4))[0]
             _.seek(-5,1)
             tag = vbnstruct.ASN1_String_A(_.read(5 + size))
+            dec += hexdump_tag(tag.dumps()[1:5])
+            string = tag.dumps()[5:].decode('latin-1').replace("\x00", "")
+            dec += hexdump_tag(tag.dumps()[5:]) + f'### STRING-A\n      {string}\n'
 
         elif code == 8:
             size = struct.unpack("<I", _.read(4))[0]
             _.seek(-5,1)
             tag = vbnstruct.ASN1_String_W(_.read(5 + size))
+            dec += hexdump_tag(tag.dumps()[1:5])
+            string = tag.dumps()[5:].decode('latin-1').replace("\x00", "").replace("\r\n", "\r\n\t  ")
+            dec += hexdump_tag(tag.dumps()[5:]) + f'### STRING-W\n      {string}\n\n'
 
         elif code == 9:
             size = struct.unpack("<I", _.read(4))[0]
             _.seek(-5,1)
             if size == 16:
                 tag = vbnstruct.ASN1_GUID(_.read(5 + size))
+                dec += hexdump_tag(tag.dumps()[1:5])
+                dec += f'### GUID\n{hexdump_tag(tag.dumps()[5:])}'
                 blob = False
             if blob == True:
                 tag = vbnstruct.ASN1_BLOB(_.read(5 + size))
+                dec += hexdump_tag(tag.dumps()[1:5])
+                dec += f'### BLOB\n{hexdump_tag(tag.dumps()[5:])}'
+                if b'\x00x\xda' in tag.dumps()[5:]:
+                    if tag.dumps()[5:].startswith(b'CMPR'):
+                        dec += f'### BLOB Decompressed\n      {zlib.decompress(tag.dumps()[13:]).decode("latin-1")}'
+                    else:
+                        dec += f'### BLOB Decompressed\n      {zlib.decompress(tag.dumps()[9:]).decode("latin-1")}\n\n'
                 blob = False
             else:
                 tag = vbnstruct.ASN1_4(_.read(5))
+                dec += '{:02x}\n'.format(code)
+                dec += hexdump_tag(tag.dumps()[1:])
                 blob = True
                 
         elif code == 15:
             _.seek(-1,1)
             tag = vbnstruct.ASN1_16(_.read(17))
+            dec += f'\n### GUID\n{hexdump_tag(tag.dumps()[1:])}'
         
         elif code == 16:
             _.seek(-1,1)
             tag = vbnstruct.ASN1_16(_.read(17))
+            dec += hexdump_tag(tag.dumps()[1:])
             
         else:
             if lasttoken != 9:
+                #adding 16 byte structure might fix
+#                print(lasttoken)
 #                input('Error')
+                dec = ''
                 break
 
         lasttoken = code
-        for k, v in tag._values.items():
-            if type(v) == bytes:
-                dec += '\t\t'
-                if v.startswith(b'CMPR'):
-                    dec += str(zlib.decompress(v[8:]))
-                else:
-                    dec += v.decode('latin-1').replace("\x00", "")
-                dec += '\n'
-            if type(v) == int:
-                if k == 'Tag':
-                    v = '{:02x}'.format(v)
-                elif lasttoken == 1 or lasttoken == 10:
-                    v = '{:02x}'.format(v)
-                    dec += '\t'
-                elif k == 'Data_Length' or lasttoken == 3 or lasttoken == 6 or (k == 'Value' and lasttoken == 9):
-                    v = '{:<08x}'.format(v)
-                    dec += '\t'
-                else:
-                    v = '{:<04x}'.format(v)
-                    dec += '\t'
-                v = v.zfill(len(v) + len(v) % 2)
-                dec += ' '.join(v[i: i+2] for i in range(0, len(v), 2))
-                dec += '\n\n'
-        if args.hex_dump:
-            cstruct.dumpstruct(tag)
+#        for k, v in tag._values.items():
+#            if type(v) == bytes:
+#                dec += '\t\t'
+#                if v.startswith(b'CMPR'):
+#                    dec += zlib.decompress(v[8:]).decode('latin-1')
+#                else:
+#                    dec += v.decode('latin-1').replace("\x00", "")
+#                dec += '\n'
+#            if type(v) == int:
+#                if k == 'Tag':
+#                    v = '{:02x}'.format(v)
+#                elif lasttoken == 1 or lasttoken == 10:
+#                    v = '{:02x}'.format(v)
+#                    dec += '\t'
+#                elif k == 'Data_Length' or lasttoken == 3 or lasttoken == 6 or (k == 'Value' and lasttoken == 9):
+#                    v = '{:<08x}'.format(v)
+#                    dec += '\t'
+#                else:
+#                    v = '{:<04x}'.format(v)
+#                    dec += '\t'
+#                v = v.zfill(len(v) + len(v) % 2)
+#                dec += ' '.join(v[i: i+2] for i in range(0, len(v), 2))
+#                dec += '\n\n'
+#        if args.hex_dump:
+#            cstruct.dumpstruct(tag)
 
 
     for a in match:
@@ -2032,6 +2059,18 @@ def read_sep_tag(_):
         del match[0]
 
     return match, dd, sddl, sid, virus, guid, dec
+
+def hexdump_tag(buf, length=16):
+    """Return a hexdump output string of the given buffer."""
+    res = []
+
+    while buf:
+        line, buf = buf[:length], buf[length:]
+        hexa = ' '.join(["{:02x}".format(x) for x in line])
+        line = line.translate(__vis_filter).decode('utf-8')
+        res.append('      %-*s %s' % (length * 3, hexa, line))
+
+    return '\n'.join(res)+'\n\n'
 
 def read_sep_tag_old(_):
     _ = io.BytesIO(_)
@@ -3157,6 +3196,17 @@ def utc_offset(_):
 
     return int(utc)
 
+def logo():
+    print("____________")     
+    print("|   |  |   |")            
+    print("|   |  |   |  ____  _____ ____")                                 
+    print("|   |  |   | / ___|| ____|  _ \ _ __   __ _ _ __ ___  ___ _ __ ")
+    print("|   |  |   | \___ \|  _| | |_) | '_ \ / _` | '__/ __|/ _ \ '__|")
+    print(" \  |  |  /   ___) | |___|  __/| |_) | (_| | |  \__ \  __/ |")   
+    print("  \ |  | /   |____/|_____|_|   | .__/ \__,_|_|  |___/\___|_|")   
+    print("    \  /                       |_|")                             
+    print("     \/")     
+
 def main():
 
     for filename in filenames:
@@ -3398,4 +3448,5 @@ elif not (args.extract or args.hex_dump):
         csv_header()
 
 if __name__ == "__main__":
+    logo()
     main()
