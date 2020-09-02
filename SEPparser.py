@@ -343,13 +343,13 @@ typedef struct _ASN1_16 {
 typedef struct _ASN1_String_A {
     byte Tag;
     int32 Data_Length;
-    char String-A[Data_Length];
+    char StringA[Data_Length];
 } ASN1_String_A;
 
 typedef struct _ASN1_String_W {
     byte Tag;
     int32 Data_Length;
-    char String-W[Data_Length];
+    char StringW[Data_Length];
 } ASN1_String_W;
 
 typedef struct _ASN1_GUID {
@@ -364,11 +364,9 @@ typedef struct _ASN1_BLOB {
     char BLOB[Data_Length];
 } ASN1_BLOB;
 
-typedef struct _ASN1_String2 {
-    byte Tag;
-    int16 Data_Length;
-    char Data[Data_Length];
-} ASN1_String2;
+typedef struct _ASN1_Error {
+    char Data[16];
+} ASN1_Error;
 
 typedef struct _Quarantine_File_Info {
     byte Tag1;
@@ -1910,7 +1908,6 @@ def read_log_data(data, tz):
     return f'"{entry.time}","{entry.event}","{entry.category}","{entry.logger}","{entry.computer}","{entry.user}","{entry.virus}","{entry.file}","{entry.wantedaction1}","{entry.wantedaction2}","{entry.realaction}","{entry.virustype}","{entry.flags}","{entry.description}","{entry.scanid}","{entry.newext}","{entry.groupid}","{entry.eventdata}","{entry.vbinid}","{entry.virusid}","{entry.quarantineforwardstatus}","{entry.access}","{entry.sdnstatus}","{entry.compressed}","{entry.depth}","{entry.stillinfected}","{entry.definfo}","{entry.defsequincenumber}","{entry.cleaninfo}","{entry.deleteinfo}","{entry.backupod}","{entry.parent}","{entry.guid}","{entry.clientgroup}","{entry.address}","{entry.domainname}","{entry.ntdomain}","{entry.macaddress}","{entry.version}","{entry.remotemachine}","{entry.remotemachineip}","{entry.action1status}","{entry.action2status}","{entry.licensefeaturename}","{entry.licensefeatureversion}","{entry.licenseserialnumber}","{entry.licensefulfillmentid}","{entry.licensestartdate}","{entry.licenseexpirationdate}","{entry.licenselifecycle}","{entry.licenseseatstotal}","{entry.licenseseats}","{entry.errorcode}","{entry.licenseseatsdelta}","{entry.status}","{entry.domainguid}","{entry.sessionguid}","{entry.vbnsessionid}","{entry.logindomain}","{entry.eventdata2}","{entry.erasercategoryid}","{entry.dynamiccategoryset}","{entry.subcategorysetid}","{entry.displaynametouse}","{entry.reputationdisposition}","{entry.reputationconfidence}","{entry.firsseen}","{entry.reputationprevalence}","{entry.downloadurl}","{entry.categoryfordropper}","{entry.cidsstate}","{entry.behaviorrisklevel}","{entry.detectiontype}","{entry.acknowledgetext}","{entry.vsicstate}","{entry.scanguid}","{entry.scanduration}","{entry.scanstarttime}","{entry.targetapptype}","{entry.scancommandguid}","{field113}","{field114}","{field115}","{entry.digitalsigner}","{entry.digitalissuer}","{entry.digitalthumbprint}","{field119}","{entry.digitalsn}","{entry.digitaltime}","{field122}","{field123}","{field124}","{field125}","{field126}"'
 
 def read_sep_tag(_):
-    #quarantine.csv broken for the moment
     _ = io.BytesIO(_)
     blob = False
     match = []
@@ -1920,8 +1917,9 @@ def read_sep_tag(_):
     guid = ''
     dec = ''
     lasttoken = 0
+    lastvalue = 0
     hit = None
-    virus = None
+    virus = ''
     while True:
         try:
             code = struct.unpack("B", _.read(1))[0]
@@ -1934,6 +1932,7 @@ def read_sep_tag(_):
             _.seek(-1,1)
             tag = vbnstruct.ASN1_1(_.read(2))
             dec += hexdump_tag(tag.dumps()[1:])
+            lastvalue = tag.dumps()[1:]
             
         elif code == 2:
             _.seek(-1,1)
@@ -1957,6 +1956,11 @@ def read_sep_tag(_):
             dec += hexdump_tag(tag.dumps()[1:5])
             string = tag.dumps()[5:].decode('latin-1').replace("\x00", "")
             dec += hexdump_tag(tag.dumps()[5:]) + f'### STRING-A\n      {string}\n'
+            if hit == 'virus':
+                virus = tag.StringA.decode('latin-1').replace("\x00", "")
+                hit = None
+            else:
+                match.append(tag.StringA.decode('latin-1').replace("\x00", ""))
 
         elif code == 8:
             size = struct.unpack("<I", _.read(4))[0]
@@ -1965,6 +1969,11 @@ def read_sep_tag(_):
             dec += hexdump_tag(tag.dumps()[1:5])
             string = tag.dumps()[5:].decode('latin-1').replace("\x00", "").replace("\r\n", "\r\n\t  ")
             dec += hexdump_tag(tag.dumps()[5:]) + f'### STRING-W\n      {string}\n\n'
+            if hit == 'virus':
+                virus = tag.StringW.decode('latin-1').replace("\x00", "")
+                hit = None
+            else:
+                match.append(tag.StringW.decode('latin-1').replace("\x00", ""))
 
         elif code == 9:
             size = struct.unpack("<I", _.read(4))[0]
@@ -1974,7 +1983,9 @@ def read_sep_tag(_):
                 dec += hexdump_tag(tag.dumps()[1:5])
                 dec += f'### GUID\n{hexdump_tag(tag.dumps()[5:])}'
                 blob = False
-            if blob == True:
+                if re.match(b'\xb9\x1f\x8a\\\\\xb75\\\D\x98\x03%\xfc\xa1W\^q', tag.GUID):
+                    hit = 'virus'
+            elif blob == True or lastvalue == b'\x0f':
                 tag = vbnstruct.ASN1_BLOB(_.read(5 + size))
                 dec += hexdump_tag(tag.dumps()[1:5])
                 dec += f'### BLOB\n{hexdump_tag(tag.dumps()[5:])}'
@@ -1986,10 +1997,9 @@ def read_sep_tag(_):
                 blob = False
             else:
                 tag = vbnstruct.ASN1_4(_.read(5))
-                dec += '{:02x}\n'.format(code)
                 dec += hexdump_tag(tag.dumps()[1:])
                 blob = True
-                
+
         elif code == 15:
             _.seek(-1,1)
             tag = vbnstruct.ASN1_16(_.read(17))
@@ -2002,39 +2012,18 @@ def read_sep_tag(_):
             
         else:
             if lasttoken != 9:
-                #adding 16 byte structure might fix
-#                print(lasttoken)
-#                input('Error')
-                dec = ''
-                break
-
+                if lasttoken == 1:
+                    _.seek(-1,1)
+                    dec = dec[:-3]
+                    tag = vbnstruct.ASN1_Error(_.read(16))
+                    dec += f'### Error\n{hexdump_tag(tag.dumps())}'
+                if lasttoken == 0:
+                    dec = ''
+                    break
+ 
         lasttoken = code
-#        for k, v in tag._values.items():
-#            if type(v) == bytes:
-#                dec += '\t\t'
-#                if v.startswith(b'CMPR'):
-#                    dec += zlib.decompress(v[8:]).decode('latin-1')
-#                else:
-#                    dec += v.decode('latin-1').replace("\x00", "")
-#                dec += '\n'
-#            if type(v) == int:
-#                if k == 'Tag':
-#                    v = '{:02x}'.format(v)
-#                elif lasttoken == 1 or lasttoken == 10:
-#                    v = '{:02x}'.format(v)
-#                    dec += '\t'
-#                elif k == 'Data_Length' or lasttoken == 3 or lasttoken == 6 or (k == 'Value' and lasttoken == 9):
-#                    v = '{:<08x}'.format(v)
-#                    dec += '\t'
-#                else:
-#                    v = '{:<04x}'.format(v)
-#                    dec += '\t'
-#                v = v.zfill(len(v) + len(v) % 2)
-#                dec += ' '.join(v[i: i+2] for i in range(0, len(v), 2))
-#                dec += '\n\n'
-#        if args.hex_dump:
-#            cstruct.dumpstruct(tag)
-
+        if args.hex_dump:
+            cstruct.dumpstruct(tag)
 
     for a in match:
         if 'Detection Digest:' in a:
@@ -2053,8 +2042,8 @@ def read_sep_tag(_):
         if rguid:
             guid = a
             match.remove(a)
-
-    if virus is None and len(match) >= 6:
+    
+    if virus == '' and len(match) >= 6:
         virus = match[0]
         del match[0]
 
@@ -2071,130 +2060,6 @@ def hexdump_tag(buf, length=16):
         res.append('      %-*s %s' % (length * 3, hexa, line))
 
     return '\n'.join(res)+'\n\n'
-
-def read_sep_tag_old(_):
-    _ = io.BytesIO(_)
-    extra = False
-    match = []
-    dd = ''
-    sddl = ''
-    sid = ''
-    guid = ''
-    dec = ''
-    lasttoken = 0
-    hit = None
-    virus = None
-    while True:
-        try:
-            code = struct.unpack("B", _.read(1))[0]
-        except:
-            break
-
-        if code == 0:
-            break
-        if code == 1 or code == 10:
-            _.seek(-1,1)
-            tag = vbnstruct.ASN1_1(_.read(2))
-            if args.hex_dump:
-                cstruct.dumpstruct(tag)
-        elif code == 2:
-            _.seek(-1,1)
-            tag = vbnstruct.ASN1_2(_.read(3))
-            if args.hex_dump:
-                cstruct.dumpstruct(tag)
-        elif code == 3 or code == 6:
-            _.seek(-1,1)
-            tag = vbnstruct.ASN1_4(_.read(5))
-            if args.hex_dump:
-                cstruct.dumpstruct(tag)
-        elif code == 4:
-            _.seek(-1,1)
-            tag = vbnstruct.ASN1_8(_.read(9))
-            if args.hex_dump:
-                cstruct.dumpstruct(tag)
-        elif code == 15:
-            _.seek(-1,1)
-            if extra:
-                tag = vbnstruct.ASN1_16(_.read(17))
-                if args.hex_dump:
-                    cstruct.dumpstruct(tag)
-                extra = False
-            else:
-                tag = vbnstruct.ASN1_16(_.read(17))
-                if args.hex_dump:
-                    cstruct.dumpstruct(tag)
-                extra = True
-        elif code == 16:
-            _.seek(-1,1)
-            tag = vbnstruct.ASN1_16(_.read(17))
-            if args.hex_dump:
-                cstruct.dumpstruct(tag)
-            
-        else:
-            if extra:
-                size = struct.unpack("<I", _.read(4))[0]
-                _.seek(-5,1)
-                if code == 9 and size == 16:
-                    tag = vbnstruct.ASN1_String(_.read(5 + size))
-#                    if re.match(b'dE21\x13;3E\x89\x993\x99\x06\x88\xf5\xa9', tag.Data):
-#                        print('yes')
-                else:
-                    tag = vbnstruct.ASN1_4(_.read(5))
-                if args.hex_dump:
-                    cstruct.dumpstruct(tag)
-                extra = False
-            else:
-                size = struct.unpack("<I", _.read(4))[0]
-                _.seek(-5,1)
-                if code == 9 and size == 16:
-                    extra = True
-                tag = vbnstruct.ASN1_String(_.read(5 + size))
-                if re.match(b'\xb9\x1f\x8a\\\\\xb75\\\D\x98\x03%\xfc\xa1W\^q', tag.Data):
-                    hit = 'virus'
-#                if re.match(b'dE21\x13;3E\x89\x993\x99\x06\x88\xf5\xa9', tag.Data):
-#                    print('yes')
-                if code == 7 or code == 8:
-                    if hit == 'virus':
-                        virus = tag.Data.decode('latin-1').replace("\x00", "")
-                        hit = None
-                    else:
-                        match.append(tag.Data.decode('latin-1').replace("\x00", ""))
-                if args.hex_dump:
-                    cstruct.dumpstruct(tag)
-        lasttoken = code
-        for k, v in tag._values.items():
-            if type(v) == bytes:
-                dec += v.decode('latin-1').replace("\x00", "")
-                dec += '\n'
-            if type(v) == int:
-                v = '{:02x}'.format(v)
-                v = v.zfill(len(v) + len(v) % 2)
-                dec += ' '.join(v[i: i+2] for i in range(0, len(v), 2))
-                dec += '\n'
-
-    for a in match:
-        if 'Detection Digest:' in a:
-            match.remove(a)
-            dd = a.replace('"', '""')
-        try:
-            sddl = sddl_translate(a)
-            match.remove(a)
-        except:
-            pass
-        rsid = re.match('^S-\d-(\d+-){1,14}\d+$', a)
-        if rsid:
-            sid = a
-            match.remove(a)
-        rguid = re.match('^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$', a)
-        if rguid:
-            guid = a
-            match.remove(a)
-
-    if virus is None and len(match) >= 6:
-        virus = match[0]
-        del match[0]
-
-    return match, dd, sddl, sid, virus, guid, dec
 
 def event_data1(_):
     _ = _.replace('"', '').split('\t')
@@ -2335,7 +2200,8 @@ def parse_header(f):
             '5E6E81A4A77338449805BB2B7AB12FB4', #AtpiEim.dll ReportSubmission.dll
             '6AB68FC93C09E744B828A598179EFC83', #IDSxpx86.dll
             '95AAE6FD76558D439889B9D02BE0B850', #IDSxpx86.dll
-            '8EF95B94E971E842BAC952B02E79FB74'  #AVModule.dll
+            '8EF95B94E971E842BAC952B02E79FB74', #AVModule.dll
+            'A72BBCC1E52A39418B8BB591BDD9AE76'  #RepMgtTim.dll
            ]
            
     headersize = len(f.readline())
@@ -3197,15 +3063,16 @@ def utc_offset(_):
     return int(utc)
 
 def logo():
-    print("____________")     
-    print("|   |  |   |")            
-    print("|   |  |   |  ____  _____ ____")                                 
-    print("|   |  |   | / ___|| ____|  _ \ _ __   __ _ _ __ ___  ___ _ __ ")
-    print("|   |  |   | \___ \|  _| | |_) | '_ \ / _` | '__/ __|/ _ \ '__|")
-    print(" \  |  |  /   ___) | |___|  __/| |_) | (_| | |  \__ \  __/ |")   
-    print("  \ |  | /   |____/|_____|_|   | .__/ \__,_|_|  |___/\___|_|")   
-    print("    \  /                       |_|")                             
-    print("     \/")     
+    print("\033[1;93m____________\033[1;0m")     
+    print("\033[1;93m|   |  |   |\033[1;0m")            
+    print("\033[1;93m|   |  |   |\033[1;97m   ____  _____ ____")                                 
+    print("\033[1;93m|   |  |   |\033[1;97m  / ___|| ____|  _ \ _ __   __ _ _ __ ___  ___ _ __ ")
+    print("\033[1;93m|   |  |\033[1;92m___\033[1;93m|\033[1;97m  \___ \|  _| | |_) | '_ \ / _` | '__/ __|/ _ \ '__|")
+    print("\033[1;93m \  |  \033[1;92m/ _ \ \033[1;97m  ___) | |___|  __/| |_) | (_| | |  \__ \  __/ |")   
+    print("\033[1;93m  \ | \033[1;92m| (_) |\033[1;97m |____/|_____|_|   | .__/ \__,_|_|  |___/\___|_| v2.0")   
+    print("\033[1;93m    \  \033[1;92m\___/\033[1;97m                    |_|")                             
+    print("\033[1;93m     \/\033[1;0m")
+    print("")     
 
 def main():
 
@@ -3213,9 +3080,6 @@ def main():
         print(f'\033[1;35mStarted parsing {filename} \033[1;0m\n')
         try:
             with open(filename, 'rb') as f:
- #               if 'server.dat' in filename:
- #                   extract_rule(f)
- #                   continue
                 logType, maxSize, field3, cLogEntries, field5, field6, tLogEntries, maxDays = parse_header(f)
                 try:
                     if logType <= 5:
@@ -3277,6 +3141,7 @@ def main():
     print(f'\033[1;37mProcessed {len(filenames)} file(s) in {format((time.time() - start), ".4f")} seconds \033[1;0m')
     sys.exit()
 
+logo()
 start = time.time()
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--file", help="File to be parsed")
@@ -3289,14 +3154,20 @@ parser.add_argument("-r", "--registrationInfo", help="Path to registrationInfo.x
 parser.add_argument("-tz", "--timezone", type=int, help="UTC offset")
 parser.add_argument("-k", "--kape", help="Kape mode", action="store_true")
 parser.add_argument("-s", "--struct", help="Output structures to csv", action="store_true")
+
+if len(sys.argv)==1:
+    parser.print_help()
+    # parser.print_usage() # for just the usage line
+    parser.exit()
+
 args = parser.parse_args()
 
 regex =  re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine|.*\\Data\\CmnClnt\\ccSubSDK)')
 filenames = []
 
-#if args.hex_dump and not args.file:
-#    print("\n\033[1;31m-e, --extract and/or -hd, --hexdump can only be used with -f, --file.\033[1;0m\n")
-#    sys.exit()
+if args.hex_dump and not args.file:
+    print("\n\033[1;31m-e, --extract and/or -hd, --hexdump can only be used with -f, --file.\033[1;0m\n")
+    sys.exit()
 
 if args.registrationInfo:
     try:
@@ -3448,5 +3319,4 @@ elif not (args.extract or args.hex_dump):
         csv_header()
 
 if __name__ == "__main__":
-    logo()
     main()
