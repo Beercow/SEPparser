@@ -24,9 +24,9 @@ if os.name == 'nt':
 
 def csv_header():
 
-    syslog.write('"File Name","Record Length","Date And Time","Event ID","Field4","Severity","summary","Event_Data_Size","Type","Size_(bytes)","Location","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8","LOG:Event_Data9","LOG:Event_Data10","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","Field115","Log:Location","Filed117","Digital_Signatures_Signer","Digital_Signatures_Issuer","Digital_Signatures_Certificate_Thumbprint","Field121","Digital_Signatures_Serial_Number","Digital_Signatures_Signing_Time","Field124","Field125","Field126","Field127","Field128"\n')
+    syslog.write('"File Name","Record Length","Date And Time","Event ID","Field4","Severity","Summary","Event_Data_Size","Type","Size_(bytes)","Location","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (101_GUID/301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8 (101_Virus)","LOG:Event_Data9","LOG:Event_Data10 (101_Remediation_Type_ID)","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","LOG:Field115","LOG:Location","LOG:Filed117","LOG:Digital_Signatures_Signer","LOG:Digital_Signatures_Issuer","LOG:Digital_Signatures_Certificate_Thumbprint","LOG:Field121","LOG:Digital_Signatures_Serial_Number","LOG:Digital_Signatures_Signing_Time","LOG:Field124","LOG:Field125","LOG:Field126","LOG:Field127","LOG:Field128"\n')
 
-    seclog.write('"File Name","Record Length","DateAndTime","Event Type","Severity","Direction","Protocol","Remote Host","Remote Port","Remote MAC","Local Host","Local Port","Local MAC","Application","Signature ID","Signature SubID","Signature Name","Intrusion-URL","X-Intrusion-Payload-URL","User","User Domain","Location","Occurrences","End Time","Begin Time","SHA256_Hash","Description","Field8","Event_Data_Size","Field15","Field18","Field26","Field27","Remote Host IPV6","Local Host IPV6","Field35","Version","Profile_Serial_Number","Field38","MD5_Hash","Data","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8","LOG:Event_Data9","LOG:Event_Data10","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","Field115","Log:Location","Filed117","Digital_Signatures_Signer","Digital_Signatures_Issuer","Digital_Signatures_Certificate_Thumbprint","Field121","Digital_Signatures_Serial_Number","Digital_Signatures_Signing_Time","Field124","Field125","Field126","Field127","Field128"\n')
+    seclog.write('"File Name","Record Length","Date And Time","Event Type","Severity","Direction","Protocol","Remote Host","Remote Port","Remote MAC","Local Host","Local Port","Local MAC","Application","Signature ID","Signature SubID","Signature Name","Intrusion-URL","X-Intrusion-Payload-URL","User","User Domain","Location","Occurrences","End Time","Begin Time","SHA256_Hash","Description","Field8","Event_Data_Size","Field15","Field18","Field26","Field27","Remote Host IPV6","Local Host IPV6","Field35","Version","Profile_Serial_Number","Field38","MD5_Hash","Data","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (101_GUID/301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8 (101_Virus)","LOG:Event_Data9","LOG:Event_Data10 (101_Remediation_Type_ID)","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","LOG:Field115","LOG:Location","LOG:Filed117","LOG:Digital_Signatures_Signer","LOG:Digital_Signatures_Issuer","LOG:Digital_Signatures_Certificate_Thumbprint","LOG:Field121","LOG:Digital_Signatures_Serial_Number","LOG:Digital_Signatures_Signing_Time","LOG:Field124","LOG:Field125","LOG:Field126","LOG:Field127","LOG:Field128"\n')
 
     tralog.write('"File Name","Record Length","Date and Time","Action","Severity","Direction","Protocol","Remote Host","Remote MAC","Remote Port","Local Host","Local MAC","Local Port","Application","User","User Domain","Location","Occurrences","Begin Time","End Time","Rule","Event Data Size","Rule ID","Event Data","Field24","Field25","Remote Host IPV6","Local Host IPV6","Field28","Field29","Hash:MD5","Hash:SHA256","Field32","Field33","Field34"\n')
 
@@ -34,11 +34,11 @@ def csv_header():
 
     processlog.write('"File Name","Record Length","Date And Time","Severity","Action","Test Mode","Description","API","Rule Name","IPV4 Address","IPV6 Address","Caller Process ID","Caller Process","Device Instance ID","Target","File Size","User","User Domain","Location","Event ID","Field9","Begin Time","End Time","Field15","Field16","Field21","Field22","Field26"\n')
 
-    timeline.write('"File Name","Record Length","Date/Time1","Date/Time2","Date/Time3","Field5","LOG:Time(UTC)","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (101_GUID/301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8 (101_Virus)","LOG:Event_Data9","LOG:Event_Data10 (101_Remediation Type ID)","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","Field115","Location","Filed117","Digital_Signatures_Signer","Digital_Signatures_Issuer","Digital_Signatures_Certificate_Thumbprint","Field121","Digital_Signatures_Serial_Number","Digital_Signatures_Signing_Time","Field124","Field125","Field126","Field127","Field128"\n')
+    timeline.write('"File Name","Record Length","Date/Time1","Date/Time2","Date/Time3","Field5","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (101_GUID/301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8 (101_Virus)","LOG:Event_Data9","LOG:Event_Data10 (101_Remediation_Type_ID)","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","LOG:Field115","LOG:Location","LOG:Filed117","LOG:Digital_Signatures_Signer","LOG:Digital_Signatures_Issuer","LOG:Digital_Signatures_Certificate_Thumbprint","LOG:Field121","LOG:Digital_Signatures_Serial_Number","LOG:Digital_Signatures_Signing_Time","LOG:Field124","LOG:Field125","LOG:Field126","LOG:Field127","LOG:Field128"\n')
 
     tamperProtect.write('"File Name","Computer","User","Action Taken","Object Type","Event","Actor","Target","Target Process","Date and Time"\n')
 
-    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","VBin Time 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time 2 UTC","Unique ID","Record Type","Quarantine Session ID","Remediation Type","Wide Description","SDDL","SHA1","Quarantine Container Size","File Size 2","Detection Digest","Virus","GUID","Additional Info","Owner SID"\n')
+    quarantine.write('"File Name","Description","Record ID","Modify Date 1 UTC","Creation Date 1 UTC","Access Date 1 UTC","VBin Time 1 UTC","Storage Name","Storage Instance ID","Storage Key","File Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time 2 UTC","Unique ID","Record Type","Quarantine Session ID","Remediation Type","Wide Description","SDDL","SHA1","Quarantine Container Size","File Size 2","Detection Digest","Virus","GUID","Additional Info","Owner SID","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2 (101_GUID/301_Actor PID)","LOG:Event_Data3 (301_Actor)","LOG:Event_Data4 (301_Event)","LOG:Event_Data5 (301_Target PID)","LOG:Event_Data6 (301_Target)","LOG:Event_Data7 (301_Target Process)","LOG:Event_Data8 (101_Virus)","LOG:Event_Data9","LOG:Event_Data10 (101_Remediation_Type_ID)","LOG:Event_Data11","LOG:Event_Data12","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","LOG:Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","Field115","Location","Filed117","Digital_Signatures_Signer","Digital_Signatures_Issuer","Digital_Signatures_Certificate_Thumbprint","Field121","Digital_Signatures_Serial_Number","Digital_Signatures_Signing_Time","Field124","Field125","Field126","Field127","Field128"\n')
     
     settings.write('"Log Name","Max Log Size","# of Logs","Running Total of Logs","Max Log Days","Field3","Field5","Field6"\n')
     
@@ -375,11 +375,11 @@ typedef struct _Quarantine_File_Info {
     byte Tag2_Data;
 } Quarantine_File_Info;
 
-typedef struct _Quarantine_File_Info4 {
-    byte Tag3;
-} Quarantine_File_Info4;
-
 typedef struct _Quarantine_File_Info2 {
+    byte Tag3;
+} Quarantine_File_Info2;
+
+typedef struct _Quarantine_File_Info3 {
     byte Tag3
     int32 Hash_Size;
     char SHA1[Hash_Size]; //need to fix for wchar
@@ -390,9 +390,9 @@ typedef struct _Quarantine_File_Info2 {
     byte Tag6;
     int32 QFS_Size;
     char Quarantine_File_Info_Size[QFS_Size];
-} Quarantine_File_Info2;
+} Quarantine_File_Info3;
 
-typedef struct _Quarantine_File_Info3 {
+typedef struct _Quarantine_File_Info4 {
     byte Tag7;
     int32 Security_Descriptor_Size;
     char Security_Descriptor[Security_Descriptor_Size]; //need to fix for wchar
@@ -400,7 +400,7 @@ typedef struct _Quarantine_File_Info3 {
     int32 Tag8_Data;
     byte Tag9;
     int64 Quarantine_File_Info_Size_2;
-} Quarantine_File_Info3;
+} Quarantine_File_Info4;
 
 typedef struct _Chunk {
     byte Data_Type;
@@ -2030,7 +2030,7 @@ def read_sep_tag(_):
                     dec = dec[:-3]
                     tag = vbnstruct.ASN1_Error(_.read(16))
                     dec += f'### Error\n{hexdump_tag(tag.dumps())}'
-                if lasttoken == 0:
+                else:
                     dec = ''
                     break
  
@@ -2546,13 +2546,16 @@ def parse_raw(f, logEntries):
         f.seek(startEntry)
         check = f.read(1)
 
-#        while check is not b'0':
-#            print(f'{check}\n')
-#            startEntry += 1
-#            f.seek(startEntry)
-#            check = f.read(1)
-#            if check is b'0':
-#                startEntry -= 1
+        while check is not b'0':
+            startEntry += 1
+            f.seek(startEntry)
+            check = f.read(1)
+            
+            if len(check) == 0:
+                break
+                
+            if check is b'0':
+                f.seek(startEntry)
 
         if len(check) == 0:
             print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
@@ -2595,13 +2598,16 @@ def parse_processlog(f, logEntries):
         f.seek(startEntry)
         check = f.read(1)
 
-#        while check is not b'0':
-#            print(f'{check}\n')
-#            startEntry += 1
-#            f.seek(startEntry)
-#            check = f.read(1)
-#            if check is b'0':
-#                startEntry -= 1
+        while check is not b'0':
+            startEntry += 1
+            f.seek(startEntry)
+            check = f.read(1)
+            
+            if len(check) == 0:
+                break
+                
+            if check is b'0':
+                f.seek(startEntry)
 
         if len(check) == 0:
             print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
@@ -2676,7 +2682,8 @@ def parse_daily_av(f, logType, tz):
             
         logEntry = f.readline()
 
-def parse_vbn(f):
+def parse_vbn(f, logType, tz):
+    logEntry = ''
     vbin = ''
     qfile = ''
     sddl = ''
@@ -2697,6 +2704,17 @@ def parse_vbn(f):
     junkfs = 0
     f.seek(0, 0)
     qfm_offset = struct.unpack('i', f.read(4))[0]
+    f.seek(0, 0)
+    
+    if logType == 7:
+        f.seek(388, 0)
+        logEntry = f.read(2048).split(b'\x00\x00')[0]
+
+    if logType == 8:
+        f.seek(4100, 0)
+        logEntry = f.read(1112).split(b'\x00\x00')[0]
+    
+    logEntry = read_log_data(logEntry, tz)
     f.seek(0, 0)
 
     if qfm_offset == 3676:
@@ -2833,18 +2851,18 @@ def parse_vbn(f):
             for k, v in qfi._values.items():
                 sout += str(v).replace('"', '""')+'","'
         if qfi.Tag2_Data == 1:
-            qfi4 = vbnstruct.Quarantine_File_Info4(xor(f.read(1), 0x5A).encode('latin-1'))
+            qfi2 = vbnstruct.Quarantine_File_Info2(xor(f.read(1), 0x5A).encode('latin-1'))
             if args.hex_dump:
-                cstruct.dumpstruct(qfi4)
+                cstruct.dumpstruct(qfi2)
             if args.struct:
-                for k, v in qfi4._values.items():
+                for k, v in qfi2._values.items():
                     sout += str(v).replace('"', '""')+'","'
-            if qfi4.Tag3 == 8:
-                qfi2_size = struct.unpack('i', xor(f.read(4), 0x5A).encode('latin-1'))[0] + 27
+            if qfi2.Tag3 == 8:
+                qfi3_size = struct.unpack('i', xor(f.read(4), 0x5A).encode('latin-1'))[0] + 27
                 f.seek(-4, 1)
-                qfi2 = vbnstruct.Quarantine_File_Info2(xor(f.read(qfi2_size), 0x5A).encode('latin-1'))
+                qfi3 = vbnstruct.Quarantine_File_Info3(xor(f.read(qfi3_size), 0x5A).encode('latin-1'))
                 if args.hex_dump:
-                    cstruct.dumpstruct(qfi2)
+                    cstruct.dumpstruct(qfi3)
                 if args.struct:
                     for k, v in qfi2._values.items():
                         sout += str(v).replace('"', '""')+'","'
@@ -2852,18 +2870,18 @@ def parse_vbn(f):
         dataType = xor(f.read(1), 0x5A).encode('latin-1')
 
         if dataType == b'\x08':
-            pos += 35 + qfi2.Hash_Size
+            pos += 35 + qfi3.Hash_Size
             f.seek(pos)
-            qfi3_size = struct.unpack('i', xor(f.read(4), 0x5A).encode('latin-1'))[0] + 18
+            qfi4_size = struct.unpack('i', xor(f.read(4), 0x5A).encode('latin-1'))[0] + 18
             f.seek(-4, 1)
-            qfi3 =  vbnstruct.Quarantine_File_Info3(xor(f.read(qfi3_size), 0x5A).encode('latin-1'))
+            qfi4 =  vbnstruct.Quarantine_File_Info4(xor(f.read(qfi4_size), 0x5A).encode('latin-1'))
             if args.struct:
-                for k, v in qfi3._values.items():
+                for k, v in qfi4._values.items():
                     sout += str(v).replace('"', '""')+'","'
-            sddl = sddl_translate(qfi3.Security_Descriptor.decode('latin-1').replace("\x00", ""))
+            sddl = sddl_translate(qfi4.Security_Descriptor.decode('latin-1').replace("\x00", ""))
             if args.hex_dump:
-                cstruct.dumpstruct(qfi3)
-            pos += 19 + qfi3.Security_Descriptor_Size
+                cstruct.dumpstruct(qfi4)
+            pos += 19 + qfi4.Security_Descriptor_Size
             f.seek(pos)
         
         else:
@@ -2872,7 +2890,7 @@ def parse_vbn(f):
         
         if dataType == b'\t':  #actually \x09
             garbage = qfs - vbnmeta.Quarantine_File_Size
-            pos += 35 + qfi2.Hash_Size
+            pos += 35 + qfi3.Hash_Size
             f.seek(pos)
 
         try:
@@ -2944,7 +2962,11 @@ def parse_vbn(f):
         print(test)
     
     if args.extract and len(qfile) > 0:
-        output = open(ntpath.basename(description) + '.vbn','wb+')
+        if args.output:
+            output = open(args.output + '/' + ntpath.basename(description) + '.vbn','wb+')
+        else:
+            output = open(ntpath.basename(description) + '.vbn','wb+')
+        
         if (header or qfs) == 0:
             output.write(bytes(qfile, encoding= 'latin-1'))
         else:
@@ -2961,7 +2983,7 @@ def parse_vbn(f):
             access = from_unix_sec(vbnmeta.Date_Accessed)
             vbin = from_unix_sec(vbnmeta.VBin_Time)
 
-        quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{modify}","{create}","{access}","{vbin}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_2)}","{from_unix_sec(vbnmeta.Date_Accessed_2)}","{from_unix_sec(vbnmeta.Date_Modified_2)}","{from_unix_sec(vbnmeta.VBin_Time_2)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Quarantine_Session_ID)[2:].upper()}","{rtid}","{wDescription}","{sddl}","{sha1}","{qfs}","{junkfs}","{dd}","{virus}","{guid}","{tags}","{sid}"\n')
+        quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{modify}","{create}","{access}","{vbin}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_2)}","{from_unix_sec(vbnmeta.Date_Accessed_2)}","{from_unix_sec(vbnmeta.Date_Modified_2)}","{from_unix_sec(vbnmeta.VBin_Time_2)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Quarantine_Session_ID)[2:].upper()}","{rtid}","{wDescription}","{sddl}","{sha1}","{qfs}","{junkfs}","{dd}","{virus}","{guid}","{tags}","{sid}",{logEntry}\n')
 
 def extract_sym_submissionsidx(f):
     f.seek(48)
@@ -3133,12 +3155,12 @@ def main():
                         parse_daily_av(f, logType, args.timezone)
 
                     if logType == 7:
-                        parse_vbn(f)
+                        parse_vbn(f, logType, args.timezone)
                         if not (args.extract or args.hex_dump):
                             parse_daily_av(f, logType, args.timezone)
                         
                     if logType == 8:
-                        parse_vbn(f)
+                        parse_vbn(f, logType, args.timezone)
                         if not (args.extract or args.hex_dump):
                             parse_daily_av(f, logType, args.timezone)
 
