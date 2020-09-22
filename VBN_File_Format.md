@@ -244,7 +244,7 @@ The quarantine file info appears to be in ASN.1 format. It is comprised of a ser
 | 6      | 1      | Tag2 Value                             | Value length of ASN.1 tag (value can be 0x00 or 0x01)       |
 | 7      | 1      | Tag3 (Optional)                        | ASN.1 tag (if Tag2 Value is 0x01, Tag3 can be 0x08 or 0x0A) | 
 | 8      | 4      | SHA1 Hash Length (Optional)            | Length of SHA1 (if Tag3 is 0x08, data will be present)      |
-| 12     | 82     | SHA1 (Optional)                        | SHA1 (Not sure of what)                                     |
+| 12     | 82     | SHA1 (Optional)                        | SHA1 of quarantine data                                     |
 | 94     | 1      | Tag4 (Optional)                        | ASN.1 tag, always 0x03                                      |
 | 95     | 4      | Tag4 Value (Optional)                  | Value length of ASN.1 tag                                   |
 | 99     | 1      | Tag5 (Optional)                        | ASN.1 tag, always 0x03                                      |
