@@ -94,7 +94,7 @@ ACCESS = {# ACE Types
                     'KA': 'KEY_ALL_ACCESS',
                     'KR': 'KEY_READ',
                     'KW': 'KEY_WRITE',
-                    'KE': 'KEY_EXECUTE',
+                    'KX': 'KEY_EXECUTE',
                     
                     #Manditory Label Rights
                     'NR': 'NO_READ_UP',
@@ -105,13 +105,13 @@ ACCESS = {# ACE Types
 """
         Access Mask: 32-bits
          ___________________________________
-        | Bit(s)    | Meaning                                 |
+        | Bit(s)  | Meaning                 |
          -----------------------------------
-        | 0 - 15    | Object Access Rights        |
-        | 16 - 22 | Standard Access Rights    |
-        | 23            | Can access security ACL |
-        | 24 - 27 | Reserved                                |
-        | 28 - 31 | Generic Access Rights     |
+        | 0 - 15  | Object Access Rights    |
+        | 16 - 22 | Standard Access Rights  |
+        | 23      | Can access security ACL |
+        | 24 - 27 | Reserved                |
+        | 28 - 31 | Generic Access Rights   |
          -----------------------------------
 """
 ACCESS_HEX = {
@@ -140,9 +140,8 @@ ACCESS_HEX = {
 
 
 TRUSTEE = {'AC': 'ALL APPLICATION PACKAGES',
-                     'AO': 'Account Operators',
-                     'RU': 'Pre-Win2k Compatibility Access',
                      'AN': 'Anonymous',
+                     'AO': 'Account Operators',
                      'AU': 'Authenticated Users',
                      'BA': 'Administrators',
                      'BG': 'Guests',
@@ -159,31 +158,33 @@ TRUSTEE = {'AC': 'ALL APPLICATION PACKAGES',
                      'DU': 'Domain Users',
                      'EA': 'Enterprise Admins',
                      'ED': 'Enterprise Domain Controllers',
-                     'RO': 'Enterprise Read-Only Domain Controllers',
-                     'WD': 'Everyone',
-                     'PA': 'Group Policy Admins',
+                     'HI': 'High Integrity',
                      'IU': 'Interactive Users',
                      'LA': 'Local Administrator',
                      'LG': 'Local Guest',
                      'LS': 'Local Service',
-                     'SY': 'Local System',
-                     'NU': 'Network',
                      'LW': 'Low Integrity',
                      'ME': 'Medium Integrity',
-                     'HI': 'High Integrity',
-                     'SI': 'System Integrity',
+                     'MU': 'Perfmon Users'
                      'NO': 'Network Configuration Operators',
                      'NS': 'Network Service',
+                     'NU': 'Network',
+                     'PA': 'Group Policy Admins',
                      'PO': 'Printer Operators',
                      'PS': 'Self',
                      'PU': 'Power Users',
-                     'RS': 'RAS Servers',
+                     'RC': 'Restricted Code',
                      'RD': 'Remote Desktop Users',
                      'RE': 'Replicator',
-                     'RC': 'Restricted Code',
+                     'RO': 'Enterprise Read-Only Domain Controllers',
+                     'RS': 'RAS Servers',
+                     'RU': 'Pre-Win2k Compatibility Access',
                      'SA': 'Schema Administrators',
+                     'SI': 'System Integrity',
                      'SO': 'Server Operators',
-                     'SU': 'Service'
+                     'SU': 'Service',
+                     'SY': 'Local System',
+                     'WD': 'Everyone'
                      }
 
 
