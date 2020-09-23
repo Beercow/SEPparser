@@ -12,7 +12,6 @@ from dissect import cstruct
 import struct
 import SDDL3
 import io
-import ntpath
 import base64
 import json
 import blowfish
@@ -2861,6 +2860,7 @@ def parse_vbn(f, logType, tz):
                 qfi3_size = struct.unpack('i', xor(f.read(4), 0x5A).encode('latin-1'))[0] + 27
                 f.seek(-4, 1)
                 qfi3 = vbnstruct.Quarantine_File_Info3(xor(f.read(qfi3_size), 0x5A).encode('latin-1'))
+                sha1 = qfi3.SHA1.decode('latin-1').replace("\x00", "")
                 if args.hex_dump:
                     cstruct.dumpstruct(qfi3)
                 if args.struct:
@@ -2963,9 +2963,9 @@ def parse_vbn(f, logType, tz):
     
     if args.extract and len(qfile) > 0:
         if args.output:
-            output = open(args.output + '/' + ntpath.basename(description) + '.vbn','wb+')
+            output = open(args.output + '/' + os.path.basename(description) + '.vbn','wb+')
         else:
-            output = open(ntpath.basename(description) + '.vbn','wb+')
+            output = open(os.path.basename(description) + '.vbn','wb+')
         
         if (header or qfs) == 0:
             output.write(bytes(qfile, encoding= 'latin-1'))
@@ -2995,8 +2995,12 @@ def extract_sym_submissionsidx(f):
         print(f'\033[1;35m\tSubmission {cnt} len1={len1} len2={len2}\033[1;0m\n')
         f.seek(8,1)   
         if args.output:
+            if not os.path.exists(args.output + '/ccSubSDK'):
+                os.makedirs(args.output + '/ccSubSDK')
             newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
         else:
+            if not os.path.exists('ccSubSDK'):
+                os.makedirs('ccSubSDK')
             newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
         key = f.read(16)
         data = f.read(len1 - 16)
@@ -3067,11 +3071,11 @@ def extract_sym_ccSubSDK(f):
     f.seek(0)
     GUID = f.read(16).hex()
     if args.output:
-        if not ntpath.exists(args.output+'/ccSubSDK/'+GUID):
+        if not os.path.exists(args.output+'/ccSubSDK/'+GUID):
             os.makedirs(args.output+'/ccSubSDK/'+GUID)
         newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name)+'_Symantec_ccSubSDK.out', 'wb')
     else:
-        if not ntpath.exists('ccSubSDK/'+GUID):
+        if not os.path.exists('ccSubSDK/'+GUID):
             os.makedirs('ccSubSDK/'+GUID)
         newfilename = open('ccSubSDK/' + GUID + '/' + os.path.basename(f.name)+'_Symantec_ccSubSDK.out', 'wb')
     key = f.read(16)
@@ -3200,7 +3204,7 @@ parser.add_argument("-tz", "--timezone", type=int, help="UTC offset")
 parser.add_argument("-k", "--kape", help="Kape mode", action="store_true")
 parser.add_argument("-s", "--struct", help="Output structures to csv", action="store_true")
 
-if len(sys.argv)==1:
+if len(sys.argv) == 1:
     parser.print_help()
     # parser.print_usage() # for just the usage line
     parser.exit()
@@ -3233,8 +3237,8 @@ if args.kape or not (args.file or args.dir):
             for name in files:
                 if name == 'registrationInfo.xml':
                     try:
-                        print(f'\033[1;36m{ntpath.join(path, name)} found. Attempting to apply timezone offset.\n \033[1;0m')
-                        args.timezone = utc_offset(ntpath.join(path, name))
+                        print(f'\033[1;36m{os.path.join(path, name)} found. Attempting to apply timezone offset.\n \033[1;0m')
+                        args.timezone = utc_offset(os.path.join(path, name))
                         print(f'\033[1;32mTimezone offset of {args.timezone} applied successfully. \033[1;0m\n')
                     except Exception as e:
                         print(f'\033[1;31mUnable to apply offset. Timestamps will not be adjusted. {e}\033[1;0m\n')
@@ -3242,7 +3246,7 @@ if args.kape or not (args.file or args.dir):
 
         if regex.findall(path):
             for name in files:
-                filenames.append(ntpath.join(path, name))
+                filenames.append(os.path.join(path, name))
 
     if not filenames:
         print('No Symantec logs found.')
@@ -3258,24 +3262,21 @@ if args.dir and not args.kape:
         for name in files:
             if args.timezone is None and name == 'registrationInfo.xml':
                 try:
-                    print(f'\033[1;36m{ntpath.join(path, name)} found. Attempting to apply timezone offset.\n \033[1;0m')
-                    args.timezone = utc_offset(ntpath.join(path, name))
+                    print(f'\033[1;36m{os.path.join(path, name)} found. Attempting to apply timezone offset.\n \033[1;0m')
+                    args.timezone = utc_offset(os.path.join(path, name))
                     print(f'\033[1;32mTimezone offset of {args.timezone} applied successfully. \033[1;0m\n')
                 except Exception as e:
                     print(f'\033[1;31mUnable to apply offset. Timestamps will not be adjusted. {e}\033[1;0m\n')
                     pass
 
-            filenames.append(ntpath.join(path, name))
+            filenames.append(os.path.join(path, name))
 
 if args.timezone is None:
     args.timezone = 0
 
 if args.output and not (args.extract or args.hex_dump):
-    if not ntpath.exists(args.output):
+    if not os.path.exists(args.output):
         os.makedirs(args.output)
-        os.makedirs(args.output + '/VBN(V1)')
-        os.makedirs(args.output + '/VBN(V2)')
-        os.makedirs(args.output + '/ccSubSDK')
 
     if not args.append:
         syslog = open(args.output + '/Symantec_Client_Management_System_Log.csv', 'w')
@@ -3289,6 +3290,10 @@ if args.output and not (args.extract or args.hex_dump):
         quarantine = open(args.output + '/quarantine.csv', 'w')
         settings = open(args.output + '/settings.csv', 'w')
         if args.struct:
+            if not os.path.exists(args.output + '/VBN(V1)'):
+                os.makedirs(args.output + '/VBN(V1)')
+            if not os.path.exists(args.output + '/VBN(V2)'):
+                os.makedirs(args.output + '/VBN(V2)')
             rt0v1 = open(args.output + '/VBN(V1)/Record_type_0.csv', 'w')
             rt1v1 = open(args.output + '/VBN(V1)/Record_type_1.csv', 'w')
             rt2v1 = open(args.output + '/VBN(V1)/Record_type_2.csv', 'w')
@@ -3307,6 +3312,10 @@ if args.output and not (args.extract or args.hex_dump):
         quarantine = open(args.output + '/quarantine.csv', 'a')
         settings = open(args.output + '/settings.csv', 'a')
         if args.struct:
+            if not os.path.exists(args.output + '/VBN(V1)'):
+                os.makedirs(args.output + '/VBN(V1)')
+            if not os.path.exists(args.output + '/VBN(V2)'):
+                os.makedirs(args.output + '/VBN(V2)')
             rt0v1 = open(args.output + '/VBN(V1)/Record_type_0.csv', 'a')
             rt1v1 = open(args.output + '/VBN(V1)/Record_type_1.csv', 'a')
             rt2v1 = open(args.output + '/VBN(V1)/Record_type_2.csv', 'a')
@@ -3318,10 +3327,6 @@ if args.output and not (args.extract or args.hex_dump):
         csv_header()
 
 elif not (args.extract or args.hex_dump):
-    if not ntpath.exists('VBN(V1)'):
-        os.makedirs('VBN(V1)')
-        os.makedirs('VBN(V2)')
-        os.makedirs('ccSubSDK')
         
     if not args.append:
         syslog = open('Symantec_Client_Management_System_Log.csv', 'w')
@@ -3335,6 +3340,10 @@ elif not (args.extract or args.hex_dump):
         quarantine = open('quarantine.csv', 'w')
         settings = open('settings.csv', 'w')
         if args.struct:
+            if not os.path.exists('VBN(V1)'):
+                os.makedirs('VBN(V1)')
+            if not os.path.exists('VBN(V2)'):
+                os.makedirs('VBN(V2)')
             rt0v1 = open('VBN(V1)/Record_type_0.csv', 'w')
             rt1v1 = open('VBN(V1)/Record_type_1.csv', 'w')
             rt2v1 = open('VBN(V1)/Record_type_2.csv', 'w')
@@ -3353,6 +3362,10 @@ elif not (args.extract or args.hex_dump):
         quarantine = open('quarantine.csv', 'a')
         settings = open('settings.csv', 'a')
         if args.struct:
+            if not os.path.exists('VBN(V1)'):
+                os.makedirs('VBN(V1)')
+            if not os.path.exists('VBN(V2)'):
+                os.makedirs('VBN(V2)')
             rt0v1 = open('VBN(V1)/Record_type_0.csv', 'a')
             rt1v1 = open('VBN(V1)/Record_type_1.csv', 'a')
             rt2v1 = open('VBN(V1)/Record_type_2.csv', 'a')
