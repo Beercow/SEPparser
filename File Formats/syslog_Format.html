@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="author" content="MarkdownViewer++" />
+        <title>syslog_Format.md</title>
+        <style type="text/css">
+            
+/* Avoid page breaks inside the most common attributes, especially for exports (i.e. PDF) */
+td, h1, h2, h3, h4, h5, p, ul, ol, li {
+    page-break-inside: avoid; 
+}
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: black;
+  color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url("../../images/modules/styleguide/para.png") no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  border-bottom: 1px solid #878787;
+  color: white; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #878787;
+  color: white; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url("../../images/modules/pulls/dirty-shade.png") repeat-x 0 0;
+  border: 0 none;
+  color: #878787;
+  height: 4px;
+  padding: 0; }
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+ul :last-child, ol :last-child {
+  margin-bottom: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0; }
+  table tr {
+    border-top: 1px solid #878787;
+    background-color: white;
+    color: black;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #a4a4a4; }
+    table tr th {
+      font-weight: bold;
+      background-color: white;
+      border: 1px solid #878787;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #878787;
+      background-color: #a4a4a4;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+       margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #9a9a9a;
+  background-color: #a4a4a4;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #a4a4a4;
+  border: 1px solid #878787;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #a4a4a4;
+  border: 1px solid #878787;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+        </style>
+      </head>
+    <body>
+        <h1 id="system-log-file-format">System Log File Format</h1>
+<p>The system log for SEP can be found at the following location:<br />
+C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\syslog.log</p>
+<h2 id="header">Header</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Size</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Log Type</td>
+<td>int</td>
+<td style="text-align: center;">4</td>
+<td>Always 00000000</td>
+</tr>
+<tr>
+<td>Max Log Size</td>
+<td>int</td>
+<td style="text-align: center;">4</td>
+<td>Maximum log file size in bytes</td>
+</tr>
+<tr>
+<td>Unknown</td>
+<td>int</td>
+<td style="text-align: center;">4</td>
+<td>?</td>
+</tr>
+<tr>
+<td>Number of Entries</td>
+<td>int</td>
+<td style="text-align: center;">4</td>
+<td>Number of entries in log</td>
+</tr>
+<tr>
+<td>Unknown</td>
+<td>int</td>
+<td style="text-align: center;">4</td>
+<td>?</td>
+</tr>
+<tr>
+<td>Running Total Entries</td>
+<td>bigint</td>
+<td style="text-align: center;">8</td>
+<td>Totoal number of events generated</td>
+</tr>
+<tr>
+<td>Max Log Days</td>
+<td>int</td>
+<td style="text-align: center;">4</td>
+<td>Maximun days to save log entries</td>
+</tr>
+</tbody>
+</table>
+<h2 id="log-entries">Log Entries</h2>
+<p>The log is in TSV format, meaning, each field is separated by a tab character.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Size</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entry Length</td>
+<td>int</td>
+<td style="text-align: center;">4</td>
+<td>Length of log entry</td>
+</tr>
+<tr>
+<td>Date and Time</td>
+<td>bigint</td>
+<td style="text-align: center;">8</td>
+<td>The time of the generated event (GMT).</td>
+</tr>
+<tr>
+<td>Event ID</td>
+<td>int</td>
+<td style="text-align: center;">4</td>
+<td>An event ID sent by a managed client.<br><br>Installation events<br>Possible values are:<br>0x12070001 = Internal error<br>0x12070101 = Install complete<br>0x12070102 = Restart recommended<br>0x12070103 = Restart required<br>0x12070104 = Installation failed<br>0x12070105 = Uninstallation complete<br>0x12070106 = Uninstallation failed<br>0x12071037 = Symantec Endpoint Protection installed<br>0x12071038 = Symantec Firewall installed<br>0x12071039 = Uninstall<br>0x1207103A = Uninstall rolled-back<br><br>Service events<br>Possible values are:<br>0x12070201 = Service starting<br>0x12070202 = Service started<br>0x12070203 = Service start failure<br>0x12070204 = Service stopped<br>0x12070205 = Service stop failure<br>0x1207021A = Attempt to stop service<br><br>Configuration events<br>Possible values are:<br>0x12070206 = Config import complete<br>0x12070207 = Config import error<br>0x12070208 = Config export complete<br>0x12070209 = Config export error<br><br>Host Integrity events<br>Possible values are:<br>0x12070210 = Host Integrity disabled<br>0x12070211 = Host Integrity enabled<br>0x12070220 = NAP integration enabled<br><br>Import events<br>Possible values are:<br>0x12070214 = Successfully imported advanced rule<br>0x12070215 = Failed to import advanced rule<br>0x12070216 = Successfully exported advanced rule<br>0x12070217 = Failed to export advanced rule<br>0x1207021B = Imported sylink<br><br>Client events<br>Possible values are:<br>0x12070218 = Client Engine enabled<br>0x12070219 = Client Engine disabled<br>0x12071046 = Proactive Threat Scanning is not supported on this platform<br>0x12071047 = Proactive Threat Scanning load error<br>0x12071048 = SONAR content load error<br>0x12071049 = Allow application<br><br>Server events<br>Possible values are:<br>0x12070301 = Server connected<br>0x12070302 = No server response<br>0x12070303 = Server connection failed<br>0x12070304 = Server disconnected<br>0x120B0001 = Cannot reach server<br>0x120B0002 = Reconnected to the server<br>0x120b0003 = Automatic upgrade complete<br><br>Policy events<br>Possible values are:<br>0x12070306 = New policy received<br>0x12070307 = New policy applied<br>0x12070308 = New policy failed<br>0x12070309 = Cannot download policy<br>0x120B0005 = Cannot download policy<br>0x1207030A = Have latest policy<br>0x120B0004 = Have latest policy<br><br>Antivirus engine events<br>Possible values are:<br>0x12071006 = Scan omission<br>0x12071007 = Definition file loaded<br>0x1207100B = Virus behavior detected<br>0x1207100C = Configuration changed<br>0x12071010 = Definition file download<br>0x12071012 = Sent to quarantine server<br>0x12071013 = Delivered to Symantec<br>0x12071014 = Security Response backup<br>0x12071015 = Scan aborted<br>0x12071016 = Symantec Endpoint Protection Auto-Protect Load error<br>0x12071017 = Symantec Endpoint Protection Auto-Protect enabled<br>0x12071018 = Symantec Endpoint Protection Auto-Protect disabled<br>0x1207101A = Scan delayed<br>0x1207101B = Scan restarted<br>0x12071027 = Symantec Endpoint Protection is using old virus definitions<br>0x12071041 = Scan suspended<br>0x12071042 = Scan resumed<br>0x12071043 = Scan duration too short<br>0x12071045 = Scan enhancements failed<br><br>Licensing events<br>Possible values are:<br>0x1207101E = License warning<br>0x1207101F = License error<br>0x12071020 = License in grace period<br>0x12071023 = License installed<br>0x12071025 = License up-to-date<br><br>Security events<br>Possible values are:<br>0x1207102B = Computer not compliant with security policy<br>0x1207102C = Computer compliant with security policy<br>0x1207102D = Tamper attempt<br>0x12071034 = Login failed<br>0x12071035 = Login succeeded<br><br>Submission events<br>Possible values are:<br>0x12120001 = System message from centralized reputation<br>0x12120002 = Authentication token failure<br>0x12120003 = Reputation failure<br>0x12120004 = Reputation network failure<br>0x12130001 = System message from Submissions<br>0x12130002 = Submissions failure<br>0x12130003 = Intrusion prevention submission<br>0x12130004 = Antivirus detection submission<br>0x12130005 = Antivirus advanced heuristic detection submission<br>0x12130006 = Manual user submission<br>0x12130007 = SONAR heuristic submission<br>0x12130008 = SONAR detection submission<br>0x12130009 = File Reputation submission<br>0x1213000A = Client authentication token request<br>0x1213000B = LiveUpdate error submission<br>0x1213000C = Process data submission<br>0x1213000D = Configuration data submission<br>0x1213000E = Network data submission<br><br>Other events<br>Possible values are:<br>0x1207020A = Email post OK<br>0x1207020B = Email post failure<br>0x1207020C = Update complete<br>0x1207020D = Update failure<br>0x1207020E = Manual location change<br>0x1207020F = Location changed<br>0x12070212 = Old rasdll version detected<br>0x12070213 = Auto-update postponed<br>0x12070305 = Mode changed<br>0x1207030B = Cannot apply HI script<br>0x1207030C = Content Update Server<br>0x1207030D = Content Update Packet<br>0x12070500 = System message from device control<br>0x12070600 = System message from anti-buffer overflow driver<br>0x12070700 = System message from network access component<br>0x12070800 = System message from LiveUpdate<br>0x12070900 = System message from GUP<br>0x12072000 = System message from Memory Exploit Mitigation<br>0x12072009 = Intensive Protection disabled<br>0x1207200A = Intensive Protection enabled<br>0x12071021 = Access denied warning<br>0x12071022 = Log forwarding error<br>0x12071044 = Client moved<br>0x12071036 = Access denied warning<br>0x12071000 = Message from Intrusion Prevention<br>0x12071050 = SONAR disabled<br>0x12071051 = SONAR enabled</td>
+</tr>
+<tr>
+<td>Unknown</td>
+<td>int</td>
+<td style="text-align: center;">4</td>
+<td>?</td>
+</tr>
+<tr>
+<td>Severity</td>
+<td>int</td>
+<td style="text-align: center;">4</td>
+<td>The type of event. (0 = Info, 1 = Warning, 2 = Error, 3 = Fatal)</td>
+</tr>
+<tr>
+<td>Data Size</td>
+<td>int</td>
+<td style="text-align: center;">4</td>
+<td>Length of data field</td>
+</tr>
+<tr>
+<td>Summary/Description</td>
+<td>nvarchar</td>
+<td style="text-align: center;">2048</td>
+<td>Description of the event. Usually, the first line of the description is treated as the summary.</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>nvarchar</td>
+<td style="text-align: center;">?</td>
+<td>Type of event (CVE, Smc, IPS, SONAR, REP)</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>varbinary</td>
+<td style="text-align: center;">2000</td>
+<td>Additional data in binary format. This field is optional.</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>nvarchar</td>
+<td style="text-align: center;">512</td>
+<td>The location used when the event occured.</td>
+</tr>
+</tbody>
+</table>
+
+    </body>
+</html>
+            
