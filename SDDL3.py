@@ -165,7 +165,7 @@ TRUSTEE = {'AC': 'ALL APPLICATION PACKAGES',
                      'LS': 'Local Service',
                      'LW': 'Low Integrity',
                      'ME': 'Medium Integrity',
-                     'MU': 'Perfmon Users'
+                     'MU': 'Perfmon Users',
                      'NO': 'Network Configuration Operators',
                      'NS': 'Network Service',
                      'NU': 'Network',
