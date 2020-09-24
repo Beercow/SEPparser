@@ -2597,17 +2597,6 @@ def parse_processlog(f, logEntries):
         f.seek(startEntry)
         check = f.read(1)
 
-        while check is not b'0':
-            startEntry += 1
-            f.seek(startEntry)
-            check = f.read(1)
-            
-            if len(check) == 0:
-                break
-                
-            if check is b'0':
-                f.seek(startEntry)
-
         if len(check) == 0:
             print(f'\033[1;31mEntry mismatch: {count} entries found. Should be {logEntries}.\033[1;0m\n')
             break
