@@ -1,5 +1,27 @@
+<style>
+h1 {
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+}
+
+h3 {
+  text-align: center;
+}
+
+h4 {
+  text-align: center;
+}
+
+h5 {
+  text-align: center;
+}
+</style>
+
 <p>
-<h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VBN File Format</h1>
+<h1>VBN File Format</h1>
 </p>
 
 <table width="1500">
@@ -21,35 +43,35 @@
 | 1388   | 8      | Date Accessed         | Indicates a time of last access of an object. (Windows Filetime)                         |
 | 1396   | 8      | Date Modified         | Indicates a time of last modification of content. (Windows Filetime)                     |
 | 1404   | 4      | Data Type             | Value which can describe the subsequent data. (0x0 = No storage info, 0x2 = Storage info |
-| 1408   | 484    | Unknown               | ?                                                                                        |
+| 1408   | 484    | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 1892   | 48     | Storage Name          | Where threat was found (FileSystem/InternetMail/LotusNotes/MicrosoftExchange)            |
-| 1940   | 4      | Storage Instance ID   | ?                                                                                        |
-| 1944   | 384    | Storage Key           | ?                                                                                        |
+| 1940   | 4      | Storage Instance ID   | Will require further investigation as to the purpose of this entry.                      |
+| 1944   | 384    | Storage Key           | Will require further investigation as to the purpose of this entry.                      |
 | 2328   | 4      | Data Type             | Value which can describe the subsequent data.                                            |
-| 2332   | 4      | Unknown               | ?                                                                                        |
-| 2336   | 8      | Unknown               | ?                                                                                        |
+| 2332   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 2336   | 8      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 2344   | 4      | Data Type             | Value which can describe the subsequent data.                                            |
 | 2348   | 4      | Quarantine File Size  | Size of Quarantined File (bytes)                                                         |
 | 2352   | 4      | Date Accessed         | Indicates a time of last access of an object. (Unix: 32 bit Hex)                         |
 | 2356   | 4      | Date Modified         | Indicates a time of last modification of content. (Unix: 32 bit Hex)                     |
 | 2360   | 4      | Date Created          | Indicates a time of creation of object on the file system. (Unix: 32 bit Hex)            |
 | 2364   | 4      | VBin Time             | Time file was quarantined. (Unix: 32 bit Hex)                                            |
-| 2368   | 8      | Unknown               | ?                                                                                        |
+| 2368   | 8      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 2376   | 16     | Unique ID             | Unique GUID                                                                              |
-| 2392   | 260    | Unknown               | ?                                                                                        |
-| 2652   | 4      | Unknown               | ?                                                                                        |
+| 2392   | 260    | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 2652   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 2656   | 4      | Record Type           | 0x0 = Hybrid, 0x1 = Meta, 0x2 = Quarantine                                               |
 | 2660   | 4      | Quarantine Session ID | Name of subfolder where VBN is stored                                                    |
 | 2664   | 4      | Remediation Type      | Type of remediation                                                                      |
-| 2668   | 4      | Unknown               | ?                                                                                        |
-| 2672   | 4      | Unknown               | ?                                                                                        |
-| 2676   | 4      | Unknown               | ?                                                                                        |
-| 2680   | 4      | Unknown               | ?                                                                                        |
-| 2684   | 4      | Unknown               | ?                                                                                        |
-| 2688   | 4      | Unknown               | ?                                                                                        |
-| 2692   | 4      | Unknown               | ?                                                                                        |
+| 2668   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 2672   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 2676   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 2680   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 2684   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 2688   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 2692   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 2696   | 768    | Wide Description      | FQP of Quarantine File (Unicode)                                                         |
-| 3464   | 212    | Unknown               | ?                                                                                        |
+| 3464   | 212    | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 
 </td><td>
 
@@ -68,35 +90,35 @@
 | 2452   | 8      | Date Accessed         | Indicates a time of last access of an object. (Windows Filetime)                         |
 | 2460   | 8      | Date Modified         | Indicates a time of last modification of content. (Windows Filetime)                     |
 | 2468   | 4      | Data Type             | Value which can describe the subsequent data. (0x0 = No storage info, 0x2 = Storage info |
-| 2472   | 484    | Unknown               | ?                                                                                        |
+| 2472   | 484    | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 2956   | 48     | Storage Name          | Where threat was found (FileSystem/InternetMail/LotusNotes/MicrosoftExchange)            |
-| 3004   | 4      | Storage Instance ID   | ?                                                                                        |
-| 3008   | 384    | Storage Key           | ?                                                                                        |
+| 3004   | 4      | Storage Instance ID   | Will require further investigation as to the purpose of this entry.                      |
+| 3008   | 384    | Storage Key           | Will require further investigation as to the purpose of this entry.                      |
 | 3392   | 4      | Data Type             | Value which can describe the subsequent data.                                            |
-| 3396   | 4      | Unknown               | ?                                                                                        |
-| 3400   | 8      | Unknown               | ?                                                                                        |
+| 3396   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 3400   | 8      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3408   | 4      | Data Type             | Value which can describe the subsequent data.                                            |
 | 3412   | 4      | Quarantine File Size  | Size of Quarantined File (bytes)                                                         |
 | 3416   | 8      | Date Accessed         | Indicates a time of last access of an object. (Unix: 32 bit Hex)                         |
 | 3424   | 8      | Date Modified         | Indicates a time of last modification of content. (Unix: 32 bit Hex)                     |
 | 3432   | 8      | Date Created          | Indicates a time of creation of object on the file system. (Unix: 32 bit Hex)            |
 | 3440   | 8      | VBin Time             | Time file was quarantined. (Unix: 32 bit Hex)                                            |
-| 3448   | 4      | Unknown               | ?                                                                                        |
+| 3448   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3452   | 16     | Unique ID             | Unique GUID                                                                              |
-| 3468   | 260    | Unknown               | ?                                                                                        |
-| 3728   | 4      | Unknown               | ?                                                                                        |
+| 3468   | 260    | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 3728   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3732   | 4      | Record Type           | 0x0 = Hybrid, 0x1 = Meta, 0x2 = Quarantine                                               |
 | 3736   | 4      | Quarantine Session ID | Name of subfolder where VBN is stored                                                    |
 | 3740   | 4      | Remediation Type      | Type of remediation                                                                      |
-| 3744   | 4      | Unknown               | ?                                                                                        |
-| 3748   | 4      | Unknown               | ?                                                                                        |
-| 3752   | 4      | Unknown               | ?                                                                                        |
-| 3756   | 4      | Unknown               | ?                                                                                        |
-| 3760   | 4      | Unknown               | ?                                                                                        |
-| 3764   | 4      | Unknown               | ?                                                                                        |
-| 3768   | 4      | Unknown               | ?                                                                                        |
+| 3744   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 3748   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 3752   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 3756   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 3760   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 3764   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 3768   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3772   | 768    | Wide Description      | FQP of Quarantine File (Unicode)                                                         |
-| 4540   | 212    | Unknown               | ?                                                                                        |
+| 4540   | 212    | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 
 </td><td>
 
@@ -111,62 +133,62 @@
 | 4100   | 1112   | Log Line              | Information on event.                                                                    |
 | 5121   | 4      | Data Type             | Value which can describe the subsequent data. (0x1 = No dates, 0x2 = Dates)              |
 | 5216   | 4      | Record ID             | VBin ID/VBN Name                                                                         |
-| 5220   | 40     | Unknown               | ?                                                                                        |
+| 5220   | 40     | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 5260   | 4      | Date Modified         | Indicates a time of last modification of content. (Unix: 32 bit Hex)                     |
 | 5264   | 4      | Date Created          | Indicates a time of creation of object on the file system. (Unix: 32 bit Hex)            |
 | 5268   | 4      | Date Accessed         | Indicates a time of last access of an object. (Unix: 32 bit Hex)                         |
 | 5272   | 4      | VBin Time             | Time file was quarantined. (Unix: 32 bit Hex)                                            |
 | 5276   | 4      | Data Type             | Value which can describe the subsequent data. (0x0 = No storage info, 0x2 = Storage info |
-| 5280   | 452    | Unknown               | ?                                                                                        |
+| 5280   | 452    | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 5732   | 48     | Storage Name          | Appears to always be FileSystem                                                          |
-| 5780   | 4      | Storage Instance ID   | ?                                                                                        |
-| 5784   | 4096   | Storage Key           | ?                                                                                        |
+| 5780   | 4      | Storage Instance ID   | Will require further investigation as to the purpose of this entry.                      |
+| 5784   | 4096   | Storage Key           | Will require further investigation as to the purpose of this entry.                      |
 | 9880   | 4      | Data Type             | Value which can describe the subsequent data.                                            |
-| 9884   | 4      | Unknown               | ?                                                                                        |
-| 9888   | 44     | Unknown               | ?                                                                                        |
+| 9884   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 9888   | 44     | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 9932   | 4      | Data Type             | Value which can describe the subsequent data.                                            |
 | 9936   | 4      | Quarantine File Size  | Size of Quarantined File (bytes)                                                         |
 | 9940   | 4      | Date Created          | Indicates a time of creation of object on the file system. (Unix: 32 bit Hex)            |
 | 9944   | 4      | Date Accessed         | Indicates a time of last access of an object. (Unix: 32 bit Hex)                         |
 | 9948   | 4      | Date Modified         | Indicates a time of last modification of content. (Unix: 32 bit Hex)                     |
 | 9952   | 4      | VBin Time             | Time file was quarantined. (Unix: 32 bit Hex)                                            |
-| 9956   | 8      | Unknown               | ?                                                                                        |
+| 9956   | 8      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 9964   | 16     | Unique ID             | Unique GUID                                                                              |
-| 9980   | 4096   | Unknown               | ?                                                                                        |
-| 14076  | 4      | Unknown               | ?                                                                                        |
+| 9980   | 4096   | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 14076  | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 14080  | 4      | Record Type           | 0x0 = Hybrid, 0x1 = Meta, 0x2 = Quarantine                                               |
 | 14084  | 4      | Quarantine Session ID | Name of subfolder where VBN is stored                                                    |
 | 14088  | 4      | Remediation Type      | Type of remediation                                                                      |
-| 14092  | 4      | Unknown               | ?                                                                                        |
-| 14096  | 4      | Unknown               | ?                                                                                        |
-| 14100  | 4      | Unknown               | ?                                                                                        |
-| 14104  | 4      | Unknown               | ?                                                                                        |
-| 14108  | 4      | Unknown               | ?                                                                                        |
-| 14112  | 4      | Unknown               | ?                                                                                        |
-| 14116  | 4      | Unknown               | ?                                                                                        |
+| 14092  | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 14096  | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 14100  | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 14104  | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 14108  | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 14112  | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 14116  | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 14120  | 768    | Wide Description      | FQP of Quarantine File (Unicode)                                                         |
-| 14888  | 212    | Unknown               | ?                                                                                        |
+| 14888  | 212    | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 
 
 </td></tr></table>
 
 <p>
-<h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The following sections are XORed with 0x5A. The Record Type determines what comes next.</h5>
+<h2>The following sections are XORed with 0x5A. The Record Type determines what comes next.</h2>
 </p>
 
-<table width="1500">
+<table width="1750">
 <tr><th><h3>Record Type 0</h3></th><th><h3>Record Type 1</h3></th><th><h3>Record Type 2</h3></th></tr>
 <tr valign="top"><td>
 
 ### QData Location (Optional)
 
-| Offset | Length           | Field                    | Description                             |
-| ------ | :--------------: | ------------------------ | --------------------------------------- |
-| 0      | 8                | Header                   | QData location header, 0x6aaaa20ce      |
-| 8      | 8                | Data Offset              | Offset to start of quarantine data      |
-| 16     | 8                | Data Size                | Size of quarantine data                 |
-| 24     | 4                | EOF                      | Size from end of quarantine data to EOF |
-| 28     | Data Offset - 28 | Unknown                  | ?                                       |
+| Offset | Length           | Field                    | Description                                                         |
+| ------ | :--------------: | ------------------------ | ------------------------------------------------------------------- |
+| 0      | 8                | Header                   | QData location header, 0x6aaaa20ce                                  |
+| 8      | 8                | Data Offset              | Offset to start of quarantine data                                  |
+| 16     | 8                | Data Size                | Size of quarantine data                                             |
+| 24     | 4                | EOF                      | Size from end of quarantine data to EOF                             |
+| 28     | Data Offset - 28 | Unknown                  | Will require further investigation as to the purpose of this entry. |
 
 ### Quarantine Data
 
@@ -255,7 +277,7 @@ The quarantine file info appears to be in ASN.1 format. It is comprised of a ser
 
 The next tag determines what comes next. There are two possibilities, 0x08 or 0x09.
 
-#### 0x08 (Optional)
+### 0x08 (Optional)
 
 Quarantine File Info continued...
 
@@ -269,9 +291,9 @@ Quarantine File Info continued...
 | Varies | 1         | Tag                  | ASN.1 tag                   |
 | Varies | 8         | Quarantine Data Size | Size of quarntine data      |
 
-#### 0x09
+### 0x09
 
-##### Quarantine Data
+#### Quarantine Data
 
 The quarantine file is broken into chunks of data XORed with 0xA5. This continues until the last chunk divider.
 
@@ -284,21 +306,21 @@ The quarantine file is broken into chunks of data XORed with 0xA5. This continue
 If the 0x08 tag is not present, there can be two additional structures included with the quarantine data.  
 For now, I have labeled them as Junk Header and Junk Footer.
 
-##### Junk Header/Footer (Optional)
+#### Junk Header/Footer (Optional)
 
-| Offset | Lenght                | Field                            | Description                    |
-| ------ | :-------------------: | -------------------------------- | ------------------------------ |
-| 0      | 8                     | Unknown                          | ?                              |
-| 8      | 8                     | Junk Data Size                   | Size of junk data              |
-| 16     | Junk Data Size        | Unknown                          | ?                              |
-| Varies | 12                    | Unknown                          | ?                              |
-| Varies | 4                     | Quarantine Data Size             | Size of quarantined data       |
-| Varies | 8                     | Unknown                          | ?                              |
-| Varies | Quarantine Data Size  | Quarantine Data                  | Quarantined data               |
-| Varies | 8                     | Junk Footer Data Type (Optional) | 0x02 = ?, 0x04 = ADS, 0x07 = ? |
-| Varies | 8                     | Junk Footer Data Size (Optional) | Size of junk footer data       |
-| Varies | 4                     | ADS Name Size (Optional)         | Size of ADS name field         |
-| Varies | ADS Name Size         | ADS Name (Optional)              | Name of Alternate Data Stream  |
-| Varies | Junk Footer Data Size | Junk Footer Data (Optional)      | Data, varies by type           |
+| Offset | Lenght                | Field                            | Description                                                         |
+| ------ | :-------------------: | -------------------------------- | ------------------------------------------------------------------- |
+| 0      | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. |
+| 8      | 8                     | Junk Data Size                   | Size of junk data                                                   |
+| 16     | Junk Data Size        | Unknown                          | Will require further investigation as to the purpose of this entry. |
+| Varies | 12                    | Unknown                          | Will require further investigation as to the purpose of this entry. |
+| Varies | 4                     | Quarantine Data Size             | Size of quarantined data                                            |
+| Varies | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. |
+| Varies | Quarantine Data Size  | Quarantine Data                  | Quarantined data                                                    |
+| Varies | 8                     | Junk Footer Data Type (Optional) | 0x02 = ?, 0x04 = ADS, 0x07 = ?                                      |
+| Varies | 8                     | Junk Footer Data Size (Optional) | Size of junk footer data                                            |
+| Varies | 4                     | ADS Name Size (Optional)         | Size of ADS name field                                              |
+| Varies | ADS Name Size         | ADS Name (Optional)              | Name of Alternate Data Stream                                       |
+| Varies | Junk Footer Data Size | Junk Footer Data (Optional)      | Data, varies by type                                                |
 
 </td></tr></table>

@@ -3,15 +3,15 @@ The security log for SEP can be found at the following location:
 C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\seclog.log
 
 ## Header
-| Field                 | Type   | Size | Description                       |
-|---------------------- | ------ | :--: | --------------------------------- |
-| Log Type              | int    | 4    | Always 00000001                   |
-| Max Log Size          | int    | 4    | Maximum log file size in bytes    |
-| Unknown               | int    | 4    | ?                                 |
-| Number of Entries     | int    | 4    | Number of entries in log          |
-| Unknown               | int    | 4    | ?                                 |
-| Running Total Entries | bigint | 8    | Totoal number of events generated |
-| Max Log Days          | int    | 4    | Maximun days to save log entries  |
+| Field                 | Type   | Size | Description                      |
+|---------------------- | ------ | :--: | -------------------------------- |
+| Log Type              | int    | 4    | Always 00000001                  |
+| Max Log Size          | int    | 4    | Maximum log file size in bytes   |
+| Unknown               | int    | 4    | ?                                |
+| Number of Entries     | int    | 4    | Number of entries in log         |
+| Unknown               | int    | 4    | ?                                |
+| Running Total Entries | bigint | 8    | Total number of events generated |
+| Max Log Days          | int    | 4    | Maximun days to save log entries |
 
 
 ## Log Entries
@@ -26,35 +26,35 @@ The log is in TSV format, meaning, each field is separated by a tab character.
 | Local Host              | bigint    | 8    | The IP address of the local computer (IPv4).                                                                           |
 | Remote Host             | bigint    | 8    | The IP address of the remote computer (IPv4).                                                                          |
 | Protocol                | int       | 4    | The protocol type. (OTHERS = 1; TCP = 2; UDP = 3; ICMP = 4)                                                            |
-| Unknown                 |           |      | ?                                                                                                                      |
-| Direction               |           |      | The direction of traffic. (Unknown = 0; inbound = 1; outbound = 2)                                                     |
-| End Time                |           |      | The end time of the security issue. This field is an optional field<br>because the exact end time of traffic may not be detected; for example,<br>as with UDP traffic. If the end time is not detected, it is set to equal the<br>start time. |
-| Begin Time              |           |      | The start time of the security issue.                                                                                  |
-| Occurences              |           |      | The number of attacks. Sometime, when a hacker launches a mass<br>attack, it may be reduced to one event by the log system, depending<br>on the damper period. | 
-| Log Data Size           |           |      |                                                                                                                        |
+| Unknown                 | int       | 4    | Will require further investigation as to the purpose of this log entry.                                                |
+| Direction               | tinyint   | 1    | The direction of traffic. (Unknown = 0; inbound = 1; outbound = 2)                                                     |
+| End Time                | bigint    | 8    | The end time of the security issue. This field is an optional field<br>because the exact end time of traffic may not be detected; for example,<br>as with UDP traffic. If the end time is not detected, it is set to equal the<br>start time. |
+| Begin Time              | bigint    | 8    | The start time of the security issue.                                                                                  |
+| Occurences              | int       | 4    | The number of attacks. Sometime, when a hacker launches a mass<br>attack, it may be reduced to one event by the log system, depending<br>on the damper period. | 
+| Log Data Size           | int       | 4    |                                                                                                                        |
 | Description             | nvarchar  | 4000 | Description of the event. Usually, the first line of the description is<br>treated as the summary.                     |
-| Unknown                 |           |      | ?                                                                                                                      |
-| Application             |           |      | The full path of the application involved. This field may be empty if<br>an unknown application is involved, or no application is involved. For<br>example, the ping of death DoS attack does not have an application<br>name because it attacks the OS itself. |
+| Unknown                 | ?         | ?    | Will require further investigation as to the purpose of this log entry.                                                |
+| Application             | nvarchar  | 512  | The full path of the application involved. This field may be empty if<br>an unknown application is involved, or no application is involved. For<br>example, the ping of death DoS attack does not have an application<br>name because it attacks the OS itself. |
 | Log Data                | varbinary | 3000 | Additional data in binary format. This field is optional.                                                              |
-| Local MAC               |           |      | The MAC address of the local computer.                                                                                 |
-| Remote MAC              |           |      | The MAC address of the remote computer.                                                                                |
+| Local MAC               | varchar   | 18   | The MAC address of the local computer.                                                                                 |
+| Remote MAC              | carchar   | 18   | The MAC address of the remote computer.                                                                                |
 | Location                | nvarchar  | 512  | The location used when the event occured.                                                                              | 
 | User                    | nvarchar  | 512  | The logon user name.                                                                                                   |
 | User Domain             | nvarchar  | 512  | The logon domain name.                                                                                                 |
-| Signature ID            |           |      | The signature ID.                                                                                                      |
-| Signature Sub ID        |           |      | The signature sub ID.                                                                                                  |
-| Unknown                 |           |      | ?                                                                                                                      |
-| Unknown                 |           |      | ?                                                                                                                      |
-| Remote Port             |           |      | The remote port.                                                                                                       |
-| Locacl Port             |           |      | The local port.                                                                                                        |
-| Local Host IPV6         |           |      | The IP address of the local computer (IPv6).                                                                           |
-| Remote Host IPV6        |           |      | The IP address of the remote computer (IPv6).                                                                          | 
+| Signature ID            | bigint    | 8    | The signature ID.                                                                                                      |
+| Signature Sub ID        | bigint    | 8    | The signature sub ID.                                                                                                  |
+| Unknown                 | int       | 4    | Will require further investigation as to the purpose of this log entry.                                                |
+| Unknown                 | int       | 4    | Will require further investigation as to the purpose of this log entry.                                                |
+| Remote Port             | int       | 4    | The remote port.                                                                                                       |
+| Locacl Port             | int       | 4    | The local port.                                                                                                        |
+| Local Host IPV6         | varchar   | 32   | The IP address of the local computer (IPv6).                                                                           |
+| Remote Host IPV6        | varcahr   | 32   | The IP address of the remote computer (IPv6).                                                                          | 
 | Signature Name          | nvarchar  | 520  | The signature name.                                                                                                    |  
 | X Intrusion Payload     | nvarchar  | 4200 | The URL that hosted the payload.                                                                                       |
 | Intrusion URL           | nvarchar  | 4200 | The URL from the detection                                                                                             |
-| Unknown                 |           |      | ?                                                                                                                      |
+| Unknown                 | ?         | ?    | Will require further investigation as to the purpose of this log entry.                                                |
 | Symantec Version Number | nvarchar  | 128  | The agent version number on the client.                                                                                | 
 | Profile Serial Number   | varchar   | 64   | The policy serial number.                                                                                              |
-| Unknown                 |           |      | ?                                                                                                                      | 
+| Unknown                 | int       | 4    | Will require further investigation as to the purpose of this log entry.                                                | 
 | MD5 Hash                | char      | 32   | The MD5 hash value.                                                                                                    |
 | SHA-256 Hash            | char      | 64   | The SHA-256 hash value.                                                                                                |
