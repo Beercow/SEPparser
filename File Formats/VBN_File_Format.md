@@ -62,7 +62,7 @@ h5 {
 | 2652   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 2656   | 4      | Record Type           | 0x0 = Hybrid, 0x1 = Meta, 0x2 = Quarantine                                               |
 | 2660   | 4      | Quarantine Session ID | Name of subfolder where VBN is stored                                                    |
-| 2664   | 4      | Remediation Type      | Type of remediation                                                                      |
+| 2664   | 4      | Remediation Type      | Type of remediation<br><br>0 None<br>2000 Registry<br>2001 File<br>2002 Process<br>2003 Batch File<br>2004 INI File<br>2005 Service<br>2006 Infected File<br>2007 COM Object<br>2008 Host File Entry<br>2009 Directory<br>2010 Layered Service Provider<br>2011 Internet Browser Cache |
 | 2668   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 2672   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 2676   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
@@ -109,7 +109,7 @@ h5 {
 | 3728   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3732   | 4      | Record Type           | 0x0 = Hybrid, 0x1 = Meta, 0x2 = Quarantine                                               |
 | 3736   | 4      | Quarantine Session ID | Name of subfolder where VBN is stored                                                    |
-| 3740   | 4      | Remediation Type      | Type of remediation                                                                      |
+| 3740   | 4      | Remediation Type      | Type of remediation<br><br>0 None<br>2000 Registry<br>2001 File<br>2002 Process<br>2003 Batch File<br>2004 INI File<br>2005 Service<br>2006 Infected File<br>2007 COM Object<br>2008 Host File Entry<br>2009 Directory<br>2010 Layered Service Provider<br>2011 Internet Browser Cache |
 | 3744   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3748   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3752   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
@@ -158,7 +158,7 @@ h5 {
 | 14076  | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 14080  | 4      | Record Type           | 0x0 = Hybrid, 0x1 = Meta, 0x2 = Quarantine                                               |
 | 14084  | 4      | Quarantine Session ID | Name of subfolder where VBN is stored                                                    |
-| 14088  | 4      | Remediation Type      | Type of remediation                                                                      |
+| 14088  | 4      | Remediation Type      | Type of remediation<br><br>0 None<br>2000 Registry<br>2001 File<br>2002 Process<br>2003 Batch File<br>2004 INI File<br>2005 Service<br>2006 Infected File<br>2007 COM Object<br>2008 Host File Entry<br>2009 Directory<br>2010 Layered Service Provider<br>2011 Internet Browser Cache |
 | 14092  | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 14096  | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 14100  | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |

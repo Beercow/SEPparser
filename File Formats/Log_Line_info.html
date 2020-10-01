@@ -379,7 +379,7 @@ pre {
 </tr>
 <tr>
 <td>Event Data</td>
-<td></td>
+<td>Information varies per event (see below)</td>
 </tr>
 <tr>
 <td>VBin_ID</td>
@@ -399,7 +399,7 @@ pre {
 </tr>
 <tr>
 <td>SND_Status</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Compressed</td>
@@ -427,7 +427,7 @@ pre {
 </tr>
 <tr>
 <td>Delete Info</td>
-<td>Indicates whether file is deletable or not.<br><br>4 DELETABLE<br>5 NOT DELETABLE</td>
+<td>Indicates whether file is deletable or not.<br><br>0 Unknown<br>1 Unknonw<br>4 DELETABLE<br>5 NOT DELETABLE</td>
 </tr>
 <tr>
 <td>Backup ID</td>
@@ -467,63 +467,63 @@ pre {
 </tr>
 <tr>
 <td>Remote Machine</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Remote Machine IP</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Action 1 Status</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Action 2 Status</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>License Feature Name</td>
-<td></td>
+<td>The product name and license type.</td>
 </tr>
 <tr>
 <td>License Feature Version</td>
-<td></td>
+<td>The product code, indicating product type, version, and suffix. This information is read from the license file.</td>
 </tr>
 <tr>
 <td>License Serial Number</td>
-<td></td>
+<td>The license serial number, which is read from the license file.</td>
 </tr>
 <tr>
 <td>License Fulfillment ID</td>
-<td></td>
+<td>The license fulfillment ID, which is read from the license file.</td>
 </tr>
 <tr>
 <td>License Start Date</td>
-<td></td>
+<td>The license start date time, which is read from the license file.</td>
 </tr>
 <tr>
 <td>License Expiration Date</td>
-<td></td>
+<td>The end date of the license period.</td>
 </tr>
 <tr>
 <td>License LifeCycle</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>License Seats Total</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>License Seats</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Error Code</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>License Seats Delta</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Eraser Status</td>
@@ -531,23 +531,23 @@ pre {
 </tr>
 <tr>
 <td>Domain GUID</td>
-<td></td>
+<td>Domain ID</td>
 </tr>
 <tr>
 <td>Log Session GUID</td>
-<td></td>
+<td>This is an ID used by the client to keep track of related threat events.</td>
 </tr>
 <tr>
 <td>VBin Session ID</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Login Domain</td>
-<td></td>
+<td>The Windows domain.</td>
 </tr>
 <tr>
-<td>Event Data 2</td>
-<td></td>
+<td>Event Data 2 *</td>
+<td>Information varies per event (see below)</td>
 </tr>
 <tr>
 <td>Eraser Category ID *</td>
@@ -559,7 +559,7 @@ pre {
 </tr>
 <tr>
 <td>Dynamic Subcategoryset ID *</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Display Name To Use *</td>
@@ -571,31 +571,31 @@ pre {
 </tr>
 <tr>
 <td>Reputation Confidence *</td>
-<td></td>
+<td>The Confidence level that produced the conviction.<br><br>&gt;= 100: Extremely High [100..]<br>&gt;= 65: High [65..99]<br>&gt;= 25: Medium [25..64]<br>&gt;= 10: Low [10..24]<br>&gt;=1: Symantec knows very little about the file/unknown [1..9]<br>0 is not a valid value. We can say unknown also for 0.<br>Default is 0</td>
 </tr>
 <tr>
 <td>First Seen *</td>
-<td></td>
+<td>When the threat was first discovered by Symantec, as downloaded from Symantec's web site.</td>
 </tr>
 <tr>
 <td>Reputation Prevalence *</td>
-<td></td>
+<td>The prevalence data for the application<br><br>0: Unknown.<br>1-50: Very low<br>51-100: Low<br>101-150: Moderate<br>151-200: High<br>201-255: Very high<br>&gt; 255: Very high<br>Default is 0</td>
 </tr>
 <tr>
 <td>Downloaded URL *</td>
-<td></td>
+<td>The source URL of the first drop on this computer.</td>
 </tr>
 <tr>
 <td>Creator For Dropper *</td>
-<td></td>
+<td>The creator process of the dropper threat.</td>
 </tr>
 <tr>
 <td>CIDS State *</td>
-<td></td>
+<td>Network intrusion prevention status:<br><br>0 = Off<br>1 = On<br>2 = Not installed<br>3 = Off by administrator policy<br>127 = Unknown.<br>Default is 127.</td>
 </tr>
 <tr>
 <td>Behavior Risk Level *</td>
-<td></td>
+<td>The risk level (high, med, low) for the convicted threat.<br><br>0 -- Unknown<br>1 or 2 -- Low<br>3 -- Medium<br>4 -- High<br>Default is 0.</td>
 </tr>
 <tr>
 <td>Detection Type *</td>
@@ -603,7 +603,7 @@ pre {
 </tr>
 <tr>
 <td>Acknowledge Text *</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>VSIC State *</td>
@@ -611,15 +611,15 @@ pre {
 </tr>
 <tr>
 <td>Scan GUID *</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Scan Duration *</td>
-<td></td>
+<td>Length of the scan</td>
 </tr>
 <tr>
 <td>Scan Start Time *</td>
-<td></td>
+<td>The time that the scan started.</td>
 </tr>
 <tr>
 <td>TargetApp Type *</td>
@@ -627,74 +627,420 @@ pre {
 </tr>
 <tr>
 <td>Scan Command GUID *</td>
-<td></td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
-<td>Scan Duration †</td>
-<td></td>
-</tr>
-<tr>
-<td>Scan Start Time †</td>
-<td></td>
-</tr>
-<tr>
-<td>Scan Command GUID †</td>
-<td></td>
-</tr>
-<tr>
-<td>? †</td>
+<td>Field 113 †</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Location †</td>
-<td></td>
+<td>The location used when the event occured.</td>
 </tr>
 <tr>
-<td>? †</td>
+<td>Field 115 †</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Digital Signatures Signer †</td>
-<td></td>
+<td>The subject of the certificate.</td>
 </tr>
 <tr>
 <td>Digital Signatures Issuer †</td>
-<td></td>
+<td>If an executable from a detection event is signed, this field indicates its certificate authority.</td>
 </tr>
 <tr>
 <td>Digital Signatures Certificate Thumbprint †</td>
-<td></td>
+<td>The unique ID (or thumbprint) of the digital certificate.</td>
 </tr>
 <tr>
-<td>? †</td>
+<td>Field 119 †</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Digital Signatures Serial Number †</td>
-<td></td>
+<td>The identification (certificate serial number) of the certificate issued by the certificate authority for the executable.</td>
 </tr>
 <tr>
 <td>Digital Signatures Signing Time †</td>
-<td></td>
-</tr>
-<tr>
-<td>? †</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
-<td>? †</td>
+<td>Field 122 †</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
-<td>? †</td>
+<td>Field 123 †</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
-<td>? †</td>
+<td>Field 124 †</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
-<td>? †</td>
+<td>Field 125 †</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 126 †</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="event-data">Event Data</h2>
+<h3 id="section">101</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Field 1</td>
+<td>101</td>
+</tr>
+<tr>
+<td>GUID</td>
+<td>This is an ID used by the client to keep track of related threat events.</td>
+</tr>
+<tr>
+<td>Field 3</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Num Side Effects Repaired</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Anomaly Action Type</td>
+<td>Type of remediation. (Human readable form)</td>
+</tr>
+<tr>
+<td>Anomaly Action Operation</td>
+<td>Remediation action. (Human readable form)</td>
+</tr>
+<tr>
+<td>Field 7</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Anomaly Name</td>
+<td>Virus Name</td>
+</tr>
+<tr>
+<td>Anomaly Categories</td>
+<td>Combination of Categoryset\Subcategoryset ID separated by semicolon</td>
+</tr>
+<tr>
+<td>Anomaly Action Type ID</td>
+<td>Type of remediation.</td>
+</tr>
+<tr>
+<td>Anomaly Action OperationID</td>
+<td>Remediation action.</td>
+</tr>
+<tr>
+<td>Previous Log GUID</td>
+<td>This is an ID used by the client to keep track of related threat events.</td>
+</tr>
+<tr>
+<td>Field 13</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section-1">201</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Field 1</td>
+<td>201</td>
+</tr>
+<tr>
+<td>Field 2</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 3</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 4</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 5</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 6</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 7</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 8</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 9</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 10</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 11</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 12</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 13</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section-2">301</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Field 1</td>
+<td>301</td>
+</tr>
+<tr>
+<td>Actor PID</td>
+<td>Process ID for acting process</td>
+</tr>
+<tr>
+<td>Actor</td>
+<td>Process performing the action</td>
+</tr>
+<tr>
+<td>Event</td>
+<td>1 File Create<br>2 File Delete<br>3 File Open<br>6 Directory Create<br>7 Directory Delete<br>14 Registry Key Create<br>15 Registry Key Delete<br>16 Registry Value Delete<br>17 Registry Value Set<br>18 Registry Key Rename<br>19 Registry Key Set Security<br>45 File Set Security<br>46 Directory Set Security<br>55 Process Open<br>56 Process Duplicate</td>
+</tr>
+<tr>
+<td>Target PID</td>
+<td>Process ID for target process</td>
+</tr>
+<tr>
+<td>Target</td>
+<td>What is being targeted</td>
+</tr>
+<tr>
+<td>Target Process</td>
+<td>The process that is being targeted</td>
+</tr>
+<tr>
+<td>Field 8</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 9</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 10</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 11</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 12</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 13</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scan-entries">Scan Entries</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Field</th>
+            <th>Description</th>
+            <th>Entry</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=5>Field 1</td>
+            <td rowspan=5>description</td>
+            <td>Scan Status</td>
+        </tr>
+        <tr>
+            <td>Risks</td>
+        </tr>
+        <tr>
+            <td>Scanned</td>
+        </tr>
+        <tr>
+            <td>Files/Folders/Drives Omitted</td>
+        </tr>
+        <tr>
+            <td>Trusted Files Skipped</td>
+        </tr>
+        <tr>
+            <td>Field 2</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 3</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 4</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 5</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 6</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 7</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 8</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 9</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 10</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 11</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 12</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 13</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+    </tbody>
+</table>
+<h2 id="event-data-2">Event Data 2</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Field 1</td>
+<td>506</td>
+</tr>
+<tr>
+<td>Company Name</td>
+<td>The company name.</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>The file size</td>
+</tr>
+<tr>
+<td>Hash Type</td>
+<td>The hash algorithm used:<br><br>0 = MD5<br>1 = SHA-1<br>2 = SHA-256</td>
+</tr>
+<tr>
+<td>Hash</td>
+<td>The hash for this application.</td>
+</tr>
+<tr>
+<td>Product Version</td>
+<td>The application version.</td>
+</tr>
+<tr>
+<td>Field 7</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 8</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 9</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 10</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 11</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 12</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Product Name</td>
+<td>The application name.</td>
+</tr>
+<tr>
+<td>Field 14</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 15</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 16</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Field 17</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 </tbody>

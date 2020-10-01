@@ -30,19 +30,19 @@ Time,Event,Category,Logger,Computer,User,Virus,File,Wanted Action 1,Wanted Actio
 | ScanID                                             | ID number of associated scan (for Scan History events and Virus Found events)                                                        |
 | New_Ext                                            | Will require further investigation as to the purpose of this log entry.                                                              |
 | Group ID                                           | Indicates the Group ID.                                                                                                              |
-| Event Data                                         |                                                                                                                                      |
+| Event Data                                         | Information varies per event (see below)                                                                                             |
 | VBin_ID                                            | Stores the ID of the file in Quarantine if it is Quarantined.                                                                        |
 | Virus ID                                           | ID of the particular virus.                                                                                                          |
-| Quarantine Forward Status                          | Indicates the status of the Quarantine attempt.<br><br>0 NONE<br>1 FAILED<br>2 OK                                                 |
+| Quarantine Forward Status                          | Indicates the status of the Quarantine attempt.<br><br>0 NONE<br>1 FAILED<br>2 OK                                                    |
 | Access                                             | This stores the "operation flags"<br><br>0x00000001 READ<br>0x00000002 WRITE<br>0x00000004 EXEC<br>0x00000008 IN_TABLE<br>0x00000010 REJECT_ACTION<br>0x00000020 ACTION_COMPLETE<br>0x00000040 DELETE_WHEN_COMPLETE<br>0x00000080 CLIENT_REQUEST<br>0x00000100 OWNED_BY_USER<br>0x00000200 DELETE<br>0x00000800 OWNED_BY_QUEUE<br>0x00001000 FILE_IN_CACHE<br>0x00002000 SCAN<br>0x00004000 GET_TRAP_DATA<br>0x00008000 USE_TRAP_DATA<br>0x00010000 FILE_NEEDS_SCAN<br>0x00020000 BEFORE_OPEN<br>0x00040000 AFTER_OPEN<br>0x00080000 SCAN_BOOT_SECTOR<br>0x10000000 COMING_FROM_NAVAP<br>0x20000000 BACKUP_TO_QUARANTINE |
-| SND_Status                                         |                                                                                                                                      |
+| SND_Status                                         | Will require further investigation as to the purpose of this log entry.                                                              |
 | Compressed                                         | Indicated whether it is or is in a compressed file or not.<br><br>0 No<br>1 Yes                                                      |
 | Depth                                              | Indicated at what depth IN a compressed file the virus was found.                                                                    |
 | Still Infected                                     | Tells whether file is still infected or not.<br><br>0 No<br>1 Yes                                                                    |
 | Def Info                                           | Version of Virus Definitions Used (Virus Found event only)                                                                           |
 | Def Sequence Number                                | The Definition Sequence Number of the Virus Definitions used.                                                                        |
 | Clean Info                                         | Indicates whether file is cleanable or not.<br><br>0 CLEANABLE<br>1 NO CLEAN PATTERN<br>2 NOT CLEANABLE                              |
-| Delete Info                                        | Indicates whether file is deletable or not.<br><br>0 Unknown<br>1 Unknonw<br>4 DELETABLE<br>5 NOT DELETABLE                                                    |
+| Delete Info                                        | Indicates whether file is deletable or not.<br><br>0 Unknown<br>1 Unknonw<br>4 DELETABLE<br>5 NOT DELETABLE                          |
 | Backup ID                                          | Stores the ID of the file stored in Backup if it is backed up.                                                                       |
 | Parent                                             | Name of Parent if is a Managed Client                                                                                                |
 | GUID                                               | GUID of the machine (Virus Found event only)                                                                                         |
@@ -52,61 +52,227 @@ Time,Event,Category,Logger,Computer,User,Virus,File,Wanted Action 1,Wanted Actio
 | NT Domain                                          | Windows domain or workgroup                                                                                                          |
 | MAC Address                                        | Hardware address                                                                                                                     |
 | Version                                            | Software version                                                                                                                     |
-| Remote Machine                                     |                                                                                                                                      |
-| Remote Machine IP                                  |                                                                                                                                      |
-| Action 1 Status                                    |                                                                                                                                      |
-| Action 2 Status                                    |                                                                                                                                      |
-| License Feature Name                               |                                                                                                                                      |
-| License Feature Version                            |                                                                                                                                      |
-| License Serial Number                              |                                                                                                                                      |
-| License Fulfillment ID                             |                                                                                                                                      |
-| License Start Date                                 |                                                                                                                                      |
-| License Expiration Date                            |                                                                                                                                      |
-| License LifeCycle                                  |                                                                                                                                      |
-| License Seats Total                                |                                                                                                                                      |
-| License Seats                                      |                                                                                                                                      |
-| Error Code                                         |                                                                                                                                      |
-| License Seats Delta                                |                                                                                                                                      |
+| Remote Machine                                     | Will require further investigation as to the purpose of this log entry.                                                              |
+| Remote Machine IP                                  | Will require further investigation as to the purpose of this log entry.                                                              |
+| Action 1 Status                                    | Will require further investigation as to the purpose of this log entry.                                                              |
+| Action 2 Status                                    | Will require further investigation as to the purpose of this log entry.                                                              |
+| License Feature Name                               | The product name and license type.                                                                                                   |
+| License Feature Version                            | The product code, indicating product type, version, and suffix. This information is read from the license file.                      |
+| License Serial Number                              | The license serial number, which is read from the license file.                                                                      |
+| License Fulfillment ID                             | The license fulfillment ID, which is read from the license file.                                                                     |
+| License Start Date                                 | The license start date time, which is read from the license file.                                                                    |
+| License Expiration Date                            | The end date of the license period.                                                                                                  |
+| License LifeCycle                                  | Will require further investigation as to the purpose of this log entry.                                                              |
+| License Seats Total                                | Will require further investigation as to the purpose of this log entry.                                                              |
+| License Seats                                      | Will require further investigation as to the purpose of this log entry.                                                              |
+| Error Code                                         | Will require further investigation as to the purpose of this log entry.                                                              |
+| License Seats Delta                                | Will require further investigation as to the purpose of this log entry.                                                              |
 | Eraser Status                                      | 0 Success<br>1 Reboot Required<br>2 Nothing To Do<br>3 Repaired<br>4 Deleted<br>5 False<br>6 Abort<br>7 Continue<br>8 Service Not Stopped<br>9 Application Heuristic Scan Failure<br>10 Cannot Remediate<br>11 Whitelist Failure<br>12 Driver Failure<br>13 Reserved01<br>13 Commercial Application List Failure<br>13 Application Heuristic Scan Invalid OS<br>13 Content Manager Data Error<br>999 Leave Alone<br>1000 Generic Failure<br>1001 Out Of Memory<br>1002 Not Initialized<br>1003 Invalid Argument<br>1004 Insufficient Buffer<br>1005 Decryption Error<br>1006 File Not Found<br>1007 Out Of Range<br>1008 COM Error<br>1009 Partial Failure<br>1010 Bad Definitions<br>1011 Invalid Command<br>1012 No Interface<br>1013 RSA Error<br>1014 Path Not Empty<br>1015 Invalid Path<br>1016 Path Not Empty<br>1017 File Still Present<br>1018 Invalid OS<br>1019 Not Implemented<br>1020 Access Denied<br>1021 Directory Still Present<br>1022 Inconsistent State<br>1023 Timeout<br>1024 Action Pending<br>1025 Volume Write Protected<br>1026 Not Reparse Point<br>1027 File Exists<br>1028 Target Protected<br>1029 Disk Full<br>1030 Shutdown In Progress<br>1031 Media Error<br>1032 Network Defs Error |
-| Domain GUID                                        |                                                                                                                                      |
-| Log Session GUID                                   |                                                                                                                                      |
-| VBin Session ID                                    |                                                                                                                                      |
-| Login Domain                                       |                                                                                                                                      |
-| Event Data 2                                       |                                                                                                                                      |
+| Domain GUID                                        | Domain ID                                                                                                                            |
+| Log Session GUID                                   | This is an ID used by the client to keep track of related threat events.                                                             |
+| VBin Session ID                                    | Will require further investigation as to the purpose of this log entry.                                                              |
+| Login Domain                                       | The Windows domain.                                                                                                                  |
+| Event Data 2 &#42;                                 | Information varies per event (see below)                                                                                             |
 | Eraser Category ID &#42;                           | 1 HeuristicTrojanWorm<br>2 HeuristicKeyLogger<br>100 CommercialRemoteControl<br>101 CommercialKeyLogger<br>200 Cookie<br>300 Shields |
 | Dynamic Categoryset ID &#42;                       | 1 MALWARE<br>2 SECURITY_RISK<br>3 POTENTIALLY_UNWANTED_APPLICATIONS<br>4 EXPERIMENTAL_HEURISTIC<br>5 LEGACY_VIRAL<br>6 LEGACY_NON_VIRAL<br>7 CATEGORY_CRIMEWARE<br>8 ADVANCED_HEURISTICS<br>9 REPUTATION_BACKED_ADVANCED_HEURISTICS<br>10 PREVALENCE_BACKED_ADVANCED_HEURISTICS |
-| Dynamic Subcategoryset ID &#42;                    |                                                                                                                                      |
+| Dynamic Subcategoryset ID &#42;                    | Will require further investigation as to the purpose of this log entry.                                                              |
 | Display Name To Use &#42;                          | 0 Application Name<br>1 VID Virus Name                                                                                               |
 | Reputation Disposition &#42;                       | 0 Good<br>1 Bad<br>127 Unknown                                                                                                       |
-| Reputation Confidence &#42;                        |                                                                                                                                      |
-| First Seen &#42;                                   |                                                                                                                                      |
-| Reputation Prevalence &#42;                        |                                                                                                                                      |
-| Downloaded URL &#42;                               |                                                                                                                                      |
-| Creator For Dropper &#42;                          |                                                                                                                                      |
-| CIDS State &#42;                                   |                                                                                                                                      |
-| Behavior Risk Level &#42;                          |                                                                                                                                      |
+| Reputation Confidence &#42;                        | The Confidence level that produced the conviction.<br><br>>= 100: Extremely High [100..]<br>>= 65: High [65..99]<br>>= 25: Medium [25..64]<br>>= 10: Low [10..24]<br>>=1: Symantec knows very little about the file/unknown [1..9]<br>0 is not a valid value. We can say unknown also for 0.<br>Default is 0 |
+| First Seen &#42;                                   | When the threat was first discovered by Symantec, as downloaded from Symantec's web site.                                            |
+| Reputation Prevalence &#42;                        | The prevalence data for the application<br><br>0: Unknown.<br>1-50: Very low<br>51-100: Low<br>101-150: Moderate<br>151-200: High<br>201-255: Very high<br>> 255: Very high<br>Default is 0 |
+| Downloaded URL &#42;                               | The source URL of the first drop on this computer.                                                                                   |
+| Creator For Dropper &#42;                          | The creator process of the dropper threat.                                                                                           |
+| CIDS State &#42;                                   | Network intrusion prevention status:<br><br>0 = Off<br>1 = On<br>2 = Not installed<br>3 = Off by administrator policy<br>127 = Unknown.<br>Default is 127. |
+| Behavior Risk Level &#42;                          | The risk level (high, med, low) for the convicted threat.<br><br>0 -- Unknown<br>1 or 2 -- Low<br>3 -- Medium<br>4 -- High<br>Default is 0. |
 | Detection Type &#42;                               | 0 Traditional<br>1 Heuristic                                                                                                         |    
-| Acknowledge Text &#42;                             |                                                                                                                                      |
+| Acknowledge Text &#42;                             | Will require further investigation as to the purpose of this log entry.                                                              |
 | VSIC State &#42;                                   | 0 Off<br>1 On<br>2 Failed                                                                                                            |
-| Scan GUID &#42;                                    |                                                                                                                                      |
-| Scan Duration &#42;                                |                                                                                                                                      |
-| Scan Start Time &#42;                              |                                                                                                                                      |
+| Scan GUID &#42;                                    | Will require further investigation as to the purpose of this log entry.                                                              |
+| Scan Duration &#42;                                | Length of the scan                                                                                                                   |
+| Scan Start Time &#42;                              | The time that the scan started.                                                                                                      |
 | TargetApp Type &#42;                               | 0 Normal<br>1 Modern (Metro)                                                                                                         |
-| Scan Command GUID &#42;                            |                                                                                                                                      |
-| Scan Duration &dagger;                             |                                                                                                                                      |
-| Scan Start Time &dagger;                           |                                                                                                                                      |
-| Scan Command GUID &dagger;                         |                                                                                                                                      |
-| ? &dagger;                                         | Will require further investigation as to the purpose of this log entry.                                                              |
-| Location &dagger;                                  |                                                                                                                                      |
-| ? &dagger;                                         | Will require further investigation as to the purpose of this log entry.                                                              |
-| Digital Signatures Signer &dagger;                 |                                                                                                                                      |
-| Digital Signatures Issuer &dagger;                 |                                                                                                                                      |
-| Digital Signatures Certificate Thumbprint &dagger; |                                                                                                                                      |
-| ? &dagger;                                         | Will require further investigation as to the purpose of this log entry.                                                              |
-| Digital Signatures Serial Number &dagger;          |                                                                                                                                      |
-| Digital Signatures Signing Time &dagger;           |                                                                                                                                      |
-| ? &dagger;                                         | Will require further investigation as to the purpose of this log entry.                                                              |
-| ? &dagger;                                         | Will require further investigation as to the purpose of this log entry.                                                              |
-| ? &dagger;                                         | Will require further investigation as to the purpose of this log entry.                                                              |
-| ? &dagger;                                         | Will require further investigation as to the purpose of this log entry.                                                              |
-| ? &dagger;                                         | Will require further investigation as to the purpose of this log entry.                                                              |
+| Scan Command GUID &#42;                            | Will require further investigation as to the purpose of this log entry.                                                              |
+| Field 113 &dagger;                                 | Will require further investigation as to the purpose of this log entry.                                                              |
+| Location &dagger;                                  | The location used when the event occured.                                                                                            |
+| Field 115 &dagger;                                 | Will require further investigation as to the purpose of this log entry.                                                              |
+| Digital Signatures Signer &dagger;                 | The subject of the certificate.                                                                                                      |
+| Digital Signatures Issuer &dagger;                 | If an executable from a detection event is signed, this field indicates its certificate authority.                                   |
+| Digital Signatures Certificate Thumbprint &dagger; | The unique ID (or thumbprint) of the digital certificate.                                                                            |
+| Field 119 &dagger;                                 | Will require further investigation as to the purpose of this log entry.                                                              |
+| Digital Signatures Serial Number &dagger;          | The identification (certificate serial number) of the certificate issued by the certificate authority for the executable.            |
+| Digital Signatures Signing Time &dagger;           | Will require further investigation as to the purpose of this log entry.                                                              |
+| Field 122 &dagger;                                 | Will require further investigation as to the purpose of this log entry.                                                              |
+| Field 123 &dagger;                                 | Will require further investigation as to the purpose of this log entry.                                                              |
+| Field 124 &dagger;                                 | Will require further investigation as to the purpose of this log entry.                                                              |
+| Field 125 &dagger;                                 | Will require further investigation as to the purpose of this log entry.                                                              |
+| Field 126 &dagger;                                 | Will require further investigation as to the purpose of this log entry.                                                              |
+
+## Event Data
+
+### 101
+
+| Field                      | Description                                                              |
+| -------------------------- | ------------------------------------------------------------------------ |
+| Field 1                    | 101                                                                      |
+| GUID                       | This is an ID used by the client to keep track of related threat events. |
+| Field 3                    | Will require further investigation as to the purpose of this log entry.  |
+| Num Side Effects Repaired  | Will require further investigation as to the purpose of this log entry.  |
+| Anomaly Action Type        | Type of remediation. (Human readable form)                               |
+| Anomaly Action Operation   | Remediation action. (Human readable form)                                |
+| Field 7                    | Will require further investigation as to the purpose of this log entry.  |
+| Anomaly Name               | Virus Name                                                               |
+| Anomaly Categories         | Combination of Categoryset\Subcategoryset ID separated by semicolon      | 
+| Anomaly Action Type ID     | Type of remediation.                                                     |
+| Anomaly Action OperationID | Remediation action.                                                      |
+| Previous Log GUID          | This is an ID used by the client to keep track of related threat events. |
+| Field 13                   | Will require further investigation as to the purpose of this log entry.  |
+
+### 201
+
+| Field                      | Description                                                             |
+| -------------------------- | ----------------------------------------------------------------------- |
+| Field 1                    | 201                                                                     |
+| Field 2                    | Will require further investigation as to the purpose of this log entry. |
+| Field 3                    | Will require further investigation as to the purpose of this log entry. |
+| Field 4                    | Will require further investigation as to the purpose of this log entry. |
+| Field 5                    | Will require further investigation as to the purpose of this log entry. |
+| Field 6                    | Will require further investigation as to the purpose of this log entry. |
+| Field 7                    | Will require further investigation as to the purpose of this log entry. |
+| Field 8                    | Will require further investigation as to the purpose of this log entry. |
+| Field 9                    | Will require further investigation as to the purpose of this log entry. | 
+| Field 10                   | Will require further investigation as to the purpose of this log entry. |
+| Field 11                   | Will require further investigation as to the purpose of this log entry. |
+| Field 12                   | Will require further investigation as to the purpose of this log entry. |
+| Field 13                   | Will require further investigation as to the purpose of this log entry. |
+
+### 301
+
+| Field                      | Description                                                             |
+| -------------------------- | ----------------------------------------------------------------------- |
+| Field 1                    | 301                                                                     |
+| Actor PID                  | Process ID for acting process                                           |
+| Actor                      | Process performing the action                                           |
+| Event                      | 1 File Create<br>2 File Delete<br>3 File Open<br>6 Directory Create<br>7 Directory Delete<br>14 Registry Key Create<br>15 Registry Key Delete<br>16 Registry Value Delete<br>17 Registry Value Set<br>18 Registry Key Rename<br>19 Registry Key Set Security<br>45 File Set Security<br>46 Directory Set Security<br>55 Process Open<br>56 Process Duplicate |
+| Target PID                 | Process ID for target process                                           |
+| Target                     | What is being targeted                                                  |
+| Target Process             | The process that is being targeted                                      |
+| Field 8                    | Will require further investigation as to the purpose of this log entry. |
+| Field 9                    | Will require further investigation as to the purpose of this log entry. | 
+| Field 10                   | Will require further investigation as to the purpose of this log entry. |
+| Field 11                   | Will require further investigation as to the purpose of this log entry. |
+| Field 12                   | Will require further investigation as to the purpose of this log entry. |
+| Field 13                   | Will require further investigation as to the purpose of this log entry. |
+
+### Scan Entries
+
+<table>
+    <thead>
+        <tr>
+            <th>Field</th>
+            <th>Description</th>
+            <th>Entry</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=5>Field 1</td>
+            <td rowspan=5>description</td>
+            <td>Scan Status</td>
+        </tr>
+        <tr>
+            <td>Risks</td>
+        </tr>
+        <tr>
+            <td>Scanned</td>
+        </tr>
+        <tr>
+            <td>Files/Folders/Drives Omitted</td>
+        </tr>
+        <tr>
+            <td>Trusted Files Skipped</td>
+        </tr>
+        <tr>
+            <td>Field 2</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 3</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 4</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 5</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 6</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 7</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 8</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 9</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 10</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 11</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 12</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Field 13</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+    </tbody>
+</table>
+
+## Event Data 2
+
+| Field                      | Description                                                             |
+| -------------------------- | ----------------------------------------------------------------------- |
+| Field 1                    | 506                                                                     |
+| Company Name               | The company name.                                                       |
+| Size                       | The file size                                                           |
+| Hash Type                  | The hash algorithm used:<br><br>0 = MD5<br>1 = SHA-1<br>2 = SHA-256     |
+| Hash                       | The hash for this application.                                          |
+| Product Version            | The application version.                                                |
+| Field 7                    | Will require further investigation as to the purpose of this log entry. |
+| Field 8                    | Will require further investigation as to the purpose of this log entry. |
+| Field 9                    | Will require further investigation as to the purpose of this log entry. | 
+| Field 10                   | Will require further investigation as to the purpose of this log entry. |
+| Field 11                   | Will require further investigation as to the purpose of this log entry. |
+| Field 12                   | Will require further investigation as to the purpose of this log entry. |
+| Product Name               | The application name.                                                   |
+| Field 14                   | Will require further investigation as to the purpose of this log entry. |
+| Field 15                   | Will require further investigation as to the purpose of this log entry. |
+| Field 16                   | Will require further investigation as to the purpose of this log entry. |
+| Field 17                   | Will require further investigation as to the purpose of this log entry. |
