@@ -1916,6 +1916,30 @@ def read_log_entry(f, loc, count):
 
     return f.read(count)
 
+def read_submission(_):
+    VirusID = ''
+    VirusName = ''
+    ComponentName = ''
+    ComponentVersion = ''
+    ThreatCatID = ''
+    OS_Country = ''
+    for m in re.finditer('VirusID=(?P<VirusID>\d+)|VirusName=(?P<VirusName>.*)|ComponentName=(?P<ComponentName>.*)|ComponentVersion=(?P<ComponentVersion>.*)|Threat Cat ID=(?P<ThreatCatID>\d+)|OS-Country:(?P<OS_Country>\d+)', _):
+
+        if m.group('VirusID'):
+            VirusID = m.group('VirusID')
+        if m.group('VirusName'):
+            VirusName = m.group('VirusName')
+        if m.group('ComponentName'):    
+            ComponentName = m.group('ComponentName')
+        if m.group('ComponentVersion'):
+           ComponentVersion = m.group('ComponentVersion')
+        if m.group('ThreatCatID'):
+            ThreatCatID = m.group('ThreatCatID')
+        if m.group('OS_Country'):
+            OS_Country = m.group('OS_Country')
+    print(f'{VirusID},{VirusName},{ComponentName},{ComponentVersion},{ThreatCatID},{OS_Country}')
+
+
 def read_log_data(data, tz):
     entry = LogFields()
     data = re.split(b',(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)', data)
@@ -2047,10 +2071,14 @@ def read_sep_tag(_):
     sid = ''
     guid = ''
     dec = ''
+    dbguid = ''
+    lastguid = ''
     lasttoken = 0
     lastvalue = 0
     hit = None
     virus = ''
+    results = ''
+    count = 0
     while True:
         try:
             code = struct.unpack("B", _.read(1))[0]
@@ -2099,6 +2127,10 @@ def read_sep_tag(_):
             tag = vbnstruct.ASN1_String_W(_.read(5 + size))
             dec += hexdump_tag(tag.dumps()[1:5])
             string = tag.dumps()[5:].decode('latin-1').replace("\x00", "").replace("\r\n", "\r\n\t  ")
+            if lastguid == '00000000000000000000000000000000':
+                string = string.replace("\r\n\t  ", "\n")
+
+                results += f'{string}\n'
             dec += hexdump_tag(tag.dumps()[5:]) + f'### STRING-W\n      {string}\n\n'
             if hit == 'virus':
                 virus = tag.StringW.decode('latin-1').replace("\x00", "")
@@ -2139,6 +2171,10 @@ def read_sep_tag(_):
         elif code == 15:
             _.seek(-1,1)
             tag = vbnstruct.ASN1_16(_.read(17))
+            count += 1
+            if count == 1:
+                dbguid = '{' + '-'.join([flip(tag.dumps()[1:5].hex()), flip(tag.dumps()[5:7].hex()), flip(tag.dumps()[7:9].hex()), tag.dumps()[9:11].hex(), tag.dumps()[11:17].hex()]).upper() + '}'
+            lastguid = tag.dumps()[1:].hex()
             dec += f'\n### GUID\n{hexdump_tag(tag.dumps()[1:])}'
         
         elif code == 16:
@@ -2183,7 +2219,7 @@ def read_sep_tag(_):
         virus = match[0]
         del match[0]
 
-    return match, dd, sddl, sid, virus, guid, dec
+    return match, dd, sddl, sid, virus, guid, dec, dbguid, results
 
 def hexdump_tag(buf, length=16):
     """Return a hexdump output string of the given buffer."""
@@ -2372,7 +2408,9 @@ def parse_header(f):
     sheader = f.read(16).hex()
     if sheader[0:16] == '3216144c01000000':
         return 9, 0, 0, 1, 0, 0, 0, 0
-    if sheader.upper() in guid:
+    if re.search('\{[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\}$', f.name, re.IGNORECASE):
+#        print("yes")
+#    if sheader.upper() in guid:
         return 10, 0, 0, 1, 0, 0, 0, 0
     f.seek(0)
     if headersize == 55:
@@ -2939,7 +2977,7 @@ def parse_vbn(f, logType, tz):
             print('           ##                                                   ##')
             print('           #######################################################')
             print('           #######################################################\n')
-        tags, dd, sddl, sid, virus, guid, dec = read_sep_tag(f.read())
+        tags, dd, sddl, sid, virus, guid, dec, dbguid, results = read_sep_tag(f.read())
 
         if args.struct:
             if vbnv == 1:
@@ -2976,7 +3014,7 @@ def parse_vbn(f, logType, tz):
             print('           ##                                                   ##')
             print('           #######################################################')
             print('           #######################################################\n')
-        tags, dd, sddl, sid, virus, guid, dec = read_sep_tag(xor(f.read(qfm.QFM_Size), 0x5A).encode('latin-1'))
+        tags, dd, sddl, sid, virus, guid, dec, dbguid, results = read_sep_tag(xor(f.read(qfm.QFM_Size), 0x5A).encode('latin-1'))
 
         pos = qfm.QFM_Size_Header_Size + vbnmeta.QFM_HEADER_Offset
         f.seek(pos)
@@ -3157,6 +3195,9 @@ def extract_sym_submissionsidx(f):
         else:
             newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
+        guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met\n')
+        read_submission(dec[8])
+        resultsout.write(dec[8])
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
         cnt += 1
         
@@ -3201,6 +3242,8 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
         else:
             newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
+        guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met\n')
+        resultsout.write(dec[8])
         print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-{subcnt}\033[1;0m\n')
         subcnt += 1
 
@@ -3514,4 +3557,6 @@ elif not (args.extract or args.hex_dump):
         csv_header()
 
 if __name__ == "__main__":
+    resultsout = open('results.txt', 'w')
+    guidout = open('guid.txt', 'w')
     main()
