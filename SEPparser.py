@@ -41,6 +41,8 @@ def csv_header():
     
     settings.write('"Log Name","Max Log Size","# of Logs","Running Total of Logs","Max Log Days","Field3","Field5","Field6"\n')
     
+    ccSubSDK.write('"VirusID","VirusName","ComponentName","ComponentVersion","Threat Cat ID","Reputation","Rating Rule Id","Receipt time","Prevalence Band","Detection Digest"\n')
+    
     if args.struct:
         rt0v1.write('"File Name","QFM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QData_Location_Header","QData_Location_Offset","QData_Location_Size","EOF","Unknown15","QData_Info_Header","QData_Info_Size","Data"\n')
         
@@ -1922,8 +1924,12 @@ def read_submission(_):
     ComponentName = ''
     ComponentVersion = ''
     ThreatCatID = ''
-    OS_Country = ''
-    for m in re.finditer('VirusID=(?P<VirusID>\d+)|VirusName=(?P<VirusName>.*)|ComponentName=(?P<ComponentName>.*)|ComponentVersion=(?P<ComponentVersion>.*)|Threat Cat ID=(?P<ThreatCatID>\d+)|OS-Country:(?P<OS_Country>\d+)', _):
+    Reputation = ''
+    RatingRuleId = ''
+    Receipttime = ''
+    PrevalenceBand = ''
+    DetectionDigest = ''
+    for m in re.finditer('VirusID=(?P<VirusID>\d+)|VirusName=(?P<VirusName>.*?)\n|ComponentName=(?P<ComponentName>.*?)\n|ComponentVersion=(?P<ComponentVersion>.*?)\n|Threat Cat ID=(?P<ThreatCatID>\d+)|Reputation=(?P<Reputation>\d+)|Rating Rule Id=(?P<RatingRuleId>\d+)|Receipt time=(?P<Receipttime>.*?)\n|Prevalence Band=(?P<PrevalenceBand>\d+)|Detection Digest:\n(?P<DetectionDigest>.*\n)\n', _, re.S):
 
         if m.group('VirusID'):
             VirusID = m.group('VirusID')
@@ -1935,9 +1941,18 @@ def read_submission(_):
            ComponentVersion = m.group('ComponentVersion')
         if m.group('ThreatCatID'):
             ThreatCatID = m.group('ThreatCatID')
-        if m.group('OS_Country'):
-            OS_Country = m.group('OS_Country')
-    print(f'{VirusID},{VirusName},{ComponentName},{ComponentVersion},{ThreatCatID},{OS_Country}')
+        if m.group('Reputation'):
+            Reputation = m.group('Reputation')
+        if m.group('RatingRuleId'):
+            RatingRuleId = m.group('RatingRuleId')
+        if m.group('Receipttime'):
+            Receipttime = m.group('Receipttime')
+        if m.group('PrevalenceBand'):
+            PrevalenceBand = m.group('PrevalenceBand')
+        if m.group('DetectionDigest'):
+            DetectionDigest = m.group('DetectionDigest').replace('"', '""')
+        
+    return f'"{VirusID}","{VirusName}","{ComponentName}","{ComponentVersion}","{ThreatCatID}","{Reputation}","{RatingRuleId}","{Receipttime}","{PrevalenceBand}","{DetectionDigest}"\n'
 
 
 def read_log_data(data, tz):
@@ -2128,9 +2143,9 @@ def read_sep_tag(_):
             dec += hexdump_tag(tag.dumps()[1:5])
             string = tag.dumps()[5:].decode('latin-1').replace("\x00", "").replace("\r\n", "\r\n\t  ")
             if lastguid == '00000000000000000000000000000000':
-                string = string.replace("\r\n\t  ", "\n")
+                rstring = string.replace("\r\n\t  ", "\n")
 
-                results += f'{string}\n'
+                results += f'{rstring}\n'
             dec += hexdump_tag(tag.dumps()[5:]) + f'### STRING-W\n      {string}\n\n'
             if hit == 'virus':
                 virus = tag.StringW.decode('latin-1').replace("\x00", "")
@@ -3196,7 +3211,7 @@ def extract_sym_submissionsidx(f):
             newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
         guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met\n')
-        read_submission(dec[8])
+        ccSubSDK.write(read_submission(dec[8]))
         resultsout.write(dec[8])
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
         cnt += 1
@@ -3243,6 +3258,7 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
             newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
         guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met\n')
+        ccSubSDK.write(read_submission(dec[8]))
         resultsout.write(dec[8])
         print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-{subcnt}\033[1;0m\n')
         subcnt += 1
@@ -3370,6 +3386,7 @@ def main():
     sys.exit()
 
 logo()
+ccSubSDK = open('ccSubSDK.csv', 'w')
 start = time.time()
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--file", help="File to be parsed")
