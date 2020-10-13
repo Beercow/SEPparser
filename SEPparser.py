@@ -41,7 +41,9 @@ def csv_header():
     
     settings.write('"Log Name","Max Log Size","# of Logs","Running Total of Logs","Max Log Days","Field3","Field5","Field6"\n')
     
-    ccSubSDK.write('"VirusID","VirusName","ComponentName","ComponentVersion","Threat Cat ID","Reputation","Rating Rule Id","Receipt time","Prevalence Band","Detection Digest"\n')
+    SubmissionsEim.write('"ccSubSKD File GUID","MD5","Detection","Submission","VirusID","VirusName","ComponentName","ComponentVersion","Threat Cat ID","Reputation","Rating Rule Id","Receipt time","Prevalence Band","Detection Digest","OS-Country","OS-Language","Processor","System","Platform-GUID","ProductType","Telem-ID","HWID","Hostname-MD5","DateSubmitted","Product"\n')
+    
+    IDSxp.write('"ccSubSKD File GUID","Signature ID","Local or Remote Attacker","Remote Port","Local Port","Protocol","Signature Set Version","Application Name","Offending URL","Date Detected","Application File Checksum","Application File Information","Flags","Network Data","Attack Data","Sub-signature ID","Signature Properties","Referer URL","Application File SHA256","Application File CreateTime","IPSSubmissionID","Application File Reputation","Application File Prevalence","Forwarded For","Signature Response","Remote Address","Message Disposition"\n')
     
     if args.struct:
         rt0v1.write('"File Name","QFM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QData_Location_Header","QData_Location_Offset","QData_Location_Size","EOF","Unknown15","QData_Info_Header","QData_Info_Size","Data"\n')
@@ -1918,7 +1920,11 @@ def read_log_entry(f, loc, count):
 
     return f.read(count)
 
-def read_submission(_):
+def read_submission(_, subtype=0):
+    #SubmissionsEim
+    MD5 = ''
+    Detection = ''
+    Submission = ''
     VirusID = ''
     VirusName = ''
     ComponentName = ''
@@ -1929,8 +1935,60 @@ def read_submission(_):
     Receipttime = ''
     PrevalenceBand = ''
     DetectionDigest = ''
-    for m in re.finditer('VirusID=(?P<VirusID>\d+)|VirusName=(?P<VirusName>.*?)\n|ComponentName=(?P<ComponentName>.*?)\n|ComponentVersion=(?P<ComponentVersion>.*?)\n|Threat Cat ID=(?P<ThreatCatID>\d+)|Reputation=(?P<Reputation>\d+)|Rating Rule Id=(?P<RatingRuleId>\d+)|Receipt time=(?P<Receipttime>.*?)\n|Prevalence Band=(?P<PrevalenceBand>\d+)|Detection Digest:\n(?P<DetectionDigest>.*\n)\n', _, re.S):
+    #IDSxp
+    SignatureID = ''
+    LocalorRemoteAttacker = ''
+    RemotePort = ''
+    LocalPort = ''
+    Protocol = ''
+    SignatureSetVersion = ''
+    ApplicationName = ''
+    OffendingURL = ''
+    DateDetected = ''
+    ApplicationFileChecksum = ''
+    ApplicationFileInformation = ''
+    Flags = ''
+    NetworkData = ''
+    AttackData = ''
+    SubsignatureID = ''
+    SignatureProperties = ''
+    RefererURL = ''
+    ApplicationFileSHA256 = ''
+    ApplicationFileCreatTime = ''
+    IPSSubmissionID = ''
+    ApplicationFileReputation = ''
+    ApplicationFilePrevelence = ''
+    ForwardedFor = ''
+    SignatureResponse = ''
+    RemoteAddress = ''
+    MessaageDisposition = ''
+    #SubmissionsEim/IDSxp
+    OSCountry = ''
+    OSLanguage = ''
+    Processor = ''
+    System = ''
+    PlatformGUID = ''
+    ProductType = ''
+    TelemID = ''
+    HWID = ''
+    HostnameMD5 = ''
+    DateSubmitted = ''
+    Product = ''
+    for m in re.finditer('^(?P<MD5>[a-fA-F\d]{32})\n(?P<Detection>.*?)\n(?P<Submission>.*?)\n|^(?P<Detection2>.*?)\n(?P<Submission2>.*?)\nVirusID|VirusID=(?P<VirusID>\d+)|VirusName=(?P<VirusName>.*?)\n|ComponentName=(?P<ComponentName>.*?)\n|ComponentVersion=(?P<ComponentVersion>.*?)\n|Threat Cat ID=(?P<ThreatCatID>\d+)|Reputation=(?P<Reputation>\d+)|Rating Rule Id=(?P<RatingRuleId>\d+)|Receipt time=(?P<Receipttime>.*?)\n|Prevalence Band=(?P<PrevalenceBand>\d+)|Detection Digest:\n(?P<DetectionDigest>.*\n)\n|Signature ID: (?P<SignatureID>.*?)\n|Local or Remote Attacker: (?P<LocalorRemoteAttacker>\d+)|Remote Port: (?P<RemotePort>\d+)|Local Port: (?P<LocalPort>\d+)|Protocol: (?P<Protocol>\d+)|Signature Set Version: (?P<SignatureSetVersion>.*?)\n|Application Name: (?P<ApplicationName>.*?)\n|Offending URL: (?P<OffendingURL>.*?)\n|Date Detected: (?P<DateDetected>.*?)\n|Application File Checksum: (?P<ApplicationFileChecksum>.*?)\n|Application File Information: (?P<ApplicationFileInformation>.*?)\n|Flags: (?P<Flags>.*?)\n|Network Data: (?P<NetworkData>.*?)\n|Attack Data: (?P<AttackData>.*?)\n|Sub-signature ID: (?P<SubsignatureID>\d+)|Signature Properties: (?P<SignatureProperties>\d+)|Referer URL: (?P<RefererURL>.*?)\n|Application File SHA256: (?P<ApplicationFileSHA256>.*?)\n|Application File CreateTime: (?P<ApplicationFileCreatTime>.*?)\n|IPSSubmissionID: (?P<IPSSubmissionID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|OS-Country:(?P<OSCountry>\d+)|Application File Reputation: (?P<ApplicationFileReputation>\d+)|Application File Prevalence: (?P<ApplicationFilePrevelence>\d+)|Forwarded For: (?P<ForwardedFor>.*?)\n|Signature Response: (?P<SignatureResponse>\d+)|Remote Address: (?P<RemoteAddress>.*?)\n|Message Disposition: (?P<MessaageDisposition>\d+)|OS-Language:(?P<OSLanguage>.*?)\n|Processor:(?P<Processor>.*?)\n|System:(?P<System>.*?)\n|Platform-GUID:(?P<PlatformGUID>.*?)\n|ProductType:(?P<ProductType>.*?)\n|Telem-ID:(?P<TelemID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|HWID:(?P<HWID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|Hostname-MD5:(?P<HostnameMD5>[a-fA-F\d]{32})\n|DateSubmitted:(?P<DateSubmitted>.*?)\n|Product:(?P<Product>.*?)\n', _, re.S):
 
+        #SubmissionsEim
+        if m.group('MD5'):
+            MD5 = m.group('MD5')
+        if m.group('Detection'):
+            Detection = m.group('Detection')
+            subtype = 1
+        if m.group('Detection2'):
+            Detection = m.group('Detection2')
+            subtype = 1
+        if m.group('Submission'):
+            Submission = m.group('Submission')
+        if m.group('Submission2'):
+            Submission = m.group('Submission2')
         if m.group('VirusID'):
             VirusID = m.group('VirusID')
         if m.group('VirusName'):
@@ -1952,7 +2010,89 @@ def read_submission(_):
         if m.group('DetectionDigest'):
             DetectionDigest = m.group('DetectionDigest').replace('"', '""')
         
-    return f'"{VirusID}","{VirusName}","{ComponentName}","{ComponentVersion}","{ThreatCatID}","{Reputation}","{RatingRuleId}","{Receipttime}","{PrevalenceBand}","{DetectionDigest}"\n'
+        #IDSxp
+        if m.group('SignatureID'):
+            SignatureID = m.group('SignatureID')
+        if m.group('LocalorRemoteAttacker'):
+            LocalorRemoteAttacker = m.group('LocalorRemoteAttacker')
+        if m.group('RemotePort'):
+            RemotePort = m.group('RemotePort')
+        if m.group('LocalPort'):
+            LocalPort = m.group('LocalPort')
+        if m.group('Protocol'):
+            Protocol = m.group('Protocol')
+        if m.group('SignatureSetVersion'):
+            SignatureSetVersion = m.group('SignatureSetVersion')
+            subtype = 2
+        if m.group('ApplicationName'):
+            ApplicationName = m.group('ApplicationName')
+        if m.group('OffendingURL'):
+            OffendingURL = m.group('OffendingURL')
+        if m.group('DateDetected'):
+            DateDetected = m.group('DateDetected')
+        if m.group('ApplicationFileChecksum'):
+            ApplicationFileChecksum = m.group('ApplicationFileChecksum')
+        if m.group('ApplicationFileInformation'):
+            ApplicationFileInformation = m.group('ApplicationFileInformation')
+        if m.group('Flags'):
+            Flags = m.group('Flags')
+        if m.group('NetworkData'):
+            NetworkData = m.group('NetworkData')
+        if m.group('AttackData'):
+            AttackData = m.group('AttackData')
+        if m.group('SubsignatureID'):
+            SubsignatureID = m.group('SubsignatureID')
+        if m.group('SignatureProperties'):
+            SignatureProperties = m.group('SignatureProperties')
+        if m.group('RefererURL'):
+            RefererURL = m.group('RefererURL')
+        if m.group('ApplicationFileSHA256'):
+            ApplicationFileSHA256 = m.group('ApplicationFileSHA256')
+        if m.group('ApplicationFileCreatTime'):
+            ApplicationFileCreatTime = m.group('ApplicationFileCreatTime')
+        if m.group('IPSSubmissionID'):
+            IPSSubmissionID = m.group('IPSSubmissionID')
+        if m.group('ApplicationFileReputation'):
+            ApplicationFileReputation = m.group('ApplicationFileReputation')
+        if m.group('ApplicationFilePrevelence'):
+            ApplicationFilePrevelence = m.group('ApplicationFilePrevelence')
+        if m.group('ForwardedFor'):
+            ForwardedFor = m.group('ForwardedFor')
+        if m.group('SignatureResponse'):
+            SignatureResponse = m.group('SignatureResponse')
+        if m.group('RemoteAddress'):
+            RemoteAddress = m.group('RemoteAddress')
+        if m.group('MessaageDisposition'):
+            MessaageDisposition = m.group('MessaageDisposition')
+        
+        if m.group('OSCountry'):
+            OSCountry = m.group('OSCountry')
+        if m.group('OSLanguage'):
+            OSLanguage = m.group('OSLanguage')
+        if m.group('Processor'):
+            Processor = m.group('Processor')
+        if m.group('System'):
+            System = m.group('System')
+        if m.group('PlatformGUID'):
+            PlatformGUID = m.group('PlatformGUID')
+        if m.group('ProductType'):
+            ProductType = m.group('ProductType')
+        if m.group('TelemID'):
+            TelemID = m.group('TelemID')
+        if m.group('HWID'):
+            HWID = m.group('HWID')
+        if m.group('HostnameMD5'):
+            HostnameMD5 = m.group('HostnameMD5')
+        if m.group('DateSubmitted'):
+            DateSubmitted = m.group('DateSubmitted')
+        if m.group('Product'):
+            Product = m.group('Product')
+    if subtype == 1:
+        return f'"{MD5}","{Detection}","{Submission}","{VirusID}","{VirusName}","{ComponentName}","{ComponentVersion}","{ThreatCatID}","{Reputation}","{RatingRuleId}","{Receipttime}","{PrevalenceBand}","{DetectionDigest}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}"\n', subtype
+    if subtype == 2:
+        return f'"{SignatureID}","{LocalorRemoteAttacker}","{RemotePort}","{LocalPort}","{Protocol}","{SignatureSetVersion}","{ApplicationName}","{OffendingURL}","{DateDetected}","{ApplicationFileChecksum}","{ApplicationFileInformation}","{Flags}","{NetworkData}","{AttackData}","{SubsignatureID}","{SignatureProperties}","{RefererURL}","{ApplicationFileSHA256}","{ApplicationFileCreatTime}","{IPSSubmissionID}","{ApplicationFileReputation}","{ApplicationFilePrevelence}","{ForwardedFor}","{SignatureResponse}","{RemoteAddress}","{MessaageDisposition}"\n', subtype
+    else:
+        return _, subtype
 
 
 def read_log_data(data, tz):
@@ -3211,7 +3351,11 @@ def extract_sym_submissionsidx(f):
             newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
         guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met\n')
-        ccSubSDK.write(read_submission(dec[8]))
+        subdata, subtype = read_submission(dec[8])
+        if subtype == 1:
+            SubmissionsEim.write(f'"{dec[7]}",{subdata}')
+        if subtype ==2:
+            IDSxp.write(f'"{dec[7]}",{subdata}')
         resultsout.write(dec[8])
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
         cnt += 1
@@ -3258,7 +3402,11 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
             newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
         guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met\n')
-        ccSubSDK.write(read_submission(dec[8]))
+        subdata, subtype = read_submission(dec[8])
+        if subtype == 1:
+            SubmissionsEim.write(f'"{dec[7]}",{subdata}')
+        if subtype ==2:
+            IDSxp.write(f'"{dec[7]}",{subdata}')
         resultsout.write(dec[8])
         print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-{subcnt}\033[1;0m\n')
         subcnt += 1
@@ -3386,7 +3534,8 @@ def main():
     sys.exit()
 
 logo()
-ccSubSDK = open('ccSubSDK.csv', 'w')
+SubmissionsEim = open('SubmissionsEim.csv', 'w')
+IDSxp = open('IDSxp.csv', 'w')
 start = time.time()
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--file", help="File to be parsed")
