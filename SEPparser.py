@@ -41,9 +41,11 @@ def csv_header():
     
     settings.write('"Log Name","Max Log Size","# of Logs","Running Total of Logs","Max Log Days","Field3","Field5","Field6"\n')
     
-    SubmissionsEim.write('"ccSubSKD File GUID","MD5","Detection","Submission","VirusID","VirusName","ComponentName","ComponentVersion","Threat Cat ID","Reputation","Rating Rule Id","Receipt time","Prevalence Band","Detection Digest","OS-Country","OS-Language","Processor","System","Platform-GUID","ProductType","Telem-ID","HWID","Hostname-MD5","DateSubmitted","Product"\n')
+    SubmissionsEim.write('"ccSubSKD File GUID","MD5","Detection","Submission","VirusID","VirusName","ComponentName","ComponentVersion","Threat Cat ID","Reputation","Rating Rule Id","Receipt time","Prevalence Band","Detection Digest","OS-Country","OS-Language","Processor","System","Platform-GUID","ProductType","Telem-ID","HWID","Hostname-MD5","DateSubmitted","Product","Component"\n')
     
-    IDSxp.write('"ccSubSKD File GUID","Signature ID","Local or Remote Attacker","Remote Port","Local Port","Protocol","Signature Set Version","Application Name","Offending URL","Date Detected","Application File Checksum","Application File Information","Flags","Network Data","Attack Data","Sub-signature ID","Signature Properties","Referer URL","Application File SHA256","Application File CreateTime","IPSSubmissionID","Application File Reputation","Application File Prevalence","Forwarded For","Signature Response","Remote Address","Message Disposition"\n')
+    IDSxp.write('"ccSubSKD File GUID","Signature ID","Local or Remote Attacker","Remote Port","Local Port","Protocol","Signature Set Version","Application Name","Offending URL","Date Detected","Application File Checksum","Application File Information","Flags","Network Data","Attack Data","Sub-signature ID","Signature Properties","Referer URL","Application File SHA256","Application File CreateTime","IPSSubmissionID","Application File Reputation","Application File Prevalence","Forwarded For","Signature Response","Remote Address","Message Disposition","OS-Country","OS-Language","Processor","System","Platform-GUID","ProductType","Telem-ID","HWID","Hostname-MD5","DateSubmitted","Product","Component"\n')
+    
+    reports.write('"ccSubSKD File GUID","OS-Country","OS-Language","Processor","System","Platform-GUID","ProductType","Telem-ID","HWID","Hostname-MD5","DateSubmitted","Product","Component"\n')
     
     if args.struct:
         rt0v1.write('"File Name","QFM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QData_Location_Header","QData_Location_Offset","QData_Location_Size","EOF","Unknown15","QData_Info_Header","QData_Info_Size","Data"\n')
@@ -1974,7 +1976,8 @@ def read_submission(_, subtype=0):
     HostnameMD5 = ''
     DateSubmitted = ''
     Product = ''
-    for m in re.finditer('^(?P<MD5>[a-fA-F\d]{32})\n(?P<Detection>.*?)\n(?P<Submission>.*?)\n|^(?P<Detection2>.*?)\n(?P<Submission2>.*?)\nVirusID|VirusID=(?P<VirusID>\d+)|VirusName=(?P<VirusName>.*?)\n|ComponentName=(?P<ComponentName>.*?)\n|ComponentVersion=(?P<ComponentVersion>.*?)\n|Threat Cat ID=(?P<ThreatCatID>\d+)|Reputation=(?P<Reputation>\d+)|Rating Rule Id=(?P<RatingRuleId>\d+)|Receipt time=(?P<Receipttime>.*?)\n|Prevalence Band=(?P<PrevalenceBand>\d+)|Detection Digest:\n(?P<DetectionDigest>.*\n)\n|Signature ID: (?P<SignatureID>.*?)\n|Local or Remote Attacker: (?P<LocalorRemoteAttacker>\d+)|Remote Port: (?P<RemotePort>\d+)|Local Port: (?P<LocalPort>\d+)|Protocol: (?P<Protocol>\d+)|Signature Set Version: (?P<SignatureSetVersion>.*?)\n|Application Name: (?P<ApplicationName>.*?)\n|Offending URL: (?P<OffendingURL>.*?)\n|Date Detected: (?P<DateDetected>.*?)\n|Application File Checksum: (?P<ApplicationFileChecksum>.*?)\n|Application File Information: (?P<ApplicationFileInformation>.*?)\n|Flags: (?P<Flags>.*?)\n|Network Data: (?P<NetworkData>.*?)\n|Attack Data: (?P<AttackData>.*?)\n|Sub-signature ID: (?P<SubsignatureID>\d+)|Signature Properties: (?P<SignatureProperties>\d+)|Referer URL: (?P<RefererURL>.*?)\n|Application File SHA256: (?P<ApplicationFileSHA256>.*?)\n|Application File CreateTime: (?P<ApplicationFileCreatTime>.*?)\n|IPSSubmissionID: (?P<IPSSubmissionID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|OS-Country:(?P<OSCountry>\d+)|Application File Reputation: (?P<ApplicationFileReputation>\d+)|Application File Prevalence: (?P<ApplicationFilePrevelence>\d+)|Forwarded For: (?P<ForwardedFor>.*?)\n|Signature Response: (?P<SignatureResponse>\d+)|Remote Address: (?P<RemoteAddress>.*?)\n|Message Disposition: (?P<MessaageDisposition>\d+)|OS-Language:(?P<OSLanguage>.*?)\n|Processor:(?P<Processor>.*?)\n|System:(?P<System>.*?)\n|Platform-GUID:(?P<PlatformGUID>.*?)\n|ProductType:(?P<ProductType>.*?)\n|Telem-ID:(?P<TelemID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|HWID:(?P<HWID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|Hostname-MD5:(?P<HostnameMD5>[a-fA-F\d]{32})\n|DateSubmitted:(?P<DateSubmitted>.*?)\n|Product:(?P<Product>.*?)\n', _, re.S):
+    Component = ''
+    for m in re.finditer('^(?P<MD5>[a-fA-F\d]{32})\n(?P<Detection>.*?)\n(?P<Submission>.*?)\n|^(?P<Detection2>.*?)\n(?P<Submission2>.*?)\nVirusID|VirusID=(?P<VirusID>\d+)|VirusName=(?P<VirusName>.*?)\n|ComponentName=(?P<ComponentName>.*?)\n|ComponentVersion=(?P<ComponentVersion>.*?)\n|Threat Cat ID=(?P<ThreatCatID>\d+)|Reputation=(?P<Reputation>\d+)|Rating Rule Id=(?P<RatingRuleId>\d+)|Receipt time=(?P<Receipttime>.*?)\n|Prevalence Band=(?P<PrevalenceBand>\d+)|Detection Digest:\n(?P<DetectionDigest>.*\n)\n|Signature ID: (?P<SignatureID>.*?)\n|Local or Remote Attacker: (?P<LocalorRemoteAttacker>\d+)|Remote Port: (?P<RemotePort>\d+)|Local Port: (?P<LocalPort>\d+)|Protocol: (?P<Protocol>\d+)|Signature Set Version: (?P<SignatureSetVersion>.*?)\n|Application Name: (?P<ApplicationName>.*?)\n|Offending URL: (?P<OffendingURL>.*?)\n|Date Detected: (?P<DateDetected>.*?)\n|Application File Checksum: (?P<ApplicationFileChecksum>.*?)\n|Application File Information: (?P<ApplicationFileInformation>.*?)\n|Flags: (?P<Flags>.*?)\n|Network Data: (?P<NetworkData>.*?)\n|Attack Data: (?P<AttackData>.*?)\n|Sub-signature ID: (?P<SubsignatureID>\d+)|Signature Properties: (?P<SignatureProperties>\d+)|Referer URL: (?P<RefererURL>.*?)\n|Application File SHA256: (?P<ApplicationFileSHA256>.*?)\n|Application File CreateTime: (?P<ApplicationFileCreatTime>.*?)\n|IPSSubmissionID: (?P<IPSSubmissionID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|OS-Country:(?P<OSCountry>\d+)|Application File Reputation: (?P<ApplicationFileReputation>\d+)|Application File Prevalence: (?P<ApplicationFilePrevelence>\d+)|Forwarded For: (?P<ForwardedFor>.*?)\n|Signature Response: (?P<SignatureResponse>\d+)|Remote Address: (?P<RemoteAddress>.*?)\n|Message Disposition: (?P<MessaageDisposition>\d+)|OS-Language:(?P<OSLanguage>.*?)\n|Processor:(?P<Processor>.*?)\n|System:(?P<System>.*?)\n|Platform-GUID:(?P<PlatformGUID>.*?)\n|ProductType:(?P<ProductType>.*?)\n|Telem-ID:(?P<TelemID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|HWID:(?P<HWID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|Hostname-MD5:(?P<HostnameMD5>[a-fA-F\d]{32})\n|DateSubmitted:(?P<DateSubmitted>.*?)\n|Product:(?P<Product>.*?)\n|Component:(?P<Component>.*?)\n', _, re.S):
 
         #SubmissionsEim
         if m.group('MD5'):
@@ -2087,10 +2090,16 @@ def read_submission(_, subtype=0):
             DateSubmitted = m.group('DateSubmitted')
         if m.group('Product'):
             Product = m.group('Product')
+        if m.group('Component'):
+            Component = m.group('Component')
+            
+    if subtype == 0:
+        return f'"{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}","{Component}"\n', subtype
+    
     if subtype == 1:
-        return f'"{MD5}","{Detection}","{Submission}","{VirusID}","{VirusName}","{ComponentName}","{ComponentVersion}","{ThreatCatID}","{Reputation}","{RatingRuleId}","{Receipttime}","{PrevalenceBand}","{DetectionDigest}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}"\n', subtype
+        return f'"{MD5}","{Detection}","{Submission}","{VirusID}","{VirusName}","{ComponentName}","{ComponentVersion}","{ThreatCatID}","{Reputation}","{RatingRuleId}","{Receipttime}","{PrevalenceBand}","{DetectionDigest}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}","{Component}"\n', subtype
     if subtype == 2:
-        return f'"{SignatureID}","{LocalorRemoteAttacker}","{RemotePort}","{LocalPort}","{Protocol}","{SignatureSetVersion}","{ApplicationName}","{OffendingURL}","{DateDetected}","{ApplicationFileChecksum}","{ApplicationFileInformation}","{Flags}","{NetworkData}","{AttackData}","{SubsignatureID}","{SignatureProperties}","{RefererURL}","{ApplicationFileSHA256}","{ApplicationFileCreatTime}","{IPSSubmissionID}","{ApplicationFileReputation}","{ApplicationFilePrevelence}","{ForwardedFor}","{SignatureResponse}","{RemoteAddress}","{MessaageDisposition}"\n', subtype
+        return f'"{SignatureID}","{LocalorRemoteAttacker}","{RemotePort}","{LocalPort}","{Protocol}","{SignatureSetVersion}","{ApplicationName}","{OffendingURL}","{DateDetected}","{ApplicationFileChecksum}","{ApplicationFileInformation}","{Flags}","{NetworkData}","{AttackData}","{SubsignatureID}","{SignatureProperties}","{RefererURL}","{ApplicationFileSHA256}","{ApplicationFileCreatTime}","{IPSSubmissionID}","{ApplicationFileReputation}","{ApplicationFilePrevelence}","{ForwardedFor}","{SignatureResponse}","{RemoteAddress}","{MessaageDisposition}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}","{Component}"\n', subtype
     else:
         return _, subtype
 
@@ -3352,6 +3361,8 @@ def extract_sym_submissionsidx(f):
         newfilename.write(dec[6].encode('latin-1'))
         guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met\n')
         subdata, subtype = read_submission(dec[8])
+        if subtype == 0:
+            reports.write(f'"{dec[7]}",{subdata}')
         if subtype == 1:
             SubmissionsEim.write(f'"{dec[7]}",{subdata}')
         if subtype ==2:
@@ -3403,6 +3414,8 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
         newfilename.write(dec[6].encode('latin-1'))
         guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met\n')
         subdata, subtype = read_submission(dec[8])
+        if subtype == 0:
+            reports.write(f'"{dec[7]}",{subdata}')
         if subtype == 1:
             SubmissionsEim.write(f'"{dec[7]}",{subdata}')
         if subtype ==2:
@@ -3536,6 +3549,7 @@ def main():
 logo()
 SubmissionsEim = open('SubmissionsEim.csv', 'w')
 IDSxp = open('IDSxp.csv', 'w')
+reports = open('Reports.csv', 'w')
 start = time.time()
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--file", help="File to be parsed")
