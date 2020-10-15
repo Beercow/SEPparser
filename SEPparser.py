@@ -47,7 +47,7 @@ def csv_header():
     
     reports.write('"ccSubSKD File GUID","Field1","Field2","OS-Country","OS-Language","Processor","System","Platform-GUID","ProductType","Telem-ID","HWID","Hostname-MD5","DateSubmitted","Product","Component"\n')
     
-    BASH_UMH.write('"ccSubSKD File GUID","BASH-UMH","ImagePath","ImageDosPath","SHA1","UmhEfaInfo","FileTime","ProcessPath","ProcessDOSPath","CodeSegmentMD5","EventKey","OS-Country","OS-Language","Processor","System","Platform-GUID","ProductType","Telem-ID","HWID","Hostname-MD5","DateSubmitted","Product","Component"\n')
+    BHSvcPlg.write('"ccSubSKD File GUID","BASH Plugin","ImagePath","ImageDosPath","SHA1","UmhEfaInfo","FileTime","ProcessPath","ProcessDOSPath","CodeSegmentMD5","EventKey","OS-Country","OS-Language","Processor","System","Platform-GUID","ProductType","Telem-ID","HWID","Hostname-MD5","DateSubmitted","Product","Component"\n')
     
     if args.struct:
         rt0v1.write('"File Name","QFM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QData_Location_Header","QData_Location_Offset","QData_Location_Size","EOF","Unknown15","QData_Info_Header","QData_Info_Size","Data"\n')
@@ -1967,7 +1967,7 @@ def read_submission(_, subtype=0):
     RemoteAddress = ''
     MessaageDisposition = ''
     #BHSvcPlg
-    BASHUMH = ''
+    BASH = ''
     ImagePath = ''
     ImageDosPath = ''
     SHA1 = ''
@@ -1992,7 +1992,7 @@ def read_submission(_, subtype=0):
     Component = ''
     Field1 = ''
     Field2 = ''
-    for m in re.finditer('^(?P<MD5>[a-fA-F\d]{32})\n(?P<Detection>.*?)\n(?P<Submission>.*?)\n|^(?P<Detection2>.*?)\n(?P<Submission2>.*?)\n(?=VirusID)|VirusID=(?P<VirusID>\d+)|VirusName=(?P<VirusName>.*?)\n|ComponentName=(?P<ComponentName>.*?)\n|ComponentVersion=(?P<ComponentVersion>.*?)\n|Threat Cat ID=(?P<ThreatCatID>\d+)|Reputation=(?P<Reputation>\d+)|Rating Rule Id=(?P<RatingRuleId>\d+)|Receipt time=(?P<Receipttime>.*?)\n|Prevalence Band=(?P<PrevalenceBand>\d+)|Detection Digest:\n(?P<DetectionDigest>.*\n)\n|Signature ID: (?P<SignatureID>.*?)\n|Local or Remote Attacker: (?P<LocalorRemoteAttacker>\d+)|Remote Port: (?P<RemotePort>\d+)|Local Port: (?P<LocalPort>\d+)|Protocol: (?P<Protocol>\d+)|Signature Set Version: (?P<SignatureSetVersion>.*?)\n|Application Name: (?P<ApplicationName>.*?)\n|Offending URL: (?P<OffendingURL>.*?)\n|Date Detected: (?P<DateDetected>.*?)\n|Application File Checksum: (?P<ApplicationFileChecksum>.*?)\n|Application File Information: (?P<ApplicationFileInformation>.*?)\n|Flags: (?P<Flags>.*?)\n|Network Data: (?P<NetworkData>.*?)\n|Attack Data: (?P<AttackData>.*?)\n|Sub-signature ID: (?P<SubsignatureID>\d+)|Signature Properties: (?P<SignatureProperties>\d+)|Referer URL: (?P<RefererURL>.*?)\n|Application File SHA256: (?P<ApplicationFileSHA256>.*?)\n|Application File CreateTime: (?P<ApplicationFileCreatTime>.*?)\n|IPSSubmissionID: (?P<IPSSubmissionID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|OS-Country:(?P<OSCountry>\d+)|Application File Reputation: (?P<ApplicationFileReputation>\d+)|Application File Prevalence: (?P<ApplicationFilePrevelence>\d+)|Forwarded For: (?P<ForwardedFor>.*?)\n|Signature Response: (?P<SignatureResponse>\d+)|Remote Address: (?P<RemoteAddress>.*?)\n|Message Disposition: (?P<MessaageDisposition>\d+)|OS-Language:(?P<OSLanguage>.*?)\n|Processor:(?P<Processor>.*?)\n|System:(?P<System>.*?)\n|Platform-GUID:(?P<PlatformGUID>.*?)\n|ProductType:(?P<ProductType>.*?)\n|Telem-ID:(?P<TelemID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|HWID:(?P<HWID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|Hostname-MD5:(?P<HostnameMD5>[a-fA-F\d]{32})\n|DateSubmitted:(?P<DateSubmitted>.*?)\n|Product:(?P<Product>.*?)\n|Component:(?P<Component>.*?)\n|^(?P<BASHUMH>BASH-UMH.*?)\nImagePath=(?P<ImagePath>.*?)\n|ImageDosPath=(?P<ImageDosPath>.*?)\n|SHA1=(?P<SHA1>.*?)\n|UmhEfaInfo=(?P<UmhEfaInfo>.*?)\n|FileTime=(?P<FileTime>.*?)\n|ProcessPath=(?P<ProcessPath>.*?)\n|ProcessDOSPath=(?P<ProcessDOSPath>.*?)\n|CodeSegmentMD5=(?P<CodeSegmentMD5>.*?)\n|EventKey=(?P<EventKey>.*?)\n', _, re.S):
+    for m in re.finditer('^(?P<MD5>[a-fA-F\d]{32})\n(?P<Detection>.*?)\n(?P<Submission>.*?)\n|^(?P<Detection2>.*?)\n(?P<Submission2>.*?)\n(?=VirusID)|VirusID=(?P<VirusID>\d+)|VirusName=(?P<VirusName>.*?)\n|ComponentName=(?P<ComponentName>.*?)\n|ComponentVersion=(?P<ComponentVersion>.*?)\n|Threat Cat ID=(?P<ThreatCatID>\d+)|Reputation=(?P<Reputation>\d+)|Rating Rule Id=(?P<RatingRuleId>\d+)|Receipt time=(?P<Receipttime>.*?)\n|Prevalence Band=(?P<PrevalenceBand>\d+)|Detection Digest:\n(?P<DetectionDigest>.*\n)\n|Signature ID: (?P<SignatureID>.*?)\n|Local or Remote Attacker: (?P<LocalorRemoteAttacker>\d+)|Remote Port: (?P<RemotePort>\d+)|Local Port: (?P<LocalPort>\d+)|Protocol: (?P<Protocol>\d+)|Signature Set Version: (?P<SignatureSetVersion>.*?)\n|Application Name: (?P<ApplicationName>.*?)\n|Offending URL: (?P<OffendingURL>.*?)\n|Date Detected: (?P<DateDetected>.*?)\n|Application File Checksum: (?P<ApplicationFileChecksum>.*?)\n|Application File Information: (?P<ApplicationFileInformation>.*?)\n|Flags: (?P<Flags>.*?)\n|Network Data: (?P<NetworkData>.*?)\n|Attack Data: (?P<AttackData>.*?)\n|Sub-signature ID: (?P<SubsignatureID>\d+)|Signature Properties: (?P<SignatureProperties>\d+)|Referer URL: (?P<RefererURL>.*?)\n|Application File SHA256: (?P<ApplicationFileSHA256>.*?)\n|Application File CreateTime: (?P<ApplicationFileCreatTime>.*?)\n|IPSSubmissionID: (?P<IPSSubmissionID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|OS-Country:(?P<OSCountry>\d+)|Application File Reputation: (?P<ApplicationFileReputation>\d+)|Application File Prevalence: (?P<ApplicationFilePrevelence>\d+)|Forwarded For: (?P<ForwardedFor>.*?)\n|Signature Response: (?P<SignatureResponse>\d+)|Remote Address: (?P<RemoteAddress>.*?)\n|Message Disposition: (?P<MessaageDisposition>\d+)|OS-Language:(?P<OSLanguage>.*?)\n|Processor:(?P<Processor>.*?)\n|System:(?P<System>.*?)\n|Platform-GUID:(?P<PlatformGUID>.*?)\n|ProductType:(?P<ProductType>.*?)\n|Telem-ID:(?P<TelemID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|HWID:(?P<HWID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|Hostname-MD5:(?P<HostnameMD5>[a-fA-F\d]{32})\n|DateSubmitted:(?P<DateSubmitted>.*?)\n|Product:(?P<Product>.*?)\n|Component:(?P<Component>.*?)\n|^(?P<BASH>BASH-.*?)\nImagePath=(?P<ImagePath>.*?)\n|^(?P<BASH2>BASH-.*?)\n(?P<ImagePath2>.*?)\n(?=OS-Country)|^(?P<BASH3>BASH-.*?)\n(?P<ImagePath3>.*?)\n$|ImageDosPath=(?P<ImageDosPath>.*?)\n|SHA1=(?P<SHA1>.*?)\n|UmhEfaInfo=(?P<UmhEfaInfo>.*?)\n|FileTime=(?P<FileTime>.*?)\n|ProcessPath=(?P<ProcessPath>.*?)\n|ProcessDOSPath=(?P<ProcessDOSPath>.*?)\n|CodeSegmentMD5=(?P<CodeSegmentMD5>.*?)\n|EventKey=(?P<EventKey>.*?)\n', _, re.S):
 
         #SubmissionsEim
         if m.group('MD5'):
@@ -2084,10 +2084,20 @@ def read_submission(_, subtype=0):
             MessaageDisposition = m.group('MessaageDisposition')
         
         #BHSvcPlg
-        if m.group('BASHUMH'):
-            BASHUMH = m.group('BASHUMH')
+        if m.group('BASH'):
+            BASH = m.group('BASH')
+        if m.group('BASH2'):
+            BASH = m.group('BASH2')
+        if m.group('BASH3'):
+            BASH = m.group('BASH3')
         if m.group('ImagePath'):
             ImagePath = m.group('ImagePath')
+            subtype = 3
+        if m.group('ImagePath2'):
+            ImagePath = m.group('ImagePath2')
+            subtype = 3
+        if m.group('ImagePath3'):
+            ImagePath = m.group('ImagePath3')
             subtype = 3
         if m.group('ImageDosPath'):
             ImageDosPath = m.group('ImageDosPath')
@@ -2139,7 +2149,7 @@ def read_submission(_, subtype=0):
     if subtype == 2:
         return f'"{SignatureID}","{LocalorRemoteAttacker}","{RemotePort}","{LocalPort}","{Protocol}","{SignatureSetVersion}","{ApplicationName}","{OffendingURL}","{DateDetected}","{ApplicationFileChecksum}","{ApplicationFileInformation}","{Flags}","{NetworkData}","{AttackData}","{SubsignatureID}","{SignatureProperties}","{RefererURL}","{ApplicationFileSHA256}","{ApplicationFileCreatTime}","{IPSSubmissionID}","{ApplicationFileReputation}","{ApplicationFilePrevelence}","{ForwardedFor}","{SignatureResponse}","{RemoteAddress}","{MessaageDisposition}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}","{Component}"\n', subtype
     if subtype == 3:
-        return f'"{BASHUMH}","{ImagePath}","{ImageDosPath}","{SHA1}","{UmhEfaInfo}","{FileTime}","{ProcessPath}","{ProcessDOSPath}","{CodeSegmentMD5}","{EventKey}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}","{Component}"\n', subtype
+        return f'"{BASH}","{ImagePath}","{ImageDosPath}","{SHA1}","{UmhEfaInfo}","{FileTime}","{ProcessPath}","{ProcessDOSPath}","{CodeSegmentMD5}","{EventKey}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}","{Component}"\n', subtype
     else:
         return _, subtype
 
@@ -2365,7 +2375,7 @@ def read_sep_tag(_):
                     tag = vbnstruct.ASN1_BLOB(_.read(5 + size))
                     dec += hexdump_tag(tag.dumps()[1:5])
                     dec += f'### BLOB\n{hexdump_tag(tag.dumps()[5:])}'
-                    if b'\x00x\xda' in tag.dumps()[5:]:
+                    if b'\x00x\xda' in tag.dumps()[5:15]:
                         if tag.dumps()[5:].startswith(b'CMPR'):
                             dec += f'### BLOB Decompressed\n{hexdump_tag(zlib.decompress(tag.dumps()[13:]))}'
                         else:
@@ -3412,7 +3422,7 @@ def extract_sym_submissionsidx(f):
         if subtype == 2:
             IDSxp.write(f'"{dec[7]}",{subdata}')
         if subtype == 3:
-            BASH_UMH.write(f'"{dec[7]}",{subdata}')
+            BHSvcPlg.write(f'"{dec[7]}",{subdata}')
         resultsout.write(dec[8])
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
         cnt += 1
@@ -3467,7 +3477,7 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
         if subtype == 2:
             IDSxp.write(f'"{dec[7]}",{subdata}')
         if subtype == 3:
-            BASH_UMH.write(f'"{dec[7]}",{subdata}')
+            BHSvcPlg.write(f'"{dec[7]}",{subdata}')
         resultsout.write(dec[8])
         print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-{subcnt}\033[1;0m\n')
         subcnt += 1
@@ -3598,7 +3608,7 @@ logo()
 SubmissionsEim = open('SubmissionsEim.csv', 'w')
 IDSxp = open('IDSxp.csv', 'w')
 reports = open('Reports.csv', 'w')
-BASH_UMH = open('BASH-UMH.csv', 'w')
+BHSvcPlg = open('BHSvcPlg.csv', 'w')
 start = time.time()
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--file", help="File to be parsed")
