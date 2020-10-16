@@ -1990,9 +1990,11 @@ def read_submission(_, subtype=0):
     DateSubmitted = ''
     Product = ''
     Component = ''
-    Field1 = ''
-    Field2 = ''
-    for m in re.finditer('^(?P<MD5>[a-fA-F\d]{32})\n(?P<Detection>.*?)\n(?P<Submission>.*?)\n|^(?P<Detection2>.*?)\n(?P<Submission2>.*?)\n(?=VirusID)|VirusID=(?P<VirusID>\d+)|VirusName=(?P<VirusName>.*?)\n|ComponentName=(?P<ComponentName>.*?)\n|ComponentVersion=(?P<ComponentVersion>.*?)\n|Threat Cat ID=(?P<ThreatCatID>\d+)|Reputation=(?P<Reputation>\d+)|Rating Rule Id=(?P<RatingRuleId>\d+)|Receipt time=(?P<Receipttime>.*?)\n|Prevalence Band=(?P<PrevalenceBand>\d+)|Detection Digest:\n(?P<DetectionDigest>.*\n)\n|Signature ID: (?P<SignatureID>.*?)\n|Local or Remote Attacker: (?P<LocalorRemoteAttacker>\d+)|Remote Port: (?P<RemotePort>\d+)|Local Port: (?P<LocalPort>\d+)|Protocol: (?P<Protocol>\d+)|Signature Set Version: (?P<SignatureSetVersion>.*?)\n|Application Name: (?P<ApplicationName>.*?)\n|Offending URL: (?P<OffendingURL>.*?)\n|Date Detected: (?P<DateDetected>.*?)\n|Application File Checksum: (?P<ApplicationFileChecksum>.*?)\n|Application File Information: (?P<ApplicationFileInformation>.*?)\n|Flags: (?P<Flags>.*?)\n|Network Data: (?P<NetworkData>.*?)\n|Attack Data: (?P<AttackData>.*?)\n|Sub-signature ID: (?P<SubsignatureID>\d+)|Signature Properties: (?P<SignatureProperties>\d+)|Referer URL: (?P<RefererURL>.*?)\n|Application File SHA256: (?P<ApplicationFileSHA256>.*?)\n|Application File CreateTime: (?P<ApplicationFileCreatTime>.*?)\n|IPSSubmissionID: (?P<IPSSubmissionID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|OS-Country:(?P<OSCountry>\d+)|Application File Reputation: (?P<ApplicationFileReputation>\d+)|Application File Prevalence: (?P<ApplicationFilePrevelence>\d+)|Forwarded For: (?P<ForwardedFor>.*?)\n|Signature Response: (?P<SignatureResponse>\d+)|Remote Address: (?P<RemoteAddress>.*?)\n|Message Disposition: (?P<MessaageDisposition>\d+)|OS-Language:(?P<OSLanguage>.*?)\n|Processor:(?P<Processor>.*?)\n|System:(?P<System>.*?)\n|Platform-GUID:(?P<PlatformGUID>.*?)\n|ProductType:(?P<ProductType>.*?)\n|Telem-ID:(?P<TelemID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|HWID:(?P<HWID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|Hostname-MD5:(?P<HostnameMD5>[a-fA-F\d]{32})\n|DateSubmitted:(?P<DateSubmitted>.*?)\n|Product:(?P<Product>.*?)\n|Component:(?P<Component>.*?)\n|^(?P<BASH>BASH-.*?)\nImagePath=(?P<ImagePath>.*?)\n|^(?P<BASH2>BASH-.*?)\n(?P<ImagePath2>.*?)\n(?=OS-Country)|^(?P<BASH3>BASH-.*?)\n(?P<ImagePath3>.*?)\n$|ImageDosPath=(?P<ImageDosPath>.*?)\n|SHA1=(?P<SHA1>.*?)\n|UmhEfaInfo=(?P<UmhEfaInfo>.*?)\n|FileTime=(?P<FileTime>.*?)\n|ProcessPath=(?P<ProcessPath>.*?)\n|ProcessDOSPath=(?P<ProcessDOSPath>.*?)\n|CodeSegmentMD5=(?P<CodeSegmentMD5>.*?)\n|EventKey=(?P<EventKey>.*?)\n', _, re.S):
+    
+    Field0 = ''
+    ReportType = ''
+
+    for m in re.finditer('^(?P<MD5>[a-fA-F\d]{32})\n(?P<Detection>.*?)\n(?P<Submission>.*?)\n|^(?P<Detection2>.*?)\n(?P<Submission2>.*?)\n(?=VirusID)|VirusID=(?P<VirusID>\d+)|VirusName=(?P<VirusName>.*?)\n|ComponentName=(?P<ComponentName>.*?)\n|ComponentVersion=(?P<ComponentVersion>.*?)\n|Threat Cat ID=(?P<ThreatCatID>\d+)|Reputation=(?P<Reputation>\d+)|Rating Rule Id=(?P<RatingRuleId>\d+)|Receipt time=(?P<Receipttime>.*?)\n|Prevalence Band=(?P<PrevalenceBand>\d+)|Detection Digest:\n(?P<DetectionDigest>.*\n)\n|Signature ID: (?P<SignatureID>.*?)\n|Local or Remote Attacker: (?P<LocalorRemoteAttacker>\d+)|Remote Port: (?P<RemotePort>\d+)|Local Port: (?P<LocalPort>\d+)|Protocol: (?P<Protocol>\d+)|Signature Set Version: (?P<SignatureSetVersion>.*?)\n|Application Name: (?P<ApplicationName>.*?)\n|Offending URL: (?P<OffendingURL>.*?)\n|Date Detected: (?P<DateDetected>.*?)\n|Application File Checksum: (?P<ApplicationFileChecksum>.*?)\n|Application File Information: (?P<ApplicationFileInformation>.*?)\n|Flags: (?P<Flags>.*?)\n|Network Data: (?P<NetworkData>.*?)\n|Attack Data: (?P<AttackData>.*?)\n|Sub-signature ID: (?P<SubsignatureID>\d+)|Signature Properties: (?P<SignatureProperties>\d+)|Referer URL: (?P<RefererURL>.*?)\n|Application File SHA256: (?P<ApplicationFileSHA256>.*?)\n|Application File CreateTime: (?P<ApplicationFileCreatTime>.*?)\n|IPSSubmissionID: (?P<IPSSubmissionID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|Application File Reputation: (?P<ApplicationFileReputation>\d+)|Application File Prevalence: (?P<ApplicationFilePrevelence>\d+)|Forwarded For: (?P<ForwardedFor>.*?)\n|Signature Response: (?P<SignatureResponse>\d+)|Remote Address: (?P<RemoteAddress>.*?)\n|Message Disposition: (?P<MessaageDisposition>\d+)|OS-Country:(?P<OSCountry>\d+)|OS-Language:(?P<OSLanguage>.*?)\n|Processor:(?P<Processor>.*?)\n|System:(?P<System>.*?)\n|Platform-GUID:(?P<PlatformGUID>.*?)\n|ProductType:(?P<ProductType>.*?)\n|Telem-ID:(?P<TelemID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|HWID:(?P<HWID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|Hostname-MD5:(?P<HostnameMD5>[a-fA-F\d]{32})\n|DateSubmitted:(?P<DateSubmitted>.*?)\n|Product:(?P<Product>.*?)\n|Component:(?P<Component>.*?)\n|^(?P<BASH>BASH-.*?)\nImagePath=(?P<ImagePath>.*?)\n|^(?P<BASH2>BASH-.*?)\n(?P<ImagePath2>.*?)\n(?=OS-Country)|^(?P<BASH3>BASH-.*?)\n(?P<ImagePath3>.*?)\n$|ImageDosPath=(?P<ImageDosPath>.*?)\n|SHA1=(?P<SHA1>.*?)\n|UmhEfaInfo=(?P<UmhEfaInfo>.*?)\n|FileTime=(?P<FileTime>.*?)\n|ProcessPath=(?P<ProcessPath>.*?)\n|ProcessDOSPath=(?P<ProcessDOSPath>.*?)\n|CodeSegmentMD5=(?P<CodeSegmentMD5>.*?)\n|EventKey=(?P<EventKey>.*?)\n|^(?P<ReportType>[a-zA-Z ]*)\n\n(?=OS-Country)', _, re.S):
 
         #SubmissionsEim
         if m.group('MD5'):
@@ -2116,6 +2118,8 @@ def read_submission(_, subtype=0):
         if m.group('EventKey'):
             EventKey = m.group('EventKey')
         
+        if m.group('ReportType'):
+            ReportType = m.group('ReportType')
         if m.group('OSCountry'):
             OSCountry = m.group('OSCountry')
         if m.group('OSLanguage'):
@@ -2142,7 +2146,7 @@ def read_submission(_, subtype=0):
             Component = m.group('Component')
             
     if subtype == 0:
-        return f'"{Field1}","{Field2}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}","{Component}"\n', subtype
+        return f'"{ReportType}","{Field0}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}","{Component}"\n', subtype
     
     if subtype == 1:
         return f'"{MD5}","{Detection}","{Submission}","{VirusID}","{VirusName}","{ComponentName}","{ComponentVersion}","{ThreatCatID}","{Reputation}","{RatingRuleId}","{Receipttime}","{PrevalenceBand}","{DetectionDigest}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}","{Component}"\n', subtype
@@ -3388,13 +3392,13 @@ def extract_sym_submissionsidx(f):
         print(f'\033[1;35m\tSubmission {cnt} len1={len1} len2={len2}\033[1;0m\n')
         f.seek(8,1)   
         if args.output:
-            if not os.path.exists(args.output + '/ccSubSDK'):
-                os.makedirs(args.output + '/ccSubSDK')
-            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
+            if not os.path.exists(args.output + '/ccSubSDK/submissions'):
+                os.makedirs(args.output + '/ccSubSDK/submissions')
+            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
         else:
-            if not os.path.exists('ccSubSDK'):
-                os.makedirs('ccSubSDK')
-            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
+            if not os.path.exists('ccSubSDK/submissions'):
+                os.makedirs('ccSubSDK/submissions')
+            newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
         key = f.read(16)
         data = f.read(len1 - 16)
         dec = blowfishit(data,key)
@@ -3409,9 +3413,9 @@ def extract_sym_submissionsidx(f):
             cnt += 1
             continue
         if args.output:
-            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
+            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
         else:
-            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
+            newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
         guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met\n')
         subdata, subtype = read_submission(dec[8])
@@ -3423,7 +3427,7 @@ def extract_sym_submissionsidx(f):
             IDSxp.write(f'"{dec[7]}",{subdata}')
         if subtype == 3:
             BHSvcPlg.write(f'"{dec[7]}",{subdata}')
-        resultsout.write(dec[8])
+        resultsout.write(f'{dec[7]}\n{dec[8]}')
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
         cnt += 1
         
@@ -3431,9 +3435,9 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
     print(f'\033[1;32m\t\tParsing sub-entries for Submission {cnt}\033[1;0m\n')
     print(f'\033[1;35m\t\tSubmission {cnt}-0\033[1;0m\n')
     if args.output:
-            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-0]_idx.out', 'wb')
+            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-0]_idx.out', 'wb')
     else:
-        newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-0]_idx.out', 'wb')
+        newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-0]_idx.out', 'wb')
     subcnt = 1
     f = io.BytesIO(f)
     try:
@@ -3455,18 +3459,18 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
         print(f'\033[1;35m\t\tSubmission {cnt}-{subcnt} len1={len1} len2={len2}\033[1;0m\n')
         f.seek(8,1)   
         if args.output:
-            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.out', 'wb')
+            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.out', 'wb')
         else:
-            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.out', 'wb')
+            newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.out', 'wb')
         key = f.read(16)
         data = f.read(len1 - 16)
         dec = blowfishit(data,key)
         newfilename.write(dec.encode('latin-1'))
         dec = read_sep_tag(dec.encode('latin-1'))
         if args.output:
-            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
+            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
         else:
-            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
+            newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
         guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met\n')
         subdata, subtype = read_submission(dec[8])
@@ -3478,7 +3482,7 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
             IDSxp.write(f'"{dec[7]}",{subdata}')
         if subtype == 3:
             BHSvcPlg.write(f'"{dec[7]}",{subdata}')
-        resultsout.write(dec[8])
+        resultsout.write(f'{dec[7]}\n{dec[8]}')
         print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-{subcnt}\033[1;0m\n')
         subcnt += 1
 
@@ -3498,6 +3502,14 @@ def extract_sym_ccSubSDK(f):
     dec = blowfishit(data,key)
     newfilename.write(dec.encode('latin-1'))
     dec = read_sep_tag(dec.encode('latin-1'))
+    for m in re.finditer('(?P<XML><Report Type="(?P<Report>.*?)".*Report>)', dec[6]):
+        if args.output:
+            reportname = args.output+'/ccSubSDK/'+m.group('Report')+'.txt'
+        else:
+            m.group('Report')+'.txt'
+        reporttype = open(reportname, 'a')
+        reporttype.write(f'{os.path.basename(f.name)}:\n{m.group("XML")}\n\n')
+        reporttype.close()
     if args.output:
         newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name)+'_Symantec_ccSubSDK.met', 'wb')
     else:
@@ -3605,10 +3617,6 @@ def main():
     sys.exit()
 
 logo()
-SubmissionsEim = open('SubmissionsEim.csv', 'w')
-IDSxp = open('IDSxp.csv', 'w')
-reports = open('Reports.csv', 'w')
-BHSvcPlg = open('BHSvcPlg.csv', 'w')
 start = time.time()
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--file", help="File to be parsed")
@@ -3694,8 +3702,8 @@ if args.timezone is None:
     args.timezone = 0
 
 if args.output and not (args.extract or args.hex_dump):
-    if not os.path.exists(args.output):
-        os.makedirs(args.output)
+    if not os.path.exists(args.output+'/ccSubSDK'):
+        os.makedirs(args.output+'/ccSubSDK')
 
     if not args.append:
         syslog = open(args.output + '/Symantec_Client_Management_System_Log.csv', 'w')
@@ -3708,6 +3716,10 @@ if args.output and not (args.extract or args.hex_dump):
         tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
         quarantine = open(args.output + '/quarantine.csv', 'w')
         settings = open(args.output + '/settings.csv', 'w')
+        SubmissionsEim = open(args.output + '/ccSubSDK/SubmissionsEim.csv', 'w')
+        IDSxp = open(args.output + '/ccSubSDK/IDSxp.csv', 'w')
+        BHSvcPlg = open(args.output + '/ccSubSDK/BHSvcPlg.csv', 'w')
+        reports = open(args.output + '/ccSubSDK/Reports.csv', 'w')
         if args.struct:
             if not os.path.exists(args.output + '/VBN(V1)'):
                 os.makedirs(args.output + '/VBN(V1)')
@@ -3730,6 +3742,10 @@ if args.output and not (args.extract or args.hex_dump):
         tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
         quarantine = open(args.output + '/quarantine.csv', 'a')
         settings = open(args.output + '/settings.csv', 'a')
+        SubmissionsEim = open(args.output + '/ccSubSDK/SubmissionsEim.csv', 'a')
+        IDSxp = open(args.output + '/ccSubSDK/IDSxp.csv', 'a')
+        BHSvcPlg = open(args.output + '/ccSubSDK/BHSvcPlg.csv', 'a')
+        reports = open(args.output + '/ccSubSDK/Reports.csv', 'a')
         if args.struct:
             if not os.path.exists(args.output + '/VBN(V1)'):
                 os.makedirs(args.output + '/VBN(V1)')
@@ -3746,7 +3762,9 @@ if args.output and not (args.extract or args.hex_dump):
         csv_header()
 
 elif not (args.extract or args.hex_dump):
-        
+    if not os.path.exists('ccSubSDK'):
+        os.makedirs('ccSubSDK')
+    
     if not args.append:
         syslog = open('Symantec_Client_Management_System_Log.csv', 'w')
         seclog = open('Symantec_Client_Management_Security_Log.csv', 'w')
@@ -3758,6 +3776,10 @@ elif not (args.extract or args.hex_dump):
         tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
         quarantine = open('quarantine.csv', 'w')
         settings = open('settings.csv', 'w')
+        SubmissionsEim = open('ccSubSDK/SubmissionsEim.csv', 'w')
+        IDSxp = open('ccSubSDK/IDSxp.csv', 'w')
+        BHSvcPlg = open('ccSubSDK/BHSvcPlg.csv', 'w')
+        reports = open('ccSubSDK/Reports.csv', 'w')
         if args.struct:
             if not os.path.exists('VBN(V1)'):
                 os.makedirs('VBN(V1)')
@@ -3780,6 +3802,10 @@ elif not (args.extract or args.hex_dump):
         tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
         quarantine = open('quarantine.csv', 'a')
         settings = open('settings.csv', 'a')
+        SubmissionsEim = open('ccSubSDK/SubmissionsEim.csv', 'a')
+        IDSxp = open('ccSubSDK/IDSxp.csv', 'a')
+        BHSvcPlg = open('ccSubSDK/BHSvcPlg.csv', 'a')
+        reports = open('ccSubSDK/Reports.csv', 'a')
         if args.struct:
             if not os.path.exists('VBN(V1)'):
                 os.makedirs('VBN(V1)')
