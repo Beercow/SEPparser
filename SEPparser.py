@@ -3504,11 +3504,24 @@ def extract_sym_ccSubSDK(f):
     dec = read_sep_tag(dec.encode('latin-1'))
     for m in re.finditer('(?P<XML><Report Type="(?P<Report>.*?)".*Report>)', dec[6]):
         if args.output:
-            reportname = args.output+'/ccSubSDK/'+m.group('Report')+'.txt'
+            reportname = args.output+'/ccSubSDK/'+m.group('Report')+'.csv'
         else:
             m.group('Report')+'.txt'
         reporttype = open(reportname, 'a')
-        reporttype.write(f'{os.path.basename(f.name)}:\n{m.group("XML")}\n\n')
+        tree = ET.fromstring(m.group('XML'))
+        value = ''
+        for node in tree.iter():
+            header = ''
+            for k, v in node.attrib.items():
+                header += f'"{k}",'
+                if k == 'Type' or k == 'Count':
+                    pass
+                else:
+                    value += f'"{v}",'
+            value = f'{value[:-1]}\n'
+        if reporttype.tell() == 0:
+            reporttype.write(f'{header[:-1]}\n')
+        reporttype.write(value)
         reporttype.close()
     if args.output:
         newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name)+'_Symantec_ccSubSDK.met', 'wb')
