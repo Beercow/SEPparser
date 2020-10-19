@@ -7,7 +7,7 @@ import binascii
 from datetime import datetime,timedelta
 import ctypes
 import ipaddress
-import xml.etree.ElementTree as ET
+import lxml.etree as ET
 from dissect import cstruct
 import struct
 import SDDL3
@@ -3502,26 +3502,36 @@ def extract_sym_ccSubSDK(f):
     dec = blowfishit(data,key)
     newfilename.write(dec.encode('latin-1'))
     dec = read_sep_tag(dec.encode('latin-1'))
+#    parser = ET.XMLParser(recover=True)
     for m in re.finditer('(?P<XML><Report Type="(?P<Report>.*?)".*Report>)', dec[6]):
         if args.output:
             reportname = args.output+'/ccSubSDK/'+m.group('Report')+'.csv'
         else:
-            m.group('Report')+'.txt'
+            reportname = m.group('Report')+'.txt'
         reporttype = open(reportname, 'a')
-        tree = ET.fromstring(m.group('XML'))
-        value = ''
+        tree = ET.fromstring(m.group('XML').translate(__vis_filter))
+        header = []
+        rows = ''
         for node in tree.iter():
-            header = ''
+            value = []
             for k, v in node.attrib.items():
-                header += f'"{k}",'
                 if k == 'Type' or k == 'Count':
-                    pass
+                    continue
                 else:
-                    value += f'"{v}",'
-            value = f'{value[:-1]}\n'
+                    if k not in header:
+                        header.append(k)
+                    if len(header) > len(value):
+                        test = len(header) - len(value)
+                        value += ' ' * test
+                    pos = header.index(k)
+                    value[pos] = v
+            if len(value) != 0:
+                value = '","'.join(value)
+                rows += f'"{os.path.basename(f.name)}","{value}"\n'
+        header = '","'.join(header)
         if reporttype.tell() == 0:
-            reporttype.write(f'{header[:-1]}\n')
-        reporttype.write(value)
+            reporttype.write(f'"File Name","{header}"\n')
+        reporttype.write(rows)
         reporttype.close()
     if args.output:
         newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name)+'_Symantec_ccSubSDK.met', 'wb')
