@@ -7,7 +7,7 @@ import binascii
 from datetime import datetime,timedelta
 import ctypes
 import ipaddress
-import lxml.etree as ET
+import xml.etree.ElementTree as ET
 from dissect import cstruct
 import struct
 import SDDL3
@@ -1924,6 +1924,37 @@ def read_log_entry(f, loc, count):
 
     return f.read(count)
 
+def read_submission_new(_, fname):
+    test = {}
+    for x in _.split('\n'):
+        x = re.split(':|= ',x)
+        if len(x) == 1:
+            continue
+        test[x[0]] = x[1]
+    input(test)
+    header = []
+    value = []
+    rows = ''
+    data = ['']
+    for k, v in test.items():
+        if k not in header:
+            header.append(k)
+            if len(header) > len(value):
+                diff = len(header) - len(value)
+                value += ' ' * diff
+            pos = header.index(k)
+            value[pos] = v
+    if len(value) != 0:
+        value = '","'.join(value)
+        rows += f'"{fname}","{value}"\n'
+    header = '","'.join(header)
+    data[0] = f'"File Name","{header}"\n'
+#    subtype.writelines(data)
+#    subtype.write(rows)
+#    subtype.close()
+    input(data[0])
+    input(rows)
+    
 def read_submission(_, subtype=0):
     #SubmissionsEim
     MD5 = ''
@@ -2442,6 +2473,43 @@ def read_sep_tag(_):
         del match[0]
 
     return match, dd, sddl, sid, virus, guid, dec, dbguid, results
+
+def write_report(_, fname):
+    for m in re.finditer('(?P<XML><Report Type="(?P<Report>.*?)".*Report>)', _):
+        if args.output:
+            reportname = args.output+'/ccSubSDK/'+m.group('Report')+'.csv'
+        else:
+            reportname = m.group('Report')+'.txt'
+        header = []
+        data = ['']
+        if os.path.isfile(reportname):
+            data = open(reportname).readlines()
+            header = data[0][1:-2].split('","')
+            header.remove('File Name')
+        reporttype = open(reportname, 'w')
+        tree = ET.fromstring(m.group('XML').translate(__vis_filter))
+        rows = ''
+        for node in tree.iter():
+            value = []
+            for k, v in node.attrib.items():
+                if k == 'Type' or k == 'Count':
+                    continue
+                else:
+                    if k not in header:
+                        header.append(k)
+                    if len(header) > len(value):
+                        diff = len(header) - len(value)
+                        value += ' ' * diff
+                    pos = header.index(k)
+                    value[pos] = v
+            if len(value) != 0:
+                value = '","'.join(value)
+                rows += f'"{fname}","{value}"\n'
+        header = '","'.join(header)
+        data[0] = f'"File Name","{header}"\n'
+        reporttype.writelines(data)
+        reporttype.write(rows)
+        reporttype.close()
 
 def hexdump_tag(buf, length=16):
     """Return a hexdump output string of the given buffer."""
@@ -3418,6 +3486,7 @@ def extract_sym_submissionsidx(f):
             newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
         guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met\n')
+#        read_submission_new(dec[8], dec[7])
         subdata, subtype = read_submission(dec[8])
         if subtype == 0:
             reports.write(f'"{dec[7]}",{subdata}')
@@ -3473,6 +3542,7 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
             newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
         guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met\n')
+#        read_submission_new(dec[8], dec[7])
         subdata, subtype = read_submission(dec[8])
         if subtype == 0:
             reports.write(f'"{dec[7]}",{subdata}')
@@ -3502,37 +3572,9 @@ def extract_sym_ccSubSDK(f):
     dec = blowfishit(data,key)
     newfilename.write(dec.encode('latin-1'))
     dec = read_sep_tag(dec.encode('latin-1'))
-#    parser = ET.XMLParser(recover=True)
-    for m in re.finditer('(?P<XML><Report Type="(?P<Report>.*?)".*Report>)', dec[6]):
-        if args.output:
-            reportname = args.output+'/ccSubSDK/'+m.group('Report')+'.csv'
-        else:
-            reportname = m.group('Report')+'.txt'
-        reporttype = open(reportname, 'a')
-        tree = ET.fromstring(m.group('XML').translate(__vis_filter))
-        header = []
-        rows = ''
-        for node in tree.iter():
-            value = []
-            for k, v in node.attrib.items():
-                if k == 'Type' or k == 'Count':
-                    continue
-                else:
-                    if k not in header:
-                        header.append(k)
-                    if len(header) > len(value):
-                        test = len(header) - len(value)
-                        value += ' ' * test
-                    pos = header.index(k)
-                    value[pos] = v
-            if len(value) != 0:
-                value = '","'.join(value)
-                rows += f'"{os.path.basename(f.name)}","{value}"\n'
-        header = '","'.join(header)
-        if reporttype.tell() == 0:
-            reporttype.write(f'"File Name","{header}"\n')
-        reporttype.write(rows)
-        reporttype.close()
+
+    write_report(dec[6], os.path.basename(f.name))
+
     if args.output:
         newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name)+'_Symantec_ccSubSDK.met', 'wb')
     else:
