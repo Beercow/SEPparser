@@ -1926,10 +1926,12 @@ def read_log_entry(f, loc, count):
 
 def read_submission_new(_, fname):
     test = {}
+    column = 0
     for x in _.split('\n'):
-        x = re.split(':(?!\\\)|=',x)
+        x = re.split(':(?!\\\)|=',x, maxsplit=1)
+        if len(x[0]) == 0:
+            continue
         if len(x) == 1:
-#            input(x)
             if re.match('[a-fA-F\d]{32}', x[0]):
                 x.insert(0, 'MD5')
 #                input(x)
@@ -1941,43 +1943,64 @@ def read_submission_new(_, fname):
 #                input(x)
             elif re.match('BASH-', x[0]):
                 x.insert(0, 'BASH Plugin')
+                column = 1
+            elif column == 1:
+                x.insert(0, 'ImagePath')
+                column = 0
             else:
                 x.insert(0, 'Unknown')
 #                input(x)
-#            continue
         test[x[0]] = x[1]
-#    input(test)
+
     if 'Submission' in test:
-#        input('SubmissionsEim')
-        print('SubmissionsEim')
-    if 'Signature Set Version' in test:
-#        input('IDSxp')
-        print('IDSxp')
-    if 'ImagePath' in test:
-#        input('BHSvcPlg')
-        print('BHSvcPlg')
+    #Detection Digest needs to be fixed
+        if args.output:
+            subtype = args.output+'/ccSubSDK/SubmissionsEim_new.csv'
+        else:
+            subtype = '/ccSubSDK/SubmissionsEim_new.csv'
+    elif 'Signature Set Version' in test:
+        if args.output:
+            subtype = args.output+'/ccSubSDK/IDSxp_new.csv'
+        else:
+            subtype = '/ccSubSDK/IDSxp_new.csv'
+    elif 'BASH Plugin' in test:
+        if args.output:
+            subtype = args.output+'/ccSubSDK/BHSvcPlg_new.csv'
+        else:
+            subtype = '/ccSubSDK/BHSvcPlg_new.csv'
+    else:
+        if args.output:
+            subtype = args.output+'/ccSubSDK/Reports_new.csv'
+        else:
+            subtype = '/ccSubSDK/Reports_new.csv'
     header = []
-    value = []
-    rows = ''
     data = ['']
+    if os.path.isfile(subtype):
+        data = open(subtype).readlines()
+        header = data[0][1:-2].split('","')
+        header.remove('File Name')
+    subtype = open(subtype, 'w')
+    rows = ''
+    value = []
     for k, v in test.items():
         if k not in header:
             header.append(k)
-            if len(header) > len(value):
-                diff = len(header) - len(value)
-                value += ' ' * diff
-            pos = header.index(k)
+        if len(header) > len(value):
+            diff = len(header) - len(value)
+            value += ' ' * diff
+        pos = header.index(k)
+        if k == 'Network Data' or k == 'Attack Data':
+            value[pos] = hexdump_tag(zlib.decompress(bytearray.fromhex(v[17:]))).replace('"', '""')
+        else:
             value[pos] = v
     if len(value) != 0:
         value = '","'.join(value)
         rows += f'"{fname}","{value}"\n'
     header = '","'.join(header)
     data[0] = f'"File Name","{header}"\n'
-#    subtype.writelines(data)
-#    subtype.write(rows)
-#    subtype.close()
-#    input(data[0])
-#    input(rows)
+    subtype.writelines(data)
+    subtype.write(rows)
+    subtype.close()
     
 def read_submission(_, subtype=0):
     #SubmissionsEim
