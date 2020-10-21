@@ -1927,11 +1927,35 @@ def read_log_entry(f, loc, count):
 def read_submission_new(_, fname):
     test = {}
     for x in _.split('\n'):
-        x = re.split(':|= ',x)
+        x = re.split(':(?!\\\)|=',x)
         if len(x) == 1:
-            continue
+#            input(x)
+            if re.match('[a-fA-F\d]{32}', x[0]):
+                x.insert(0, 'MD5')
+#                input(x)
+            elif re.match('Detection of', x[0]):
+                x.insert(0, 'Detection')
+#                input(x)
+            elif re.search('Submission of', x[0]):
+                x.insert(0, 'Submission')
+#                input(x)
+            elif re.match('BASH-', x[0]):
+                x.insert(0, 'BASH Plugin')
+            else:
+                x.insert(0, 'Unknown')
+#                input(x)
+#            continue
         test[x[0]] = x[1]
-    input(test)
+#    input(test)
+    if 'Submission' in test:
+#        input('SubmissionsEim')
+        print('SubmissionsEim')
+    if 'Signature Set Version' in test:
+#        input('IDSxp')
+        print('IDSxp')
+    if 'ImagePath' in test:
+#        input('BHSvcPlg')
+        print('BHSvcPlg')
     header = []
     value = []
     rows = ''
@@ -1952,8 +1976,8 @@ def read_submission_new(_, fname):
 #    subtype.writelines(data)
 #    subtype.write(rows)
 #    subtype.close()
-    input(data[0])
-    input(rows)
+#    input(data[0])
+#    input(rows)
     
 def read_submission(_, subtype=0):
     #SubmissionsEim
