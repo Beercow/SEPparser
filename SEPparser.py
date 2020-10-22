@@ -1928,7 +1928,9 @@ def read_submission_new(_, fname):
     test = {}
     column = 0
     for x in _.split('\n'):
-        x = re.split(':(?!\\\)|=',x, maxsplit=1)
+        x = re.split('(?<!.{48}):(?!\\\)|(?<!.{48})=',x, maxsplit=1)
+        if x[0] == 'Detection Digest':
+            column = 2
         if len(x[0]) == 0:
             continue
         if len(x) == 1:
