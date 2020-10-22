@@ -41,14 +41,6 @@ def csv_header():
     
     settings.write('"Log Name","Max Log Size","# of Logs","Running Total of Logs","Max Log Days","Field3","Field5","Field6"\n')
     
-    SubmissionsEim.write('"ccSubSKD File GUID","MD5","Detection","Submission","VirusID","VirusName","ComponentName","ComponentVersion","Threat Cat ID","Reputation","Rating Rule Id","Receipt time","Prevalence Band","Detection Digest","OS-Country","OS-Language","Processor","System","Platform-GUID","ProductType","Telem-ID","HWID","Hostname-MD5","DateSubmitted","Product","Component"\n')
-    
-    IDSxp.write('"ccSubSKD File GUID","Signature ID","Local or Remote Attacker","Remote Port","Local Port","Protocol","Signature Set Version","Application Name","Offending URL","Date Detected","Application File Checksum","Application File Information","Flags","Network Data","Attack Data","Sub-signature ID","Signature Properties","Referer URL","Application File SHA256","Application File CreateTime","IPSSubmissionID","Application File Reputation","Application File Prevalence","Forwarded For","Signature Response","Remote Address","Message Disposition","OS-Country","OS-Language","Processor","System","Platform-GUID","ProductType","Telem-ID","HWID","Hostname-MD5","DateSubmitted","Product","Component"\n')
-    
-    reports.write('"ccSubSKD File GUID","Field1","Field2","OS-Country","OS-Language","Processor","System","Platform-GUID","ProductType","Telem-ID","HWID","Hostname-MD5","DateSubmitted","Product","Component"\n')
-    
-    BHSvcPlg.write('"ccSubSKD File GUID","BASH Plugin","ImagePath","ImageDosPath","SHA1","UmhEfaInfo","FileTime","ProcessPath","ProcessDOSPath","CodeSegmentMD5","EventKey","OS-Country","OS-Language","Processor","System","Platform-GUID","ProductType","Telem-ID","HWID","Hostname-MD5","DateSubmitted","Product","Component"\n')
-    
     if args.struct:
         rt0v1.write('"File Name","QFM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QData_Location_Header","QData_Location_Offset","QData_Location_Size","EOF","Unknown15","QData_Info_Header","QData_Info_Size","Data"\n')
         
@@ -1924,38 +1916,48 @@ def read_log_entry(f, loc, count):
 
     return f.read(count)
 
-def read_submission_new(_, fname):
+def read_submission(_, fname):
     test = {}
     column = 0
     for x in _.split('\n'):
         x = re.split('(?<!.{48}):(?!\\\)|(?<!.{48})=',x, maxsplit=1)
         if x[0] == 'Detection Digest':
+            y = x
             column = 2
+        if column == 2:
+            if len(x[0]) == 0:
+                x = y
+                x[1] = x[1].replace('"', '""')
+                column = 0
+            if len(x) == 1:
+                y[1] = y[1] + x[0] + '\n'
+                continue
         if len(x[0]) == 0:
             continue
         if len(x) == 1:
             if re.match('[a-fA-F\d]{32}', x[0]):
                 x.insert(0, 'MD5')
-#                input(x)
+                
             elif re.match('Detection of', x[0]):
                 x.insert(0, 'Detection')
-#                input(x)
+                
             elif re.search('Submission of', x[0]):
                 x.insert(0, 'Submission')
-#                input(x)
+
             elif re.match('BASH-', x[0]):
                 x.insert(0, 'BASH Plugin')
                 column = 1
+                
             elif column == 1:
                 x.insert(0, 'ImagePath')
                 column = 0
+                
             else:
                 x.insert(0, 'Unknown')
-#                input(x)
+
         test[x[0]] = x[1]
 
     if 'Submission' in test:
-    #Detection Digest needs to be fixed
         if args.output:
             subtype = args.output+'/ccSubSDK/SubmissionsEim_new.csv'
         else:
@@ -1980,7 +1982,7 @@ def read_submission_new(_, fname):
     if os.path.isfile(subtype):
         data = open(subtype).readlines()
         header = data[0][1:-2].split('","')
-        header.remove('File Name')
+        header.remove('ccSubSDK File GUID')
     subtype = open(subtype, 'w')
     rows = ''
     value = []
@@ -1999,245 +2001,11 @@ def read_submission_new(_, fname):
         value = '","'.join(value)
         rows += f'"{fname}","{value}"\n'
     header = '","'.join(header)
-    data[0] = f'"File Name","{header}"\n'
+    data[0] = f'"ccSubSDK File GUID","{header}"\n'
     subtype.writelines(data)
     subtype.write(rows)
     subtype.close()
     
-def read_submission(_, subtype=0):
-    #SubmissionsEim
-    MD5 = ''
-    Detection = ''
-    Submission = ''
-    VirusID = ''
-    VirusName = ''
-    ComponentName = ''
-    ComponentVersion = ''
-    ThreatCatID = ''
-    Reputation = ''
-    RatingRuleId = ''
-    Receipttime = ''
-    PrevalenceBand = ''
-    DetectionDigest = ''
-    #IDSxp
-    SignatureID = ''
-    LocalorRemoteAttacker = ''
-    RemotePort = ''
-    LocalPort = ''
-    Protocol = ''
-    SignatureSetVersion = ''
-    ApplicationName = ''
-    OffendingURL = ''
-    DateDetected = ''
-    ApplicationFileChecksum = ''
-    ApplicationFileInformation = ''
-    Flags = ''
-    NetworkData = ''
-    AttackData = ''
-    SubsignatureID = ''
-    SignatureProperties = ''
-    RefererURL = ''
-    ApplicationFileSHA256 = ''
-    ApplicationFileCreatTime = ''
-    IPSSubmissionID = ''
-    ApplicationFileReputation = ''
-    ApplicationFilePrevelence = ''
-    ForwardedFor = ''
-    SignatureResponse = ''
-    RemoteAddress = ''
-    MessaageDisposition = ''
-    #BHSvcPlg
-    BASH = ''
-    ImagePath = ''
-    ImageDosPath = ''
-    SHA1 = ''
-    UmhEfaInfo = ''
-    FileTime = ''
-    ProcessPath = ''
-    ProcessDOSPath = ''
-    CodeSegmentMD5 = ''
-    EventKey = ''
-    #SubmissionsEim/IDSxp
-    OSCountry = ''
-    OSLanguage = ''
-    Processor = ''
-    System = ''
-    PlatformGUID = ''
-    ProductType = ''
-    TelemID = ''
-    HWID = ''
-    HostnameMD5 = ''
-    DateSubmitted = ''
-    Product = ''
-    Component = ''
-    
-    Field0 = ''
-    ReportType = ''
-
-    for m in re.finditer('^(?P<MD5>[a-fA-F\d]{32})\n(?P<Detection>.*?)\n(?P<Submission>.*?)\n|^(?P<Detection2>.*?)\n(?P<Submission2>.*?)\n(?=VirusID)|VirusID=(?P<VirusID>\d+)|VirusName=(?P<VirusName>.*?)\n|ComponentName=(?P<ComponentName>.*?)\n|ComponentVersion=(?P<ComponentVersion>.*?)\n|Threat Cat ID=(?P<ThreatCatID>\d+)|Reputation=(?P<Reputation>\d+)|Rating Rule Id=(?P<RatingRuleId>\d+)|Receipt time=(?P<Receipttime>.*?)\n|Prevalence Band=(?P<PrevalenceBand>\d+)|Detection Digest:\n(?P<DetectionDigest>.*\n)\n|Signature ID: (?P<SignatureID>.*?)\n|Local or Remote Attacker: (?P<LocalorRemoteAttacker>\d+)|Remote Port: (?P<RemotePort>\d+)|Local Port: (?P<LocalPort>\d+)|Protocol: (?P<Protocol>\d+)|Signature Set Version: (?P<SignatureSetVersion>.*?)\n|Application Name: (?P<ApplicationName>.*?)\n|Offending URL: (?P<OffendingURL>.*?)\n|Date Detected: (?P<DateDetected>.*?)\n|Application File Checksum: (?P<ApplicationFileChecksum>.*?)\n|Application File Information: (?P<ApplicationFileInformation>.*?)\n|Flags: (?P<Flags>.*?)\n|Network Data: (?P<NetworkData>.*?)\n|Attack Data: (?P<AttackData>.*?)\n|Sub-signature ID: (?P<SubsignatureID>\d+)|Signature Properties: (?P<SignatureProperties>\d+)|Referer URL: (?P<RefererURL>.*?)\n|Application File SHA256: (?P<ApplicationFileSHA256>.*?)\n|Application File CreateTime: (?P<ApplicationFileCreatTime>.*?)\n|IPSSubmissionID: (?P<IPSSubmissionID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|Application File Reputation: (?P<ApplicationFileReputation>\d+)|Application File Prevalence: (?P<ApplicationFilePrevelence>\d+)|Forwarded For: (?P<ForwardedFor>.*?)\n|Signature Response: (?P<SignatureResponse>\d+)|Remote Address: (?P<RemoteAddress>.*?)\n|Message Disposition: (?P<MessaageDisposition>\d+)|OS-Country:(?P<OSCountry>\d+)|OS-Language:(?P<OSLanguage>.*?)\n|Processor:(?P<Processor>.*?)\n|System:(?P<System>.*?)\n|Platform-GUID:(?P<PlatformGUID>.*?)\n|ProductType:(?P<ProductType>.*?)\n|Telem-ID:(?P<TelemID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|HWID:(?P<HWID>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})|Hostname-MD5:(?P<HostnameMD5>[a-fA-F\d]{32})\n|DateSubmitted:(?P<DateSubmitted>.*?)\n|Product:(?P<Product>.*?)\n|Component:(?P<Component>.*?)\n|^(?P<BASH>BASH-.*?)\nImagePath=(?P<ImagePath>.*?)\n|^(?P<BASH2>BASH-.*?)\n(?P<ImagePath2>.*?)\n(?=OS-Country)|^(?P<BASH3>BASH-.*?)\n(?P<ImagePath3>.*?)\n$|ImageDosPath=(?P<ImageDosPath>.*?)\n|SHA1=(?P<SHA1>.*?)\n|UmhEfaInfo=(?P<UmhEfaInfo>.*?)\n|FileTime=(?P<FileTime>.*?)\n|ProcessPath=(?P<ProcessPath>.*?)\n|ProcessDOSPath=(?P<ProcessDOSPath>.*?)\n|CodeSegmentMD5=(?P<CodeSegmentMD5>.*?)\n|EventKey=(?P<EventKey>.*?)\n|^(?P<ReportType>[a-zA-Z ]*)\n\n(?=OS-Country)', _, re.S):
-
-        #SubmissionsEim
-        if m.group('MD5'):
-            MD5 = m.group('MD5')
-        if m.group('Detection'):
-            Detection = m.group('Detection')
-            subtype = 1
-        if m.group('Detection2'):
-            Detection = m.group('Detection2')
-            subtype = 1
-        if m.group('Submission'):
-            Submission = m.group('Submission')
-        if m.group('Submission2'):
-            Submission = m.group('Submission2')
-        if m.group('VirusID'):
-            VirusID = m.group('VirusID')
-        if m.group('VirusName'):
-            VirusName = m.group('VirusName')
-        if m.group('ComponentName'):    
-            ComponentName = m.group('ComponentName')
-        if m.group('ComponentVersion'):
-           ComponentVersion = m.group('ComponentVersion')
-        if m.group('ThreatCatID'):
-            ThreatCatID = m.group('ThreatCatID')
-        if m.group('Reputation'):
-            Reputation = m.group('Reputation')
-        if m.group('RatingRuleId'):
-            RatingRuleId = m.group('RatingRuleId')
-        if m.group('Receipttime'):
-            Receipttime = m.group('Receipttime')
-        if m.group('PrevalenceBand'):
-            PrevalenceBand = m.group('PrevalenceBand')
-        if m.group('DetectionDigest'):
-            DetectionDigest = m.group('DetectionDigest').replace('"', '""')
-        
-        #IDSxp
-        if m.group('SignatureID'):
-            SignatureID = m.group('SignatureID')
-        if m.group('LocalorRemoteAttacker'):
-            LocalorRemoteAttacker = m.group('LocalorRemoteAttacker')
-        if m.group('RemotePort'):
-            RemotePort = m.group('RemotePort')
-        if m.group('LocalPort'):
-            LocalPort = m.group('LocalPort')
-        if m.group('Protocol'):
-            Protocol = m.group('Protocol')
-        if m.group('SignatureSetVersion'):
-            SignatureSetVersion = m.group('SignatureSetVersion')
-            subtype = 2
-        if m.group('ApplicationName'):
-            ApplicationName = m.group('ApplicationName')
-        if m.group('OffendingURL'):
-            OffendingURL = m.group('OffendingURL')
-        if m.group('DateDetected'):
-            DateDetected = m.group('DateDetected')
-        if m.group('ApplicationFileChecksum'):
-            ApplicationFileChecksum = m.group('ApplicationFileChecksum')
-        if m.group('ApplicationFileInformation'):
-            ApplicationFileInformation = m.group('ApplicationFileInformation')
-        if m.group('Flags'):
-            Flags = m.group('Flags')
-        if m.group('NetworkData'):
-            NetworkData = hexdump_tag(zlib.decompress(bytearray.fromhex(m.group('NetworkData')[16:]))).replace('"', '""')
-        if m.group('AttackData'):
-            AttackData = hexdump_tag(zlib.decompress(bytearray.fromhex(m.group('AttackData')[16:]))).replace('"', '""')
-        if m.group('SubsignatureID'):
-            SubsignatureID = m.group('SubsignatureID')
-        if m.group('SignatureProperties'):
-            SignatureProperties = m.group('SignatureProperties')
-        if m.group('RefererURL'):
-            RefererURL = m.group('RefererURL')
-        if m.group('ApplicationFileSHA256'):
-            ApplicationFileSHA256 = m.group('ApplicationFileSHA256')
-        if m.group('ApplicationFileCreatTime'):
-            ApplicationFileCreatTime = m.group('ApplicationFileCreatTime')
-        if m.group('IPSSubmissionID'):
-            IPSSubmissionID = m.group('IPSSubmissionID')
-        if m.group('ApplicationFileReputation'):
-            ApplicationFileReputation = m.group('ApplicationFileReputation')
-        if m.group('ApplicationFilePrevelence'):
-            ApplicationFilePrevelence = m.group('ApplicationFilePrevelence')
-        if m.group('ForwardedFor'):
-            ForwardedFor = m.group('ForwardedFor')
-        if m.group('SignatureResponse'):
-            SignatureResponse = m.group('SignatureResponse')
-        if m.group('RemoteAddress'):
-            RemoteAddress = m.group('RemoteAddress')
-        if m.group('MessaageDisposition'):
-            MessaageDisposition = m.group('MessaageDisposition')
-        
-        #BHSvcPlg
-        if m.group('BASH'):
-            BASH = m.group('BASH')
-        if m.group('BASH2'):
-            BASH = m.group('BASH2')
-        if m.group('BASH3'):
-            BASH = m.group('BASH3')
-        if m.group('ImagePath'):
-            ImagePath = m.group('ImagePath')
-            subtype = 3
-        if m.group('ImagePath2'):
-            ImagePath = m.group('ImagePath2')
-            subtype = 3
-        if m.group('ImagePath3'):
-            ImagePath = m.group('ImagePath3')
-            subtype = 3
-        if m.group('ImageDosPath'):
-            ImageDosPath = m.group('ImageDosPath')
-        if m.group('SHA1'):
-            SHA1 = m.group('SHA1')
-        if m.group('UmhEfaInfo'):
-            UmhEfaInfo = m.group('UmhEfaInfo')
-        if m.group('FileTime'):
-            FileTime = m.group('FileTime')
-        if m.group('ProcessPath'):
-            ProcessPath = m.group('ProcessPath')
-        if m.group('ProcessDOSPath'):
-            ProcessDOSPath = m.group('ProcessDOSPath')
-        if m.group('CodeSegmentMD5'):
-            CodeSegmentMD5 = m.group('CodeSegmentMD5')
-        if m.group('EventKey'):
-            EventKey = m.group('EventKey')
-        
-        if m.group('ReportType'):
-            ReportType = m.group('ReportType')
-        if m.group('OSCountry'):
-            OSCountry = m.group('OSCountry')
-        if m.group('OSLanguage'):
-            OSLanguage = m.group('OSLanguage')
-        if m.group('Processor'):
-            Processor = m.group('Processor')
-        if m.group('System'):
-            System = m.group('System')
-        if m.group('PlatformGUID'):
-            PlatformGUID = m.group('PlatformGUID')
-        if m.group('ProductType'):
-            ProductType = m.group('ProductType')
-        if m.group('TelemID'):
-            TelemID = m.group('TelemID')
-        if m.group('HWID'):
-            HWID = m.group('HWID')
-        if m.group('HostnameMD5'):
-            HostnameMD5 = m.group('HostnameMD5')
-        if m.group('DateSubmitted'):
-            DateSubmitted = m.group('DateSubmitted')
-        if m.group('Product'):
-            Product = m.group('Product')
-        if m.group('Component'):
-            Component = m.group('Component')
-            
-    if subtype == 0:
-        return f'"{ReportType}","{Field0}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}","{Component}"\n', subtype
-    
-    if subtype == 1:
-        return f'"{MD5}","{Detection}","{Submission}","{VirusID}","{VirusName}","{ComponentName}","{ComponentVersion}","{ThreatCatID}","{Reputation}","{RatingRuleId}","{Receipttime}","{PrevalenceBand}","{DetectionDigest}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}","{Component}"\n', subtype
-    if subtype == 2:
-        return f'"{SignatureID}","{LocalorRemoteAttacker}","{RemotePort}","{LocalPort}","{Protocol}","{SignatureSetVersion}","{ApplicationName}","{OffendingURL}","{DateDetected}","{ApplicationFileChecksum}","{ApplicationFileInformation}","{Flags}","{NetworkData}","{AttackData}","{SubsignatureID}","{SignatureProperties}","{RefererURL}","{ApplicationFileSHA256}","{ApplicationFileCreatTime}","{IPSSubmissionID}","{ApplicationFileReputation}","{ApplicationFilePrevelence}","{ForwardedFor}","{SignatureResponse}","{RemoteAddress}","{MessaageDisposition}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}","{Component}"\n', subtype
-    if subtype == 3:
-        return f'"{BASH}","{ImagePath}","{ImageDosPath}","{SHA1}","{UmhEfaInfo}","{FileTime}","{ProcessPath}","{ProcessDOSPath}","{CodeSegmentMD5}","{EventKey}","{OSCountry}","{OSLanguage}","{Processor}","{System}","{PlatformGUID}","{ProductType}","{TelemID}","{HWID}","{HostnameMD5}","{DateSubmitted}","{Product}","{Component}"\n', subtype
-    else:
-        return _, subtype
-
-
 def read_log_data(data, tz):
     entry = LogFields()
     data = re.split(b',(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)', data)
@@ -3534,18 +3302,7 @@ def extract_sym_submissionsidx(f):
         else:
             newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
-        guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met\n')
-#        read_submission_new(dec[8], dec[7])
-        subdata, subtype = read_submission(dec[8])
-        if subtype == 0:
-            reports.write(f'"{dec[7]}",{subdata}')
-        if subtype == 1:
-            SubmissionsEim.write(f'"{dec[7]}",{subdata}')
-        if subtype == 2:
-            IDSxp.write(f'"{dec[7]}",{subdata}')
-        if subtype == 3:
-            BHSvcPlg.write(f'"{dec[7]}",{subdata}')
-        resultsout.write(f'{dec[7]}\n{dec[8]}')
+        read_submission(dec[8], dec[7])
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
         cnt += 1
         
@@ -3590,18 +3347,7 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
         else:
             newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
-        guidout.write(dec[7] + ' = submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met\n')
-#        read_submission_new(dec[8], dec[7])
-        subdata, subtype = read_submission(dec[8])
-        if subtype == 0:
-            reports.write(f'"{dec[7]}",{subdata}')
-        if subtype == 1:
-            SubmissionsEim.write(f'"{dec[7]}",{subdata}')
-        if subtype == 2:
-            IDSxp.write(f'"{dec[7]}",{subdata}')
-        if subtype == 3:
-            BHSvcPlg.write(f'"{dec[7]}",{subdata}')
-        resultsout.write(f'{dec[7]}\n{dec[8]}')
+        read_submission(dec[8], dec[7])
         print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-{subcnt}\033[1;0m\n')
         subcnt += 1
 
@@ -3830,10 +3576,7 @@ if args.output and not (args.extract or args.hex_dump):
         tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
         quarantine = open(args.output + '/quarantine.csv', 'w')
         settings = open(args.output + '/settings.csv', 'w')
-        SubmissionsEim = open(args.output + '/ccSubSDK/SubmissionsEim.csv', 'w')
-        IDSxp = open(args.output + '/ccSubSDK/IDSxp.csv', 'w')
-        BHSvcPlg = open(args.output + '/ccSubSDK/BHSvcPlg.csv', 'w')
-        reports = open(args.output + '/ccSubSDK/Reports.csv', 'w')
+
         if args.struct:
             if not os.path.exists(args.output + '/VBN(V1)'):
                 os.makedirs(args.output + '/VBN(V1)')
@@ -3856,10 +3599,7 @@ if args.output and not (args.extract or args.hex_dump):
         tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
         quarantine = open(args.output + '/quarantine.csv', 'a')
         settings = open(args.output + '/settings.csv', 'a')
-        SubmissionsEim = open(args.output + '/ccSubSDK/SubmissionsEim.csv', 'a')
-        IDSxp = open(args.output + '/ccSubSDK/IDSxp.csv', 'a')
-        BHSvcPlg = open(args.output + '/ccSubSDK/BHSvcPlg.csv', 'a')
-        reports = open(args.output + '/ccSubSDK/Reports.csv', 'a')
+
         if args.struct:
             if not os.path.exists(args.output + '/VBN(V1)'):
                 os.makedirs(args.output + '/VBN(V1)')
@@ -3890,10 +3630,7 @@ elif not (args.extract or args.hex_dump):
         tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
         quarantine = open('quarantine.csv', 'w')
         settings = open('settings.csv', 'w')
-        SubmissionsEim = open('ccSubSDK/SubmissionsEim.csv', 'w')
-        IDSxp = open('ccSubSDK/IDSxp.csv', 'w')
-        BHSvcPlg = open('ccSubSDK/BHSvcPlg.csv', 'w')
-        reports = open('ccSubSDK/Reports.csv', 'w')
+
         if args.struct:
             if not os.path.exists('VBN(V1)'):
                 os.makedirs('VBN(V1)')
@@ -3916,10 +3653,7 @@ elif not (args.extract or args.hex_dump):
         tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
         quarantine = open('quarantine.csv', 'a')
         settings = open('settings.csv', 'a')
-        SubmissionsEim = open('ccSubSDK/SubmissionsEim.csv', 'a')
-        IDSxp = open('ccSubSDK/IDSxp.csv', 'a')
-        BHSvcPlg = open('ccSubSDK/BHSvcPlg.csv', 'a')
-        reports = open('ccSubSDK/Reports.csv', 'a')
+
         if args.struct:
             if not os.path.exists('VBN(V1)'):
                 os.makedirs('VBN(V1)')
@@ -3936,6 +3670,4 @@ elif not (args.extract or args.hex_dump):
         csv_header()
 
 if __name__ == "__main__":
-    resultsout = open('results.txt', 'w')
-    guidout = open('guid.txt', 'w')
     main()
