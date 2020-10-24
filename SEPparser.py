@@ -2128,7 +2128,7 @@ def read_log_data(data, tz):
     
     return f'"{entry.time}","{entry.event}","{entry.category}","{entry.logger}","{entry.computer}","{entry.user}","{entry.virus}","{entry.file}","{entry.wantedaction1}","{entry.wantedaction2}","{entry.realaction}","{entry.virustype}","{entry.flags}","{entry.description}","{entry.scanid}","{entry.newext}","{entry.groupid}","{entry.eventdata}","{entry.vbinid}","{entry.virusid}","{entry.quarantineforwardstatus}","{entry.access}","{entry.sdnstatus}","{entry.compressed}","{entry.depth}","{entry.stillinfected}","{entry.definfo}","{entry.defsequincenumber}","{entry.cleaninfo}","{entry.deleteinfo}","{entry.backupod}","{entry.parent}","{entry.guid}","{entry.clientgroup}","{entry.address}","{entry.domainname}","{entry.ntdomain}","{entry.macaddress}","{entry.version}","{entry.remotemachine}","{entry.remotemachineip}","{entry.action1status}","{entry.action2status}","{entry.licensefeaturename}","{entry.licensefeatureversion}","{entry.licenseserialnumber}","{entry.licensefulfillmentid}","{entry.licensestartdate}","{entry.licenseexpirationdate}","{entry.licenselifecycle}","{entry.licenseseatstotal}","{entry.licenseseats}","{entry.errorcode}","{entry.licenseseatsdelta}","{entry.status}","{entry.domainguid}","{entry.sessionguid}","{entry.vbnsessionid}","{entry.logindomain}","{entry.eventdata2}","{entry.erasercategoryid}","{entry.dynamiccategoryset}","{entry.subcategorysetid}","{entry.displaynametouse}","{entry.reputationdisposition}","{entry.reputationconfidence}","{entry.firsseen}","{entry.reputationprevalence}","{entry.downloadurl}","{entry.categoryfordropper}","{entry.cidsstate}","{entry.behaviorrisklevel}","{entry.detectiontype}","{entry.acknowledgetext}","{entry.vsicstate}","{entry.scanguid}","{entry.scanduration}","{entry.scanstarttime}","{entry.targetapptype}","{entry.scancommandguid}","{field113}","{entry.location}","{field115}","{entry.digitalsigner}","{entry.digitalissuer}","{entry.digitalthumbprint}","{field119}","{entry.digitalsn}","{entry.digitaltime}","{field122}","{field123}","{field124}","{field125}","{field126}"'
 
-def read_sep_tag(_):
+def read_sep_tag(_, sub=False):
     _ = io.BytesIO(_)
     blob = False
     match = []
@@ -2148,7 +2148,9 @@ def read_sep_tag(_):
     verify = struct.unpack("B", _.read(1))[0]
     _.seek(-1,1)
     while True:
-        if verify != 6:
+        if sub:
+            print(sub)
+        if sub and verify != 6:
             break
         try:
             code = struct.unpack("B", _.read(1))[0]
@@ -2930,10 +2932,10 @@ def parse_tamper_protect(logData, logEntry, fname):
     entry.time = logData[0]
     entry.computer = logData[4]
     entry.user = logData[5]
-    entry.event = log_tp_event(logData[17], logData[20])
-    entry.actor = f'{logData[19]} (PID {logData[18]})'
-    entry.targetprocess = f'{logData[22]} (PID {logData[21]})'
-    entry.target = logData[23]
+    entry.event = log_tp_event(logData[17], logData[23])
+    entry.actor = f'{logData[21]} (PID {logData[19]})'
+    entry.targetprocess = f'{logData[29]} (PID {logData[25]})'
+    entry.target = logData[27]
 
     tamperProtect.write(f'"{fname}","{entry.computer}","{entry.user}","{entry.action}","{entry.event}","{entry.actor}","{entry.target}","{entry.targetprocess}","{entry.time}\n')
 
@@ -3288,7 +3290,7 @@ def extract_sym_submissionsidx(f):
         data = f.read(len1 - 16)
         dec = blowfishit(data,key)
         newfilename.write(dec.encode('latin-1'))
-        dec = read_sep_tag(dec.encode('latin-1'))
+        dec = read_sep_tag(dec.encode('latin-1'), sub=True)
         if dec[6] == '':
             newfilename.close()
             os.remove(newfilename.name)
@@ -3341,7 +3343,7 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
         data = f.read(len1 - 16)
         dec = blowfishit(data,key)
         newfilename.write(dec.encode('latin-1'))
-        dec = read_sep_tag(dec.encode('latin-1'))
+        dec = read_sep_tag(dec.encode('latin-1'), sub=True)
         if args.output:
             newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
         else:
