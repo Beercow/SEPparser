@@ -110,7 +110,10 @@ Time,Event,Category,Logger,Computer,User,Virus,File,Wanted Action 1,Wanted Actio
 
 ## Event Data
 
+Event data can be distinguished by the first field. This field can be blank or contain 101, 201, 302, or scan data. 
+
 ### 101
+If Field 1 = 101, the coresponding fields are as follows:
 
 | Field                      | Description                                                              |
 | -------------------------- | ------------------------------------------------------------------------ |
@@ -129,43 +132,45 @@ Time,Event,Category,Logger,Computer,User,Virus,File,Wanted Action 1,Wanted Actio
 | Field 13                   | Will require further investigation as to the purpose of this log entry.  |
 
 ### 201
+If Field 1 = 201, the coresponding fields are as follows:
 
-| Field                      | Description                                                             |
-| -------------------------- | ----------------------------------------------------------------------- |
-| Field 1                    | 201                                                                     |
-| Field 2                    | Will require further investigation as to the purpose of this log entry. |
-| Field 3                    | Will require further investigation as to the purpose of this log entry. |
-| Field 4                    | Will require further investigation as to the purpose of this log entry. |
-| Field 5                    | Will require further investigation as to the purpose of this log entry. |
-| Field 6                    | Will require further investigation as to the purpose of this log entry. |
-| Field 7                    | Will require further investigation as to the purpose of this log entry. |
-| Field 8                    | Will require further investigation as to the purpose of this log entry. |
-| Field 9                    | Will require further investigation as to the purpose of this log entry. | 
-| Field 10                   | Will require further investigation as to the purpose of this log entry. |
-| Field 11                   | Will require further investigation as to the purpose of this log entry. |
-| Field 12                   | Will require further investigation as to the purpose of this log entry. |
-| Field 13                   | Will require further investigation as to the purpose of this log entry. |
+| Field    | Description                                                             |
+| -------- | ----------------------------------------------------------------------- |
+| Field 1  | 201                                                                     |
+| Field 2  | Will require further investigation as to the purpose of this log entry. |
+| Field 3  | Will require further investigation as to the purpose of this log entry. |
+| Field 4  | Will require further investigation as to the purpose of this log entry. |
+| Field 5  | Will require further investigation as to the purpose of this log entry. |
+| Field 6  | Will require further investigation as to the purpose of this log entry. |
+| Field 7  | Will require further investigation as to the purpose of this log entry. |
+| Field 8  | Will require further investigation as to the purpose of this log entry. |
+| Field 9  | Will require further investigation as to the purpose of this log entry. | 
+| Field 10 | Will require further investigation as to the purpose of this log entry. |
+| Field 11 | Will require further investigation as to the purpose of this log entry. |
+| Field 12 | Will require further investigation as to the purpose of this log entry. |
+| Field 13 | Will require further investigation as to the purpose of this log entry. |
 
 ### 301
+If Field 1 = 301, the coresponding fields are as follows:
 
-| Field                      | Description                                                             |
-| -------------------------- | ----------------------------------------------------------------------- |
-| Field 1                    | 301                                                                     |
-| Actor PID                  | Process ID for acting process                                           |
-| Actor                      | Process performing the action                                           |
-| Event                      | 1 File Create<br>2 File Delete<br>3 File Open<br>6 Directory Create<br>7 Directory Delete<br>14 Registry Key Create<br>15 Registry Key Delete<br>16 Registry Value Delete<br>17 Registry Value Set<br>18 Registry Key Rename<br>19 Registry Key Set Security<br>45 File Set Security<br>46 Directory Set Security<br>55 Process Open<br>56 Process Duplicate |
-| Target PID                 | Process ID for target process                                           |
-| Target                     | What is being targeted                                                  |
-| Target Process             | The process that is being targeted                                      |
-| Field 8                    | Will require further investigation as to the purpose of this log entry. |
-| Field 9                    | Will require further investigation as to the purpose of this log entry. | 
-| Field 10                   | Will require further investigation as to the purpose of this log entry. |
-| Field 11                   | Will require further investigation as to the purpose of this log entry. |
-| Field 12                   | Will require further investigation as to the purpose of this log entry. |
-| Field 13                   | Will require further investigation as to the purpose of this log entry. |
+| Field          | Description                                                             |
+| -------------- | ----------------------------------------------------------------------- |
+| Field 1        | 301                                                                     |
+| Actor PID      | Process ID for acting process                                           |
+| Actor          | Process performing the action                                           |
+| Event          | 1 File Create<br>2 File Delete<br>3 File Open<br>6 Directory Create<br>7 Directory Delete<br>14 Registry Key Create<br>15 Registry Key Delete<br>16 Registry Value Delete<br>17 Registry Value Set<br>18 Registry Key Rename<br>19 Registry Key Set Security<br>45 File Set Security<br>46 Directory Set Security<br>55 Process Open<br>56 Process Duplicate |
+| Target PID     | Process ID for target process                                           |
+| Target         | What is being targeted                                                  |
+| Target Process | The process that is being targeted                                      |
+| Field 8        | Will require further investigation as to the purpose of this log entry. |
+| Field 9        | Will require further investigation as to the purpose of this log entry. | 
+| Field 10       | N/A                                                                     |
+| Field 11       | N/A                                                                     |
+| Field 12       | N/A                                                                     |
+| Field 13       | N/A                                                                     |
 
 ### Scan Entries
-
+If Field 1 contains a : separated string, the coresponding fields are as follows:
 <table>
     <thead>
         <tr>
@@ -259,7 +264,7 @@ Time,Event,Category,Logger,Computer,User,Virus,File,Wanted Action 1,Wanted Actio
 
 | Field                      | Description                                                             |
 | -------------------------- | ----------------------------------------------------------------------- |
-| Field 1                    | 506                                                                     |
+| Field 1                    | Will require further investigation as to the purpose of this log entry. |
 | Company Name               | The company name.                                                       |
 | Size                       | The file size                                                           |
 | Hash Type                  | The hash algorithm used:<br><br>0 = MD5<br>1 = SHA-1<br>2 = SHA-256     |
