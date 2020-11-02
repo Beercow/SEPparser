@@ -310,44 +310,44 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\se
 <tbody>
 <tr>
 <td>Log Type</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Always 00000001</td>
 </tr>
 <tr>
 <td>Max Log Size</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Maximum log file size in bytes</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>?</td>
 </tr>
 <tr>
 <td>Number of Entries</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Number of entries in log</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>?</td>
 </tr>
 <tr>
 <td>Running Total Entries</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>hex</td>
+<td style="text-align: center;">16</td>
 <td>Total number of events generated</td>
 </tr>
 <tr>
 <td>Max Log Days</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Maximun days to save log entries</td>
 </tr>
 </tbody>
@@ -366,80 +366,80 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\se
 <tbody>
 <tr>
 <td>Entry Length</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Length of log entry</td>
 </tr>
 <tr>
 <td>Date and Time</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>Windows: 64 bit Hex Value - Big Endian</td>
+<td style="text-align: center;">16</td>
 <td>The time of the generated event (GMT).</td>
 </tr>
 <tr>
 <td>Event ID</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
-<td>Compliance events:<br>209 = Host Integrity failed.<br>210 = Host Integrity passed.<br>221 = Host Integrity failed, but reported as passed.<br>237 = Host Integrity custom log entry.<br><br>Firewall and IPS events:<br>201 = Invalid traffic by rule.<br>202 = Port scan.<br>203 = Denial of service.<br>204 = Trojan.<br>205 = Executable file was changed.<br>206 = Intrusion Prevention System Intrusion was detected.<br>207 = Active Response.<br>208 = MAC spoofing.<br>211 = Active Response was disengaged.<br>216 = Executable file change was detected.<br>217 = Executable file change was accepted.<br>218 = Executable file change was denied.<br>219 = Active Response was cancelled.<br>220 = Application hijacking.<br>249 = Browser Protection event.<br><br>Application and Device control:<br>238 = Device control disabled the device.<br>239 = Buffer Overflow event.<br>240 = Software protection has thrown an exception.<br>241 = Not used.<br>242 = Device control enabled the device.<br><br>Memory Exploit Mitigation events:<br>250 = Memory Exploit Mitigation blocked an event.<br>251 = Memory Exploit Mitigation allowed an event.</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
+<td>Compliance events:<br>209 = Host Integrity failed.<br>210 = Host Integrity passed.<br>221 = Host Integrity failed, but reported as passed.<br>237 = Host Integrity custom log entry.<br><br>Firewall and IPS events:<br>201 = Invalid traffic by rule. <strong>*</strong><br>202 = Port scan. <strong>*</strong><br>203 = Denial of service. <strong>*</strong><br>204 = Trojan. <strong>*</strong><br>205 = Executable file was changed. <strong>*</strong><br>206 = Intrusion Prevention System Intrusion was detected. <strong>*</strong><br>207 = Active Response.<br>208 = MAC spoofing. <strong>*</strong><br>211 = Active Response was disengaged.<br>216 = Executable file change was detected.<br>217 = Executable file change was accepted.<br>218 = Executable file change was denied.<br>219 = Active Response was cancelled. <strong>*</strong><br>220 = Application hijacking.<br>249 = Browser Protection event.<br><br>Application and Device control:<br>238 = Device control disabled the device.<br>239 = Buffer Overflow event.<br>240 = Software protection has thrown an exception.<br>241 = Not used. <strong>*</strong><br>242 = Device control enabled the device. <strong>*</strong><br><br>Memory Exploit Mitigation events: <strong>*</strong><br>250 = Memory Exploit Mitigation blocked an event. <strong>*</strong><br>251 = Memory Exploit Mitigation allowed an event. <strong>*</strong></td>
 </tr>
 <tr>
 <td>Severity</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The severity as defined in the security rule.<br>Critical = 0 - 3<br>Major = 4 - 7<br>Minor = 8 - 11<br>Info = 12 - 15</td>
 </tr>
 <tr>
 <td>Local Host</td>
-<td>bigint</td>
+<td>hex</td>
 <td style="text-align: center;">8</td>
 <td>The IP address of the local computer (IPv4).</td>
 </tr>
 <tr>
 <td>Remote Host</td>
-<td>bigint</td>
+<td>hex</td>
 <td style="text-align: center;">8</td>
 <td>The IP address of the remote computer (IPv4).</td>
 </tr>
 <tr>
 <td>Protocol</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The protocol type. (OTHERS = 1; TCP = 2; UDP = 3; ICMP = 4)</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Direction</td>
-<td>tinyint</td>
-<td style="text-align: center;">1</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The direction of traffic. (Unknown = 0; inbound = 1; outbound = 2)</td>
 </tr>
 <tr>
 <td>End Time</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>Windows: 64 bit Hex Value - Big Endian</td>
+<td style="text-align: center;">16</td>
 <td>The end time of the security issue. This field is an optional field<br>because the exact end time of traffic may not be detected; for example,<br>as with UDP traffic. If the end time is not detected, it is set to equal the<br>start time.</td>
 </tr>
 <tr>
 <td>Begin Time</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>Windows: 64 bit Hex Value - Big Endian</td>
+<td style="text-align: center;">16</td>
 <td>The start time of the security issue.</td>
 </tr>
 <tr>
 <td>Occurences</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The number of attacks. Sometime, when a hacker launches a mass<br>attack, it may be reduced to one event by the log system, depending<br>on the damper period.</td>
 </tr>
 <tr>
 <td>Log Data Size</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td></td>
 </tr>
 <tr>
@@ -468,14 +468,14 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\se
 </tr>
 <tr>
 <td>Local MAC</td>
-<td>varchar</td>
-<td style="text-align: center;">18</td>
+<td>binary</td>
+<td style="text-align: center;">32</td>
 <td>The MAC address of the local computer.</td>
 </tr>
 <tr>
 <td>Remote MAC</td>
-<td>carchar</td>
-<td style="text-align: center;">18</td>
+<td>binary</td>
+<td style="text-align: center;">32</td>
 <td>The MAC address of the remote computer.</td>
 </tr>
 <tr>
@@ -498,49 +498,49 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\se
 </tr>
 <tr>
 <td>Signature ID</td>
-<td>bigint</td>
+<td>hex</td>
 <td style="text-align: center;">8</td>
 <td>The signature ID.</td>
 </tr>
 <tr>
 <td>Signature Sub ID</td>
-<td>bigint</td>
+<td>hex</td>
 <td style="text-align: center;">8</td>
 <td>The signature sub ID.</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Remote Port</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The remote port.</td>
 </tr>
 <tr>
 <td>Locacl Port</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The local port.</td>
 </tr>
 <tr>
 <td>Local Host IPV6</td>
-<td>varchar</td>
+<td>hex</td>
 <td style="text-align: center;">32</td>
 <td>The IP address of the local computer (IPv6).</td>
 </tr>
 <tr>
 <td>Remote Host IPV6</td>
-<td>varcahr</td>
+<td>hex</td>
 <td style="text-align: center;">32</td>
 <td>The IP address of the remote computer (IPv6).</td>
 </tr>
@@ -582,8 +582,8 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\se
 </tr>
 <tr>
 <td>Unknown</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
@@ -598,8 +598,28 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\se
 <td style="text-align: center;">64</td>
 <td>The SHA-256 hash value.</td>
 </tr>
+<tr>
+<td>URL_HID_LEVEL <strong>†</strong></td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
+<td>Added for future release. Not used now.</td>
+</tr>
+<tr>
+<td>URL_RISK_SCORE <strong>†</strong></td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
+<td>Added for future release. Not used now.</td>
+</tr>
+<tr>
+<td>URL_CATEGORIES <strong>†</strong></td>
+<td>char</td>
+<td style="text-align: center;">64</td>
+<td>Added for future release. Not used now.</td>
+</tr>
 </tbody>
 </table>
+<p><strong>* SEP14.2.1</strong><br />
+<strong>† SEP14.3.0.1</strong></p>
 
     </body>
 </html>
