@@ -175,27 +175,31 @@ If Field 1 contains a : separated string, the coresponding fields are as follows
     <thead>
         <tr>
             <th>Field</th>
-            <th>Description</th>
             <th>Entry</th>
+            <th>Description</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td rowspan=5>Field 1</td>
-            <td rowspan=5>description</td>
             <td>Scan Status</td>
+            <td>Will require further investigation as to the purpose of this log entry.</td>
         </tr>
         <tr>
             <td>Risks</td>
+            <td>The number of threats that the scan found.</td>
         </tr>
         <tr>
             <td>Scanned</td>
+            <td>The number of files scanned.</td>
         </tr>
         <tr>
             <td>Files/Folders/Drives Omitted</td>
+            <td>The number of files that were omitted.</td>
         </tr>
         <tr>
             <td>Trusted Files Skipped</td>
+            <td>Will require further investigation as to the purpose of this log entry.</td>
         </tr>
         <tr>
             <td>Field 2</td>
