@@ -407,10 +407,10 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\se
 <td>The protocol type. (OTHERS = 1; TCP = 2; UDP = 3; ICMP = 4)</td>
 </tr>
 <tr>
-<td>Unknown</td>
+<td>Hack Type</td>
 <td>hex</td>
 <td style="text-align: center;">8</td>
-<td>Will require further investigation as to the purpose of this log entry.</td>
+<td>If event ID = 209, Host Integrity failed (TSLOG_SEC_NO_AV), the reason for the failure<br>If Event ID = 206, Intrusion Prevention System( Intrusion Detected, TSLOG_SEC_INTRUSION_DETECTED), the intrusion ID<br>If event ID = 210, Host Integrity passed( TSLOG_SEC_AV), additional information<br><br>Possible reasons are as follows:<br><br>Process is not running - Bit0 is 1<br>Signature is out of date - Bit1 is 1<br>Recovery was attempted - Bit2 is 1</td>
 </tr>
 <tr>
 <td>Direction</td>
