@@ -310,44 +310,44 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\tr
 <tbody>
 <tr>
 <td>Log Type</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Always 00000002</td>
 </tr>
 <tr>
 <td>Max Log Size</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Maximum log file size in bytes</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>?</td>
 </tr>
 <tr>
 <td>Number of Entries</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Number of entries in log</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>?</td>
 </tr>
 <tr>
 <td>Running Total Entries</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>hex</td>
+<td style="text-align: center;">16</td>
 <td>Total number of events generated</td>
 </tr>
 <tr>
 <td>Max Log Days</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Maximun days to save log entries</td>
 </tr>
 </tbody>
@@ -366,86 +366,86 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\tr
 <tbody>
 <tr>
 <td>Entry Length</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Length of log entry</td>
 </tr>
 <tr>
 <td>Date and Time</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>Windows: 64 bit Hex Value - Big Endian</td>
+<td style="text-align: center;">16</td>
 <td>The time of the generated event (GMT).</td>
 </tr>
 <tr>
-<td>Protocol</td>
-<td>tinyint</td>
-<td style="text-align: center;">1</td>
-<td>The protocol type. (OTHERS = 1; TCP = 2; UDP = 3; ICMP = 4)</td>
+<td>Event ID</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
+<td>An event ID from the sending agent:<br>301 = TCP initiated<br>302 = UDP datagram<br>303 = Ping request<br>304 = TCP completed<br>305 = Traffic (other)<br>306 = ICMPv4 packet<br>307 = Ethernet packet<br>308 = IP packet<br>309 = ICMPv6 packet <strong>*</strong></td>
 </tr>
 <tr>
 <td>Local Host</td>
-<td>bigint</td>
+<td>hex</td>
 <td style="text-align: center;">8</td>
 <td>The IP address of the local computer (IPv4).</td>
 </tr>
 <tr>
 <td>Remote Host</td>
-<td>bigint</td>
+<td>hex</td>
 <td style="text-align: center;">8</td>
 <td>The IP address of the remote computer (IPv4).</td>
 </tr>
 <tr>
 <td>Local Port</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The TCP/UDP port of the local computer (host byte-order). It is only valid on<br>TSE_TRAFFIC_TCP and TSE_TRAFFIC_UDP. For other events, it is always zero.</td>
 </tr>
 <tr>
 <td>Remote Port</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The TCP/UDP port of the remote computer (host byte-order). It is only valid on<br>TSE_TRAFFIC_TCP and TSE_TRAFFIC_UDP. For other events, it is always zero.</td>
 </tr>
 <tr>
 <td>Direction</td>
-<td>tinyint</td>
-<td style="text-align: center;">1</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The direction of traffic. (Unknown = 0; inbound = 1; outbound = 2)</td>
 </tr>
 <tr>
 <td>End Time</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>Windows: 64 bit Hex Value - Big Endian</td>
+<td style="text-align: center;">16</td>
 <td>The end time of the security issue. This field is an optional field because the exact<br>end time of traffic may not be detected; for example, as with UDP traffic. If the end<br>time is not detected, it is set to equal the start time.</td>
 </tr>
 <tr>
 <td>Begin Time</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>Windows: 64 bit Hex Value - Big Endian</td>
+<td style="text-align: center;">16</td>
 <td>The start time of the security issue.</td>
 </tr>
 <tr>
-<td>Occurrences</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>Repetition</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The number of attacks. Sometime, when a hacker launches a mass attack, it may<br>be reduced to one event by the log system, depending on the damper period.</td>
 </tr>
 <tr>
 <td>Action</td>
-<td>tinyint</td>
-<td style="text-align: center;">1</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Specifies if the traffic was blocked. (Yes = 1, no = 0)</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>?</td>
-<td style="text-align: center;">?</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Severity</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Severity as defined in the security rule.<br>Critical = 0 - 3<br>Major = 4 - 7<br>Minor = 8 - 11<br>Info = 12 - 15</td>
 </tr>
 <tr>
@@ -474,14 +474,14 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\tr
 </tr>
 <tr>
 <td>Local MAC</td>
-<td>varchar</td>
-<td style="text-align: center;">18</td>
+<td>binary</td>
+<td style="text-align: center;">32</td>
 <td>The MAC address of the local computer.</td>
 </tr>
 <tr>
 <td>Remote MAC</td>
-<td>varchar</td>
-<td style="text-align: center;">18</td>
+<td>binary</td>
+<td style="text-align: center;">32</td>
 <td>The MAC address of the remote computer.</td>
 </tr>
 <tr>
@@ -504,38 +504,38 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\tr
 </tr>
 <tr>
 <td>Unknown</td>
-<td>?</td>
-<td style="text-align: center;">?</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>?</td>
-<td style="text-align: center;">?</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Remote Host IPV6</td>
-<td>varchar</td>
+<td>hex</td>
 <td style="text-align: center;">32</td>
 <td>The IP address of the remote host (IPv6).</td>
 </tr>
 <tr>
 <td>Local Host IPV6</td>
-<td>varchar</td>
+<td>hex</td>
 <td style="text-align: center;">32</td>
 <td>The IP address of the local comuter (IPv6).</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>?</td>
-<td style="text-align: center;">?</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>?</td>
-<td style="text-align: center;">?</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
@@ -570,6 +570,14 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\tr
 </tr>
 </tbody>
 </table>
+<p><strong>* SEP14.2.1</strong></p>
+<p>NTOSKRNL is a special SYSTEM process with PID 4. Due to how Windows locks the file, SEP is unable to get the hash, so it was hard-coded with a static value.<br />
+MD5: 53797320000000000000000000000000<br />
+SHA-256: 5379732000000000000000000000000000000000000000000000000000000000</p>
+<p>This value is a hexadecimal representation of text:<br />
+Hex: 53 79 73 20<br />
+Ascii: &quot;Sys &quot;</p>
+<p>The reported hash on NTSOKRNL.exe is by design.</p>
 
     </body>
 </html>
