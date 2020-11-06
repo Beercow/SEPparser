@@ -1296,14 +1296,15 @@ def log_tp_event(eventType, _):
 
 def protocol(_):
     protocol = {
-                '301':'TCP',
-                '302':'UDP',
-                '303':'Ping',
-                '304':'TCP',
-                '305':'Other',
-                '306':'ICMP',
-                '307':'ETHERNET',
-                '308':'IP'
+                '301':'TCP initiated',
+                '302':'UDP datagram',
+                '303':'Ping request',
+                '304':'TCP completed',
+                '305':'Traffic (other)',
+                '306':'ICMPv4 packet',
+                '307':'Ethernet packet',
+                '308':'IP packet',
+                '309':'ICMPv6 packet'
                 }
 
     for k, v in protocol.items():
@@ -2730,12 +2731,12 @@ def parse_tralog(f, logEntries):
         entry.remotehost = from_hex_ip(logEntry[4])
         entry.localport = int(logEntry[5], 16)
         entry.remoteport = int(logEntry[6], 16)
-        if entry.protocol == "ICMP":
+        if entry.protocol == "ICMPv4 packet":
             typeName, codeDescription = icmp_type_code(entry.localport, entry.remoteport)
             entry.protocol = f'{entry.protocol} [type={entry.localport}, code={entry.remoteport}]\r\nName:{typeName}\r\nDescription:{codeDescription}'
             entry.localport = 0
             entry.remoteport = 0
-        if entry.protocol == "ETHERNET":
+        if entry.protocol == "Ethernet packet":
             entry.protocol = f'{entry.protocol} [type={hex(entry.localport)}]\r\nDescription: {eth_type(entry.localport)}'
             entry.localport = 0
         entry.direction = log_direction(int(logEntry[7], 16))
