@@ -56,6 +56,22 @@ def csv_header():
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 
+class Logger(object):
+    def __init__(self):
+        self.terminal = sys.stdout
+        self.log = open(logfile, "w")
+
+    def write(self, message):
+        self.terminal.write(message)
+        ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+        self.log.write(ansi_escape.sub('', message))  
+
+    def flush(self):
+        #this flush method is needed for python 3 compatibility.
+        #this handles the flush command by doing nothing.
+        #you might want to specify some extra behavior here.
+        pass    
+
 class LogFields:
     api = ''
     dateAndTime =''
@@ -419,13 +435,36 @@ typedef struct _Junk_Header {
     int64 Unknown18;
 } Junk_Header;
 
-typedef struct _Junk_Footer {
+typedef struct _Unknown_Attribute {
     int64 Data_Type;
     int64 Data_Size;
-    int32 ADS_Name_Size;
-    char ADS_Name[ADS_Name_Size];
+    int32 Name_Size;
+    char Name[Name_Size];
     char Data[Data_Size];
-} Junk_Footer;
+} Unknown_Attribute;
+
+typedef struct _ADS_Attribute {
+    int64 Attribute_Type;
+    int64 Attribute_Size;
+    int32 Attribute_Name_Size;
+    char ADS_Name[Attribute_Name_Size];
+    char Data[Attribute_Size];
+} ADS_Attribute;
+
+typedef struct _Extended_Attribute {
+    int64 Attribute_type;
+    int64 Attribute_Size;
+    int32 Attribute_Name_Size;
+} Extended_Attribute;
+
+typedef struct _FILE_FULL_EA_INFORMATION {
+  ULONG  NextEntryOffset;
+  UCHAR  Flags;
+  UCHAR  EaNameLength;
+  USHORT EaValueLength;
+  CHAR   EaName[EaNameLength];
+  CHAR   EaValue[EaValueLength];
+} FILE_FULL_EA_INFORMATION;
 
 typedef struct _QData_Location {
     int64 Header;
@@ -2734,11 +2773,12 @@ def parse_tralog(f, logEntries):
         if entry.protocol == "ICMPv4 packet":
             typeName, codeDescription = icmp_type_code(entry.localport, entry.remoteport)
             entry.protocol = f'{entry.protocol} [type={entry.localport}, code={entry.remoteport}]\r\nName:{typeName}\r\nDescription:{codeDescription}'
-            entry.localport = 0
-            entry.remoteport = 0
+            entry.localport = ''
+            entry.remoteport = ''
         if entry.protocol == "Ethernet packet":
             entry.protocol = f'{entry.protocol} [type={hex(entry.localport)}]\r\nDescription: {eth_type(entry.localport)}'
-            entry.localport = 0
+            entry.localport = ''
+            entry.remoteport = ''
         entry.direction = log_direction(int(logEntry[7], 16))
         entry.endtime = from_win_64_hex(logEntry[8])
         entry.begintime = from_win_64_hex(logEntry[9])
@@ -3157,6 +3197,7 @@ def parse_vbn(f, logType, tz):
                 f.seek(-4, 1)
                 qfi3 = vbnstruct.Quarantine_File_Info3(xor(f.read(qfi3_size), 0x5A).encode('latin-1'))
                 sha1 = qfi3.SHA1.decode('latin-1').replace("\x00", "")
+                qfs = int.from_bytes(qfi3.Quarantine_File_Info_Size, 'little')
                 if args.hex_dump:
                     cstruct.dumpstruct(qfi3)
                 if args.struct:
@@ -3229,12 +3270,46 @@ def parse_vbn(f, logType, tz):
                     qfs = len(qfile) - footer
                     f.seek(-footer, 2)
                     try:
-                        jf = vbnstruct.Junk_Footer(xor(f.read(footer), 0xA5).encode('latin-1'))
+                        attribType = int.from_bytes(xor(f.read(1), 0xA5).encode('latin-1'), 'little')
+                        f.seek(-1,1)
+                        if attribType == 2:
+                            ea1 = vbnstruct.Extended_Attribute(xor(f.read(20), 0xA5).encode('latin-1'))
+                            if args.hex_dump:
+                                cstruct.dumpstruct(ea1)
+ #                       jf = vbnstruct.Junk_Footer(xor(f.read(20), 0xA5).encode('latin-1'))
+ #                       if args.hex_dump:
+ #                           cstruct.dumpstruct(jf)
+ #                       if jf.Data_Type == 2:
+                            while True:
+                                neo = int.from_bytes(xor(f.read(4), 0xA5).encode("latin-1"), "little")
+                                f.seek(1,1)
+                                nl = int.from_bytes(xor(f.read(1), 0xA5).encode("latin-1"), "little")
+                                vl = int.from_bytes(xor(f.read(2), 0xA5).encode("latin-1"), "little")
+                                f.seek(-8, 1)
+                                neo2 = nl + vl + 8
+                                neo3 = neo - neo2
+                                ea = vbnstruct.FILE_FULL_EA_INFORMATION(xor(f.read(neo2), 0xA5).encode('latin-1'))
+                                if args.hex_dump:
+                                    cstruct.dumpstruct(ea)
+                                if ea.NextEntryOffset == 0:
+                                    break
+                                f.seek(neo3,1)
+                                
+                        elif attribType == 4:
+                            ads = vbnstruct.ADS_Attribute(xor(f.read(footer), 0xA5).encode('latin-1'))
+                            if args.hex_dump:
+                                cstruct.dumpstruct(ads)
+                                
+                        else:
+                            unknown = vbnstruct.Unknown_Attribute(xor(f.read(footer), 0xA5).encode('latin-1'))
+                            if args.hex_dump:
+                                cstruct.dumpstruct(unknown)
+                            
                         if args.struct:
                             for k, v in jf._values.items():
                                 sout += str(v).replace('"', '""')+'","'
-                        if args.hex_dump:
-                            cstruct.dumpstruct(jf)
+#                        if args.hex_dump:
+#                            cstruct.dumpstruct(jf)
                     except:
                         pass
                 
@@ -3511,6 +3586,14 @@ if len(sys.argv) == 1:
     parser.exit()
 
 args = parser.parse_args()
+
+if args.output:
+    if not os.path.exists(args.output):
+        os.makedirs(args.output)
+    logfile = args.output + "/" + datetime.now().strftime("%Y-%m-%dT%H%M%S_console.log")
+else:
+    logfile = datetime.now().strftime("%Y-%m-%dT%H%M%S_console.log")
+#sys.stdout = Logger()
 
 regex =  re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine|.*\\Data\\CmnClnt\\ccSubSDK)')
 filenames = []
