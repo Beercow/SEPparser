@@ -23,9 +23,9 @@ if os.name == 'nt':
 
 def csv_header():
 
-    syslog.write('"File Name","Record Length","Date And Time","Event ID","Field4","Severity","Summary","Event_Data_Size","Type","Size_(bytes)","Location","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2_Label","LOG:Event_Data2","LOG:Event_Data3_Label","LOG:Event_Data3","LOG:Event_Data4_Label","LOG:Event_Data4","LOG:Event_Data5_Label","LOG:Event_Data5","LOG:Event_Data6_Label","LOG:Event_Data6","LOG:Event_Data7_Label","LOG:Event_Data7","LOG:Event_Data8_Label","LOG:Event_Data8","LOG:Event_Data9_Label","LOG:Event_Data9","LOG:Event_Data10_Label","LOG:Event_Data10","LOG:Event_Data11_Label","LOG:Event_Data11","LOG:Event_Data12_Label","LOG:Event_Data12","LOG:Event_Data13_Label","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","Log:Eraser Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","LOG:Field113","LOG:Location","LOG:Field115","LOG:Digital_Signatures_Signer","LOG:Digital_Signatures_Issuer","LOG:Digital_Signatures_Certificate_Thumbprint","LOG:Field119","LOG:Digital_Signatures_Serial_Number","LOG:Digital_Signatures_Signing_Time","LOG:Field122","LOG:Field123","LOG:Field124","LOG:Field125","LOG:Field126"\n')
+    syslog.write('"File Name","Entry Length","Date And Time","Event ID","Field4","Severity","Summary","Event_Data_Size","Event_Source","Size_(bytes)","Location","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2_Label","LOG:Event_Data2","LOG:Event_Data3_Label","LOG:Event_Data3","LOG:Event_Data4_Label","LOG:Event_Data4","LOG:Event_Data5_Label","LOG:Event_Data5","LOG:Event_Data6_Label","LOG:Event_Data6","LOG:Event_Data7_Label","LOG:Event_Data7","LOG:Event_Data8_Label","LOG:Event_Data8","LOG:Event_Data9_Label","LOG:Event_Data9","LOG:Event_Data10_Label","LOG:Event_Data10","LOG:Event_Data11_Label","LOG:Event_Data11","LOG:Event_Data12_Label","LOG:Event_Data12","LOG:Event_Data13_Label","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","Log:Eraser Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","LOG:Field113","LOG:Location","LOG:Field115","LOG:Digital_Signatures_Signer","LOG:Digital_Signatures_Issuer","LOG:Digital_Signatures_Certificate_Thumbprint","LOG:Field119","LOG:Digital_Signatures_Serial_Number","LOG:Digital_Signatures_Signing_Time","LOG:Field122","LOG:Field123","LOG:Field124","LOG:Field125","LOG:Field126"\n')
 
-    seclog.write('"File Name","Record Length","Date And Time","Event Type","Severity","Direction","Protocol","Remote Host","Remote Port","Remote MAC","Local Host","Local Port","Local MAC","Application","Signature ID","Signature SubID","Signature Name","Intrusion-URL","X-Intrusion-Payload-URL","User","User Domain","Location","Occurrences","End Time","Begin Time","SHA256_Hash","Description","Field8","Event_Data_Size","Field15","Field18","Field26","Field27","Remote Host IPV6","Local Host IPV6","Field35","Version","Profile_Serial_Number","Field38","MD5_Hash","Data","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2_Label","LOG:Event_Data2","LOG:Event_Data3_Label","LOG:Event_Data3","LOG:Event_Data4_Label","LOG:Event_Data4","LOG:Event_Data5_Label","LOG:Event_Data5","LOG:Event_Data6_Label","LOG:Event_Data6","LOG:Event_Data7_Label","LOG:Event_Data7","LOG:Event_Data8_Label","LOG:Event_Data8","LOG:Event_Data9_Label","LOG:Event_Data9","LOG:Event_Data10_Label","LOG:Event_Data10","LOG:Event_Data11_Label","LOG:Event_Data11","LOG:Event_Data12_Label","LOG:Event_Data12","LOG:Event_Data13_Label","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","Log:Eraser Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","LOG:Field113","LOG:Location","LOG:Field115","LOG:Digital_Signatures_Signer","LOG:Digital_Signatures_Issuer","LOG:Digital_Signatures_Certificate_Thumbprint","LOG:Field119","LOG:Digital_Signatures_Serial_Number","LOG:Digital_Signatures_Signing_Time","LOG:Field122","LOG:Field123","LOG:Field124","LOG:Field125","LOG:Field126"\n')
+    seclog.write('"File Name","Entry Length","Date And Time","Event ID","Severity","Direction","Protocol","Remote Host","Remote Port","Remote MAC","Local Host","Local Port","Local MAC","Application","Signature ID","Signature SubID","Signature Name","Intrusion URL","X Intrusion Payload","User","User Domain","Location","Occurrences","End Time","Begin Time","SHA256 Hash","Description","Hack Type","Log Data Size","Field15","Field25","Field26","Remote Host IPV6","Local Host IPV6","Field34","Symantec Version Number","Profile Serial Number","Field37","MD5 Hash","URL HID Level","URL Risk Score","URL Categories","Data","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2_Label","LOG:Event_Data2","LOG:Event_Data3_Label","LOG:Event_Data3","LOG:Event_Data4_Label","LOG:Event_Data4","LOG:Event_Data5_Label","LOG:Event_Data5","LOG:Event_Data6_Label","LOG:Event_Data6","LOG:Event_Data7_Label","LOG:Event_Data7","LOG:Event_Data8_Label","LOG:Event_Data8","LOG:Event_Data9_Label","LOG:Event_Data9","LOG:Event_Data10_Label","LOG:Event_Data10","LOG:Event_Data11_Label","LOG:Event_Data11","LOG:Event_Data12_Label","LOG:Event_Data12","LOG:Event_Data13_Label","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","Log:Eraser Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","LOG:Field113","LOG:Location","LOG:Field115","LOG:Digital_Signatures_Signer","LOG:Digital_Signatures_Issuer","LOG:Digital_Signatures_Certificate_Thumbprint","LOG:Field119","LOG:Digital_Signatures_Serial_Number","LOG:Digital_Signatures_Signing_Time","LOG:Field122","LOG:Field123","LOG:Field124","LOG:Field125","LOG:Field126"\n')
 
     tralog.write('"File Name","Record Length","Date and Time","Action","Severity","Direction","Protocol","Remote Host","Remote MAC","Remote Port","Local Host","Local MAC","Local Port","Application","User","User Domain","Location","Occurrences","Begin Time","End Time","Rule","Field13","Rule ID","Remote Host Name","Field24","Field25","Remote Host IPV6","Local Host IPV6","Field28","Field29","Hash:MD5","Hash:SHA256","Field32","Field33","Field34"\n')
 
@@ -55,6 +55,22 @@ def csv_header():
         rt2v2.write('"File Name","QFM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QFM_Header","QFM_Header_Size","QFM_Size","QFM_Size_Header_Size","Data_Size_From_End_of_QFM-to_End_of_VBN","Tag1","Tag1_Data","Tag2","Tag2_Data","Tag3","Hash_Size","SHA1","Tag4","Tag4_Data","Tag5","Tag5_Data","Tag6","QFS_Size","Quarantine_File_Info_Size","Tag7","Security_Descriptor_Size","Security_Descriptor","Tag8","Tag8_Data","Tag9","Quarantine_File_Info_Size_2","Unknown15","Size","Unknown16","Unknown17","File_Size","Unknown18","Unknown19","Size2","Unknown20","Unknown21"\n')
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
+
+class Logger(object):
+    def __init__(self):
+        self.terminal = sys.stdout
+        self.log = open(logfile, "w")
+
+    def write(self, message):
+        self.terminal.write(message)
+        ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+        self.log.write(ansi_escape.sub('', message))  
+
+    def flush(self):
+        #this flush method is needed for python 3 compatibility.
+        #this handles the flush command by doing nothing.
+        #you might want to specify some extra behavior here.
+        pass    
 
 class LogFields:
     api = ''
@@ -173,6 +189,9 @@ class LogFields:
     action = ''
     objecttype = ''
     location = ''
+    urlhidlevel = ''
+    urlriskscore = ''
+    urlcategories = ''
 
 VBN_DEF = """
 
@@ -424,6 +443,14 @@ typedef struct _Junk_Footer {
     char Data[Data_Size];
 } Junk_Footer;
 
+typedef struct _FILE_FULL_EA_INFORMATION {
+  ULONG  NextEntryOffset;
+  UCHAR  Flags;
+  UCHAR  EaNameLength;
+  USHORT EaValueLength;
+  CHAR   EaName[1];
+} FILE_FULL_EA_INFORMATION;
+
 typedef struct _QData_Location {
     int64 Header;
     int64 QData_Location_Offset;
@@ -489,35 +516,36 @@ def sddl_translate(string):
 
 def sec_event_type(_):
     event_value = {
+                   #Compliance events:
                    '209':'Host Integrity failed (TSLOG_SEC_NO_AV)',
                    '210':'Host Integrity passed (TSLOG_SEC_AV)',
                    '221':'Host Integrity failed but it was reported as PASS',
                    '237':'Host Integrity custom log entry',
                    #Firewall and IPS events:
-                   '201':'Invalid traffic by rule',
-                   '202':'Port Scan',
-                   '203':'Denial-of-service attack',
-                   '204':'Trojan horse',
-                   '205':'Executable file changed',
-                   '206':'Intrusion Prevention System (Intrusion Detected,TSLOG_SEC_INTRUSION_DETECTED)',
+                   '201':'Invalid traffic by rule', #SEP14.2.1
+                   '202':'Port Scan', #SEP14.2.1
+                   '203':'Denial-of-service attack', #SEP14.2.1
+                   '204':'Trojan horse', #SEP14.2.1
+                   '205':'Executable file changed', #SEP14.2.1
+                   '206':'Intrusion Prevention System (Intrusion Detected,TSLOG_SEC_INTRUSION_DETECTED)', #SEP14.2.1
                    '207':'Active Response',
-                   '208':'MAC Spoofing',
+                   '208':'MAC Spoofing', #SEP14.2.1
                    '211':'Active Response Disengaged',
                    '216':'Executable file change detected',
                    '217':'Executable file change accepted',
                    '218':'Executable file change denied',
-                   '219':'Active Response Canceled',
+                   '219':'Active Response Canceled', #SEP14.2.1
                    '220':'Application Hijacking',
                    '249':'Browser Protection event',
                    #Application and Device control:
                    '238':'Device control disabled device',
                    '239':'Buffer Overflow Event',
                    '240':'Software protection has thrown an exception',
-                   '241':'Not used',
-                   '242':'Device control enabled the device',
+                   '241':'Not used', #SEP14.2.1
+                   '242':'Device control enabled the device', #SEP14.2.1
                    #Memory Exploit Mitigation events:
-                   '250':'Memory Exploit Mitigation blocked an event',
-                   '251':'Memory Exploit Mitigation allowed an event'
+                   '250':'Memory Exploit Mitigation blocked an event', #SEP14.2.1
+                   '251':'Memory Exploit Mitigation allowed an event' #SEP14.2.1
                    }
 
     for k, v in event_value.items():
@@ -1292,14 +1320,15 @@ def log_tp_event(eventType, _):
 
 def protocol(_):
     protocol = {
-                '301':'TCP',
-                '302':'UDP',
-                '303':'Ping',
-                '304':'TCP',
-                '305':'Other',
-                '306':'ICMP',
-                '307':'ETHERNET',
-                '308':'IP'
+                '301':'TCP initiated',
+                '302':'UDP datagram',
+                '303':'Ping request',
+                '304':'TCP completed',
+                '305':'Traffic (other)',
+                '306':'ICMPv4 packet',
+                '307':'Ethernet packet',
+                '308':'IP packet',
+                '309':'ICMPv6 packet'
                 }
 
     for k, v in protocol.items():
@@ -1916,6 +1945,96 @@ def read_log_entry(f, loc, count):
 
     return f.read(count)
 
+def read_submission(_, fname):
+    test = {}
+    column = 0
+    for x in _.split('\n'):
+        x = re.split('(?<!.{48}):(?!\\\)|(?<!.{48})=',x, maxsplit=1)
+        if x[0] == 'Detection Digest':
+            y = x
+            column = 2
+        if column == 2:
+            if len(x[0]) == 0:
+                x = y
+                x[1] = x[1].replace('"', '""')
+                column = 0
+            if len(x) == 1:
+                y[1] = y[1] + x[0] + '\n'
+                continue
+        if len(x[0]) == 0:
+            continue
+        if len(x) == 1:
+            if re.match('[a-fA-F\d]{32}', x[0]):
+                x.insert(0, 'MD5')
+                
+            elif re.match('Detection of', x[0]):
+                x.insert(0, 'Detection')
+                
+            elif re.search('Submission of', x[0]):
+                x.insert(0, 'Submission')
+
+            elif re.match('BASH-', x[0]):
+                x.insert(0, 'BASH Plugin')
+                column = 1
+                
+            elif column == 1:
+                x.insert(0, 'ImagePath')
+                column = 0
+                
+            else:
+                x.insert(0, 'Unknown')
+
+        test[x[0]] = x[1]
+
+    if 'Submission' in test:
+        if args.output:
+            subtype = args.output+'/ccSubSDK/SubmissionsEim.csv'
+        else:
+            subtype = 'ccSubSDK/SubmissionsEim.csv'
+    elif 'Signature Set Version' in test:
+        if args.output:
+            subtype = args.output+'/ccSubSDK/IDSxp.csv'
+        else:
+            subtype = 'ccSubSDK/IDSxp.csv'
+    elif 'BASH Plugin' in test:
+        if args.output:
+            subtype = args.output+'/ccSubSDK/BHSvcPlg.csv'
+        else:
+            subtype = 'ccSubSDK/BHSvcPlg.csv'
+    else:
+        if args.output:
+            subtype = args.output+'/ccSubSDK/Reports.csv'
+        else:
+            subtype = 'ccSubSDK/Reports.csv'
+    header = []
+    data = ['']
+    if os.path.isfile(subtype):
+        data = open(subtype).readlines()
+        header = data[0][1:-2].split('","')
+        header.remove('ccSubSDK File GUID')
+    subtype = open(subtype, 'w')
+    rows = ''
+    value = []
+    for k, v in test.items():
+        if k not in header:
+            header.append(k)
+        if len(header) > len(value):
+            diff = len(header) - len(value)
+            value += ' ' * diff
+        pos = header.index(k)
+        if k == 'Network Data' or k == 'Attack Data':
+            value[pos] = hexdump_tag(zlib.decompress(bytearray.fromhex(v[17:]))).replace('"', '""')
+        else:
+            value[pos] = v
+    if len(value) != 0:
+        value = '","'.join(value)
+        rows += f'"{fname}","{value}"\n'
+    header = '","'.join(header)
+    data[0] = f'"ccSubSDK File GUID","{header}"\n'
+    subtype.writelines(data)
+    subtype.write(rows)
+    subtype.close()
+    
 def read_log_data(data, tz):
     entry = LogFields()
     data = re.split(b',(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)', data)
@@ -2038,7 +2157,7 @@ def read_log_data(data, tz):
     
     return f'"{entry.time}","{entry.event}","{entry.category}","{entry.logger}","{entry.computer}","{entry.user}","{entry.virus}","{entry.file}","{entry.wantedaction1}","{entry.wantedaction2}","{entry.realaction}","{entry.virustype}","{entry.flags}","{entry.description}","{entry.scanid}","{entry.newext}","{entry.groupid}","{entry.eventdata}","{entry.vbinid}","{entry.virusid}","{entry.quarantineforwardstatus}","{entry.access}","{entry.sdnstatus}","{entry.compressed}","{entry.depth}","{entry.stillinfected}","{entry.definfo}","{entry.defsequincenumber}","{entry.cleaninfo}","{entry.deleteinfo}","{entry.backupod}","{entry.parent}","{entry.guid}","{entry.clientgroup}","{entry.address}","{entry.domainname}","{entry.ntdomain}","{entry.macaddress}","{entry.version}","{entry.remotemachine}","{entry.remotemachineip}","{entry.action1status}","{entry.action2status}","{entry.licensefeaturename}","{entry.licensefeatureversion}","{entry.licenseserialnumber}","{entry.licensefulfillmentid}","{entry.licensestartdate}","{entry.licenseexpirationdate}","{entry.licenselifecycle}","{entry.licenseseatstotal}","{entry.licenseseats}","{entry.errorcode}","{entry.licenseseatsdelta}","{entry.status}","{entry.domainguid}","{entry.sessionguid}","{entry.vbnsessionid}","{entry.logindomain}","{entry.eventdata2}","{entry.erasercategoryid}","{entry.dynamiccategoryset}","{entry.subcategorysetid}","{entry.displaynametouse}","{entry.reputationdisposition}","{entry.reputationconfidence}","{entry.firsseen}","{entry.reputationprevalence}","{entry.downloadurl}","{entry.categoryfordropper}","{entry.cidsstate}","{entry.behaviorrisklevel}","{entry.detectiontype}","{entry.acknowledgetext}","{entry.vsicstate}","{entry.scanguid}","{entry.scanduration}","{entry.scanstarttime}","{entry.targetapptype}","{entry.scancommandguid}","{field113}","{entry.location}","{field115}","{entry.digitalsigner}","{entry.digitalissuer}","{entry.digitalthumbprint}","{field119}","{entry.digitalsn}","{entry.digitaltime}","{field122}","{field123}","{field124}","{field125}","{field126}"'
 
-def read_sep_tag(_):
+def read_sep_tag(_, sub=False):
     _ = io.BytesIO(_)
     blob = False
     match = []
@@ -2047,11 +2166,19 @@ def read_sep_tag(_):
     sid = ''
     guid = ''
     dec = ''
+    dbguid = ''
+    lastguid = ''
     lasttoken = 0
     lastvalue = 0
     hit = None
     virus = ''
+    results = ''
+    count = 0
+    verify = struct.unpack("B", _.read(1))[0]
+    _.seek(-1,1)
     while True:
+        if sub and verify != 6:
+            break
         try:
             code = struct.unpack("B", _.read(1))[0]
         except:
@@ -2099,6 +2226,10 @@ def read_sep_tag(_):
             tag = vbnstruct.ASN1_String_W(_.read(5 + size))
             dec += hexdump_tag(tag.dumps()[1:5])
             string = tag.dumps()[5:].decode('latin-1').replace("\x00", "").replace("\r\n", "\r\n\t  ")
+            if lastguid == '00000000000000000000000000000000':
+                rstring = string.replace("\r\n\t  ", "\n")
+
+                results += f'{rstring}\n'
             dec += hexdump_tag(tag.dumps()[5:]) + f'### STRING-W\n      {string}\n\n'
             if hit == 'virus':
                 virus = tag.StringW.decode('latin-1').replace("\x00", "")
@@ -2125,7 +2256,7 @@ def read_sep_tag(_):
                     tag = vbnstruct.ASN1_BLOB(_.read(5 + size))
                     dec += hexdump_tag(tag.dumps()[1:5])
                     dec += f'### BLOB\n{hexdump_tag(tag.dumps()[5:])}'
-                    if b'\x00x\xda' in tag.dumps()[5:]:
+                    if b'\x00x\xda' in tag.dumps()[5:15]:
                         if tag.dumps()[5:].startswith(b'CMPR'):
                             dec += f'### BLOB Decompressed\n{hexdump_tag(zlib.decompress(tag.dumps()[13:]))}'
                         else:
@@ -2139,6 +2270,10 @@ def read_sep_tag(_):
         elif code == 15:
             _.seek(-1,1)
             tag = vbnstruct.ASN1_16(_.read(17))
+            count += 1
+            if count == 1:
+                dbguid = '{' + '-'.join([flip(tag.dumps()[1:5].hex()), flip(tag.dumps()[5:7].hex()), flip(tag.dumps()[7:9].hex()), tag.dumps()[9:11].hex(), tag.dumps()[11:17].hex()]).upper() + '}'
+            lastguid = tag.dumps()[1:].hex()
             dec += f'\n### GUID\n{hexdump_tag(tag.dumps()[1:])}'
         
         elif code == 16:
@@ -2183,7 +2318,44 @@ def read_sep_tag(_):
         virus = match[0]
         del match[0]
 
-    return match, dd, sddl, sid, virus, guid, dec
+    return match, dd, sddl, sid, virus, guid, dec, dbguid, results
+
+def write_report(_, fname):
+    for m in re.finditer('(?P<XML><Report Type="(?P<Report>.*?)".*Report>)', _):
+        if args.output:
+            reportname = args.output+'/ccSubSDK/'+m.group('Report')+'.csv'
+        else:
+            reportname = m.group('Report')+'.txt'
+        header = []
+        data = ['']
+        if os.path.isfile(reportname):
+            data = open(reportname).readlines()
+            header = data[0][1:-2].split('","')
+            header.remove('File Name')
+        reporttype = open(reportname, 'w')
+        tree = ET.fromstring(m.group('XML').translate(__vis_filter))
+        rows = ''
+        for node in tree.iter():
+            value = []
+            for k, v in node.attrib.items():
+                if k == 'Type' or k == 'Count':
+                    continue
+                else:
+                    if k not in header:
+                        header.append(k)
+                    if len(header) > len(value):
+                        diff = len(header) - len(value)
+                        value += ' ' * diff
+                    pos = header.index(k)
+                    value[pos] = v
+            if len(value) != 0:
+                value = '","'.join(value)
+                rows += f'"{fname}","{value}"\n'
+        header = '","'.join(header)
+        data[0] = f'"File Name","{header}"\n'
+        reporttype.writelines(data)
+        reporttype.write(rows)
+        reporttype.close()
 
 def hexdump_tag(buf, length=16):
     """Return a hexdump output string of the given buffer."""
@@ -2361,7 +2533,8 @@ def parse_header(f):
             '95AAE6FD76558D439889B9D02BE0B850', #IDSxpx86.dll
             '8EF95B94E971E842BAC952B02E79FB74', #AVModule.dll
             'A72BBCC1E52A39418B8BB591BDD9AE76', #RepMgtTim.dll
-            '6A007A980A5B0A48BDFC4D887AEACAB0'  #IDSxpx86.dll
+            '6A007A980A5B0A48BDFC4D887AEACAB0',  #IDSxpx86.dll
+            'D40650BD02FDE745889CB15F0693C770'  #IDSxpx86.dll
            ]
            
     headersize = len(f.readline())
@@ -2372,7 +2545,9 @@ def parse_header(f):
     sheader = f.read(16).hex()
     if sheader[0:16] == '3216144c01000000':
         return 9, 0, 0, 1, 0, 0, 0, 0
-    if sheader.upper() in guid:
+    if re.search('\{[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\}$', f.name, re.IGNORECASE):
+#        print("yes")
+#    if sheader.upper() in guid:
         return 10, 0, 0, 1, 0, 0, 0, 0
     f.seek(0)
     if headersize == 55:
@@ -2491,8 +2666,8 @@ def parse_seclog(f, logEntries):
         entry.remotehost = from_hex_ip(logEntry[5])
         entry.protocol = sec_network_protocol(int(logEntry[6], 16))
         entry.direction = log_direction(int(logEntry[8], 16))
-        entry.endtime = from_win_64_hex(logEntry[9])
-        entry.begintime = from_win_64_hex(logEntry[10])
+        entry.begintime = from_win_64_hex(logEntry[9])
+        entry.endtime = from_win_64_hex(logEntry[10])
         entry.occurrences = int(logEntry[11], 16)
         entry.description = logEntry[13].decode("utf-8", "ignore")
         entry.application = logEntry[15].decode("utf-8", "ignore")
@@ -2540,7 +2715,15 @@ def parse_seclog(f, logEntries):
         entry.intrusionurl = logEntry2[16].decode("utf-8", "ignore")
         entry.hash = logEntry2[22].decode("utf-8", "ignore").strip('\r')
         
-        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.hash}","{entry.description}","{logEntry[7].decode("utf-8", "ignore")}","{int(logEntry[12], 16)}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry2[0].decode("utf-8", "ignore")}","{logEntry2[8].decode("utf-8", "ignore")}","{logEntry2[9].decode("utf-8", "ignore")}","{REMOTE_HOST_IPV6}","{LOCAL_HOST_IPV6}","{logEntry2[17].decode("utf-8", "ignore")}","{logEntry2[18].decode("utf-8", "ignore")}","{logEntry2[19].decode("utf-8", "ignore")}","{logEntry2[20].decode("utf-8", "ignore")}","{logEntry2[21].decode("utf-8", "ignore")}","{data}",{",".join(logData)}\n')
+        #SEP14.3.0.1
+        try:
+            entry.urlhidlevel = logEntry2[23].decode("utf-8", "ignore")
+            entry.urlriskscore = logEntry2[24].decode("utf-8", "ignore")
+            entry.urlcategories = logEntry2[25].decode("utf-8", "ignore")
+        except:
+            pass
+            
+        seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.endtime}","{entry.begintime}","{entry.hash}","{entry.description}","{logEntry[7].decode("utf-8", "ignore")}","{int(logEntry[12], 16)}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry2[8].decode("utf-8", "ignore")}","{logEntry2[9].decode("utf-8", "ignore")}","{REMOTE_HOST_IPV6}","{LOCAL_HOST_IPV6}","{logEntry2[17].decode("utf-8", "ignore")}","{logEntry2[18].decode("utf-8", "ignore")}","{logEntry2[19].decode("utf-8", "ignore")}","{logEntry2[20].decode("utf-8", "ignore")}","{logEntry2[21].decode("utf-8", "ignore")}","{entry.urlhidlevel}","{entry.urlriskscore}","{entry.urlcategories}","{data}",{",".join(logData)}\n')
 
         if len(logData) > 1:
             timeline.write(f'"{f.name}","{int(logEntry[12], 16)}","","","","",{",".join(logData)}\n')
@@ -2572,14 +2755,15 @@ def parse_tralog(f, logEntries):
         entry.remotehost = from_hex_ip(logEntry[4])
         entry.localport = int(logEntry[5], 16)
         entry.remoteport = int(logEntry[6], 16)
-        if entry.protocol == "ICMP":
+        if entry.protocol == "ICMPv4 packet":
             typeName, codeDescription = icmp_type_code(entry.localport, entry.remoteport)
             entry.protocol = f'{entry.protocol} [type={entry.localport}, code={entry.remoteport}]\r\nName:{typeName}\r\nDescription:{codeDescription}'
-            entry.localport = 0
-            entry.remoteport = 0
-        if entry.protocol == "ETHERNET":
+            entry.localport = ''
+            entry.remoteport = ''
+        if entry.protocol == "Ethernet packet":
             entry.protocol = f'{entry.protocol} [type={hex(entry.localport)}]\r\nDescription: {eth_type(entry.localport)}'
-            entry.localport = 0
+            entry.localport = ''
+            entry.remoteport = ''
         entry.direction = log_direction(int(logEntry[7], 16))
         entry.endtime = from_win_64_hex(logEntry[8])
         entry.begintime = from_win_64_hex(logEntry[9])
@@ -2785,10 +2969,10 @@ def parse_tamper_protect(logData, logEntry, fname):
     entry.time = logData[0]
     entry.computer = logData[4]
     entry.user = logData[5]
-    entry.event = log_tp_event(logData[17], logData[20])
-    entry.actor = f'{logData[19]} (PID {logData[18]})'
-    entry.targetprocess = f'{logData[22]} (PID {logData[21]})'
-    entry.target = logData[23]
+    entry.event = log_tp_event(logData[17], logData[23])
+    entry.actor = f'{logData[21]} (PID {logData[19]})'
+    entry.targetprocess = f'{logData[29]} (PID {logData[25]})'
+    entry.target = logData[27]
 
     tamperProtect.write(f'"{fname}","{entry.computer}","{entry.user}","{entry.action}","{entry.event}","{entry.actor}","{entry.target}","{entry.targetprocess}","{entry.time}\n')
 
@@ -2939,7 +3123,7 @@ def parse_vbn(f, logType, tz):
             print('           ##                                                   ##')
             print('           #######################################################')
             print('           #######################################################\n')
-        tags, dd, sddl, sid, virus, guid, dec = read_sep_tag(f.read())
+        tags, dd, sddl, sid, virus, guid, dec, dbguid, results = read_sep_tag(f.read())
 
         if args.struct:
             if vbnv == 1:
@@ -2976,7 +3160,7 @@ def parse_vbn(f, logType, tz):
             print('           ##                                                   ##')
             print('           #######################################################')
             print('           #######################################################\n')
-        tags, dd, sddl, sid, virus, guid, dec = read_sep_tag(xor(f.read(qfm.QFM_Size), 0x5A).encode('latin-1'))
+        tags, dd, sddl, sid, virus, guid, dec, dbguid, results = read_sep_tag(xor(f.read(qfm.QFM_Size), 0x5A).encode('latin-1'))
 
         pos = qfm.QFM_Size_Header_Size + vbnmeta.QFM_HEADER_Offset
         f.seek(pos)
@@ -2998,6 +3182,7 @@ def parse_vbn(f, logType, tz):
                 f.seek(-4, 1)
                 qfi3 = vbnstruct.Quarantine_File_Info3(xor(f.read(qfi3_size), 0x5A).encode('latin-1'))
                 sha1 = qfi3.SHA1.decode('latin-1').replace("\x00", "")
+                qfs = int.from_bytes(qfi3.Quarantine_File_Info_Size, 'little')
                 if args.hex_dump:
                     cstruct.dumpstruct(qfi3)
                 if args.struct:
@@ -3132,18 +3317,18 @@ def extract_sym_submissionsidx(f):
         print(f'\033[1;35m\tSubmission {cnt} len1={len1} len2={len2}\033[1;0m\n')
         f.seek(8,1)   
         if args.output:
-            if not os.path.exists(args.output + '/ccSubSDK'):
-                os.makedirs(args.output + '/ccSubSDK')
-            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
+            if not os.path.exists(args.output + '/ccSubSDK/submissions'):
+                os.makedirs(args.output + '/ccSubSDK/submissions')
+            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
         else:
-            if not os.path.exists('ccSubSDK'):
-                os.makedirs('ccSubSDK')
-            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
+            if not os.path.exists('ccSubSDK/submissions'):
+                os.makedirs('ccSubSDK/submissions')
+            newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
         key = f.read(16)
         data = f.read(len1 - 16)
         dec = blowfishit(data,key)
         newfilename.write(dec.encode('latin-1'))
-        dec = read_sep_tag(dec.encode('latin-1'))
+        dec = read_sep_tag(dec.encode('latin-1'), sub=True)
         if dec[6] == '':
             newfilename.close()
             os.remove(newfilename.name)
@@ -3153,10 +3338,11 @@ def extract_sym_submissionsidx(f):
             cnt += 1
             continue
         if args.output:
-            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
+            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
         else:
-            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
+            newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
+        read_submission(dec[8], dec[7])
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
         cnt += 1
         
@@ -3164,9 +3350,9 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
     print(f'\033[1;32m\t\tParsing sub-entries for Submission {cnt}\033[1;0m\n')
     print(f'\033[1;35m\t\tSubmission {cnt}-0\033[1;0m\n')
     if args.output:
-            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-0]_idx.out', 'wb')
+            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-0]_idx.out', 'wb')
     else:
-        newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-0]_idx.out', 'wb')
+        newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-0]_idx.out', 'wb')
     subcnt = 1
     f = io.BytesIO(f)
     try:
@@ -3188,19 +3374,20 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
         print(f'\033[1;35m\t\tSubmission {cnt}-{subcnt} len1={len1} len2={len2}\033[1;0m\n')
         f.seek(8,1)   
         if args.output:
-            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.out', 'wb')
+            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.out', 'wb')
         else:
-            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.out', 'wb')
+            newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.out', 'wb')
         key = f.read(16)
         data = f.read(len1 - 16)
         dec = blowfishit(data,key)
         newfilename.write(dec.encode('latin-1'))
-        dec = read_sep_tag(dec.encode('latin-1'))
+        dec = read_sep_tag(dec.encode('latin-1'), sub=True)
         if args.output:
-            newfilename = open(args.output + '/ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
+            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
         else:
-            newfilename = open('ccSubSDK/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
+            newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
         newfilename.write(dec[6].encode('latin-1'))
+        read_submission(dec[8], dec[7])
         print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-{subcnt}\033[1;0m\n')
         subcnt += 1
 
@@ -3220,6 +3407,9 @@ def extract_sym_ccSubSDK(f):
     dec = blowfishit(data,key)
     newfilename.write(dec.encode('latin-1'))
     dec = read_sep_tag(dec.encode('latin-1'))
+
+    write_report(dec[6], os.path.basename(f.name))
+
     if args.output:
         newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name)+'_Symantec_ccSubSDK.met', 'wb')
     else:
@@ -3348,6 +3538,14 @@ if len(sys.argv) == 1:
 
 args = parser.parse_args()
 
+if args.output:
+    if not os.path.exists(args.output):
+        os.makedirs(args.output)
+    logfile = args.output + "/" + datetime.now().strftime("%Y-%m-%dT%H%M%S_console.log")
+else:
+    logfile = datetime.now().strftime("%Y-%m-%dT%H%M%S_console.log")
+#sys.stdout = Logger()
+
 regex =  re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine|.*\\Data\\CmnClnt\\ccSubSDK)')
 filenames = []
 
@@ -3412,8 +3610,8 @@ if args.timezone is None:
     args.timezone = 0
 
 if args.output and not (args.extract or args.hex_dump):
-    if not os.path.exists(args.output):
-        os.makedirs(args.output)
+    if not os.path.exists(args.output+'/ccSubSDK'):
+        os.makedirs(args.output+'/ccSubSDK')
 
     if not args.append:
         syslog = open(args.output + '/Symantec_Client_Management_System_Log.csv', 'w')
@@ -3426,6 +3624,7 @@ if args.output and not (args.extract or args.hex_dump):
         tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
         quarantine = open(args.output + '/quarantine.csv', 'w')
         settings = open(args.output + '/settings.csv', 'w')
+
         if args.struct:
             if not os.path.exists(args.output + '/VBN(V1)'):
                 os.makedirs(args.output + '/VBN(V1)')
@@ -3448,6 +3647,7 @@ if args.output and not (args.extract or args.hex_dump):
         tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
         quarantine = open(args.output + '/quarantine.csv', 'a')
         settings = open(args.output + '/settings.csv', 'a')
+
         if args.struct:
             if not os.path.exists(args.output + '/VBN(V1)'):
                 os.makedirs(args.output + '/VBN(V1)')
@@ -3464,7 +3664,9 @@ if args.output and not (args.extract or args.hex_dump):
         csv_header()
 
 elif not (args.extract or args.hex_dump):
-        
+    if not os.path.exists('ccSubSDK'):
+        os.makedirs('ccSubSDK')
+    
     if not args.append:
         syslog = open('Symantec_Client_Management_System_Log.csv', 'w')
         seclog = open('Symantec_Client_Management_Security_Log.csv', 'w')
@@ -3476,6 +3678,7 @@ elif not (args.extract or args.hex_dump):
         tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
         quarantine = open('quarantine.csv', 'w')
         settings = open('settings.csv', 'w')
+
         if args.struct:
             if not os.path.exists('VBN(V1)'):
                 os.makedirs('VBN(V1)')
@@ -3498,6 +3701,7 @@ elif not (args.extract or args.hex_dump):
         tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
         quarantine = open('quarantine.csv', 'a')
         settings = open('settings.csv', 'a')
+
         if args.struct:
             if not os.path.exists('VBN(V1)'):
                 os.makedirs('VBN(V1)')
