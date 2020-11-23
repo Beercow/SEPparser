@@ -306,21 +306,21 @@ The quarantine file is broken into chunks of data XORed with 0xA5. This continue
 If the 0x08 tag is not present, there can be two additional structures included with the quarantine data.  
 For now, I have labeled them as Junk Header and Junk Footer.
 
-#### Junk Header/Footer (Optional)
+#### Unknown/Attribute (Optional)
 
 | Offset | Lenght                | Field                            | Description                                                         |
 | ------ | :-------------------: | -------------------------------- | ------------------------------------------------------------------- |
 | 0      | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. |
-| 8      | 8                     | Junk Data Size                   | Size of junk data                                                   |
-| 16     | Junk Data Size        | Unknown                          | Will require further investigation as to the purpose of this entry. |
+| 8      | 8                     | Unknown Data Size                | Size of unknown data                                                |
+| 16     | Unknown Data Size     | Unknown                          | Will require further investigation as to the purpose of this entry. |
 | Varies | 12                    | Unknown                          | Will require further investigation as to the purpose of this entry. |
 | Varies | 4                     | Quarantine Data Size             | Size of quarantined data                                            |
 | Varies | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. |
 | Varies | Quarantine Data Size  | Quarantine Data                  | Quarantined data                                                    |
-| Varies | 8                     | Junk Footer Data Type (Optional) | 0x02 = ?, 0x04 = ADS, 0x07 = ?                                      |
-| Varies | 8                     | Junk Footer Data Size (Optional) | Size of junk footer data                                            |
-| Varies | 4                     | ADS Name Size (Optional)         | Size of ADS name field                                              |
-| Varies | ADS Name Size         | ADS Name (Optional)              | Name of Alternate Data Stream                                       |
-| Varies | Junk Footer Data Size | Junk Footer Data (Optional)      | Data, varies by type                                                |
+| Varies | 8                     | Attribute Data Type (Optional)   | 0x02 = EA, 0x04 = ADS, 0x07 = ?                                     |
+| Varies | 8                     | Attribute Data Size (Optional)   | Size of attribute data                                              |
+| Varies | 4                     | Attribute Name Size (Optional)   | Size of attribute name field                                        |
+| Varies | Attribute Name Size   | Attribute Name (Optional)        | Name of attribute                                                   |
+| Varies | Attribute Data Size   | Attribute Data (Optional)        | Data, varies by type                                                |
 
 </td></tr></table>

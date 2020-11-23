@@ -310,44 +310,44 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\ra
 <tbody>
 <tr>
 <td>Log Type</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Always 00000003</td>
 </tr>
 <tr>
 <td>Max Log Size</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Maximum log file size in bytes</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>?</td>
 </tr>
 <tr>
 <td>Number of Entries</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Number of entries in log</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>?</td>
 </tr>
 <tr>
 <td>Running Total Entries</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>hex</td>
+<td style="text-align: center;">16</td>
 <td>Total number of events generated</td>
 </tr>
 <tr>
 <td>Max Log Days</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Maximun days to save log entries</td>
 </tr>
 </tbody>
@@ -366,68 +366,68 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\ra
 <tbody>
 <tr>
 <td>Entry Length</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Length of log entry</td>
 </tr>
 <tr>
 <td>Date and Time</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>Windows: 64 bit Hex Value - Big Endian</td>
+<td style="text-align: center;">16</td>
 <td>The time of the generated event (GMT).</td>
 </tr>
 <tr>
 <td>Event ID</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>An event ID from the sending agent:<br>401 = Raw Ethernet</td>
 </tr>
 <tr>
 <td>Local Host</td>
-<td>bigint</td>
+<td>hex</td>
 <td style="text-align: center;">8</td>
 <td>The IP address of the local computer (IPv4).</td>
 </tr>
 <tr>
 <td>Remote Host</td>
-<td>bigint</td>
+<td>hex</td>
 <td style="text-align: center;">8</td>
 <td>The IP address of the remote computer (IPv4).</td>
 </tr>
 <tr>
 <td>Local Port</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The TCP/UDP port of the local computer (host byte-order). It is only valid on<br>TSE_TRAFFIC_TCP and TSE_TRAFFIC_UDP. For other events, it is always zero.</td>
 </tr>
 <tr>
 <td>Remote Port</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The TCP/UDP port of the remote computer (host byte-order). It is only valid on<br>TSE_TRAFFIC_TCP and TSE_TRAFFIC_UDP. For other events, it is always zero.</td>
 </tr>
 <tr>
 <td>Packet Length</td>
-<td></td>
-<td style="text-align: center;"></td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Lenght of packet data</td>
 </tr>
 <tr>
 <td>Direction</td>
-<td>tinyint</td>
-<td style="text-align: center;">1</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The direction of traffic (unknown = 0; inbound = 1; outbound = 2).</td>
 </tr>
 <tr>
 <td>Action</td>
-<td>tinyint</td>
-<td style="text-align: center;">1</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Specifies if the traffic was blocked (yes = 1, no = 0).</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>?</td>
-<td style="text-align: center;">?</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
@@ -456,25 +456,25 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\ra
 </tr>
 <tr>
 <td>Unknown</td>
-<td>?</td>
-<td style="text-align: center;">?</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>?</td>
-<td style="text-align: center;">?</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Remote Host IPV6</td>
-<td>varchar</td>
+<td>hex</td>
 <td style="text-align: center;">32</td>
 <td>The IP address of the remote host (IPv6).</td>
 </tr>
 <tr>
 <td>Local Host IPV6</td>
-<td>varchar</td>
+<td>hex</td>
 <td style="text-align: center;">32</td>
 <td>The IP address of the local computer (IPv6).</td>
 </tr>

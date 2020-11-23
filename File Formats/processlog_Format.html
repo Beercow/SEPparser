@@ -310,44 +310,44 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\pr
 <tbody>
 <tr>
 <td>Log Type</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Always 00000004</td>
 </tr>
 <tr>
 <td>Max Log Size</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Maximum log file size in bytes</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>?</td>
 </tr>
 <tr>
 <td>Number of Entries</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Number of entries in log</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>?</td>
 </tr>
 <tr>
 <td>Running Total Entries</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>hex</td>
+<td style="text-align: center;">16</td>
 <td>Total number of events generated</td>
 </tr>
 <tr>
 <td>Max Log Days</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Maximun days to save log entries</td>
 </tr>
 </tbody>
@@ -366,38 +366,38 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\pr
 <tbody>
 <tr>
 <td>Entry Length</td>
-<td>int</td>
-<td style="text-align: center;">4</td>
+<td>hex</td>
+<td style="text-align: center;">3</td>
 <td>Length of log entry</td>
 </tr>
 <tr>
 <td>Date and Time</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>Windows: 64 bit Hex Value - Big Endian</td>
+<td style="text-align: center;">16</td>
 <td>The time of the generated event (GMT).</td>
 </tr>
 <tr>
-<td>Unknown</td>
-<td>?</td>
-<td style="text-align: center;">?</td>
-<td>Will require further investigation as to the purpose of this log entry.</td>
+<td>Event ID</td>
+<td>hex</td>
+<td style="text-align: center;">3</td>
+<td>An event ID from the sending agent:<br>501 = Application Control Driver<br>502 = Application Control Rules<br>999 = Tamper Protection</td>
 </tr>
 <tr>
 <td>Severity</td>
 <td>int</td>
-<td style="text-align: center;">4</td>
+<td style="text-align: center;">1</td>
 <td>The seriousness of the event<br>0 is most serious.</td>
 </tr>
 <tr>
 <td>Action</td>
 <td>int</td>
-<td style="text-align: center;">4</td>
+<td style="text-align: center;">1</td>
 <td>The action that was taken:<br>0 = allow<br>1 = block<br>2 = ask<br>3 = continue<br>4 = terminate</td>
 </tr>
 <tr>
 <td>Test Mode</td>
 <td>int</td>
-<td style="text-align: center;">4</td>
+<td style="text-align: center;">1</td>
 <td>Was this rule run in test mode?<br>0 = No, Else = Yes</td>
 </tr>
 <tr>
@@ -414,20 +414,20 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\pr
 </tr>
 <tr>
 <td>Unknown</td>
-<td>?</td>
-<td style="text-align: center;">?</td>
+<td>hex</td>
+<td style="text-align: center;">16</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>Begin Time</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>Windows: 64 bit Hex Value - Big Endian</td>
+<td style="text-align: center;">16</td>
 <td>The start time of the security issue.</td>
 </tr>
 <tr>
 <td>End Time</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>Windows: 64 bit Hex Value - Big Endian</td>
+<td style="text-align: center;">16</td>
 <td>The end time of the security issue. This field is an optional field because the<br>exact end time of traffic may not be detected; for example, as with UDP traffic.<br>If the end time is not detected, it is set to equal the start time.</td>
 </tr>
 <tr>
@@ -438,8 +438,8 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\pr
 </tr>
 <tr>
 <td>Caller Process ID</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>hex</td>
+<td style="text-align: center;">4</td>
 <td>The ID of the process that triggers the logging.</td>
 </tr>
 <tr>
@@ -450,19 +450,19 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\pr
 </tr>
 <tr>
 <td>Unknown</td>
-<td>?</td>
-<td style="text-align: center;">?</td>
+<td>int</td>
+<td style="text-align: center;">1</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
-<td>Unknown</td>
-<td>?</td>
-<td style="text-align: center;">?</td>
-<td>Will require further investigation as to the purpose of this log entry.</td>
+<td>Caller Return Module Name</td>
+<td>nvarchar</td>
+<td style="text-align: center;">512</td>
+<td>The module name of the caller. See CallerReturnAddress for more information.</td>
 </tr>
 <tr>
 <td>Target</td>
-<td>?</td>
+<td>nvarchar</td>
 <td style="text-align: center;">?</td>
 <td>Name of file</td>
 </tr>
@@ -486,8 +486,8 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\pr
 </tr>
 <tr>
 <td>IPV4 Address</td>
-<td>varchar</td>
-<td style="text-align: center;">160</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>The IP address of the computer associated with the application control violation.</td>
 </tr>
 <tr>
@@ -498,19 +498,19 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\pr
 </tr>
 <tr>
 <td>File Size</td>
-<td>bigint</td>
-<td style="text-align: center;">8</td>
+<td>hex</td>
+<td style="text-align: center;">2</td>
 <td>The size of the file associated with the application control violation, in bytes.</td>
 </tr>
 <tr>
 <td>Unknown</td>
-<td>?</td>
-<td style="text-align: center;">?</td>
+<td>hex</td>
+<td style="text-align: center;">8</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>IPV6 Address</td>
-<td>varchar</td>
+<td>hex</td>
 <td style="text-align: center;">32</td>
 <td>The IP address of the computer associated with the application control violation. (IPV6)</td>
 </tr>

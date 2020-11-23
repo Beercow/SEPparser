@@ -812,7 +812,7 @@ h5 {
 <p align="center">
 <h3>VBN Metadata &#42WIP</h3>
 </p>
-<table width="500">
+<table>
 <thead>
 <tr>
 <th>Offset</th>
@@ -1531,7 +1531,7 @@ h5 {
 </table>
 <p>If the 0x08 tag is not present, there can be two additional structures included with the quarantine data.<br />
 For now, I have labeled them as Junk Header and Junk Footer.</p>
-<h4 id="junk-headerfooter-optional">Junk Header/Footer (Optional)</h4>
+<h4 id="unknownattribute-optional">Unknown/Attribute (Optional)</h4>
 <table>
 <thead>
 <tr>
@@ -1551,12 +1551,12 @@ For now, I have labeled them as Junk Header and Junk Footer.</p>
 <tr>
 <td>8</td>
 <td style="text-align: center;">8</td>
-<td>Junk Data Size</td>
-<td>Size of junk data</td>
+<td>Unknown Data Size</td>
+<td>Size of unknown data</td>
 </tr>
 <tr>
 <td>16</td>
-<td style="text-align: center;">Junk Data Size</td>
+<td style="text-align: center;">Unknown Data Size</td>
 <td>Unknown</td>
 <td>Will require further investigation as to the purpose of this entry.</td>
 </tr>
@@ -1587,31 +1587,31 @@ For now, I have labeled them as Junk Header and Junk Footer.</p>
 <tr>
 <td>Varies</td>
 <td style="text-align: center;">8</td>
-<td>Junk Footer Data Type (Optional)</td>
-<td>0x02 = ?, 0x04 = ADS, 0x07 = ?</td>
+<td>Attribute Data Type (Optional)</td>
+<td>0x02 = EA, 0x04 = ADS, 0x07 = ?</td>
 </tr>
 <tr>
 <td>Varies</td>
 <td style="text-align: center;">8</td>
-<td>Junk Footer Data Size (Optional)</td>
-<td>Size of junk footer data</td>
+<td>Attribute Data Size (Optional)</td>
+<td>Size of attribute data</td>
 </tr>
 <tr>
 <td>Varies</td>
 <td style="text-align: center;">4</td>
-<td>ADS Name Size (Optional)</td>
-<td>Size of ADS name field</td>
+<td>Attribute Name Size (Optional)</td>
+<td>Size of attribute name field</td>
 </tr>
 <tr>
 <td>Varies</td>
-<td style="text-align: center;">ADS Name Size</td>
-<td>ADS Name (Optional)</td>
-<td>Name of Alternate Data Stream</td>
+<td style="text-align: center;">Attribute Name Size</td>
+<td>Attribute Name (Optional)</td>
+<td>Name of attribute</td>
 </tr>
 <tr>
 <td>Varies</td>
-<td style="text-align: center;">Junk Footer Data Size</td>
-<td>Junk Footer Data (Optional)</td>
+<td style="text-align: center;">Attribute Data Size</td>
+<td>Attribute Data (Optional)</td>
 <td>Data, varies by type</td>
 </tr>
 </tbody>
