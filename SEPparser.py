@@ -31,7 +31,7 @@ def csv_header():
 
     rawlog.write('"File Name","Recode Length","Date and Time","Remote Host","Remote Port","Local Host","Local Port","Direction","Action","Application","Rule","Packet Dump","Packet Decode","Event ID","Packet Length","Field11","Remote Host Name","Field16","Field17","Remote Host IPV6","Local Host IPV6","Rule ID"\n')
 
-    processlog.write('"File Name","Record Length","Date And Time","Severity","Action","Test Mode","Description","API","Rule Name","IPV4 Address","IPV6 Address","Caller Process ID","Caller Process","Device Instance ID","Target","File Size","User","User Domain","Location","Event ID","Field9","Begin Time","End Time","Field15","Field16","Field21","Field22","Field26"\n')
+    processlog.write('"File Name","Record Length","Date And Time","Severity","Action","Test Mode","Description","API","Rule Name","IPV4 Address","IPV6 Address","Caller Process ID","Caller Process","Device Instance ID","Target","File Size","User","User Domain","Location","Event ID","Field9","Begin Time","End Time","Field15","Caller Return Module Name","Field21","Field22","Field26"\n')
 
     timeline.write('"File Name","Record Length","Date/Time1","Date/Time2","Date/Time3","Field5","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2_Label","LOG:Event_Data2","LOG:Event_Data3_Label","LOG:Event_Data3","LOG:Event_Data4_Label","LOG:Event_Data4","LOG:Event_Data5_Label","LOG:Event_Data5","LOG:Event_Data6_Label","LOG:Event_Data6","LOG:Event_Data7_Label","LOG:Event_Data7","LOG:Event_Data8_Label","LOG:Event_Data8","LOG:Event_Data9_Label","LOG:Event_Data9","LOG:Event_Data10_Label","LOG:Event_Data10","LOG:Event_Data11_Label","LOG:Event_Data11","LOG:Event_Data12_Label","LOG:Event_Data12","LOG:Event_Data13_Label","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","Log:Eraser Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_9","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","LOG:Field113","LOG:Location","LOG:Field115","LOG:Digital_Signatures_Signer","LOG:Digital_Signatures_Issuer","LOG:Digital_Signatures_Certificate_Thumbprint","LOG:Field119","LOG:Digital_Signatures_Serial_Number","LOG:Digital_Signatures_Signing_Time","LOG:Field122","LOG:Field123","LOG:Field124","LOG:Field125","LOG:Field126"\n')
 
@@ -320,6 +320,49 @@ typedef struct _VBN_METADATA_Linux{
     char Unknown15[212];
 } VBN_METADATA_Linux;
 
+typedef struct _VBN_METADATA_Linux_V2{
+    int32 QFM_HEADER_Offset;
+    char Description[4096];
+    char Log_line[1112];
+    int32 Flags; //if 0x2 contains dates, if 0x1 no dates
+    uint32 Record_ID;
+    char Unknown1[40];
+    int32 Date_Modified;
+    int32 Date_Created;
+    int32 Date_Accessed;
+    int32 VBin_Time;
+    int32 Data_Type1; //if 0x2 contains storage info, if 0x0 no storage info
+    char Unknown2[452];
+    char Storage_Name[48];
+    int32 Storage_Instance_ID;
+    char Storage_Key[4096];
+    int32 Data_Type2;
+    int32 Unknown3;
+    char Unknown4[44];
+    int32 Data_Type3;
+    int32 Quarantine_File_Size;
+    int32 Date_Created_2;
+    int32 Date_Accessed_2;
+    int32 Date_Modified_2;
+    int32 VBin_Time_2;
+    char Unknown5[8];
+    char Unique_ID[16];
+    char Unknown6[4096];
+    int32 Unknown7;
+    int32 Record_Type; 
+    int32 Quarantine_Session_ID;
+    int32 Remediation_Type;
+    int32 Unknown8;
+    int32 Unknown9;
+    int32 Unknown10;
+    int32 Unknown11;
+    int32 Unknown12;
+    int32 Unknown13;
+    int32 Unknown14;
+    wchar WDescription[384];
+    char Unknown15[220];
+} VBN_METADATA_Linux_V2;
+
 typedef struct _Quarantine_File_Metadata_Header {
     int64 QFM_Header;
     int64 QFM_Header_Size;
@@ -426,14 +469,14 @@ typedef struct _Chunk {
     int32 Chunk_Size;
 } Chunk;
 
-typedef struct _Junk_Header {
+typedef struct _Unknown_Header {
     int64 Unknown15;
     int64 Size;
     char Unknown16[Size];
     char Unknown17[12];
     int32 File_Size;
     int64 Unknown18;
-} Junk_Header;
+} Unknown_Header;
 
 typedef struct _Unknown_Attribute {
     int64 Data_Type;
@@ -463,7 +506,7 @@ typedef struct _FILE_FULL_EA_INFORMATION {
   UCHAR  EaNameLength;
   USHORT EaValueLength;
   CHAR   EaName[EaNameLength];
-  CHAR   EaValue[EaValueLength];
+  CHAR   EaValue[EaValueLength + 1];
 } FILE_FULL_EA_INFORMATION;
 
 typedef struct _QData_Location {
@@ -3060,6 +3103,8 @@ def parse_vbn(f, logType, tz):
         vbnv = 2
     if qfm_offset == 15100:
         vbnmeta = vbnstruct.VBN_METADATA_Linux(f)
+    if qfm_offset == 15108:
+        vbnmeta = vbnstruct.VBN_METADATA_Linux_V2(f)
 
     if args.struct:
         sout = ''
@@ -3235,7 +3280,7 @@ def parse_vbn(f, logType, tz):
             pos += 5
             f.seek(pos)
             if garbage is not None:
-                junk = vbnstruct.Junk_Header(xor(f.read(1000), 0xA5).encode('latin-1'))
+                junk = vbnstruct.Unknown_Header(xor(f.read(1000), 0xA5).encode('latin-1'))
                 if args.struct:
                     for k, v in junk._values.items():
                         sout += str(v).replace('"', '""')+'","'
@@ -3287,8 +3332,8 @@ def parse_vbn(f, logType, tz):
                                 vl = int.from_bytes(xor(f.read(2), 0xA5).encode("latin-1"), "little")
                                 f.seek(-8, 1)
                                 neo2 = nl + vl + 8
-                                neo3 = neo - neo2
-                                ea = vbnstruct.FILE_FULL_EA_INFORMATION(xor(f.read(neo2), 0xA5).encode('latin-1'))
+                                neo3 = neo - neo2 - 1 
+                                ea = vbnstruct.FILE_FULL_EA_INFORMATION(xor(f.read(neo2 + 1), 0xA5).encode('latin-1'))
                                 if args.hex_dump:
                                     cstruct.dumpstruct(ea)
                                 if ea.NextEntryOffset == 0:
