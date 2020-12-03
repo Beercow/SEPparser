@@ -23,10 +23,11 @@ if os.name == 'nt':
 
 re_valid_string = re.compile('^[ADO][ADLU]?\:\(.*\)$')
 re_perms = re.compile('\(([^\(\)]+)\)')
-re_type = re.compile('^[DOGS]')
+re_type = re.compile('^[DOGS](?!:\\\)')
 re_owner = re.compile('^O:[^:()]+(?=[DGS]:)')
 re_group = re.compile('G:[^:()]+(?=[DOS]:)')
 re_acl = re.compile('[DS]:.+$')
+re_acl_flags = re.compile('[DS]:(.+?)\(')
 re_const = re.compile('(\w\w)')
 re_non_acl = re.compile('[^:()]+$')
 
