@@ -535,7 +535,7 @@ def sddl_translate(string):
     target = 'service'
     _ = string + '\n\n'
     sec = SDDL3.SDDL(string, target)
-    _ +='Type: ' + sec.sddl_type + '\n'
+#    _ +='Type: ' + sec.sddl_type + '\n'
 
     if sec.owner_sid:
         _ += '\tOwner Name: ' + sec.owner_account + '\n'
@@ -545,31 +545,76 @@ def sddl_translate(string):
         _ += '\tGroup Name: ' + sec.group_account + '\n'
         _ += '\tGroup SID: ' + sec.group_sid + '\n\n'
 
-    _ += '\tAccess Control Entries:\n\n'
-    sec.acl #.sort(cmp=SDDL.SortAceByTrustee)
-    for ace in sec.acl:
-        _ += '\t\tTrustee: ' + ace.trustee + '\n'
+    if sec.sddl_dacl:
+        if sec.dacl_flags:
+            _ += 'Type: ' + sec.sddl_dacl + str(sec.dacl_flags) + '\n'
+            
+        else:
+            _ += 'Type: ' + sec.sddl_dacl + '\n'
+            
+        _ = acl_translate(_, sec.dacl)
+        
+    if sec.sddl_sacl:
+        if sec.sacl_flags:
+            _ += 'Type: ' + sec.sddl_sacl + str(sec.sacl_flags) + '\n'
+            
+        else:
+            _ += 'Type: ' + sec.sddl_sacl + '\n'
+            
+        _ = acl_translate(_, sec.sacl)
+#    _ += '\tAccess Control Entries:\n\n'
+#    sec.acl #.sort(cmp=SDDL.SortAceByTrustee)
+#    for ace in sec.acl:
+#        _ += '\t\tTrustee: ' + ace.trustee + '\n'
+#        _ += '\t\tACE Type: ' + ace.ace_type + '\n'
+#        _ += '\t\tPerms:' + '\n'
+
+#        for perm in ace.perms:
+#            _ += '\t\t\t' + perm + '\n'
+
+#        if ace.flags:
+#            _ += '\t\tFlags:\n'
+
+#        for flag in ace.flags:
+#            _ += '\t\t\t' + flag + '\n\n'
+
+#        if ace.object_type:
+#            _ += '\t\tObject Type: ' + ace.object_type + '\n'
+
+#        if ace.inherited_type:
+#            _ += '\t\tInherited Type: ' + ace.inherited_type + '\n'
+
+#        _ += ''
+
+#    _ += ''
+    return _
+
+def acl_translate(_, acl):
+    count = 0
+    for ace in acl:
+        _ += '\tAce[{:02d}]'.format(count) + '\n'
         _ += '\t\tACE Type: ' + ace.ace_type + '\n'
-        _ += '\t\tPerms:' + '\n'
+      
+        if ace.flags:
+            _ += '\t\tAce Flags:\n'
+
+            for flag in ace.flags:
+                _ += '\t\t\t' + flag + '\n'
+      
+        _ += '\t\tAccess Mask:\n'
 
         for perm in ace.perms:
             _ += '\t\t\t' + perm + '\n'
 
-        if ace.flags:
-            _ += '\t\tFlags:\n'
-
-        for flag in ace.flags:
-            _ += '\t\t\t' + flag + '\n\n'
-
         if ace.object_type:
-            _ += '\t\tObject Type: ' + ace.object_type + '\n'
+            _ += '\t\tObject GUID: ' + ace.object_type + '\n'
 
         if ace.inherited_type:
-            _ += '\t\tInherited Type: ' + ace.inherited_type + '\n'
-
-        _ += ''
-
-    _ += ''
+            _ += '\t\tInherited Object GUID: ' + ace.inherited_type + '\n'
+        _ += '\t\tTrustee: ' + ace.trustee + '\n'
+        _ += '\t\tAce Sid: ' + ace.sid + '\n'
+        count += 1
+        
     return _
 
 def sec_event_type(_):
