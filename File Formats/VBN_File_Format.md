@@ -25,7 +25,7 @@ h5 {
 </p>
 
 <table width="1500">
-<tr><th><h3>VBN file format V1 (Windows - pre SEP 12)</h3></th><th><h3>VBN file format V2 (Windows - SEP 12 +)</h3></th><th><h3>VBN file format V2 (Linux - SEP 12 +)</h3></th></tr>
+<tr><th><h3>VBN file format V1 (Windows - SEP 11)</h3></th><th><h3>VBN file format V2 (Windows - SEP 12 +)</h3></th><th><h3>VBN file format V2 (Linux - SEP 12 +)</h3></th></tr>
 <tr valign="top"><td>
 
 <p align="center">
@@ -99,10 +99,14 @@ h5 {
 | 3400   | 8      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3408   | 4      | Data Type             | Value which can describe the subsequent data.                                            |
 | 3412   | 4      | Quarantine File Size  | Size of Quarantined File (bytes)                                                         |
-| 3416   | 8      | Date Accessed         | Indicates a time of last access of an object. (Unix: 32 bit Hex)                         |
-| 3424   | 8      | Date Modified         | Indicates a time of last modification of content. (Unix: 32 bit Hex)                     |
-| 3432   | 8      | Date Created          | Indicates a time of creation of object on the file system. (Unix: 32 bit Hex)            |
-| 3440   | 8      | VBin Time             | Time file was quarantined. (Unix: 32 bit Hex)                                            |
+| 3416   | 4      | Date Accessed         | Indicates a time of last access of an object. (Unix: 32 bit Hex)                         |
+| 3420   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 3424   | 4      | Date Modified         | Indicates a time of last modification of content. (Unix: 32 bit Hex)                     |
+| 3428   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 3432   | 4      | Date Created          | Indicates a time of creation of object on the file system. (Unix: 32 bit Hex)            |
+| 3436   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 3440   | 4      | VBin Time             | Time file was quarantined. (Unix: 32 bit Hex)                                            |
+| 3444   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3448   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3452   | 16     | Unique ID             | Unique GUID                                                                              |
 | 3468   | 260    | Unknown               | Will require further investigation as to the purpose of this entry.                      |
@@ -131,9 +135,10 @@ h5 {
 | 0      | 4      | Size                  | Size of the VBN Metadata section, 0x3afc                                                 |
 | 4      | 4096   | Description           | FQP of Quarantine File                                                                   |
 | 4100   | 1112   | Log Line              | Information on event.                                                                    |
-| 5121   | 4      | Data Type             | Value which can describe the subsequent data. (0x1 = No dates, 0x2 = Dates)              |
+| 5212   | 4      | Data Type             | Value which can describe the subsequent data. (0x1 = No dates, 0x2 = Dates)              |
 | 5216   | 4      | Record ID             | VBin ID/VBN Name                                                                         |
-| 5220   | 40     | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 5220   | 36     | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 5256   | 4      | Quarantine File Size  | Size of Quarantined File (bytes)                                                         |
 | 5260   | 4      | Date Modified         | Indicates a time of last modification of content. (Unix: 32 bit Hex)                     |
 | 5264   | 4      | Date Created          | Indicates a time of creation of object on the file system. (Unix: 32 bit Hex)            |
 | 5268   | 4      | Date Accessed         | Indicates a time of last access of an object. (Unix: 32 bit Hex)                         |
@@ -144,9 +149,8 @@ h5 {
 | 5780   | 4      | Storage Instance ID   | Will require further investigation as to the purpose of this entry.                      |
 | 5784   | 4096   | Storage Key           | Will require further investigation as to the purpose of this entry.                      |
 | 9880   | 4      | Data Type             | Value which can describe the subsequent data.                                            |
-| 9884   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
-| 9888   | 44     | Unknown               | Will require further investigation as to the purpose of this entry.                      |
-| 9932   | 4      | Data Type             | Value which can describe the subsequent data.                                            |
+| 9884   | 16     | Unknown               | Will require further investigation as to the purpose of this entry.                      |
+| 9900   | 36     | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 9936   | 4      | Quarantine File Size  | Size of Quarantined File (bytes)                                                         |
 | 9940   | 4      | Date Created          | Indicates a time of creation of object on the file system. (Unix: 32 bit Hex)            |
 | 9944   | 4      | Date Accessed         | Indicates a time of last access of an object. (Unix: 32 bit Hex)                         |
@@ -184,7 +188,7 @@ h5 {
 
 | Offset | Length           | Field                    | Description                                                         |
 | ------ | :--------------: | ------------------------ | ------------------------------------------------------------------- |
-| 0      | 8                | Header                   | QData location header, 0x6aaaa20ce                                  |
+| 0      | 8                | Header                   | QData location header, 00000006aaaa20ce                                  |
 | 8      | 8                | Data Offset              | Offset to start of quarantine data                                  |
 | 16     | 8                | Data Size                | Size of quarantine data                                             |
 | 24     | 4                | EOF                      | Size from end of quarantine data to EOF                             |

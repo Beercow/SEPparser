@@ -255,26 +255,30 @@ typedef struct _VBN_METADATA_V2 {
     char Unknown3[8];
     int32 Data_Type3;
     int32 Quarantine_File_Size;
-    int64 Date_Accessed_2;
-    int64 Date_Modified_2;
-    int64 Date_Created_2;
-    int64 VBin_Time_2;
-    char Unknown4[4];
-    char Unique_ID[16];
-    char Unknown5[260];
+    int32 Date_Accessed_2;
+    int32 Unknown4;
+    int32 Date_Modified_2;
+    int32 Unknown5;
+    int32 Date_Created_2;
     int32 Unknown6;
+    int32 VBin_Time_2;
+    int32 Unknown7;
+    int32 Unknown8;
+    char Unique_ID[16];
+    char Unknown9[260];
+    int32 Unknown10;
     int32 Record_Type; 
     uint32 Quarantine_Session_ID;
     int32 Remediation_Type;
-    int32 Unknown7;
-    int32 Unknown8;
-    int32 Unknown9;
-    int32 Unknown10;
     int32 Unknown11;
     int32 Unknown12;
     int32 Unknown13;
+    int32 Unknown14;
+    int32 Unknown15;
+    int32 Unknown16;
+    int32 Unknown17;
     wchar WDescription[384];
-    char Unknown14[212];
+    char Unknown18[212];
 } VBN_METADATA_V2;
 
 typedef struct _VBN_METADATA_Linux{
@@ -283,7 +287,8 @@ typedef struct _VBN_METADATA_Linux{
     char Log_line[1112];
     int32 Flags; //if 0x2 contains dates, if 0x1 no dates
     uint32 Record_ID;
-    char Unknown1[40];
+    char Unknown1[36];
+    int32 Quarantine_File_Size;
     int32 Date_Modified;
     int32 Date_Created;
     int32 Date_Accessed;
@@ -294,10 +299,9 @@ typedef struct _VBN_METADATA_Linux{
     int32 Storage_Instance_ID;
     char Storage_Key[4096];
     int32 Data_Type2;
-    int32 Unknown3;
-    char Unknown4[44];
-    int32 Data_Type3;
-    int32 Quarantine_File_Size;
+    char Unknown3[16];
+    char Unknown4[36];
+    int32 Quarantine_File_Size_2;
     int32 Date_Created_2;
     int32 Date_Accessed_2;
     int32 Date_Modified_2;
@@ -562,31 +566,7 @@ def sddl_translate(string):
             _ += 'Type: ' + sec.sddl_sacl + '\n'
             
         _ = acl_translate(_, sec.sacl)
-#    _ += '\tAccess Control Entries:\n\n'
-#    sec.acl #.sort(cmp=SDDL.SortAceByTrustee)
-#    for ace in sec.acl:
-#        _ += '\t\tTrustee: ' + ace.trustee + '\n'
-#        _ += '\t\tACE Type: ' + ace.ace_type + '\n'
-#        _ += '\t\tPerms:' + '\n'
 
-#        for perm in ace.perms:
-#            _ += '\t\t\t' + perm + '\n'
-
-#        if ace.flags:
-#            _ += '\t\tFlags:\n'
-
-#        for flag in ace.flags:
-#            _ += '\t\t\t' + flag + '\n\n'
-
-#        if ace.object_type:
-#            _ += '\t\tObject Type: ' + ace.object_type + '\n'
-
-#        if ace.inherited_type:
-#            _ += '\t\tInherited Type: ' + ace.inherited_type + '\n'
-
-#        _ += ''
-
-#    _ += ''
     return _
 
 def acl_translate(_, acl):
@@ -3669,10 +3649,10 @@ parser.add_argument("-r", "--registrationInfo", help="Path to registrationInfo.x
 parser.add_argument("-tz", "--timezone", type=int, help="UTC offset")
 parser.add_argument("-k", "--kape", help="Kape mode", action="store_true")
 parser.add_argument("-s", "--struct", help="Output structures to csv", action="store_true")
+parser.add_argument("-l", "--log", help="Save console output to log", action="store_true")
 
 if len(sys.argv) == 1:
     parser.print_help()
-    # parser.print_usage() # for just the usage line
     parser.exit()
 
 args = parser.parse_args()
@@ -3683,7 +3663,9 @@ if args.output:
     logfile = args.output + "/" + datetime.now().strftime("%Y-%m-%dT%H%M%S_console.log")
 else:
     logfile = datetime.now().strftime("%Y-%m-%dT%H%M%S_console.log")
-#sys.stdout = Logger()
+
+if args.log:
+    sys.stdout = Logger()
 
 regex =  re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine|.*\\Data\\CmnClnt\\ccSubSDK)')
 filenames = []

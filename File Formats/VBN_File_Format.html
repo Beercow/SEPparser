@@ -688,27 +688,51 @@ h5 {
 </tr>
 <tr>
 <td>3416</td>
-<td style="text-align: center;">8</td>
+<td style="text-align: center;">4</td>
 <td>Date Accessed</td>
 <td>Indicates a time of last access of an object. (Unix: 32 bit Hex)</td>
 </tr>
 <tr>
+<td>3420</td>
+<td style="text-align: center;">4</td>
+<td>Unknown</td>
+<td>Will require further investigation as to the purpose of this entry.</td>
+</tr>
+<tr>
 <td>3424</td>
-<td style="text-align: center;">8</td>
+<td style="text-align: center;">4</td>
 <td>Date Modified</td>
 <td>Indicates a time of last modification of content. (Unix: 32 bit Hex)</td>
 </tr>
 <tr>
+<td>3428</td>
+<td style="text-align: center;">4</td>
+<td>Unknown</td>
+<td>Will require further investigation as to the purpose of this entry.</td>
+</tr>
+<tr>
 <td>3432</td>
-<td style="text-align: center;">8</td>
+<td style="text-align: center;">4</td>
 <td>Date Created</td>
 <td>Indicates a time of creation of object on the file system. (Unix: 32 bit Hex)</td>
 </tr>
 <tr>
+<td>3436</td>
+<td style="text-align: center;">4</td>
+<td>Unknown</td>
+<td>Will require further investigation as to the purpose of this entry.</td>
+</tr>
+<tr>
 <td>3440</td>
-<td style="text-align: center;">8</td>
+<td style="text-align: center;">4</td>
 <td>VBin Time</td>
 <td>Time file was quarantined. (Unix: 32 bit Hex)</td>
+</tr>
+<tr>
+<td>3444</td>
+<td style="text-align: center;">4</td>
+<td>Unknown</td>
+<td>Will require further investigation as to the purpose of this entry.</td>
 </tr>
 <tr>
 <td>3448</td>
@@ -841,7 +865,7 @@ h5 {
 <td>Information on event.</td>
 </tr>
 <tr>
-<td>5121</td>
+<td>5212</td>
 <td style="text-align: center;">4</td>
 <td>Data Type</td>
 <td>Value which can describe the subsequent data. (0x1 = No dates, 0x2 = Dates)</td>
@@ -854,9 +878,15 @@ h5 {
 </tr>
 <tr>
 <td>5220</td>
-<td style="text-align: center;">40</td>
+<td style="text-align: center;">36</td>
 <td>Unknown</td>
 <td>Will require further investigation as to the purpose of this entry.</td>
+</tr>
+<tr>
+<td>5256</td>
+<td style="text-align: center;">4</td>
+<td>Quarantine File Size</td>
+<td>Size of Quarantined File (bytes)</td>
 </tr>
 <tr>
 <td>5260</td>
@@ -920,21 +950,15 @@ h5 {
 </tr>
 <tr>
 <td>9884</td>
-<td style="text-align: center;">4</td>
+<td style="text-align: center;">16</td>
 <td>Unknown</td>
 <td>Will require further investigation as to the purpose of this entry.</td>
 </tr>
 <tr>
-<td>9888</td>
-<td style="text-align: center;">44</td>
+<td>9900</td>
+<td style="text-align: center;">36</td>
 <td>Unknown</td>
 <td>Will require further investigation as to the purpose of this entry.</td>
-</tr>
-<tr>
-<td>9932</td>
-<td style="text-align: center;">4</td>
-<td>Data Type</td>
-<td>Value which can describe the subsequent data.</td>
 </tr>
 <tr>
 <td>9936</td>
