@@ -1,4 +1,4 @@
 from lxml.html.diff import htmldiff
-doc1 = open("C:\\Users\\c065855\\Downloads\\Database_Schema_Reference_SEP14.0.1\\html-output\\columns.byTable.html").read()
-doc2 = open("C:\\Users\\c065855\\Downloads\\Database_Schema_Reference_SEP14.3.0.1\\html-output\\columns.byTable.html").read()
+doc1 = open("\\Downloads\\Database_Schema_Reference_SEP14.0.1\\html-output\\columns.byTable.html").read()
+doc2 = open("\\Downloads\\Database_Schema_Reference_SEP14.3.0.1\\html-output\\columns.byTable.html").read()
 htmldiff(doc1, doc2)
