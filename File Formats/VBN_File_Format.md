@@ -229,20 +229,18 @@ The quarantine file metadata appears to be in ASN.1 format. It is comprised of a
 
 </td><td>
 
-### Quarantine File Metadata Header
+### Quarantine Metadata
 
-| Offset | Length   | Field                    | Description                                   |
-| ------ | :------: | ------------------------ | --------------------------------------------- |
-| 0      | 8        | QFM Header               | Header is always 0000000000000000             |
-| 8      | 8        | QFM Header Size          | Size, in bytes, of the QFM header             |
-| 16     | 8        | QFM Size                 | Size, in bytes, of the QFM                    |
-| 24     | 8        | QFM Size + Header Size   | Size, in bytes, of the QFM and header         |
-| 32     | 8        | End of QFM to End of VBN | Size, in bytes, from end of QFM to end of VBN |
-| 40     | QFM Size | Quarntine File Metadata  | Quarantine File Metadata                      |
+| Offset | Length  | Field                   | Description                                  |
+| ------ | :-----: | ----------------------- | -------------------------------------------- |
+| 0      | 8       | QM Header               | Header is always 0000000000000000            |
+| 8      | 8       | QM Header Size          | Size, in bytes, of the QM header             |
+| 16     | 8       | QM Size                 | Size, in bytes, of the QM                    |
+| 24     | 8       | QM Size + Header Size   | Size, in bytes, of the QM and header         |
+| 32     | 8       | End of QM to End of VBN | Size, in bytes, from end of QM to end of VBN |
+| 40     | QM Size | Quarntine Metadata      | Quarantine Metadata                          |
 
-### Quarantine File Metadata
-
-The quarantine file metadata appears to be in ASN.1 format. It is comprised of a series of tags.
+The quarantine metadata appears to be in ASN.1 format. It is comprised of a series of tags.
 
 | Code | Value Length | Extra Data                                                                        |
 | ---- | :----------: | --------------------------------------------------------------------------------- |

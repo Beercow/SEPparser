@@ -319,7 +319,7 @@ h5 {
 <h1>VBN File Format</h1>
 </p>
 <table width="1500">
-<tr><th><h3>VBN file format V1 (Windows - pre SEP 12)</h3></th><th><h3>VBN file format V2 (Windows - SEP 12 +)</h3></th><th><h3>VBN file format V2 (Linux - SEP 12 +)</h3></th></tr>
+<tr><th><h3>VBN file format V1 (Windows - SEP 11)</h3></th><th><h3>VBN file format V2 (Windows - SEP 12 +)</h3></th><th><h3>VBN file format V2 (Linux - SEP 12 +)</h3></th></tr>
 <tr valign="top"><td>
 <p align="center">
 <h3>VBN Metadata</h3>
@@ -1110,7 +1110,7 @@ h5 {
 <td>0</td>
 <td style="text-align: center;">8</td>
 <td>Header</td>
-<td>QData location header, 0x6aaaa20ce</td>
+<td>QData location header, 00000006aaaa20ce</td>
 </tr>
 <tr>
 <td>8</td>
@@ -1253,7 +1253,7 @@ h5 {
 </tbody>
 </table>
 </td><td>
-<h3 id="quarantine-file-metadata-header">Quarantine File Metadata Header</h3>
+<h3 id="quarantine-metadata">Quarantine Metadata</h3>
 <table>
 <thead>
 <tr>
@@ -1267,43 +1267,42 @@ h5 {
 <tr>
 <td>0</td>
 <td style="text-align: center;">8</td>
-<td>QFM Header</td>
+<td>QM Header</td>
 <td>Header is always 0000000000000000</td>
 </tr>
 <tr>
 <td>8</td>
 <td style="text-align: center;">8</td>
-<td>QFM Header Size</td>
-<td>Size, in bytes, of the QFM header</td>
+<td>QM Header Size</td>
+<td>Size, in bytes, of the QM header</td>
 </tr>
 <tr>
 <td>16</td>
 <td style="text-align: center;">8</td>
-<td>QFM Size</td>
-<td>Size, in bytes, of the QFM</td>
+<td>QM Size</td>
+<td>Size, in bytes, of the QM</td>
 </tr>
 <tr>
 <td>24</td>
 <td style="text-align: center;">8</td>
-<td>QFM Size + Header Size</td>
-<td>Size, in bytes, of the QFM and header</td>
+<td>QM Size + Header Size</td>
+<td>Size, in bytes, of the QM and header</td>
 </tr>
 <tr>
 <td>32</td>
 <td style="text-align: center;">8</td>
-<td>End of QFM to End of VBN</td>
-<td>Size, in bytes, from end of QFM to end of VBN</td>
+<td>End of QM to End of VBN</td>
+<td>Size, in bytes, from end of QM to end of VBN</td>
 </tr>
 <tr>
 <td>40</td>
-<td style="text-align: center;">QFM Size</td>
-<td>Quarntine File Metadata</td>
-<td>Quarantine File Metadata</td>
+<td style="text-align: center;">QM Size</td>
+<td>Quarntine Metadata</td>
+<td>Quarantine Metadata</td>
 </tr>
 </tbody>
 </table>
-<h3 id="quarantine-file-metadata-1">Quarantine File Metadata</h3>
-<p>The quarantine file metadata appears to be in ASN.1 format. It is comprised of a series of tags.</p>
+<p>The quarantine metadata appears to be in ASN.1 format. It is comprised of a series of tags.</p>
 <table>
 <thead>
 <tr>
