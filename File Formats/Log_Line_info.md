@@ -1127,7 +1127,7 @@ If Field 1 contains a : separated string, the coresponding fields are as follows
 | Product Version            | The application version.                                                |
 | Field 7                    | Will require further investigation as to the purpose of this log entry. |
 | Field 8                    | Will require further investigation as to the purpose of this log entry. |
-| Field 9                    | Will require further investigation as to the purpose of this log entry. | 
+| SONAR Engine Version       | UMEngx86.dll version                                                    | 
 | Field 10                   | Will require further investigation as to the purpose of this log entry. |
 | Field 11                   | Will require further investigation as to the purpose of this log entry. |
 | Field 12                   | Will require further investigation as to the purpose of this log entry. |

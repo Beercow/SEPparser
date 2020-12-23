@@ -51,11 +51,11 @@ h5 {
 | 2332   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 2336   | 8      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 2344   | 4      | Data Type             | Value which can describe the subsequent data.                                            |
-| 2348   | 4      | Quarantine File Size  | Size of Quarantined File (bytes)                                                         |
+| 2348   | 4      | Quarantine Data Size  | Size of Quarantined Data (bytes)                                                         |
 | 2352   | 4      | Date Accessed         | Indicates a time of last access of an object. (Unix: 32 bit Hex)                         |
 | 2356   | 4      | Date Modified         | Indicates a time of last modification of content. (Unix: 32 bit Hex)                     |
 | 2360   | 4      | Date Created          | Indicates a time of creation of object on the file system. (Unix: 32 bit Hex)            |
-| 2364   | 4      | VBin Time             | Time file was quarantined. (Unix: 32 bit Hex)                                            |
+| 2364   | 4      | VBin Time             | Time data was quarantined. (Unix: 32 bit Hex)                                            |
 | 2368   | 8      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 2376   | 16     | Unique ID             | Unique GUID                                                                              |
 | 2392   | 260    | Unknown               | Will require further investigation as to the purpose of this entry.                      |
@@ -98,14 +98,14 @@ h5 {
 | 3396   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3400   | 8      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3408   | 4      | Data Type             | Value which can describe the subsequent data.                                            |
-| 3412   | 4      | Quarantine File Size  | Size of Quarantined File (bytes)                                                         |
+| 3412   | 4      | Quarantine Data Size  | Size of Quarantined Data (bytes)                                                         |
 | 3416   | 4      | Date Accessed         | Indicates a time of last access of an object. (Unix: 32 bit Hex)                         |
 | 3420   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3424   | 4      | Date Modified         | Indicates a time of last modification of content. (Unix: 32 bit Hex)                     |
 | 3428   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3432   | 4      | Date Created          | Indicates a time of creation of object on the file system. (Unix: 32 bit Hex)            |
 | 3436   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
-| 3440   | 4      | VBin Time             | Time file was quarantined. (Unix: 32 bit Hex)                                            |
+| 3440   | 4      | VBin Time             | Time data was quarantined. (Unix: 32 bit Hex)                                            |
 | 3444   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3448   | 4      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 3452   | 16     | Unique ID             | Unique GUID                                                                              |
@@ -151,11 +151,11 @@ h5 {
 | 9880   | 4      | Data Type             | Value which can describe the subsequent data.                                            |
 | 9884   | 16     | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 9900   | 36     | Unknown               | Will require further investigation as to the purpose of this entry.                      |
-| 9936   | 4      | Quarantine File Size  | Size of Quarantined File (bytes)                                                         |
+| 9936   | 4      | Quarantine Data Size  | Size of Quarantined Data (bytes)                                                         |
 | 9940   | 4      | Date Created          | Indicates a time of creation of object on the file system. (Unix: 32 bit Hex)            |
 | 9944   | 4      | Date Accessed         | Indicates a time of last access of an object. (Unix: 32 bit Hex)                         |
 | 9948   | 4      | Date Modified         | Indicates a time of last modification of content. (Unix: 32 bit Hex)                     |
-| 9952   | 4      | VBin Time             | Time file was quarantined. (Unix: 32 bit Hex)                                            |
+| 9952   | 4      | VBin Time             | Time data was quarantined. (Unix: 32 bit Hex)                                            |
 | 9956   | 8      | Unknown               | Will require further investigation as to the purpose of this entry.                      |
 | 9964   | 16     | Unique ID             | Unique GUID                                                                              |
 | 9980   | 4096   | Unknown               | Will require further investigation as to the purpose of this entry.                      |
@@ -177,11 +177,11 @@ h5 {
 </td></tr></table>
 
 <p>
-<h2>The following sections are XORed with 0x5A. The Record Type determines what comes next.</h2>
+<h2>The Record Type determines what comes next.</h2>
 </p>
 
 <table width="1750">
-<tr><th><h3>Record Type 0</h3></th><th><h3>Record Type 1</h3></th><th><h3>Record Type 2</h3></th></tr>
+<tr><th><h3>Record Type 0<br>The following sections are XORed with 0x5A.</h3></th><th><h3>Record Type 1</h3></th><th><h3>Record Type 2<br>The following sections are XORed with 0x5A.</h3></th></tr>
 <tr valign="top"><td>
 
 ### QData Location (Optional)
@@ -242,6 +242,8 @@ The quarantine file metadata appears to be in ASN.1 format. It is comprised of a
 
 The quarantine metadata appears to be in ASN.1 format. It is comprised of a series of tags.
 
+### ASN.1 Tags
+
 | Code | Value Length | Extra Data                                                                        |
 | ---- | :----------: | --------------------------------------------------------------------------------- |
 | 0x01 | 1            | None                                                                              |
@@ -256,48 +258,60 @@ The quarantine metadata appears to be in ASN.1 format. It is comprised of a seri
 | 0x10 | 16           | None                                                                              |
 
 
-### Quarantine File Info
+### Quarantine Info
 
-The quarantine file info appears to be in ASN.1 format. It is comprised of a series of tags.
+| Offset | Length                      | Field                                  | Description                                                 |
+| ------ | :-------------------------: | -------------------------------------- | ----------------------------------------------------------- |
+| 0      | 1                           | Tag1                                   | Can be 0x03 or 0x06                                         |
+| 1      | 4                           | Tag1 Value                             | Tag1 Value                                                  |
+| 5      | 1                           | Tag2                                   | Tag2                                                        |
+| 6      | 1                           | Tag2 Value                             | Tag2 Value (value can be 0x00 or 0x01)                      |
+| 7      | 1                           | Tag3 (Optional)                        | Tag3 (if Tag2 Value is 0x01, Tag3 can be 0x08 or 0x0A)      | 
+| 8      | 4                           | SHA1 Hash Length (Optional)            | Length of SHA1 (if Tag3 is 0x08, data will be present)      |
+| 12     | 82                          | SHA1 (Optional)                        | SHA1 of quarantine data                                     |
+| 94     | 1                           | Tag4 (Optional)                        | Tag4, always 0x03                                           |
+| 95     | 4                           | Tag4 Value (Optional)                  | Tag4 Value                                                  |
+| 99     | 1                           | Tag5 (Optional)                        | Tag5, always 0x03                                           |
+| 100    | 4                           | Tag5 Value (Optional)                  | Tag5 Value                                                  |
+| 104    | 1                           | Tag6 (Optional)                        | Tag6, always 0x09                                           |
+| 105    | 4                           | Quarantine Data Size Length (Optional) | Length of quarantine data size                              |
+| 109    | Quarantine Data Size Length | Quarantine Data Size (Optional)        | Size of quarantine data                                     |
 
-| Offset | Length | Field                                  | Description               |
-| ------ | :----: | -------------------------------------- | ----------------------------------------------------------- |
-| 0      | 1      | Tag1                                   | ASN.1 tag (can be 0x03 or 0x06)                             |
-| 1      | 4      | Tag1 Value                             | Value length of ASN.1 tag                                   |
-| 5      | 1      | Tag2                                   | ASN.1 tag                                                   |
-| 6      | 1      | Tag2 Value                             | Value length of ASN.1 tag (value can be 0x00 or 0x01)       |
-| 7      | 1      | Tag3 (Optional)                        | ASN.1 tag (if Tag2 Value is 0x01, Tag3 can be 0x08 or 0x0A) | 
-| 8      | 4      | SHA1 Hash Length (Optional)            | Length of SHA1 (if Tag3 is 0x08, data will be present)      |
-| 12     | 82     | SHA1 (Optional)                        | SHA1 of quarantine data                                     |
-| 94     | 1      | Tag4 (Optional)                        | ASN.1 tag, always 0x03                                      |
-| 95     | 4      | Tag4 Value (Optional)                  | Value length of ASN.1 tag                                   |
-| 99     | 1      | Tag5 (Optional)                        | ASN.1 tag, always 0x03                                      |
-| 100    | 4      | Tag5 Value (Optional)                  | Value length of ASN.1 tag                                   |
-| 104    | 1      | Tag6 (Optional)                        | ASN.1 tag, always 0x09                                      |
-| 105    | 4      | Quarantine Data Size Length (Optional) | Length of quarantine data size                              |
-| 109    | 8      | Quarantine Data Size (Optional)        | Size of quarantine data                                     |
 
-The next tag determines what comes next. There are two possibilities, 0x08 or 0x09.
 
-### 0x08 (Optional)
+### Quarantine SDDL (Optional)
 
-Quarantine File Info continued...
+Quarantine Info continued... (may not be present)
 
 | Offset | Lenght    | Field                | Description                 |
 | ------ | :-------: | -------------------- | --------------------------- |
-| 117    | 1         | Tag                  | ASN.1 tag, 0x08             |
+| 117    | 1         | Tag7                 | Tag7, always 0x08           |
 | 118    | 4         | SDDL Size            | Variable length             |
 | 122    | SDDL Size | SDDL                 | Security descriptor of file |
-| Varies | 1         | Tag                  | ASN.1 tag                   |
-| Varies | 4         | Tag Value            | Value length of ASN.1 tag   |
-| Varies | 1         | Tag                  | ASN.1 tag                   |
+| Varies | 1         | Tag8                 | Tag8                        |
+| Varies | 4         | Tag8 Value           | Tag8 Value                  |
+| Varies | 1         | Tag9                 | Tag9                        |
 | Varies | 8         | Quarantine Data Size | Size of quarntine data      |
 
-### 0x09
+If the Quarantine SDDL tag is not present, there can be two additional structures included with the quarantine data.  
 
-#### Quarantine Data
+#### Unknown (Optional)
+If the Quarantine Data Size in VBN Metadata is Smaller than the Quarantine Data Size in Quarantine Info, this structure will be present.
 
-The quarantine file is broken into chunks of data XORed with 0xA5. This continues until the last chunk divider.
+| Offset | Lenght                | Field                            | Description                                                         |
+| ------ | :-------------------: | -------------------------------- | ------------------------------------------------------------------- |
+| 0      | 1                     | Tag                              | ASN.1 tag, 0x09               |
+| 0      | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. |
+| 8      | 8                     | Unknown Data Size                | Size of unknown data                                                |
+| 16     | Unknown Data Size     | Unknown                          | Will require further investigation as to the purpose of this entry. |
+| Varies | 12                    | Unknown                          | Will require further investigation as to the purpose of this entry. |
+| Varies | 4                     | Quarantine Data Size             | Size of quarantined data                                            |
+| Varies | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. |
+
+
+#### Quarantine Data (Optional)
+
+The quarantine data is broken into chunks of data XORed with 0xA5. This continues until the last chunk divider.
 
 | Offset | Lenght     | Field                | Description                   |
 | ------ | :--------: | -------------------- | ----------------------------- |
@@ -305,20 +319,10 @@ The quarantine file is broken into chunks of data XORed with 0xA5. This continue
 | 1      | 4          | Chunk Size           | Variable length               |
 | 5      | Chunk Size | Data                 | Quarantine data XORed with A5 |
 
-If the 0x08 tag is not present, there can be two additional structures included with the quarantine data.  
-For now, I have labeled them as Junk Header and Junk Footer.
-
-#### Unknown/Attribute (Optional)
+#### Attribute (Optional)
 
 | Offset | Lenght                | Field                            | Description                                                         |
 | ------ | :-------------------: | -------------------------------- | ------------------------------------------------------------------- |
-| 0      | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. |
-| 8      | 8                     | Unknown Data Size                | Size of unknown data                                                |
-| 16     | Unknown Data Size     | Unknown                          | Will require further investigation as to the purpose of this entry. |
-| Varies | 12                    | Unknown                          | Will require further investigation as to the purpose of this entry. |
-| Varies | 4                     | Quarantine Data Size             | Size of quarantined data                                            |
-| Varies | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. |
-| Varies | Quarantine Data Size  | Quarantine Data                  | Quarantined data                                                    |
 | Varies | 8                     | Attribute Data Type (Optional)   | 0x02 = EA, 0x04 = ADS, 0x07 = ?                                     |
 | Varies | 8                     | Attribute Data Size (Optional)   | Size of attribute data                                              |
 | Varies | 4                     | Attribute Name Size (Optional)   | Size of attribute name field                                        |
