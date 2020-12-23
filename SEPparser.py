@@ -668,6 +668,110 @@ def sec_severity(_):
     else:
         return _
 
+def url_categories(_):
+    cat = {
+           '16':'Abortion',
+           '1':'Adult/Mature Content',
+           '23':'Alcohol',
+           '22':'Alternative Spirituality/Belief',
+           '30':'Art/Culture',
+           '59':'Auctions',
+           '84':'Audio/Video Clips',
+           '32':'Brokerage/Trading',
+           '21':'Business/Economy',
+           '29':'Charitable/Non-Profit',
+           '51':'Chat (IM)/SMS',
+           '26':'Child Pornography',
+           '116':'Cloud Infrastructure',
+           '124':'Compromised Sites',
+           '108':'Computer/Information Security',
+           '97':'Content Delivery Networks',
+           '25':'Controlled Substances',
+           '117':'Cryptocurrency',
+           '103':'Dynamic DNS Host',
+           '106':'E-Card/Invitations',
+           '27':'Education',
+           '52':'Email',
+           '105':'Email Marketing',
+           '20':'Entertainment',
+           '56':'File Storage/Sharing',
+           '31':'Finance',
+           '87':'For Kids',
+           '11':'Gambling',
+           '33':'Games',
+           '7':'Gore/Extreme',
+           '34':'Government/Legal',
+           '17':'Hacking',
+           '37':'Health',
+           '68':'Humor/Jokes',
+           '107':'Informational',
+           '109':'Internet Connected Devices',
+           '110':'Internet Telephony',
+           '5':'Intimate Apparel/Swimsuit',
+           '45':'Job Search/Careers',
+           '44':'Malicious Outbound Data/Botnets',
+           '43':'Malicious Sources/Malnets',
+           '121':'Marijuana',
+           '112':'Media Sharing',
+           '35':'Military',
+           '50':'Mixed Content/Potentially Adult',
+           '46':'News',
+           '53':'Newsgroups/Forums',
+           '6':'Nudity',
+           '85':'Office/Business Applications',
+           '111':'Online Meetings',
+           '83':'Peer-to-Peer (P2P)',
+           '63':'Personal Sites',
+           '47':'Personals/Dating',
+           '18':'Phishing',
+           '118':'Piracy/Copyright Concerns',
+           '98':'Placeholders',
+           '36':'Political/Social Advocacy',
+           '3':'Pornography',
+           '102':'Potentially Unwanted Software',
+           '86':'Proxy Avoidance',
+           '113':'Radio/Audio Streams',
+           '60':'Real Estate',
+           '49':'Reference',
+           '54':'Religion',
+           '57':'Remote Access',
+           '64':'Restaurants/Food',
+           '9':'Scam/Questionable Legality',
+           '40':'Search Engines/Portals',
+           '4':'Sex Education',
+           '93':'Sexual Expression',
+           '58':'Shopping',
+           '55':'Social Networking',
+           '61':'Society/Daily Living',
+           '71':'Software Downloads',
+           '101':'Spam',
+           '65':'Sports/Recreation',
+           '92':'Suspicious',
+           '38':'Technology/Internet',
+           '24':'Tobacco',
+           '95':'Translation',
+           '66':'Travel',
+           '114':'TV/Video Streams',
+           '90':'Uncategorized',
+           '104':'URL Shorteners',
+           '67':'Vehicles',
+           '14':'Violence/Intolerance',
+           '15':'Weapons',
+           '88':'Web Ads/Analytics',
+           '89':'Web Hosting',
+           '96':'Web Infrastructure'
+          }
+    
+    result = ''
+    
+    for a in _:
+        if a.rstrip() in cat:
+            result += cat[a.rstrip()] + ','
+        else:
+            result += a.rstrip() + ','
+
+    return result[:-1]
+
 def sys_severity(_):
     severity_value = {
                       '0':'Information',
@@ -2785,7 +2889,7 @@ def parse_seclog(f, logEntries):
         try:
             entry.urlhidlevel = logEntry2[23].decode("utf-8", "ignore")
             entry.urlriskscore = logEntry2[24].decode("utf-8", "ignore")
-            entry.urlcategories = logEntry2[25].decode("utf-8", "ignore")
+            entry.urlcategories = url_categories(logEntry2[25].decode("utf-8", "ignore").split(","))
         except:
             pass
             
