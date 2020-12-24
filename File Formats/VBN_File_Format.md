@@ -188,7 +188,7 @@ h5 {
 
 | Offset | Length           | Field                    | Description                                                         |
 | ------ | :--------------: | ------------------------ | ------------------------------------------------------------------- |
-| 0      | 8                | Header                   | QData location header, 00000006aaaa20ce                                  |
+| 0      | 8                | Header                   | QData location header, 00000006aaaa20ce                             |
 | 8      | 8                | Data Offset              | Offset to start of quarantine data                                  |
 | 16     | 8                | Data Size                | Size of quarantine data                                             |
 | 24     | 4                | EOF                      | Size from end of quarantine data to EOF                             |
@@ -300,7 +300,7 @@ If the Quarantine Data Size in VBN Metadata is Smaller than the Quarantine Data 
 
 | Offset | Lenght                | Field                            | Description                                                         |
 | ------ | :-------------------: | -------------------------------- | ------------------------------------------------------------------- |
-| 0      | 1                     | Tag                              | ASN.1 tag, 0x09               |
+| 0      | 1                     | Tag                              | ASN.1 tag, 0x09                                                     |
 | 0      | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. |
 | 8      | 8                     | Unknown Data Size                | Size of unknown data                                                |
 | 16     | Unknown Data Size     | Unknown                          | Will require further investigation as to the purpose of this entry. |
@@ -323,7 +323,7 @@ The quarantine data is broken into chunks of data XORed with 0xA5. This continue
 
 | Offset | Lenght                | Field                            | Description                                                         |
 | ------ | :-------------------: | -------------------------------- | ------------------------------------------------------------------- |
-| Varies | 8                     | Attribute Data Type (Optional)   | 0x02 = EA, 0x04 = ADS, 0x07 = ?                                     |
+| Varies | 8                     | Attribute Data Type (Optional)   | 0x02 = $EA, 0x04 = $DATA, 0x07 = $OBJECT_ID                         |
 | Varies | 8                     | Attribute Data Size (Optional)   | Size of attribute data                                              |
 | Varies | 4                     | Attribute Name Size (Optional)   | Size of attribute name field                                        |
 | Varies | Attribute Name Size   | Attribute Name (Optional)        | Name of attribute                                                   |
