@@ -186,13 +186,13 @@ h5 {
 
 ### QData Location (Optional)
 
-| Offset | Length           | Field                    | Description                                                         |
-| ------ | :--------------: | ------------------------ | ------------------------------------------------------------------- |
-| 0      | 8                | Header                   | QData location header, 00000006aaaa20ce                             |
-| 8      | 8                | Data Offset              | Offset to start of quarantine data                                  |
-| 16     | 8                | Data Size                | Size of quarantine data                                             |
-| 24     | 4                | EOF                      | Size from end of quarantine data to EOF                             |
-| 28     | Data Offset - 28 | Unknown                  | Will require further investigation as to the purpose of this entry. |
+| Offset | Length           | Field                  | Description                                                         |
+| ------ | :--------------: | ---------------------- | ------------------------------------------------------------------- |
+| 0      | 8                | Header                 | QData location header, 00000006aaaa20ce                             |
+| 8      | 8                | QUarantine Data Offset | Offset to start of quarantine data                                  |
+| 16     | 8                | QData Location Size    | Size of QData Location                                              |
+| 24     | 4                | EOF                    | Size from end of quarantine data to EOF                             |
+| 28     | Data Offset - 28 | Unknown                | Will require further investigation as to the purpose of this entry. |
 
 ### Quarantine Data
 
@@ -260,22 +260,22 @@ The quarantine metadata appears to be in ASN.1 format. It is comprised of a seri
 
 ### Quarantine Info
 
-| Offset | Length                      | Field                                  | Description                                                 |
-| ------ | :-------------------------: | -------------------------------------- | ----------------------------------------------------------- |
-| 0      | 1                           | Tag1                                   | Can be 0x03 or 0x06                                         |
-| 1      | 4                           | Tag1 Value                             | Tag1 Value                                                  |
-| 5      | 1                           | Tag2                                   | Tag2                                                        |
-| 6      | 1                           | Tag2 Value                             | Tag2 Value (value can be 0x00 or 0x01)                      |
-| 7      | 1                           | Tag3 (Optional)                        | Tag3 (if Tag2 Value is 0x01, Tag3 can be 0x08 or 0x0A)      | 
-| 8      | 4                           | SHA1 Hash Length (Optional)            | Length of SHA1 (if Tag3 is 0x08, data will be present)      |
-| 12     | 82                          | SHA1 (Optional)                        | SHA1 of quarantine data                                     |
-| 94     | 1                           | Tag4 (Optional)                        | Tag4, always 0x03                                           |
-| 95     | 4                           | Tag4 Value (Optional)                  | Tag4 Value                                                  |
-| 99     | 1                           | Tag5 (Optional)                        | Tag5, always 0x03                                           |
-| 100    | 4                           | Tag5 Value (Optional)                  | Tag5 Value                                                  |
-| 104    | 1                           | Tag6 (Optional)                        | Tag6, always 0x09                                           |
-| 105    | 4                           | Quarantine Data Size Length (Optional) | Length of quarantine data size                              |
-| 109    | Quarantine Data Size Length | Quarantine Data Size (Optional)        | Size of quarantine data                                     |
+| Offset | Length                      | Field                                  | Description                                            |
+| ------ | :-------------------------: | -------------------------------------- | ------------------------------------------------------ |
+| 0      | 1                           | Tag1                                   | 0x03                                                   |
+| 1      | 4                           | Tag1 Value                             | Tag1 Value                                             |
+| 5      | 1                           | Tag2                                   | Tag2                                                   |
+| 6      | 1                           | Tag2 Value                             | Tag2 Value (value can be 0x00 or 0x01)                 |
+| 7      | 1                           | Tag3 (Optional)                        | Tag3 (if Tag2 Value is 0x01, Tag3 can be 0x08 or 0x0A) | 
+| 8      | 4                           | SHA1 Hash Length (Optional)            | Length of SHA1 (if Tag3 is 0x08, data will be present) |
+| 12     | 82                          | SHA1 (Optional)                        | SHA1 of quarantine data                                |
+| 94     | 1                           | Tag4 (Optional)                        | Tag4, always 0x03                                      |
+| 95     | 4                           | Tag4 Value (Optional)                  | Tag4 Value                                             |
+| 99     | 1                           | Tag5 (Optional)                        | Tag5, always 0x03                                      |
+| 100    | 4                           | Tag5 Value (Optional)                  | Tag5 Value                                             |
+| 104    | 1                           | Tag6 (Optional)                        | Tag6, always 0x09                                      |
+| 105    | 4                           | Quarantine Data Size Length (Optional) | Length of quarantine data size                         |
+| 109    | Quarantine Data Size Length | Quarantine Data Size 2 (Optional)      | Size of quarantine data                                |
 
 
 
@@ -283,15 +283,15 @@ The quarantine metadata appears to be in ASN.1 format. It is comprised of a seri
 
 Quarantine Info continued... (may not be present)
 
-| Offset | Lenght    | Field                | Description                 |
-| ------ | :-------: | -------------------- | --------------------------- |
-| 117    | 1         | Tag7                 | Tag7, always 0x08           |
-| 118    | 4         | SDDL Size            | Variable length             |
-| 122    | SDDL Size | SDDL                 | Security descriptor of file |
-| Varies | 1         | Tag8                 | Tag8                        |
-| Varies | 4         | Tag8 Value           | Tag8 Value                  |
-| Varies | 1         | Tag9                 | Tag9                        |
-| Varies | 8         | Quarantine Data Size | Size of quarntine data      |
+| Offset | Lenght                   | Field                    | Description                 |
+| ------ | :----------------------: | ------------------------ | --------------------------- |
+| 117    | 1                        | Tag7                     | Tag7, always 0x08           |
+| 118    | 4                        | Security Descriptor Size | Variable length             |
+| 122    | Security Descriptor Size | Security Descriptor      | Security descriptor of file |
+| Varies | 1                        | Tag8                     | Tag8                        |
+| Varies | 4                        | Tag8 Value               | Tag8 Value                  |
+| Varies | 1                        | Tag9                     | Tag9                        |
+| Varies | 8                        | Quarantine Data Size 3   | Size of quarntine data      |
 
 If the Quarantine SDDL tag is not present, there can be two additional structures included with the quarantine data.  
 
@@ -300,7 +300,7 @@ If the Quarantine Data Size in VBN Metadata is Smaller than the Quarantine Data 
 
 | Offset | Lenght                | Field                            | Description                                                         |
 | ------ | :-------------------: | -------------------------------- | ------------------------------------------------------------------- |
-| 0      | 1                     | Tag                              | ASN.1 tag, 0x09                                                     |
+| 0      | 1                     | Tag                              | 0x09                                                                |
 | 0      | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. |
 | 8      | 8                     | Unknown Data Size                | Size of unknown data                                                |
 | 16     | Unknown Data Size     | Unknown                          | Will require further investigation as to the purpose of this entry. |

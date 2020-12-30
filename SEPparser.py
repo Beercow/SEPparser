@@ -37,22 +37,22 @@ def csv_header():
 
     tamperProtect.write('"File Name","Computer","User","Action Taken","Object Type","Event","Actor","Target","Target Process","Date and Time"\n')
 
-    quarantine.write('"File Name","Description","Record ID","Creation Date 1 UTC","Access Date 1 UTC","Modify Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","Quarantine Data Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","Record Type","Quarantine Session ID","Remediation Type","Wide Description","SHA1","Quarantine Data Size 2","SDDL","Quarantine Data Size 3","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2_Label","LOG:Event_Data2","LOG:Event_Data3_Label","LOG:Event_Data3","LOG:Event_Data4_Label","LOG:Event_Data4","LOG:Event_Data5_Label","LOG:Event_Data5","LOG:Event_Data6_Label","LOG:Event_Data6","LOG:Event_Data7_Label","LOG:Event_Data7","LOG:Event_Data8_Label","LOG:Event_Data8","LOG:Event_Data9_Label","LOG:Event_Data9","LOG:Event_Data10_Label","LOG:Event_Data10","LOG:Event_Data11_Label","LOG:Event_Data11","LOG:Event_Data12_Label","LOG:Event_Data12","LOG:Event_Data13_Label","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","Log:Eraser Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_SONAR_Engine_Version","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","LOG:Field113","LOG:Location","LOG:Field115","LOG:Digital_Signatures_Signer","LOG:Digital_Signatures_Issuer","LOG:Digital_Signatures_Certificate_Thumbprint","LOG:Field119","LOG:Digital_Signatures_Serial_Number","LOG:Digital_Signatures_Signing_Time","LOG:Field122","LOG:Field123","LOG:Field124","LOG:Field125","LOG:Field126"\n')
+    quarantine.write('"File Name","Virus","Description","Record ID","Creation Date 1 UTC","Access Date 1 UTC","Modify Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","Quarantine Data Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","Record Type","Quarantine Session ID","Remediation Type","Wide Description","SHA1","Quarantine Data Size 2","SID","SDDL","Quarantine Data Size 3","Detection Digest","GUID","Unknown Header","Attribute Type","Extra Data","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2_Label","LOG:Event_Data2","LOG:Event_Data3_Label","LOG:Event_Data3","LOG:Event_Data4_Label","LOG:Event_Data4","LOG:Event_Data5_Label","LOG:Event_Data5","LOG:Event_Data6_Label","LOG:Event_Data6","LOG:Event_Data7_Label","LOG:Event_Data7","LOG:Event_Data8_Label","LOG:Event_Data8","LOG:Event_Data9_Label","LOG:Event_Data9","LOG:Event_Data10_Label","LOG:Event_Data10","LOG:Event_Data11_Label","LOG:Event_Data11","LOG:Event_Data12_Label","LOG:Event_Data12","LOG:Event_Data13_Label","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","Log:Eraser Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_SONAR_Engine_Version","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","LOG:Field113","LOG:Location","LOG:Field115","LOG:Digital_Signatures_Signer","LOG:Digital_Signatures_Issuer","LOG:Digital_Signatures_Certificate_Thumbprint","LOG:Field119","LOG:Digital_Signatures_Serial_Number","LOG:Digital_Signatures_Signing_Time","LOG:Field122","LOG:Field123","LOG:Field124","LOG:Field125","LOG:Field126"\n')
     
     settings.write('"Log Name","Max Log Size","# of Logs","Running Total of Logs","Max Log Days","Field3","Field5","Field6"\n')
     
     if args.struct:
-        rt0v1.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QData_Location_Header","QData_Location_Offset","QData_Location_Size","EOF","Unknown15","QData_Info_Header","QData_Info_Size","Data"\n')
+        rt0v1.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_Data_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QData_Location_Header","Quarantine_Data_Offset","QData_Location_Size","EOF","Unknown15","QData_Info_Header","QData_Info_Size","QData"\n')
         
-        rt0v2.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QData_Location_Header","QData_Location_Offset","QData_Location_Size","EOF","Unknown15","QData_Info_Header","QData_Info_Size","Data"\n')
+        rt0v2.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_Data_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QData_Location_Header","Quarantine_Data_Offset","QData_Location_Size","EOF","Unknown15","QData_Info_Header","QData_Info_Size","QData"\n')
         
-        rt1v1.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14"\n')
+        rt1v1.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_Data_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14"\n')
         
-        rt1v2.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14"\n')
+        rt1v2.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_Data_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14"\n')
         
-        rt2v1.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QM_Header","QM_Header_Size","QM_Size","QM_Size_Header_Size","Data_Size_From_End_of_QM-to_End_of_VBN","Tag1","Tag1_Data","Tag2","Tag2_Data","Tag3","Hash_Size","SHA1","Tag4","Tag4_Data","Tag5","Tag5_Data","Tag6","QFS_Size","Quarantine_Data_Size","Tag7","Security_Descriptor_Size","Security_Descriptor","Tag8","Tag8_Data","Tag9","Quarantine_Data_Size_2","Unknown15","Size","Unknown16","Unknown17","File_Size","Unknown18","Unknown19","Size2","Unknown20","Unknown21"\n')
+        rt2v1.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_Data_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QM_Header","QM_Header_Size","QM_Size","QM_Size_Header_Size","End_of_QM_to_End_of_VBN","Tag1","Tag1_Data","Tag2","Tag2_Data","Tag3","SHA1_Hash_Length","SHA1","Tag4","Tag4_Data","Tag5","Tag5_Data","Tag6","QFS_Size","Quarantine_Data_Size_2","Tag7","Security_Descriptor_Size","Security_Descriptor","Tag8","Tag8_Data","Tag9","Quarantine_Data_Size_3","Unknown15","Size","Unknown16","Unknown17","File_Size","Unknown18","Unknown19","Size2","Unknown20","Unknown21"\n')
         
-        rt2v2.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_File_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QM_Header","QM_Header_Size","QM_Size","QM_Size_Header_Size","Data_Size_From_End_of_QM-to_End_of_VBN","Tag1","Tag1_Data","Tag2","Tag2_Data","Tag3","Hash_Size","SHA1","Tag4","Tag4_Data","Tag5","Tag5_Data","Tag6","QFS_Size","Quarantine_Data_Size","Tag7","Security_Descriptor_Size","Security_Descriptor","Tag8","Tag8_Data","Tag9","Quarantine_Data_Size_2","Unknown15","Size","Unknown16","Unknown17","File_Size","Unknown18","Unknown19","Size2","Unknown20","Unknown21"\n')
+        rt2v2.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_Data_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QM_Header","QM_Header_Size","QM_Size","QM_Size_Header_Size","End_of_QM_to_End_of_VBN","Tag1","Tag1_Data","Tag2","Tag2_Data","Tag3","SHA1_Hash_Length","SHA1","Tag4","Tag4_Data","Tag5","Tag5_Data","Tag6","QFS_Size","Quarantine_Data_Size_2","Tag7","Security_Descriptor_Size","Security_Descriptor","Tag8","Tag8_Data","Tag9","Quarantine_Data_Size_3","Unknown15","Size","Unknown16","Unknown17","File_Size","Unknown18","Unknown19","Size2","Unknown20","Unknown21"\n')
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 
@@ -213,7 +213,7 @@ typedef struct _VBN_METADATA_V1{
     int32 Unknown2;
     char Unknown3[8];
     int32 Data_Type3;
-    int32 Quarantine_File_Size;
+    int32 Quarantine_Data_Size;
     int32 Date_Accessed_2;
     int32 Date_Modified_2;
     int32 Date_Created_2;
@@ -254,7 +254,7 @@ typedef struct _VBN_METADATA_V2 {
     uint32 Unknown2;
     char Unknown3[8];
     int32 Data_Type3;
-    int32 Quarantine_File_Size;
+    int32 Quarantine_Data_Size;
     int32 Date_Accessed_2;
     int32 Unknown4;
     int32 Date_Modified_2;
@@ -288,7 +288,7 @@ typedef struct _VBN_METADATA_Linux{
     int32 Flags; //if 0x2 contains dates, if 0x1 no dates
     uint32 Record_ID;
     char Unknown1[36];
-    int32 Quarantine_File_Size;
+    int32 Quarantine_Data_Size;
     int32 Date_Modified;
     int32 Date_Created;
     int32 Date_Accessed;
@@ -301,7 +301,7 @@ typedef struct _VBN_METADATA_Linux{
     int32 Data_Type2;
     char Unknown3[16];
     char Unknown4[36];
-    int32 Quarantine_File_Size_2;
+    int32 Quarantine_Data_Size_2;
     int32 Date_Created_2;
     int32 Date_Accessed_2;
     int32 Date_Modified_2;
@@ -344,7 +344,7 @@ typedef struct _VBN_METADATA_Linux_V2{
     int32 Unknown3;
     char Unknown4[44];
     int32 Data_Type3;
-    int32 Quarantine_File_Size;
+    int32 Quarantine_Data_Size;
     int32 Date_Created_2;
     int32 Date_Accessed_2;
     int32 Date_Modified_2;
@@ -372,7 +372,7 @@ typedef struct _Quarantine_Metadata_Header {
     int64 QM_Header_Size;
     int64 QM_Size;
     int64 QM_Size_Header_Size;
-    int64 Data_Size_From_End_of_QM-to_End_of_VBN;
+    int64 End_of_QM_to_End_of_VBN;
     char QM[QM_Size]  //Full structure to end
 } Quarantine_Metadata_Header;
 
@@ -447,15 +447,15 @@ typedef struct _Quarantine_Info2 {
 
 typedef struct _Quarantine_Info3 {
     byte Tag3
-    int32 Hash_Size;
-    char SHA1[Hash_Size]; //need to fix for wchar
+    int32 SHA1_Hash_Length;
+    char SHA1[SHA1_Hash_Length]; //need to fix for wchar
     byte Tag4;
     int32 Tag4_Data;
     byte Tag5;
     int32 Tag5_Data;
     byte Tag6;
     int32 QFS_Size;
-    char Quarantine_Data_Size[QFS_Size];
+    char Quarantine_Data_Size_2[QFS_Size];
 } Quarantine_Info3;
 
 typedef struct _Tag {
@@ -469,7 +469,7 @@ typedef struct _Quarantine_Info4 {
     byte Tag8;
     int32 Tag8_Data;
     byte Tag9;
-    int64 Quarantine_Data_Size_2;
+    int64 Quarantine_Data_Size_3;
 } Quarantine_Info4;
 
 typedef struct _Chunk {
@@ -482,7 +482,7 @@ typedef struct _Unknown_Header {
     int64 Size;
     char Unknown16[Size];
     char Unknown17[12];
-    int32 File_Size;
+    int32 Quarantine_Data_Size;
     int64 Unknown18;
 } Unknown_Header;
 
@@ -529,16 +529,16 @@ typedef struct _FILE_FULL_EA_INFORMATION {
 
 typedef struct _QData_Location {
     int64 Header;
-    int64 QData_Location_Offset;
+    int64 Quarantine_Data_Offset;
     int64 QData_Location_Size;
     int32 EOF;
-    char Unknown15[QData_Location_Offset -28];
+    char Unknown15[Quarantine_Data_Offset -28];
 } QData_Location;
 
 typedef struct _QData_Info {
     int64 QData_Info_Header;
     int64 QData_Info_Size;
-    char Data[QData_Info_Size -16];
+    char QData[QData_Info_Size -16];
 } QData_Info;
 
 """
@@ -2500,7 +2500,7 @@ def read_sep_tag(_, sub=False):
     for a in match:
         if 'Detection Digest:' in a:
             match.remove(a)
-            dd = a.replace('"', '""')
+            dd = '\r\n'.join(a.split('\r\n')[1:]).replace('"', '""')
         try:
             sddl = sddl_translate(a)
             match.remove(a)
@@ -3187,16 +3187,13 @@ def parse_daily_av(f, logType, tz):
         logEntry = f.readline()
 
 def parse_vbn(f, logType, tz):
-#    logEntry = ''
-    vbin = ''
-    qfile = '' #needed
-    sddl = '' #needed
-    sha1 = '' #needed
-    qds2 = '' #needed
-    qds3= '' #needed
-    fpath1 = ''
-    fpath2 = ''
-    fpath3 = ''
+    vbin = '' #linux
+    qfile = ''
+    sddl = ''
+    sha1 = ''
+    qds2 = ''
+    qds3= ''
+    attribType = ''
     dd = ''
     tags = []
     sid = ''
@@ -3206,8 +3203,6 @@ def parse_vbn(f, logType, tz):
     garbage = None
     header = 0
     footer = 0
-    qfs = 0
-    junkfs = 0
     f.seek(0, 0)
     qm_offset = struct.unpack('i', f.read(4))[0]
     f.seek(0, 0)
@@ -3269,8 +3264,8 @@ def parse_vbn(f, logType, tz):
                     sout += str(v).replace('"', '""')+'","'
             if args.hex_dump:
                 cstruct.dumpstruct(qdata_location)
-            pos = vbnmeta.QM_HEADER_Offset + qdata_location.QData_Location_Offset
-            file_size = qdata_location.QData_Location_Size - qdata_location.QData_Location_Offset
+            pos = vbnmeta.QM_HEADER_Offset + qdata_location.Quarantine_Data_Offset
+            file_size = qdata_location.QData_Location_Size - qdata_location.Quarantine_Data_Offset
             f.seek(pos)
             if args.extract:
                 print('\n           #######################################################')
@@ -3352,103 +3347,108 @@ def parse_vbn(f, logType, tz):
 
         pos = qmh.QM_Size_Header_Size + vbnmeta.QM_HEADER_Offset
         f.seek(pos)
-        qi = vbnstruct.Quarantine_Info(xor(f.read(7), 0x5A).encode('latin-1'))
-        if args.hex_dump:
-            cstruct.dumpstruct(qi)
-        if args.struct:
-            for k, v in qi._values.items():
-                sout += str(v).replace('"', '""')+'","'
-        if qi.Tag2_Data == 1:
-            qi2 = vbnstruct.Quarantine_Info2(xor(f.read(1), 0x5A).encode('latin-1'))
+        dataType = int.from_bytes(xor(f.read(1), 0x5A).encode('latin-1'), 'little')
+        f.seek(pos)
+
+        if dataType == 3:
+            qi = vbnstruct.Quarantine_Info(xor(f.read(7), 0x5A).encode('latin-1'))
             if args.hex_dump:
-                cstruct.dumpstruct(qi2)
+                cstruct.dumpstruct(qi)
             if args.struct:
-                for k, v in qi2._values.items():
+                for k, v in qi._values.items():
                     sout += str(v).replace('"', '""')+'","'
-            if qi2.Tag3 == 8:
-                qi3_size = struct.unpack('i', xor(f.read(4), 0x5A).encode('latin-1'))[0] + 27
-                f.seek(-4, 1)
-                qi3 = vbnstruct.Quarantine_Info3(xor(f.read(qi3_size), 0x5A).encode('latin-1'))
-                sha1 = qi3.SHA1.decode('latin-1').replace("\x00", "")
-                qfs = int.from_bytes(qi3.Quarantine_Data_Size, 'little')
-                qds2 = int.from_bytes(qi3.Quarantine_Data_Size, 'little')
+            if qi.Tag2_Data == 1:
+                qi2 = vbnstruct.Quarantine_Info2(xor(f.read(1), 0x5A).encode('latin-1'))
                 if args.hex_dump:
-                    cstruct.dumpstruct(qi3)
+                    cstruct.dumpstruct(qi2)
                 if args.struct:
                     for k, v in qi2._values.items():
                         sout += str(v).replace('"', '""')+'","'
+                if qi2.Tag3 == 8:
+                    qi3_size = struct.unpack('i', xor(f.read(4), 0x5A).encode('latin-1'))[0] + 27
+                    f.seek(-4, 1)
+                    qi3 = vbnstruct.Quarantine_Info3(xor(f.read(qi3_size), 0x5A).encode('latin-1'))
+                    sha1 = qi3.SHA1.decode('latin-1').replace("\x00", "")
+#                    qfs = int.from_bytes(qi3.Quarantine_Data_Size, 'little')
+                    qds2 = int.from_bytes(qi3.Quarantine_Data_Size_2, 'little')
+                    if args.hex_dump:
+                        cstruct.dumpstruct(qi3)
+                    if args.struct:
+                        for k, v in qi2._values.items():
+                            sout += str(v).replace('"', '""')+'","'
         
-        try:
-            dataType = vbnstruct.Tag(xor(f.read(1), 0x5A).encode('latin-1'))
+            try:
+                dataType = vbnstruct.Tag(xor(f.read(1), 0x5A).encode('latin-1'))
         
-            if args.hex_dump:
-                cstruct.dumpstruct(dataType)
-            if dataType.Tag == 0:
-                read_sep_tag(xor(f.read(), 0x5A).encode('latin-1'))
+                if args.hex_dump:
+                    cstruct.dumpstruct(dataType)
+                if dataType.Tag == 0:
+                    read_sep_tag(xor(f.read(), 0x5A).encode('latin-1'))
             
-            if dataType.Tag == 8:
-                pos += 35 + qi3.Hash_Size
-                f.seek(pos)
-                qi4_size = struct.unpack('i', xor(f.read(4), 0x5A).encode('latin-1'))[0] + 18
-                f.seek(-4, 1)
-                qi4 =  vbnstruct.Quarantine_Info4(xor(f.read(qi4_size), 0x5A).encode('latin-1'))
-                if args.struct:
-                    for k, v in qi4._values.items():
-                        sout += str(v).replace('"', '""')+'","'
-                sddl = sddl_translate(qi4.Security_Descriptor.decode('latin-1').replace("\x00", ""))
-                qds3 = qi4.Quarantine_Data_Size_2
-                if args.hex_dump:
-                    cstruct.dumpstruct(qi4)
-                pos += 19 + qi4.Security_Descriptor_Size
-                f.seek(pos)
+                if dataType.Tag == 8:
+                    pos += 35 + qi3.SHA1_Hash_Length
+                    f.seek(pos)
+                    qi4_size = struct.unpack('i', xor(f.read(4), 0x5A).encode('latin-1'))[0] + 18
+                    f.seek(-4, 1)
+                    qi4 =  vbnstruct.Quarantine_Info4(xor(f.read(qi4_size), 0x5A).encode('latin-1'))
+                    if args.struct:
+                        for k, v in qi4._values.items():
+                            sout += str(v).replace('"', '""')+'","'
+                    sddl = sddl_translate(qi4.Security_Descriptor.decode('latin-1').replace("\x00", ""))
+                    qds3 = qi4.Quarantine_Data_Size_3
+                    if args.hex_dump:
+                        cstruct.dumpstruct(qi4)
+                    pos += 19 + qi4.Security_Descriptor_Size
+                    f.seek(pos)
         
-            else:
-                if args.struct:
-                    sout += '","","","","","","","'
+                else:
+                    if args.struct:
+                        sout += '","","","","","","","'
         
-            if dataType.Tag == 9:
-                garbage = qfs - vbnmeta.Quarantine_File_Size
-                pos += 35 + qi3.Hash_Size
+                if dataType.Tag == 9:
+                    garbage = qds2 - vbnmeta.Quarantine_Data_Size
+                    pos += 35 + qi3.SHA1_Hash_Length
+                    f.seek(pos)
+
+ #           try:
+                chunk = vbnstruct.chunk(xor(f.read(5), 0x5A).encode('latin-1'))
+                pos += 5
                 f.seek(pos)
-
- #       try:
-            chunk = vbnstruct.chunk(xor(f.read(5), 0x5A).encode('latin-1'))
-            pos += 5
-            f.seek(pos)
-            if garbage is not None:
-                junk = vbnstruct.Unknown_Header(xor(f.read(1000), 0xA5).encode('latin-1'))
-                if args.struct:
-                    for k, v in junk._values.items():
-                        sout += str(v).replace('"', '""')+'","'
-                    
-                junkfs = junk.File_Size
-                if args.hex_dump:
-                    cstruct.dumpstruct(junk)
-                f.seek(pos)
-
-            if args.hex_dump or args.extract or args.struct or args.quarantine_dump:
-                while True:
-                    if chunk.Data_Type == 9:
-                        if args.hex_dump:
-                            cstruct.dumpstruct(chunk)
-                        qfile += xor(f.read(chunk.Chunk_Size), 0xA5)
-
-                        try:
-                            pos += chunk.Chunk_Size
-                            chunk = vbnstruct.chunk(xor(f.read(5), 0x5A).encode('latin-1'))
-                            pos += 5
-                            f.seek(pos)
-
-                        except:
-                            break
-
-                    else:
-                        break
-
                 if garbage is not None:
+                    junk = vbnstruct.Unknown_Header(xor(f.read(1000), 0xA5).encode('latin-1'))
                     header = junk.Size + 40
                     footer = garbage - header
-                    qfs = len(qfile) - footer
+                    if args.struct:
+                        for k, v in junk._values.items():
+                            sout += str(v).replace('"', '""')+'","'
+
+                    if args.hex_dump:
+                        cstruct.dumpstruct(junk)
+                    f.seek(pos)
+
+                if args.hex_dump or args.extract or args.struct or args.quarantine_dump:
+                    while True:
+                        if chunk.Data_Type == 9:
+                            if args.hex_dump:
+                                cstruct.dumpstruct(chunk)
+                            qfile += xor(f.read(chunk.Chunk_Size), 0xA5)
+
+                            try:
+                                pos += chunk.Chunk_Size
+                                chunk = vbnstruct.chunk(xor(f.read(5), 0x5A).encode('latin-1'))
+                                pos += 5
+                                f.seek(pos)
+
+                            except:
+                                break
+
+                        else:
+                            break
+
+                if garbage is not None:
+ #                        header = junk.Size + 40
+ #                       footer = garbage - header
+                    qfs = qds2 - footer
                     f.seek(-footer, 2)
                     try:
                         attribType = int.from_bytes(xor(f.read(1), 0xA5).encode('latin-1'), 'little')
@@ -3493,11 +3493,15 @@ def parse_vbn(f, logType, tz):
                     except:
                         pass
                 
-        except:
-            if args.extract:
-                print(f'\033[1;31mDoes not contain quarantine data. Clean by Deletion.\033[1;0m\n')
-                print(f'\033[1;32mFinished parsing {f.name} \033[1;0m\n')
-            pass
+            except:
+                if args.extract:
+                    print(f'\033[1;31mDoes not contain quarantine data. Clean by Deletion.\033[1;0m\n')
+                    print(f'\033[1;32mFinished parsing {f.name} \033[1;0m\n')
+                pass
+                
+        if dataType == 6:
+            if args.hex_dump:
+                print(hexdump_tag(xor(f.read(), 0x5A).encode('latin-1')))
             
         if args.struct:
             if vbnv == 1:
@@ -3534,7 +3538,7 @@ def parse_vbn(f, logType, tz):
             access = from_unix_sec(vbnmeta.Date_Accessed)
             vbin = from_unix_sec(vbnmeta.VBin_Time)
 
-        quarantine.write(f'"{f.name}","{description}","{vbnmeta.Record_ID}","{create}","{access}","{modify}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_File_Size}","{from_unix_sec(vbnmeta.Date_Created_2)}","{from_unix_sec(vbnmeta.Date_Accessed_2)}","{from_unix_sec(vbnmeta.Date_Modified_2)}","{from_unix_sec(vbnmeta.VBin_Time_2)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Quarantine_Session_ID)[2:].upper()}","{remediation_type_desc(vbnmeta.Remediation_Type)}","{wDescription}","{sha1}","{qds2}","{sddl}","{qds3}",{logEntry}\n')
+        quarantine.write(f'"{f.name}","{virus}","{description}","{vbnmeta.Record_ID}","{create}","{access}","{modify}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_Data_Size}","{from_unix_sec(vbnmeta.Date_Created_2)}","{from_unix_sec(vbnmeta.Date_Accessed_2)}","{from_unix_sec(vbnmeta.Date_Modified_2)}","{from_unix_sec(vbnmeta.VBin_Time_2)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Quarantine_Session_ID)[2:].upper()}","{remediation_type_desc(vbnmeta.Remediation_Type)}","{wDescription}","{sha1}","{qds2}","{sid}","{sddl}","{qds3}","{dd}","{guid}","{"Yes" if header > 0 else "No"}","{attribType}","{tags}",{logEntry}\n')
 
 def extract_sym_submissionsidx(f):
     f.seek(48)

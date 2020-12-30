@@ -1115,14 +1115,14 @@ h5 {
 <tr>
 <td>8</td>
 <td style="text-align: center;">8</td>
-<td>Data Offset</td>
+<td>QUarantine Data Offset</td>
 <td>Offset to start of quarantine data</td>
 </tr>
 <tr>
 <td>16</td>
 <td style="text-align: center;">8</td>
-<td>Data Size</td>
-<td>Size of quarantine data</td>
+<td>QData Location Size</td>
+<td>Size of QData Location</td>
 </tr>
 <tr>
 <td>24</td>
@@ -1380,7 +1380,7 @@ h5 {
 <td>0</td>
 <td style="text-align: center;">1</td>
 <td>Tag1</td>
-<td>Can be 0x03 or 0x06</td>
+<td>0x03</td>
 </tr>
 <tr>
 <td>1</td>
@@ -1457,7 +1457,7 @@ h5 {
 <tr>
 <td>109</td>
 <td style="text-align: center;">Quarantine Data Size Length</td>
-<td>Quarantine Data Size (Optional)</td>
+<td>Quarantine Data Size 2 (Optional)</td>
 <td>Size of quarantine data</td>
 </tr>
 </tbody>
@@ -1483,13 +1483,13 @@ h5 {
 <tr>
 <td>118</td>
 <td style="text-align: center;">4</td>
-<td>SDDL Size</td>
+<td>Security Descriptor Size</td>
 <td>Variable length</td>
 </tr>
 <tr>
 <td>122</td>
-<td style="text-align: center;">SDDL Size</td>
-<td>SDDL</td>
+<td style="text-align: center;">Security Descriptor Size</td>
+<td>Security Descriptor</td>
 <td>Security descriptor of file</td>
 </tr>
 <tr>
@@ -1513,7 +1513,7 @@ h5 {
 <tr>
 <td>Varies</td>
 <td style="text-align: center;">8</td>
-<td>Quarantine Data Size</td>
+<td>Quarantine Data Size 3</td>
 <td>Size of quarntine data</td>
 </tr>
 </tbody>
@@ -1535,7 +1535,7 @@ h5 {
 <td>0</td>
 <td style="text-align: center;">1</td>
 <td>Tag</td>
-<td>ASN.1 tag, 0x09</td>
+<td>0x09</td>
 </tr>
 <tr>
 <td>0</td>
