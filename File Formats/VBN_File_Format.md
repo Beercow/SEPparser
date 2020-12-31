@@ -24,7 +24,7 @@ h5 {
 <h1>VBN File Format</h1>
 </p>
 
-<table width="1500">
+<table>
 <tr><th><h3>VBN file format V1 (Windows - SEP 11)</h3></th><th><h3>VBN file format V2 (Windows - SEP 12 +)</h3></th><th><h3>VBN file format V2 (Linux - SEP 12 +)</h3></th></tr>
 <tr valign="top"><td>
 
@@ -180,7 +180,7 @@ h5 {
 <h2>The Record Type determines what comes next.</h2>
 </p>
 
-<table width="1750">
+<table>
 <tr><th><h3>Record Type 0<br>The following sections are XORed with 0x5A.</h3></th><th><h3>Record Type 1</h3></th><th><h3>Record Type 2<br>The following sections are XORed with 0x5A.</h3></th></tr>
 <tr valign="top"><td>
 
@@ -210,9 +210,9 @@ h5 {
 
 </td><td>
 
-### Quarantine File Metadata
+### Quarantine Metadata
 
-The quarantine file metadata appears to be in ASN.1 format. It is comprised of a series of tags.
+The quarantine metadata appears to be in ASN.1 format. It is comprised of a series of tags.
 
 | Code | Value Length | Extra Data                                                                        |
 | ---- | :----------: | --------------------------------------------------------------------------------- |
@@ -258,7 +258,15 @@ The quarantine metadata appears to be in ASN.1 format. It is comprised of a seri
 | 0x10 | 16           | None                                                                              |
 
 
-### Quarantine Info
+<p>
+<h3>The Tag determines what comes next.</h3>
+</p>
+
+<table>
+<tr><th><h3>0x03 Quarantine Hash</h3></th><th><h3>0x06 Unknown</h3></th></tr>
+<tr valign="top"><td>
+
+### Quarantine Hash
 
 | Offset | Length                      | Field                                  | Description                                            |
 | ------ | :-------------------------: | -------------------------------------- | ------------------------------------------------------ |
@@ -266,9 +274,9 @@ The quarantine metadata appears to be in ASN.1 format. It is comprised of a seri
 | 1      | 4                           | Tag1 Value                             | Tag1 Value                                             |
 | 5      | 1                           | Tag2                                   | Tag2                                                   |
 | 6      | 1                           | Tag2 Value                             | Tag2 Value (value can be 0x00 or 0x01)                 |
-| 7      | 1                           | Tag3 (Optional)                        | Tag3 (if Tag2 Value is 0x01, Tag3 can be 0x08 or 0x0A) | 
+| 7      | 1                           | Tag3 (Optional)                        | Tag3 (if Tag2 Value is 0x01, Tag3 is 0x08              | 
 | 8      | 4                           | SHA1 Hash Length (Optional)            | Length of SHA1 (if Tag3 is 0x08, data will be present) |
-| 12     | 82                          | SHA1 (Optional)                        | SHA1 of quarantine data                                |
+| 12     | SHA1 Hash Length            | SHA1 (Optional)                        | SHA1 of quarantine data                                |
 | 94     | 1                           | Tag4 (Optional)                        | Tag4, always 0x03                                      |
 | 95     | 4                           | Tag4 Value (Optional)                  | Tag4 Value                                             |
 | 99     | 1                           | Tag5 (Optional)                        | Tag5, always 0x03                                      |
@@ -281,13 +289,13 @@ The quarantine metadata appears to be in ASN.1 format. It is comprised of a seri
 
 ### Quarantine SDDL (Optional)
 
-Quarantine Info continued... (may not be present)
+(may not be present)
 
 | Offset | Lenght                   | Field                    | Description                 |
 | ------ | :----------------------: | ------------------------ | --------------------------- |
-| 117    | 1                        | Tag7                     | Tag7, always 0x08           |
-| 118    | 4                        | Security Descriptor Size | Variable length             |
-| 122    | Security Descriptor Size | Security Descriptor      | Security descriptor of file |
+| 0      | 1                        | Tag7                     | Tag7, always 0x08           |
+| 1      | 4                        | Security Descriptor Size | Variable length             |
+| 5      | Security Descriptor Size | Security Descriptor      | Security descriptor of file |
 | Varies | 1                        | Tag8                     | Tag8                        |
 | Varies | 4                        | Tag8 Value               | Tag8 Value                  |
 | Varies | 1                        | Tag9                     | Tag9                        |
@@ -298,28 +306,33 @@ If the Quarantine SDDL tag is not present, there can be two additional structure
 #### Unknown (Optional)
 If the Quarantine Data Size in VBN Metadata is Smaller than the Quarantine Data Size in Quarantine Info, this structure will be present.
 
-| Offset | Lenght                | Field                            | Description                                                         |
-| ------ | :-------------------: | -------------------------------- | ------------------------------------------------------------------- |
-| 0      | 1                     | Tag                              | 0x09                                                                |
-| 0      | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. |
-| 8      | 8                     | Unknown Data Size                | Size of unknown data                                                |
-| 16     | Unknown Data Size     | Unknown                          | Will require further investigation as to the purpose of this entry. |
-| Varies | 12                    | Unknown                          | Will require further investigation as to the purpose of this entry. |
-| Varies | 4                     | Quarantine Data Size             | Size of quarantined data                                            |
-| Varies | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. |
+| Offset | Lenght                | Field                            | Description                                                                         |
+| ------ | :-------------------: | -------------------------------- | ----------------------------------------------------------------------------------- |
+| 0      | 1                     | Tag                              | ASN.1 tag, 0x09                                                                     |
+| 1      | 4                     | Chunk Size                       | Variable length                                                                     |
+| 5      | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. (XORed with A5) |
+| 13     | 4                     | Unknown Data Size                | Size of unknown data (XORed with A5)                                                |
+| 17     | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. (XORed with A5) |
+| 25     | Unknown Data Size     | Unknown                          | Will require further investigation as to the purpose of this entry. (XORed with A5) |
+| Varies | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. (XORed with A5) |
+| Varies | 4                     | Quarantine Data Size             | Size of quarantined data (XORed with A5)                                            |
+| Varies | 8                     | Unknown                          | Will require further investigation as to the purpose of this entry. (XORed with A5) |
+| Varies | Chunk Size            | Data                             | Quarantine data (XORed with A5)                                                     |
 
 
 #### Quarantine Data (Optional)
 
 The quarantine data is broken into chunks of data XORed with 0xA5. This continues until the last chunk divider.
 
-| Offset | Lenght     | Field                | Description                   |
-| ------ | :--------: | -------------------- | ----------------------------- |
-| 0      | 1          | Tag                  | ASN.1 tag, 0x09               |
-| 1      | 4          | Chunk Size           | Variable length               |
-| 5      | Chunk Size | Data                 | Quarantine data XORed with A5 |
+| Offset | Lenght     | Field                | Description                     |
+| ------ | :--------: | -------------------- | ------------------------------- |
+| 0      | 1          | Tag                  | ASN.1 tag, 0x09                 |
+| 1      | 4          | Chunk Size           | Variable length                 |
+| 5      | Chunk Size | Data                 | Quarantine data (XORed with A5) |
 
 #### Attribute (Optional)
+
+The followinf data is XORed with A5
 
 | Offset | Lenght                | Field                            | Description                                                         |
 | ------ | :-------------------: | -------------------------------- | ------------------------------------------------------------------- |
@@ -328,5 +341,25 @@ The quarantine data is broken into chunks of data XORed with 0xA5. This continue
 | Varies | 4                     | Attribute Name Size (Optional)   | Size of attribute name field                                        |
 | Varies | Attribute Name Size   | Attribute Name (Optional)        | Name of attribute                                                   |
 | Varies | Attribute Data Size   | Attribute Data (Optional)        | Data, varies by type                                                |
+
+</td><td>
+
+The Unknown appears to be in ASN.1 format. It is comprised of a series of tags.
+
+### ASN.1 Tags
+
+| Code | Value Length | Extra Data                                                                        |
+| ---- | :----------: | --------------------------------------------------------------------------------- |
+| 0x01 | 1            | None                                                                              |
+| 0x0A | 1            | None                                                                              |
+| 0x03 | 4            | None                                                                              |
+| 0x06 | 4            | None                                                                              |
+| 0x04 | 8            | None                                                                              |
+| 0x07 | 4            | NUL-terminated ASCII String (of length controlled by dword following 0x07 code)   |
+| 0x08 | 4            | NUL-terminated Unicode String (of length controlled by dword following 0x08 code) |
+| 0x09 | 4            | Container (of length controlled by dword following 0x09 code)                     |
+| 0x0F | 16           | None                                                                              |
+| 0x10 | 16           | None                                                                              |
+
 
 </td></tr></table>

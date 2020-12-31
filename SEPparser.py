@@ -434,35 +434,11 @@ typedef struct _ASN1_Error {
     char Data[16];
 } ASN1_Error;
 
-typedef struct _Quarantine_Info {
-    byte Tag1;
-    int32 Tag1_Data;
-    byte Tag2;
-    byte Tag2_Data;
-} Quarantine_Info;
-
-typedef struct _Quarantine_Info2 {
-    byte Tag3;
-} Quarantine_Info2;
-
-typedef struct _Quarantine_Info3 {
-    byte Tag3
-    int32 SHA1_Hash_Length;
-    char SHA1[SHA1_Hash_Length]; //need to fix for wchar
-    byte Tag4;
-    int32 Tag4_Data;
-    byte Tag5;
-    int32 Tag5_Data;
-    byte Tag6;
-    int32 QFS_Size;
-    char Quarantine_Data_Size_2[QFS_Size];
-} Quarantine_Info3;
-
 typedef struct _Tag {
     byte Tag;
 } Tag;
 
-typedef struct _Quarantine_Info4 {
+typedef struct _Quarantine_SDDL {
     byte Tag7;
     int32 Security_Descriptor_Size;
     char Security_Descriptor[Security_Descriptor_Size]; //need to fix for wchar
@@ -470,7 +446,7 @@ typedef struct _Quarantine_Info4 {
     int32 Tag8_Data;
     byte Tag9;
     int64 Quarantine_Data_Size_3;
-} Quarantine_Info4;
+} Quarantine_SDDL;
 
 typedef struct _Chunk {
     byte Data_Type;
@@ -479,11 +455,12 @@ typedef struct _Chunk {
 
 typedef struct _Unknown_Header {
     int64 Unknown15;
-    int64 Size;
-    char Unknown16[Size];
-    char Unknown17[12];
-    int32 Quarantine_Data_Size;
+    int32 Size;
+    int64 Unknown16;
+    char Unknown17[Size];
     int64 Unknown18;
+    int32 Quarantine_Data_Size;
+    int64 Unknown19;
 } Unknown_Header;
 
 typedef struct _Unknown_Attribute {
@@ -540,6 +517,26 @@ typedef struct _QData_Info {
     int64 QData_Info_Size;
     char QData[QData_Info_Size -16];
 } QData_Info;
+
+typedef struct _Quarantine_Hash {
+    byte Tag1;
+    int32 Tag1_Data;
+    byte Tag2;
+    byte Tag2_Data;
+} Quarantine_Hash;
+
+typedef struct _Quarantine_Hash_Continued {
+    byte Tag3;
+    int32 SHA1_Hash_Length;
+    char SHA1[SHA1_Hash_Length]; //need to fix for wchar
+    byte Tag4;
+    int32 Tag4_Data;
+    byte Tag5;
+    int32 Tag5_Data;
+    byte Tag6;
+    int32 QFS_Size;
+    char Quarantine_Data_Size_2[QFS_Size];
+} Quarantine_Hash_Continued;
 
 """
 
@@ -3200,7 +3197,7 @@ def parse_vbn(f, logType, tz):
     virus = ''
     guid = ''
     vbnv = ''
-    garbage = None
+    extraData = None
     header = 0
     footer = 0
     f.seek(0, 0)
@@ -3351,79 +3348,60 @@ def parse_vbn(f, logType, tz):
         f.seek(pos)
 
         if dataType == 3:
-            qi = vbnstruct.Quarantine_Info(xor(f.read(7), 0x5A).encode('latin-1'))
+            qi = vbnstruct.Quarantine_Hash(xor(f.read(7), 0x5A).encode('latin-1'))
             if args.hex_dump:
                 cstruct.dumpstruct(qi)
             if args.struct:
                 for k, v in qi._values.items():
                     sout += str(v).replace('"', '""')+'","'
             if qi.Tag2_Data == 1:
-                qi2 = vbnstruct.Quarantine_Info2(xor(f.read(1), 0x5A).encode('latin-1'))
+                qhc = vbnstruct.Quarantine_Hash_Continued(xor(f.read(110), 0x5A).encode('latin-1'))
+                sha1 = qhc.SHA1.decode('latin-1').replace("\x00", "")
+                qds2 = int.from_bytes(qhc.Quarantine_Data_Size_2, 'little')
                 if args.hex_dump:
-                    cstruct.dumpstruct(qi2)
-                if args.struct:
-                    for k, v in qi2._values.items():
-                        sout += str(v).replace('"', '""')+'","'
-                if qi2.Tag3 == 8:
-                    qi3_size = struct.unpack('i', xor(f.read(4), 0x5A).encode('latin-1'))[0] + 27
-                    f.seek(-4, 1)
-                    qi3 = vbnstruct.Quarantine_Info3(xor(f.read(qi3_size), 0x5A).encode('latin-1'))
-                    sha1 = qi3.SHA1.decode('latin-1').replace("\x00", "")
-#                    qfs = int.from_bytes(qi3.Quarantine_Data_Size, 'little')
-                    qds2 = int.from_bytes(qi3.Quarantine_Data_Size_2, 'little')
-                    if args.hex_dump:
-                        cstruct.dumpstruct(qi3)
-                    if args.struct:
-                        for k, v in qi2._values.items():
-                            sout += str(v).replace('"', '""')+'","'
-        
+                    cstruct.dumpstruct(qhc)
+       
             try:
-                dataType = vbnstruct.Tag(xor(f.read(1), 0x5A).encode('latin-1'))
-        
-                if args.hex_dump:
-                    cstruct.dumpstruct(dataType)
-                if dataType.Tag == 0:
-                    read_sep_tag(xor(f.read(), 0x5A).encode('latin-1'))
+                dataType = int.from_bytes(xor(f.read(1), 0x5A).encode('latin-1'), 'little')
             
-                if dataType.Tag == 8:
-                    pos += 35 + qi3.SHA1_Hash_Length
+                if dataType == 8:
+                    pos += 35 + qhc.SHA1_Hash_Length
                     f.seek(pos)
-                    qi4_size = struct.unpack('i', xor(f.read(4), 0x5A).encode('latin-1'))[0] + 18
+                    qsddl_size = struct.unpack('i', xor(f.read(4), 0x5A).encode('latin-1'))[0] + 18
                     f.seek(-4, 1)
-                    qi4 =  vbnstruct.Quarantine_Info4(xor(f.read(qi4_size), 0x5A).encode('latin-1'))
+                    qsddl =  vbnstruct.Quarantine_SDDL(xor(f.read(qsddl_size), 0x5A).encode('latin-1'))
                     if args.struct:
-                        for k, v in qi4._values.items():
+                        for k, v in qsddl._values.items():
                             sout += str(v).replace('"', '""')+'","'
-                    sddl = sddl_translate(qi4.Security_Descriptor.decode('latin-1').replace("\x00", ""))
-                    qds3 = qi4.Quarantine_Data_Size_3
+                    sddl = sddl_translate(qsddl.Security_Descriptor.decode('latin-1').replace("\x00", ""))
+                    qds3 = qsddl.Quarantine_Data_Size_3
                     if args.hex_dump:
-                        cstruct.dumpstruct(qi4)
-                    pos += 19 + qi4.Security_Descriptor_Size
+                        cstruct.dumpstruct(qsddl)
+                    pos += 19 + qsddl.Security_Descriptor_Size
                     f.seek(pos)
         
                 else:
                     if args.struct:
                         sout += '","","","","","","","'
         
-                if dataType.Tag == 9:
-                    garbage = qds2 - vbnmeta.Quarantine_Data_Size
-                    pos += 35 + qi3.SHA1_Hash_Length
+                if dataType == 9:
+                    extraData = qds2 - vbnmeta.Quarantine_Data_Size
+                    pos += 35 + qhc.SHA1_Hash_Length
                     f.seek(pos)
 
- #           try:
                 chunk = vbnstruct.chunk(xor(f.read(5), 0x5A).encode('latin-1'))
                 pos += 5
                 f.seek(pos)
-                if garbage is not None:
-                    junk = vbnstruct.Unknown_Header(xor(f.read(1000), 0xA5).encode('latin-1'))
-                    header = junk.Size + 40
-                    footer = garbage - header
+                if extraData is not None:
+                    uh = vbnstruct.Unknown_Header(xor(f.read(1000), 0xA5).encode('latin-1'))
+                    header = uh.Size + 40
+                    footer = extraData - header
                     if args.struct:
-                        for k, v in junk._values.items():
+                        for k, v in uh._values.items():
                             sout += str(v).replace('"', '""')+'","'
 
                     if args.hex_dump:
-                        cstruct.dumpstruct(junk)
+                        cstruct.dumpstruct(uh)
                     f.seek(pos)
 
                 if args.hex_dump or args.extract or args.struct or args.quarantine_dump:
@@ -3445,9 +3423,7 @@ def parse_vbn(f, logType, tz):
                         else:
                             break
 
-                if garbage is not None:
- #                        header = junk.Size + 40
- #                       footer = garbage - header
+                if extraData is not None:
                     qfs = qds2 - footer
                     f.seek(-footer, 2)
                     try:

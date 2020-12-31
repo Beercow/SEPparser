@@ -318,7 +318,7 @@ h5 {
 <p>
 <h1>VBN File Format</h1>
 </p>
-<table width="1500">
+<table>
 <tr><th><h3>VBN file format V1 (Windows - SEP 11)</h3></th><th><h3>VBN file format V2 (Windows - SEP 12 +)</h3></th><th><h3>VBN file format V2 (Linux - SEP 12 +)</h3></th></tr>
 <tr valign="top"><td>
 <p align="center">
@@ -1092,7 +1092,7 @@ h5 {
 <p>
 <h2>The Record Type determines what comes next.</h2>
 </p>
-<table width="1750">
+<table>
 <tr><th><h3>Record Type 0<br>The following sections are XORed with 0x5A.</h3></th><th><h3>Record Type 1</h3></th><th><h3>Record Type 2<br>The following sections are XORed with 0x5A.</h3></th></tr>
 <tr valign="top"><td>
 <h3 id="qdata-location-optional">QData Location (Optional)</h3>
@@ -1189,8 +1189,8 @@ h5 {
 </tbody>
 </table>
 </td><td>
-<h3 id="quarantine-file-metadata">Quarantine File Metadata</h3>
-<p>The quarantine file metadata appears to be in ASN.1 format. It is comprised of a series of tags.</p>
+<h3 id="quarantine-metadata">Quarantine Metadata</h3>
+<p>The quarantine metadata appears to be in ASN.1 format. It is comprised of a series of tags.</p>
 <table>
 <thead>
 <tr>
@@ -1253,7 +1253,7 @@ h5 {
 </tbody>
 </table>
 </td><td>
-<h3 id="quarantine-metadata">Quarantine Metadata</h3>
+<h3 id="quarantine-metadata-1">Quarantine Metadata</h3>
 <table>
 <thead>
 <tr>
@@ -1365,7 +1365,13 @@ h5 {
 </tr>
 </tbody>
 </table>
-<h3 id="quarantine-info">Quarantine Info</h3>
+<p>
+<h3>The Tag determines what comes next.</h3>
+</p>
+<table>
+<tr><th><h3>0x03 Quarantine Hash</h3></th><th><h3>0x06 Unknown</h3></th></tr>
+<tr valign="top"><td>
+<h3 id="quarantine-hash">Quarantine Hash</h3>
 <table>
 <thead>
 <tr>
@@ -1404,7 +1410,7 @@ h5 {
 <td>7</td>
 <td style="text-align: center;">1</td>
 <td>Tag3 (Optional)</td>
-<td>Tag3 (if Tag2 Value is 0x01, Tag3 can be 0x08 or 0x0A)</td>
+<td>Tag3 (if Tag2 Value is 0x01, Tag3 is 0x08</td>
 </tr>
 <tr>
 <td>8</td>
@@ -1414,7 +1420,7 @@ h5 {
 </tr>
 <tr>
 <td>12</td>
-<td style="text-align: center;">82</td>
+<td style="text-align: center;">SHA1 Hash Length</td>
 <td>SHA1 (Optional)</td>
 <td>SHA1 of quarantine data</td>
 </tr>
@@ -1463,7 +1469,7 @@ h5 {
 </tbody>
 </table>
 <h3 id="quarantine-sddl-optional">Quarantine SDDL (Optional)</h3>
-<p>Quarantine Info continued... (may not be present)</p>
+<p>(may not be present)</p>
 <table>
 <thead>
 <tr>
@@ -1475,19 +1481,19 @@ h5 {
 </thead>
 <tbody>
 <tr>
-<td>117</td>
+<td>0</td>
 <td style="text-align: center;">1</td>
 <td>Tag7</td>
 <td>Tag7, always 0x08</td>
 </tr>
 <tr>
-<td>118</td>
+<td>1</td>
 <td style="text-align: center;">4</td>
 <td>Security Descriptor Size</td>
 <td>Variable length</td>
 </tr>
 <tr>
-<td>122</td>
+<td>5</td>
 <td style="text-align: center;">Security Descriptor Size</td>
 <td>Security Descriptor</td>
 <td>Security descriptor of file</td>
@@ -1535,43 +1541,61 @@ h5 {
 <td>0</td>
 <td style="text-align: center;">1</td>
 <td>Tag</td>
-<td>0x09</td>
+<td>ASN.1 tag, 0x09</td>
 </tr>
 <tr>
-<td>0</td>
+<td>1</td>
+<td style="text-align: center;">4</td>
+<td>Chunk Size</td>
+<td>Variable length</td>
+</tr>
+<tr>
+<td>5</td>
 <td style="text-align: center;">8</td>
 <td>Unknown</td>
-<td>Will require further investigation as to the purpose of this entry.</td>
+<td>Will require further investigation as to the purpose of this entry. (XORed with A5)</td>
 </tr>
 <tr>
-<td>8</td>
-<td style="text-align: center;">8</td>
+<td>13</td>
+<td style="text-align: center;">4</td>
 <td>Unknown Data Size</td>
-<td>Size of unknown data</td>
+<td>Size of unknown data (XORed with A5)</td>
 </tr>
 <tr>
-<td>16</td>
+<td>17</td>
+<td style="text-align: center;">8</td>
+<td>Unknown</td>
+<td>Will require further investigation as to the purpose of this entry. (XORed with A5)</td>
+</tr>
+<tr>
+<td>25</td>
 <td style="text-align: center;">Unknown Data Size</td>
 <td>Unknown</td>
-<td>Will require further investigation as to the purpose of this entry.</td>
+<td>Will require further investigation as to the purpose of this entry. (XORed with A5)</td>
 </tr>
 <tr>
 <td>Varies</td>
-<td style="text-align: center;">12</td>
+<td style="text-align: center;">8</td>
 <td>Unknown</td>
-<td>Will require further investigation as to the purpose of this entry.</td>
+<td>Will require further investigation as to the purpose of this entry. (XORed with A5)</td>
 </tr>
 <tr>
 <td>Varies</td>
 <td style="text-align: center;">4</td>
 <td>Quarantine Data Size</td>
-<td>Size of quarantined data</td>
+<td>Size of quarantined data (XORed with A5)</td>
 </tr>
 <tr>
 <td>Varies</td>
 <td style="text-align: center;">8</td>
 <td>Unknown</td>
-<td>Will require further investigation as to the purpose of this entry.</td>
+<td>Will require further investigation as to the purpose of this entry. (XORed with A5)</td>
+</tr>
+<tr>
+<td>Varies</td>
+<td style="text-align: center;">Chunk Size</td>
+<td>Data</td>
+<td>Quarantine data (XORed with A5)</td>
 </tr>
 </tbody>
 </table>
@@ -1603,11 +1627,12 @@ h5 {
 <td>5</td>
 <td style="text-align: center;">Chunk Size</td>
 <td>Data</td>
-<td>Quarantine data XORed with A5</td>
+<td>Quarantine data (XORed with A5)</td>
 </tr>
 </tbody>
 </table>
 <h4 id="attribute-optional">Attribute (Optional)</h4>
+<p>The followinf data is XORed with A5</p>
 <table>
 <thead>
 <tr>
@@ -1647,6 +1672,70 @@ h5 {
 <td style="text-align: center;">Attribute Data Size</td>
 <td>Attribute Data (Optional)</td>
 <td>Data, varies by type</td>
+</tr>
+</tbody>
+</table>
+</td><td>
+<p>The Unknown appears to be in ASN.1 format. It is comprised of a series of tags.</p>
+<h3 id="asn.1-tags-1">ASN.1 Tags</h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th style="text-align: center;">Value Length</th>
+<th>Extra Data</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x01</td>
+<td style="text-align: center;">1</td>
+<td>None</td>
+</tr>
+<tr>
+<td>0x0A</td>
+<td style="text-align: center;">1</td>
+<td>None</td>
+</tr>
+<tr>
+<td>0x03</td>
+<td style="text-align: center;">4</td>
+<td>None</td>
+</tr>
+<tr>
+<td>0x06</td>
+<td style="text-align: center;">4</td>
+<td>None</td>
+</tr>
+<tr>
+<td>0x04</td>
+<td style="text-align: center;">8</td>
+<td>None</td>
+</tr>
+<tr>
+<td>0x07</td>
+<td style="text-align: center;">4</td>
+<td>NUL-terminated ASCII String (of length controlled by dword following 0x07 code)</td>
+</tr>
+<tr>
+<td>0x08</td>
+<td style="text-align: center;">4</td>
+<td>NUL-terminated Unicode String (of length controlled by dword following 0x08 code)</td>
+</tr>
+<tr>
+<td>0x09</td>
+<td style="text-align: center;">4</td>
+<td>Container (of length controlled by dword following 0x09 code)</td>
+</tr>
+<tr>
+<td>0x0F</td>
+<td style="text-align: center;">16</td>
+<td>None</td>
+</tr>
+<tr>
+<td>0x10</td>
+<td style="text-align: center;">16</td>
+<td>None</td>
 </tr>
 </tbody>
 </table>
