@@ -189,9 +189,9 @@ h5 {
 | Offset | Length           | Field                  | Description                                                         |
 | ------ | :--------------: | ---------------------- | ------------------------------------------------------------------- |
 | 0      | 8                | Header                 | QData location header, 00000006aaaa20ce                             |
-| 8      | 8                | QUarantine Data Offset | Offset to start of quarantine data                                  |
+| 8      | 8                | Quarantine Data Offset | Offset to start of quarantine data                                  |
 | 16     | 8                | QData Location Size    | Size of QData Location                                              |
-| 24     | 4                | EOF                    | Size from end of quarantine data to EOF                             |
+| 24     | 4                | QData Info Size        | Size of QData Info from end of quarantine data to EOF               |
 | 28     | Data Offset - 28 | Unknown                | Will require further investigation as to the purpose of this entry. |
 
 ### Quarantine Data
