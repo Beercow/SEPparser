@@ -992,7 +992,7 @@ def log_logger(_):
 
 def log_action(_):
     action = {
-                '4294967295#':'Invalid',
+                '4294967295':'Invalid',
                 '1':'Quarantine',
                 '2':'Rename',
                 '3':'Delete',

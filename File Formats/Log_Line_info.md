@@ -21,7 +21,7 @@ Time,Event,Category,Logger,Computer,User,Virus,File,Wanted Action 1,Wanted Actio
     <tbody>
         <tr>
             <td>Time</td>
-            <td>Time of event.</td>
+            <td>Time of event.<br><img src="./Images/time.png"</img></td>
         </tr>
         <tr>
             <td>Event</td>
@@ -614,15 +614,15 @@ Time,Event,Category,Logger,Computer,User,Virus,File,Wanted Action 1,Wanted Actio
         </tr>
         <tr>
             <td>Wanted Action 1</td>
-            <td>Primary Action (Virus Found event only)<br><br>4294967295# Invalid<br>1 Quarantine<br>2 Rename<br>3 Delete<br>4 Leave Alone<br>5 Clean<br>6 Remove Macros<br>7 Save file as...<br>8 Sent to backend<br>9 Restore from Quarantine<br>10 Rename Back (unused)<br>11 Undo Action<br>12 Error<br>13 Backup to quarantine (backup view)<br>14 Pending Analysis<br>15 Partially Fixed<br>16 Terminate Process Required<br>17 Exclude from Scanning<br>18 Reboot Processing<br>19 Clean by Deletion<br>20 Access Denied<br>21 TERMINATE PROCESS ONLY<br>22 NO REPAIR<br>23 FAIL<br>24 RUN POWERTOOL<br>25 NO REPAIR POWERTOOL<br>110 INTERESTING PROCESS CAL<br>111 INTERESTING PROCESS DETECTED<br>1000 INTERESTING PROCESS HASHED DETECTED<br>1001 DNS HOST FILE EXCEPTION</td>
+            <td>Primary Action (Virus Found event only)<br><br>4294967295 Invalid<br>1 Quarantine<br>2 Rename<br>3 Delete<br>4 Leave Alone<br>5 Clean<br>6 Remove Macros<br>7 Save file as...<br>8 Sent to backend<br>9 Restore from Quarantine<br>10 Rename Back (unused)<br>11 Undo Action<br>12 Error<br>13 Backup to quarantine (backup view)<br>14 Pending Analysis<br>15 Partially Fixed<br>16 Terminate Process Required<br>17 Exclude from Scanning<br>18 Reboot Processing<br>19 Clean by Deletion<br>20 Access Denied<br>21 TERMINATE PROCESS ONLY<br>22 NO REPAIR<br>23 FAIL<br>24 RUN POWERTOOL<br>25 NO REPAIR POWERTOOL<br>110 INTERESTING PROCESS CAL<br>111 INTERESTING PROCESS DETECTED<br>1000 INTERESTING PROCESS HASHED DETECTED<br>1001 DNS HOST FILE EXCEPTION</td>
         </tr>
         <tr>
             <td>Wanted Action 2</td>
-            <td>Secondary Action  (Virus Found event only)<br><br>4294967295# Invalid<br>1 Quarantine<br>2 Rename<br>3 Delete<br>4 Leave Alone<br>5 Clean<br>6 Remove Macros<br>7 Save file as...<br>8 Sent to backend<br>9 Restore from Quarantine<br>10 Rename Back (unused)<br>11 Undo Action<br>12 Error<br>13 Backup to quarantine (backup view)<br>14 Pending Analysis<br>15 Partially Fixed<br>16 Terminate Process Required<br>17 Exclude from Scanning<br>18 Reboot Processing<br>19 Clean by Deletion<br>20 Access Denied<br>21 TERMINATE PROCESS ONLY<br>22 NO REPAIR<br>23 FAIL<br>24 RUN POWERTOOL<br>25 NO REPAIR POWERTOOL<br>110 INTERESTING PROCESS CAL<br>111 INTERESTING PROCESS DETECTED<br>1000 INTERESTING PROCESS HASHED DETECTED<br>1001 DNS HOST FILE EXCEPTION</td>
+            <td>Secondary Action  (Virus Found event only)<br><br>4294967295 Invalid<br>1 Quarantine<br>2 Rename<br>3 Delete<br>4 Leave Alone<br>5 Clean<br>6 Remove Macros<br>7 Save file as...<br>8 Sent to backend<br>9 Restore from Quarantine<br>10 Rename Back (unused)<br>11 Undo Action<br>12 Error<br>13 Backup to quarantine (backup view)<br>14 Pending Analysis<br>15 Partially Fixed<br>16 Terminate Process Required<br>17 Exclude from Scanning<br>18 Reboot Processing<br>19 Clean by Deletion<br>20 Access Denied<br>21 TERMINATE PROCESS ONLY<br>22 NO REPAIR<br>23 FAIL<br>24 RUN POWERTOOL<br>25 NO REPAIR POWERTOOL<br>110 INTERESTING PROCESS CAL<br>111 INTERESTING PROCESS DETECTED<br>1000 INTERESTING PROCESS HASHED DETECTED<br>1001 DNS HOST FILE EXCEPTION</td>
         </tr>
         <tr>
             <td>Real Action</td>
-            <td>Action Taken (Virus Found event only)<br><br>4294967295# Invalid<br>1 Quarantine<br>2 Rename<br>3 Delete<br>4 Leave Alone<br>5 Clean<br>6 Remove Macros<br>7 Save file as...<br>8 Sent to backend<br>9 Restore from Quarantine<br>10 Rename Back (unused)<br>11 Undo Action<br>12 Error<br>13 Backup to quarantine (backup view)<br>14 Pending Analysis<br>15 Partially Fixed<br>16 Terminate Process Required<br>17 Exclude from Scanning<br>18 Reboot Processing<br>19 Clean by Deletion<br>20 Access Denied<br>21 TERMINATE PROCESS ONLY<br>22 NO REPAIR<br>23 FAIL<br>24 RUN POWERTOOL<br>25 NO REPAIR POWERTOOL<br>110 INTERESTING PROCESS CAL<br>111 INTERESTING PROCESS DETECTED<br>1000 INTERESTING PROCESS HASHED DETECTED<br>1001 DNS HOST FILE EXCEPTION</td>
+            <td>Action Taken (Virus Found event only)<br><br>4294967295 Invalid<br>1 Quarantine<br>2 Rename<br>3 Delete<br>4 Leave Alone<br>5 Clean<br>6 Remove Macros<br>7 Save file as...<br>8 Sent to backend<br>9 Restore from Quarantine<br>10 Rename Back (unused)<br>11 Undo Action<br>12 Error<br>13 Backup to quarantine (backup view)<br>14 Pending Analysis<br>15 Partially Fixed<br>16 Terminate Process Required<br>17 Exclude from Scanning<br>18 Reboot Processing<br>19 Clean by Deletion<br>20 Access Denied<br>21 TERMINATE PROCESS ONLY<br>22 NO REPAIR<br>23 FAIL<br>24 RUN POWERTOOL<br>25 NO REPAIR POWERTOOL<br>110 INTERESTING PROCESS CAL<br>111 INTERESTING PROCESS DETECTED<br>1000 INTERESTING PROCESS HASHED DETECTED<br>1001 DNS HOST FILE EXCEPTION</td>
         </tr>
         <tr>
             <td>Virus Type</td>
@@ -890,7 +890,7 @@ Time,Event,Category,Logger,Computer,User,Virus,File,Wanted Action 1,Wanted Actio
         </tr>
         <tr>
             <td>Scan Start Time &#42;</td>
-            <td>The time that the scan started.</td>
+            <td>The time that the scan started.<br><img src="./Images/time.png"</img></td>
         </tr>
         <tr>
             <td>TargetApp Type &#42;</td>
