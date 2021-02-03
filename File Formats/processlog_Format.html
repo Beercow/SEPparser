@@ -449,10 +449,10 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\pr
 <td>The full path name of the application involved. It may be empty if the<br>application is unknown, or if OS itself is involved, or if no application is involved.<br>Also, it may be empty if profile says, &quot;don't log application name in raw traffic<br>log&quot;.</td>
 </tr>
 <tr>
-<td>Unknown</td>
-<td>int</td>
-<td style="text-align: center;">1</td>
-<td>Will require further investigation as to the purpose of this log entry.</td>
+<td>Caller Return Address</td>
+<td>hex</td>
+<td style="text-align: center;">4</td>
+<td>he return address of the caller. This field allows the detection of the calling module that makes the API call.</td>
 </tr>
 <tr>
 <td>Caller Return Module Name</td>
@@ -483,6 +483,18 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\pr
 <td>nvarchar</td>
 <td style="text-align: center;">512</td>
 <td>The logon (Windows) domain name.</td>
+</tr>
+<tr>
+<td>Unknown</td>
+<td>int</td>
+<td style="text-align: center;">1</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Unknown</td>
+<td>int</td>
+<td style="text-align: center;">1</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
 <tr>
 <td>IPV4 Address</td>

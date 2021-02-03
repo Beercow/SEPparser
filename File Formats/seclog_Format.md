@@ -1,6 +1,9 @@
 # Security Log File Format
 The security log for SEP can be found at the following location:
+* Windows  
 C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\seclog.log
+* Linux  
+ /var/symantec/Logs/seclog.log
 
 ## Header
 | Field                 | Type   | Size | Description                      |
@@ -46,7 +49,7 @@ The log is in TSV format, meaning, each field is separated by a tab character.
 | Unknown                     | hex                                    | 8    | Will require further investigation as to the purpose of this log entry.                                                |
 | Unknown                     | hex                                    | 8    | Will require further investigation as to the purpose of this log entry.                                                |
 | Remote Port                 | hex                                    | 8    | The remote port.                                                                                                       |
-| Locacl Port                 | hex                                    | 8    | The local port.                                                                                                        |
+| Local Port                 | hex                                    | 8    | The local port.                                                                                                        |
 | Local Host IPV6             | hex                                    | 32   | The IP address of the local computer (IPv6).                                                                           |
 | Remote Host IPV6            | hex                                    | 32   | The IP address of the remote computer (IPv6).                                                                          | 
 | Signature Name              | nvarchar                               | 520  | The signature name.                                                                                                    |  

@@ -1,6 +1,9 @@
 # System Log File Format
 The system log for SEP can be found at the following location:  
+* Windows  
 C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\syslog.log
+* Linux  
+ /var/symantec/Logs/syslog.log
 
 ## Header
 The syslog.log file contains a tab separated header containing the following information:

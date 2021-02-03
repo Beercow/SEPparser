@@ -1,6 +1,9 @@
 # Traffic Log File Format
 The traffic log for SEP can be found at the following location:
+* Windows  
 C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\tralog.log
+* Linux  
+ /var/symantec/Logs/tralog.log
 
 ## Header
 | Field                 | Type   | Size | Description                      |
@@ -27,8 +30,8 @@ The log is in TSV format, meaning, each field is separated by a tab character.
 | Local Port       | hex       | 8    | The TCP/UDP port of the local computer (host byte-order). It is only valid on<br>TSE_TRAFFIC_TCP and TSE_TRAFFIC_UDP. For other events, it is always zero. |
 | Remote Port      | hex       | 8    | The TCP/UDP port of the remote computer (host byte-order). It is only valid on<br>TSE_TRAFFIC_TCP and TSE_TRAFFIC_UDP. For other events, it is always zero. |
 | Direction        | hex       | 8    | The direction of traffic. (Unknown = 0; inbound = 1; outbound = 2)                                                 |
-| End Time         | Windows: 64 bit Hex Value - Big Endian | 16    | The end time of the security issue. This field is an optional field because the exact<br>end time of traffic may not be detected; for example, as with UDP traffic. If the end<br>time is not detected, it is set to equal the start time. |
 | Begin Time       | Windows: 64 bit Hex Value - Big Endian | 16   | The start time of the security issue.                                                                              |
+| End Time         | Windows: 64 bit Hex Value - Big Endian | 16    | The end time of the security issue. This field is an optional field because the exact<br>end time of traffic may not be detected; for example, as with UDP traffic. If the end<br>time is not detected, it is set to equal the start time. |
 | Repetition       | hex       | 8    | The number of attacks. Sometime, when a hacker launches a mass attack, it may<br>be reduced to one event by the log system, depending on the damper period. |
 | Action           | hex       | 8    | Specifies if the traffic was blocked. (Yes = 1, no = 0)                                                            |
 | Unknown          | hex       | 8    | Will require further investigation as to the purpose of this log entry.                                            |

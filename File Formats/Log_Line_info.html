@@ -311,7 +311,7 @@ pre {
     <tbody>
         <tr>
             <td>Time</td>
-            <td>Time of event.<br><img src="./Images/time.png"</img></td>
+            <td>Time of event.<br><img src="./Images/time.PNG"</img></td>
         </tr>
         <tr>
             <td>Event</td>
@@ -1107,7 +1107,7 @@ pre {
             <td>The Windows domain.</td>
         </tr>
         <tr>
-            <td>Event Data 2 &#42;</td>
+            <td>Event Data 2</td>
             <td>Information varies per event (see below)</td>
         </tr>
         <tr>
@@ -1180,7 +1180,7 @@ pre {
         </tr>
         <tr>
             <td>Scan Start Time &#42;</td>
-            <td>The time that the scan started.<br><img src="./Images/time.png"</img></td>
+            <td>The time that the scan started.<br><img src="./Images/time.PNG"</img></td>
         </tr>
         <tr>
             <td>TargetApp Type &#42;</td>
@@ -1368,14 +1368,6 @@ pre {
 <td>Field 11</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
-<tr>
-<td>Field 12</td>
-<td>Will require further investigation as to the purpose of this log entry.</td>
-</tr>
-<tr>
-<td>Field 13</td>
-<td>Will require further investigation as to the purpose of this log entry.</td>
-</tr>
 </tbody>
 </table>
 <h3 id="section-2">301</h3>
@@ -1402,7 +1394,7 @@ pre {
 </tr>
 <tr>
 <td>Event</td>
-<td>1 File Create<br>2 File Delete<br>3 File Open<br>6 Directory Create<br>7 Directory Delete<br>14 Registry Key Create<br>15 Registry Key Delete<br>16 Registry Value Delete<br>17 Registry Value Set<br>18 Registry Key Rename<br>19 Registry Key Set Security<br>45 File Set Security<br>46 Directory Set Security<br>55 Process Open<br>56 Process Duplicate</td>
+<td>1 File Create<br>2 File Delete<br>3 File Open<br>6 Directory Create<br>7 Directory Delete<br>14 Registry Key Create<br>15 Registry Key Delete<br>16 Registry Value Delete<br>17 Registry Value Set<br>18 Registry Key Rename<br>19 Registry Key Set Security<br>45 File Set Security<br>46 Directory Set Security<br>55 Process Open<br>56 Process Duplicate<br>58 Thread Duplicate</td>
 </tr>
 <tr>
 <td>Target PID</td>
@@ -1424,117 +1416,39 @@ pre {
 <td>Field 9</td>
 <td>Will require further investigation as to the purpose of this log entry.</td>
 </tr>
-<tr>
-<td>Field 10</td>
-<td>N/A</td>
-</tr>
-<tr>
-<td>Field 11</td>
-<td>N/A</td>
-</tr>
-<tr>
-<td>Field 12</td>
-<td>N/A</td>
-</tr>
-<tr>
-<td>Field 13</td>
-<td>N/A</td>
-</tr>
 </tbody>
 </table>
 <h3 id="scan-entries">Scan Entries</h3>
 <p>If Field 1 contains a : separated string, the coresponding fields are as follows:</p>
 <table>
-    <thead>
-        <tr>
-            <th>Field</th>
-            <th>Entry</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td rowspan=5>Field 1</td>
-            <td>Scan Status</td>
-            <td>Will require further investigation as to the purpose of this log entry.</td>
-        </tr>
-        <tr>
-            <td>Risks</td>
-            <td>The number of threats that the scan found.</td>
-        </tr>
-        <tr>
-            <td>Scanned</td>
-            <td>The number of files scanned.</td>
-        </tr>
-        <tr>
-            <td>Files/Folders/Drives Omitted</td>
-            <td>The number of files that were omitted.</td>
-        </tr>
-        <tr>
-            <td>Trusted Files Skipped</td>
-            <td>Will require further investigation as to the purpose of this log entry.</td>
-        </tr>
-        <tr>
-            <td>Field 2</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 3</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 4</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 5</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 6</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 7</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 8</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 9</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 10</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 11</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 12</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 13</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-    </tbody>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scan Status</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+<tr>
+<td>Risks</td>
+<td>The number of threats that the scan found.</td>
+</tr>
+<tr>
+<td>Scanned</td>
+<td>The number of files scanned.</td>
+</tr>
+<tr>
+<td>Files/Folders/Drives Omitted</td>
+<td>The number of files that were omitted.</td>
+</tr>
+<tr>
+<td>Trusted Files Skipped</td>
+<td>Will require further investigation as to the purpose of this log entry.</td>
+</tr>
+</tbody>
 </table>
 <h2 id="event-data-2">Event Data 2</h2>
 <table>

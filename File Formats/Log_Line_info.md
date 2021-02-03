@@ -817,7 +817,7 @@ Time,Event,Category,Logger,Computer,User,Virus,File,Wanted Action 1,Wanted Actio
             <td>The Windows domain.</td>
         </tr>
         <tr>
-            <td>Event Data 2 &#42;</td>
+            <td>Event Data 2</td>
             <td>Information varies per event (see below)</td>
         </tr>
         <tr>
@@ -998,8 +998,6 @@ If Field 1 = 201, the coresponding fields are as follows:
 | Field 9  | Will require further investigation as to the purpose of this log entry. | 
 | Field 10 | Will require further investigation as to the purpose of this log entry. |
 | Field 11 | Will require further investigation as to the purpose of this log entry. |
-| Field 12 | Will require further investigation as to the purpose of this log entry. |
-| Field 13 | Will require further investigation as to the purpose of this log entry. |
 
 ### 301
 If Field 1 = 301, the coresponding fields are as follows:
@@ -1009,111 +1007,23 @@ If Field 1 = 301, the coresponding fields are as follows:
 | Field 1        | 301                                                                     |
 | Actor PID      | Process ID for acting process                                           |
 | Actor          | Process performing the action                                           |
-| Event          | 1 File Create<br>2 File Delete<br>3 File Open<br>6 Directory Create<br>7 Directory Delete<br>14 Registry Key Create<br>15 Registry Key Delete<br>16 Registry Value Delete<br>17 Registry Value Set<br>18 Registry Key Rename<br>19 Registry Key Set Security<br>45 File Set Security<br>46 Directory Set Security<br>55 Process Open<br>56 Process Duplicate |
+| Event          | 1 File Create<br>2 File Delete<br>3 File Open<br>6 Directory Create<br>7 Directory Delete<br>14 Registry Key Create<br>15 Registry Key Delete<br>16 Registry Value Delete<br>17 Registry Value Set<br>18 Registry Key Rename<br>19 Registry Key Set Security<br>45 File Set Security<br>46 Directory Set Security<br>55 Process Open<br>56 Process Duplicate<br>58 Thread Duplicate |
 | Target PID     | Process ID for target process                                           |
 | Target         | What is being targeted                                                  |
 | Target Process | The process that is being targeted                                      |
 | Field 8        | Will require further investigation as to the purpose of this log entry. |
-| Field 9        | Will require further investigation as to the purpose of this log entry. | 
-| Field 10       | N/A                                                                     |
-| Field 11       | N/A                                                                     |
-| Field 12       | N/A                                                                     |
-| Field 13       | N/A                                                                     |
+| Field 9        | Will require further investigation as to the purpose of this log entry. |
 
 ### Scan Entries
 If Field 1 contains a : separated string, the coresponding fields are as follows:
-<table>
-    <thead>
-        <tr>
-            <th>Field</th>
-            <th>Entry</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td rowspan=5>Field 1</td>
-            <td>Scan Status</td>
-            <td>Will require further investigation as to the purpose of this log entry.</td>
-        </tr>
-        <tr>
-            <td>Risks</td>
-            <td>The number of threats that the scan found.</td>
-        </tr>
-        <tr>
-            <td>Scanned</td>
-            <td>The number of files scanned.</td>
-        </tr>
-        <tr>
-            <td>Files/Folders/Drives Omitted</td>
-            <td>The number of files that were omitted.</td>
-        </tr>
-        <tr>
-            <td>Trusted Files Skipped</td>
-            <td>Will require further investigation as to the purpose of this log entry.</td>
-        </tr>
-        <tr>
-            <td>Field 2</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 3</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 4</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 5</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 6</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 7</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 8</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 9</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 10</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 11</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 12</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-        <tr>
-            <td>Field 13</td>
-            <td>N/A</td>
-            <td>N/A</td>
-        </tr>
-    </tbody>
-</table>
+
+| Field                        | Description                                                             |
+| ---------------------------- | ----------------------------------------------------------------------- |
+| Scan Status                  | Will require further investigation as to the purpose of this log entry. |
+| Risks                        | The number of threats that the scan found.                              |
+| Scanned                      | The number of files scanned.                                            |
+| Files/Folders/Drives Omitted | The number of files that were omitted.                                  |
+| Trusted Files Skipped        | Will require further investigation as to the purpose of this log entry. |
 
 ## Event Data 2
 

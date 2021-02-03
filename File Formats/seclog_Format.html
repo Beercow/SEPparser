@@ -295,8 +295,13 @@ pre {
       </head>
     <body>
         <h1 id="security-log-file-format">Security Log File Format</h1>
-<p>The security log for SEP can be found at the following location:
-C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\seclog.log</p>
+<p>The security log for SEP can be found at the following location:</p>
+<ul>
+<li>Windows<br />
+C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\seclog.log</li>
+<li>Linux<br />
+/var/symantec/Logs/seclog.log</li>
+</ul>
 <h2 id="header">Header</h2>
 <table>
 <thead>
@@ -527,7 +532,7 @@ C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\se
 <td>The remote port.</td>
 </tr>
 <tr>
-<td>Locacl Port</td>
+<td>Local Port</td>
 <td>hex</td>
 <td style="text-align: center;">8</td>
 <td>The local port.</td>

@@ -33,12 +33,14 @@ The log is in TSV format, meaning, each field is separated by a tab character.
 | Rule Name                 | nvarchar                               | 512  | The name of the rule that was triggered by the event. If the rule name is not<br>specified in the security rule, then this field is empty. Having the rule name can<br>be useful for troubleshooting. |
 | Caller Process ID         | hex                                    | 4    | The ID of the process that triggers the logging.                                                 |
 | Caller Process            | nvarchar                               | 512  | The full path name of the application involved. It may be empty if the<br>application is unknown, or if OS itself is involved, or if no application is involved.<br>Also, it may be empty if profile says, "don't log application name in raw traffic<br>log". |
-| Unknown                   | int                                    | 1    | Will require further investigation as to the purpose of this log entry.                          |
+| Caller Return Address     | hex                                    | 4    | he return address of the caller. This field allows the detection of the calling module that makes the API call. |
 | Caller Return Module Name | nvarchar                               | 512  | The module name of the caller. See CallerReturnAddress for more information.                     |
 | Target                    | nvarchar                               | ?    | Name of file                                                                                     |
 | Location                  | nvarchar                               | 512  | The location used when the event occured.                                                        |
 | User                      | nvarchar                               | 512  | The logon user name.                                                                             |
 | User Domain               | nvarchar                               | 512  | The logon (Windows) domain name.                                                                 |
+| Unknown                   | int                                    | 1    | Will require further investigation as to the purpose of this log entry.                          |
+| Unknown                   | int                                    | 1    | Will require further investigation as to the purpose of this log entry.                          |
 | IPV4 Address              | hex                                    | 8    | The IP address of the computer associated with the application control violation.                |
 | Device Instance ID        | varchar                                | 256  | The GUID of an external device (floppy disk, DVD, USB device, etc.).                             |
 | File Size                 | hex                                    | 2    | The size of the file associated with the application control violation, in bytes.                |
