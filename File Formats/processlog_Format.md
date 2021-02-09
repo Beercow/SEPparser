@@ -1,6 +1,9 @@
 # Control Log File Format
 The control log for SEP can be found at the following location:
+* Windows  
 C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\processlog.log
+* Linux  
+ /var/symantec/Logs/seclog.log
 
 ## Header
 | Field                 | Type   | Size | Description                      |

@@ -34,7 +34,7 @@ def csv_header():
 
     rawlog.write('"File Name","Recode Length","Date and Time","Remote Host","Remote Port","Local Host","Local Port","Direction","Action","Application","Rule","Packet Dump","Packet Decode","Event ID","Packet Length","Field11","Remote Host Name","Field16","Field17","Remote Host IPV6","Local Host IPV6","Rule ID"\n')
 
-    processlog.write('"File Name","Record Length","Date And Time","Severity","Action","Test Mode","Description","API","Rule Name","IPV4 Address","IPV6 Address","Caller Process ID","Caller Process","Device Instance ID","Target","File Size","User","User Domain","Location","Event ID","Field9","Begin Time","End Time","Field15","Caller Return Module Name","Field21","Field22","Field26"\n')
+    processlog.write('"File Name","Record Length","Date And Time","Severity","Action","Test Mode","Description","API","Rule Name","IPV4 Address","IPV6 Address","Caller Process ID","Caller Process","Device Instance ID","Target","File Size","User","User Domain","Location","Event ID","Field9","Begin Time","End Time","Field15","Caller Return Module Name","Field21","Field22","Field26","Extra"\n')
 
     timeline.write('"File Name","Record Length","Date/Time1","Date/Time2","Date/Time3","Field5","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2_Label","LOG:Event_Data2","LOG:Event_Data3_Label","LOG:Event_Data3","LOG:Event_Data4_Label","LOG:Event_Data4","LOG:Event_Data5_Label","LOG:Event_Data5","LOG:Event_Data6_Label","LOG:Event_Data6","LOG:Event_Data7_Label","LOG:Event_Data7","LOG:Event_Data8_Label","LOG:Event_Data8","LOG:Event_Data9_Label","LOG:Event_Data9","LOG:Event_Data10_Label","LOG:Event_Data10","LOG:Event_Data11_Label","LOG:Event_Data11","LOG:Event_Data12_Label","LOG:Event_Data12","LOG:Event_Data13_Label","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","Log:Eraser Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_SONAR_Engine_Version","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","LOG:Field113","LOG:Location","LOG:Field115","LOG:Digital_Signatures_Signer","LOG:Digital_Signatures_Issuer","LOG:Digital_Signatures_Certificate_Thumbprint","LOG:Field119","LOG:Digital_Signatures_Serial_Number","LOG:Digital_Signatures_Signing_Time","LOG:Field122","LOG:Field123","LOG:Field124","LOG:Field125","LOG:Field126"\n')
 
@@ -59,6 +59,9 @@ def csv_header():
 
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
+__author__ = "Brian Maloney"
+__version__ = "20201120"
+__email__ = "bmmaloney97@gmail.com"
 
 
 class Logger(object):
@@ -2402,25 +2405,17 @@ def read_submission(_, fname):
         test[x[0]] = x[1]
 
     if 'Submission' in test:
-        if args.output:
-            subtype = args.output+'/ccSubSDK/SubmissionsEim.csv'
-        else:
-            subtype = 'ccSubSDK/SubmissionsEim.csv'
+        subtype = args.output+'/ccSubSDK/SubmissionsEim.csv'
+
     elif 'Signature Set Version' in test:
-        if args.output:
-            subtype = args.output+'/ccSubSDK/IDSxp.csv'
-        else:
-            subtype = 'ccSubSDK/IDSxp.csv'
+        subtype = args.output+'/ccSubSDK/IDSxp.csv'
+
     elif 'BASH Plugin' in test:
-        if args.output:
-            subtype = args.output+'/ccSubSDK/BHSvcPlg.csv'
-        else:
-            subtype = 'ccSubSDK/BHSvcPlg.csv'
+        subtype = args.output+'/ccSubSDK/BHSvcPlg.csv'
+
     else:
-        if args.output:
-            subtype = args.output+'/ccSubSDK/Reports.csv'
-        else:
-            subtype = 'ccSubSDK/Reports.csv'
+        subtype = args.output+'/ccSubSDK/Reports.csv'
+
     header = []
     data = ['']
     if os.path.isfile(subtype):
@@ -2438,7 +2433,7 @@ def read_submission(_, fname):
             value += ' ' * diff
         pos = header.index(k)
         if k == 'Network Data' or k == 'Attack Data':
-            value[pos] = hexdump_tag(zlib.decompress(bytearray.fromhex(v[17:]))).replace('"', '""')
+            value[pos] = hexdump(zlib.decompress(bytearray.fromhex(v[17:]))).replace('"', '""')
         elif k == 'Protocol':
             value[pos] = idsxp_protocol(int(v))
         else:
@@ -2567,16 +2562,12 @@ def read_log_data(data, tz):
                 field124 = json.dumps(parsed, indent=4, sort_keys=True)
                 field124 = field124.replace('"', '""')
             except:
-                if args.log:
-                    traceback.print_exc()
                 field124 = data[91]
         else:
             field124 = data[91]
         field125 = data[92]
         field126 = data[93]
     except:
-        if args.log:
-            traceback.print_exc()
         pass
 
     return f'"{entry.time}","{entry.event}","{entry.category}","{entry.logger}","{entry.computer}","{entry.user}","{entry.virus}","{entry.file}","{entry.wantedaction1}","{entry.wantedaction2}","{entry.realaction}","{entry.virustype}","{entry.flags}","{entry.description}","{entry.scanid}","{entry.newext}","{entry.groupid}","{entry.eventdata}","{entry.vbinid}","{entry.virusid}","{entry.quarantineforwardstatus}","{entry.access}","{entry.sdnstatus}","{entry.compressed}","{entry.depth}","{entry.stillinfected}","{entry.definfo}","{entry.defsequincenumber}","{entry.cleaninfo}","{entry.deleteinfo}","{entry.backupod}","{entry.parent}","{entry.guid}","{entry.clientgroup}","{entry.address}","{entry.domainname}","{entry.ntdomain}","{entry.macaddress}","{entry.version}","{entry.remotemachine}","{entry.remotemachineip}","{entry.action1status}","{entry.action2status}","{entry.licensefeaturename}","{entry.licensefeatureversion}","{entry.licenseserialnumber}","{entry.licensefulfillmentid}","{entry.licensestartdate}","{entry.licenseexpirationdate}","{entry.licenselifecycle}","{entry.licenseseatstotal}","{entry.licenseseats}","{entry.errorcode}","{entry.licenseseatsdelta}","{entry.status}","{entry.domainguid}","{entry.sessionguid}","{entry.vbnsessionid}","{entry.logindomain}","{entry.eventdata2}","{entry.erasercategoryid}","{entry.dynamiccategoryset}","{entry.subcategorysetid}","{entry.displaynametouse}","{entry.reputationdisposition}","{entry.reputationconfidence}","{entry.firsseen}","{entry.reputationprevalence}","{entry.downloadurl}","{entry.categoryfordropper}","{entry.cidsstate}","{entry.behaviorrisklevel}","{entry.detectiontype}","{entry.acknowledgetext}","{entry.vsicstate}","{entry.scanguid}","{entry.scanduration}","{entry.scanstarttime}","{entry.targetapptype}","{entry.scancommandguid}","{field113}","{entry.location}","{field115}","{entry.digitalsigner}","{entry.digitalissuer}","{entry.digitalthumbprint}","{field119}","{entry.digitalsn}","{entry.digitaltime}","{field122}","{field123}","{field124}","{field125}","{field126}"'
@@ -2598,6 +2589,7 @@ def read_sep_tag(_, sub=False):
     hit = None
     virus = ''
     results = ''
+    binary = ''
     count = 0
     verify = struct.unpack("B", _.read(1))[0]
     _.seek(-1, 1)
@@ -2616,31 +2608,31 @@ def read_sep_tag(_, sub=False):
         if code == 1 or code == 10:
             _.seek(-1, 1)
             tag = vbnstruct.ASN1_1(_.read(2))
-            dec += hexdump_tag(tag.dumps()[1:])
+            dec += hexdump(tag.dumps()[1:])
             lastvalue = tag.dumps()[1:]
 
         elif code == 2:
             _.seek(-1, 1)
             tag = vbnstruct.ASN1_2(_.read(3))
-            dec += hexdump_tag(tag.dumps()[1:])
+            dec += hexdump(tag.dumps()[1:])
 
         elif code == 3 or code == 6:
             _.seek(-1, 1)
             tag = vbnstruct.ASN1_4(_.read(5))
-            dec += hexdump_tag(tag.dumps()[1:])
+            dec += hexdump(tag.dumps()[1:])
 
         elif code == 4:
             _.seek(-1, 1)
             tag = vbnstruct.ASN1_8(_.read(9))
-            dec += hexdump_tag(tag.dumps()[1:])
+            dec += hexdump(tag.dumps()[1:])
 
         elif code == 7:
             size = struct.unpack("<I", _.read(4))[0]
             _.seek(-5, 1)
             tag = vbnstruct.ASN1_String_A(_.read(5 + size))
-            dec += hexdump_tag(tag.dumps()[1:5])
+            dec += hexdump(tag.dumps()[1:5])
             string = tag.dumps()[5:].decode('latin-1').replace("\x00", "")
-            dec += hexdump_tag(tag.dumps()[5:]) + f'### STRING-A\n      {string}\n'
+            dec += hexdump(tag.dumps()[5:]) + f'### STRING-A\n      {string}\n'
             if hit == 'virus':
                 virus = tag.StringA.decode('latin-1').replace("\x00", "")
                 hit = None
@@ -2651,13 +2643,13 @@ def read_sep_tag(_, sub=False):
             size = struct.unpack("<I", _.read(4))[0]
             _.seek(-5, 1)
             tag = vbnstruct.ASN1_String_W(_.read(5 + size))
-            dec += hexdump_tag(tag.dumps()[1:5])
+            dec += hexdump(tag.dumps()[1:5])
             string = tag.dumps()[5:].decode('latin-1').replace("\x00", "").replace("\r\n", "\r\n\t  ")
             if lastguid == '00000000000000000000000000000000':
                 rstring = string.replace("\r\n\t  ", "\n")
 
                 results += f'{rstring}\n'
-            dec += hexdump_tag(tag.dumps()[5:]) + f'### STRING-W\n      {string}\n\n'
+            dec += hexdump(tag.dumps()[5:]) + f'### STRING-W\n      {string}\n\n'
             if hit == 'virus':
                 virus = tag.StringW.decode('latin-1').replace("\x00", "")
                 hit = None
@@ -2669,29 +2661,31 @@ def read_sep_tag(_, sub=False):
             _.seek(-5, 1)
             if size == 16:
                 tag = vbnstruct.ASN1_GUID(_.read(5 + size))
-                dec += hexdump_tag(tag.dumps()[1:5])
-                dec += f'### GUID\n{hexdump_tag(tag.dumps()[5:])}'
+                dec += hexdump(tag.dumps()[1:5])
+                dec += f'### GUID\n{hexdump(tag.dumps()[5:])}'
                 blob = False
                 if re.match(b'\xb9\x1f\x8a\\\\\xb75\\\D\x98\x03%\xfc\xa1W\^q', tag.GUID):
                     hit = 'virus'
             elif blob is True or lastvalue == b'\x0f':
                 if lasttoken == 8:
                     tag = vbnstruct.ASN1_4(_.read(5))
-                    dec += hexdump_tag(tag.dumps()[1:])
+                    dec += hexdump(tag.dumps()[1:])
                     blob = True
                 else:
                     tag = vbnstruct.ASN1_BLOB(_.read(5 + size))
-                    dec += hexdump_tag(tag.dumps()[1:5])
-                    dec += f'### BLOB\n{hexdump_tag(tag.dumps()[5:])}'
+                    dec += hexdump(tag.dumps()[1:5])
+                    dec += f'### BLOB\n{hexdump(tag.dumps()[5:])}'
                     if b'\x00x\xda' in tag.dumps()[5:15]:
                         if tag.dumps()[5:].startswith(b'CMPR'):
-                            dec += f'### BLOB Decompressed\n{hexdump_tag(zlib.decompress(tag.dumps()[13:]))}'
+                            dec += f'### BLOB Decompressed\n{hexdump(zlib.decompress(tag.dumps()[13:]))}'
                         else:
-                            dec += f'### BLOB Decompressed\n{hexdump_tag(zlib.decompress(tag.dumps()[9:]))}\n\n'
+                            dec += f'### BLOB Decompressed\n{hexdump(zlib.decompress(tag.dumps()[9:]))}\n\n'
+                    else:
+                        binary = tag.dumps()[5:]
                     blob = False
             else:
                 tag = vbnstruct.ASN1_4(_.read(5))
-                dec += hexdump_tag(tag.dumps()[1:])
+                dec += hexdump(tag.dumps()[1:])
                 blob = True
 
         elif code == 15:
@@ -2701,12 +2695,12 @@ def read_sep_tag(_, sub=False):
             if count == 1:
                 dbguid = '{' + '-'.join([flip(tag.dumps()[1:5].hex()), flip(tag.dumps()[5:7].hex()), flip(tag.dumps()[7:9].hex()), tag.dumps()[9:11].hex(), tag.dumps()[11:17].hex()]).upper() + '}'
             lastguid = tag.dumps()[1:].hex()
-            dec += f'\n### GUID\n{hexdump_tag(tag.dumps()[1:])}'
+            dec += f'\n### GUID\n{hexdump(tag.dumps()[1:])}'
 
         elif code == 16:
             _.seek(-1, 1)
             tag = vbnstruct.ASN1_16(_.read(17))
-            dec += hexdump_tag(tag.dumps()[1:])
+            dec += hexdump(tag.dumps()[1:])
 
         else:
             if lasttoken != 9:
@@ -2714,7 +2708,7 @@ def read_sep_tag(_, sub=False):
                     _.seek(-1, 1)
                     dec = dec[:-3]
                     tag = vbnstruct.ASN1_Error(_.read(16))
-                    dec += f'### Error\n{hexdump_tag(tag.dumps())}'
+                    dec += f'### Error\n{hexdump(tag.dumps())}'
                 else:
                     dec = ''
                     break
@@ -2731,8 +2725,6 @@ def read_sep_tag(_, sub=False):
             sddl = sddl_translate(a)
             match.remove(a)
         except:
-            if args.log:
-                traceback.print_exc()
             pass
         rsid = re.match('^S-\d-(\d+-){1,14}\d+$', a)
         if rsid:
@@ -2747,15 +2739,13 @@ def read_sep_tag(_, sub=False):
         virus = match[0]
         del match[0]
 
-    return match, dd, sddl, sid, virus, guid, dec, dbguid, results
+    return match, dd, sddl, sid, virus, guid, dec, dbguid, results, binary
 
 
 def write_report(_, fname):
     for m in re.finditer('(?P<XML><Report Type="(?P<Report>.*?)".*Report>)', _):
-        if args.output:
-            reportname = args.output+'/ccSubSDK/'+m.group('Report')+'.csv'
-        else:
-            reportname = 'ccSubSDK/'+m.group('Report')+'.csv'
+        reportname = args.output+'/ccSubSDK/'+m.group('Report')+'.csv'
+
         header = []
         data = ['']
         if os.path.isfile(reportname):
@@ -2786,19 +2776,6 @@ def write_report(_, fname):
         reporttype.writelines(data)
         reporttype.write(rows)
         reporttype.close()
-
-
-def hexdump_tag(buf, length=16):
-    """Return a hexdump output string of the given buffer."""
-    res = []
-
-    while buf:
-        line, buf = buf[:length], buf[length:]
-        hexa = ' '.join(["{:02x}".format(x) for x in line])
-        line = line.translate(__vis_filter).decode('utf-8')
-        res.append('      %-*s %s' % (length * 3, hexa, line))
-
-    return '\n'.join(res)+'\n\n'
 
 
 def event_data1(_):
@@ -2941,8 +2918,6 @@ def from_hex_ipv6(ipHex):
         return ipaddress.ip_address(':'.join(ipv6)).compressed
 
     except:
-        if args.log:
-            traceback.print_exc()
         return '::'
 
 
@@ -2954,7 +2929,7 @@ def from_hex_mac(macHex):
     return '-'.join(map(str, mac))[0:17]
 
 
-def hexdump(buf, length=16):
+def hexdump(buf, length=16, pcap=False):
     """Return a hexdump output string of the given buffer."""
     n = 0
     res = []
@@ -2966,9 +2941,13 @@ def hexdump(buf, length=16):
         res.append('  %06x  %-*s %s' % (n, length * 3, hexa, line))
         n += length
 
-    packet.write('\n'.join(res))
-    packet.write('\n\n')
-    return '\n'.join(res)
+    if pcap:
+        packet.write('\n'.join(res))
+        packet.write('\n\n')
+        return '\n'.join(res)
+
+    else:
+        return '\n'.join(res)+'\n\n'
 
 
 def flip(_):
@@ -3017,24 +2996,18 @@ def parse_header(f):
         from_symantec_time(f.readline().split(b',')[0].decode("utf-8", "ignore"), 0)
         return 6, 0, 0, 1, 0, 0, 0, 0
     except:
-        if args.log:
-            traceback.print_exc()
         pass
     try:
         f.seek(388, 0)
         from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"), 0)
         return 7, 0, 0, 1, 0, 0, 0, 0
     except:
-        if args.log:
-            traceback.print_exc()
         pass
     try:
         f.seek(4100, 0)
         from_symantec_time(f.read(2048).split(b',')[0].decode("utf-8", "ignore"), 0)
         return 8, 0, 0, 1, 0, 0, 0, 0
     except:
-        if args.log:
-            traceback.print_exc()
         print(f'\033[1;33mSkipping {f.name}. Unknown File Type. \033[1;0m\n')
         return 11, 0, 0, 1, 0, 0, 0, 0
 
@@ -3064,8 +3037,6 @@ def parse_syslog(f, logEntries):
         try:
             entry.location = logEntry[9].decode("utf-8", "ignore")
         except:
-            if args.log:
-                traceback.print_exc()
             entry.location = ''
 
         syslog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{sec_event_id(logEntry[2].decode("utf-8", "ignore"))}","{logEntry[3].decode("utf-8", "ignore")}","{entry.severity}","{entry.summary}","{eds}","{entry.type}","{entry.size}","{entry.location}",{data}\n')
@@ -3123,8 +3094,6 @@ def parse_seclog(f, logEntries):
         entry.description = logEntry[13].decode("utf-8", "ignore")
         entry.application = logEntry[15].decode("utf-8", "ignore")
         logEntry2 = logEntry[16][int(logEntry[12], 16):].split(b'\t')
-#        test = logEntry[16][int(logEntry[12], 16) + 1:].split(b'\t')
-#        print(len(test[0]))
         entry.localmac = logEntry2[1].hex()
 
         if len(entry.localmac) < 32:
@@ -3166,16 +3135,14 @@ def parse_seclog(f, logEntries):
         entry.signaturename = logEntry2[14].decode("utf-8", "ignore")
         entry.xintrusionpayloadurl = logEntry2[15].decode("utf-8", "ignore")
         entry.intrusionurl = logEntry2[16].decode("utf-8", "ignore")
-        entry.hash = logEntry2[22].decode("utf-8", "ignore").strip('\r')
 
-        # SEP14.3.0.1
         try:
+            entry.hash = logEntry2[22].decode("utf-8", "ignore").strip('\r')
+            # SEP14.3.0.1
             entry.urlhidlevel = logEntry2[23].decode("utf-8", "ignore")
             entry.urlriskscore = logEntry2[24].decode("utf-8", "ignore")
             entry.urlcategories = url_categories(logEntry2[25].decode("utf-8", "ignore").split(","))
         except:
-            if args.log:
-                traceback.print_exc()
             pass
 
         seclog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.eventtype}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remoteport}","{entry.remotemac}","{entry.localhost}","{entry.localport}","{entry.localmac}","{entry.application}","{entry.signatureid}","{entry.signaturesubid}","{entry.signaturename}","{entry.intrusionurl}","{entry.xintrusionpayloadurl}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.endtime}","{entry.begintime}","{entry.hash}","{entry.description}","{logEntry[7].decode("utf-8", "ignore")}","{int(logEntry[12], 16)}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry2[8].decode("utf-8", "ignore")}","{logEntry2[9].decode("utf-8", "ignore")}","{REMOTE_HOST_IPV6}","{LOCAL_HOST_IPV6}","{logEntry2[17].decode("utf-8", "ignore")}","{logEntry2[18].decode("utf-8", "ignore")}","{logEntry2[19].decode("utf-8", "ignore")}","{logEntry2[20].decode("utf-8", "ignore")}","{logEntry2[21].decode("utf-8", "ignore")}","{entry.urlhidlevel}","{entry.urlriskscore}","{entry.urlcategories}","{data}",{",".join(logData)}\n')
@@ -3263,8 +3230,6 @@ def parse_tralog(f, logEntries):
             field33 = logEntry[32].decode("utf-8", "ignore")
             field34 = logEntry[33].decode("utf-8", "ignore")
         except:
-            if args.log:
-                traceback.print_exc()
             field33 = ''
             field34 = ''
         tralog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.action}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remotemac}","{entry.remoteport}","{entry.localhost}","{entry.localmac}","{entry.localport}","{entry.application}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.rule}","{logEntry[12].decode("utf-8", "ignore")}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry[15].decode("utf-8", "ignore")}","{logEntry[23].decode("utf-8", "ignore")}","{logEntry[24].decode("utf-8", "ignore")}","{from_hex_ipv6(logEntry[25])}","{from_hex_ipv6(logEntry[26])}","{logEntry[27].decode("utf-8", "ignore")}","{logEntry[28].decode("utf-8", "ignore")}","{logEntry[29].decode("utf-8", "ignore")}","{logEntry[30].decode("utf-8", "ignore")}","{logEntry[31].decode("utf-8", "ignore")}","{field33}","{field34}"\n')
@@ -3322,9 +3287,9 @@ def parse_raw(f, logEntries):
         entry.direction = log_direction(int(logEntry[8], 16))
         entry.action = log_c_action(int(logEntry[9], 16))
         entry.application = logEntry[12].decode("utf-8", "ignore")
-        entry.packetdecode = hexdump(logEntry[13]).replace('"', '""')
+        entry.packetdecode = hexdump(logEntry[13], pcap=True).replace('"', '""')
         entry.rule = logEntry[14].decode("utf-8", "ignore")
-        entry.packetdump = Ether(import_hexcap(hexdump(logEntry[13]))).show(dump=True)
+        entry.packetdump = Ether(import_hexcap(hexdump(logEntry[13], pcap=True))).show(dump=True)
 
         rawlog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.remotehost}","{entry.remoteport}","{entry.localhost}","{entry.localport}","{entry.direction}","{entry.action}","{entry.application}","{entry.rule}","{entry.packetdump}","{entry.packetdecode}","{eventId}","{plength}","{logEntry[10].decode("utf-8", "ignore")}","{logEntry[11].decode("utf-8", "ignore")}","{logEntry[15].decode("utf-8", "ignore")}","{logEntry[16].decode("utf-8", "ignore")}","{logEntry[17].decode("utf-8", "ignore")}","{logEntry[18].decode("utf-8", "ignore")}","{logEntry[19].decode("utf-8", "ignore")}"\n')
         count += 1
@@ -3378,8 +3343,9 @@ def parse_processlog(f, logEntries):
         entry.ipaddress = from_hex_ip(logEntry[22])
         entry.deviceinstanceid = logEntry[23].decode("utf-8", "ignore")
         entry.filesize = int(logEntry[24], 16)
-        ipv6 = from_hex_ipv6(logEntry[26])
-        processlog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.severity}","{entry.action}","{entry.testmode}","{entry.description}","{entry.api}","{entry.rulename}","{entry.ipaddress}","{ipv6}","{entry.callerprocessid}","{entry.callerprocess}","{entry.deviceinstanceid}","{entry.target}","{entry.filesize}","{entry.user}","{entry.userdomain}","{entry.location}","{process_event_id(int(logEntry[2].decode("utf-8", "ignore"), 16))}","{logEntry[8].decode("utf-8", "ignore")}","{from_win_64_hex(logEntry[9])}","{from_win_64_hex(logEntry[10])}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry[15].decode("utf-8", "ignore")}","{logEntry[20].decode("utf-8", "ignore")}","{logEntry[21].decode("utf-8", "ignore")}","{logEntry[25].decode("utf-8", "ignore")}"\n')
+        ipv6 = from_hex_ipv6(logEntry[26].split(b'\r\n')[0])
+        extra = logEntry[26].split(b'\r\n')[1]
+        processlog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.severity}","{entry.action}","{entry.testmode}","{entry.description}","{entry.api}","{entry.rulename}","{entry.ipaddress}","{ipv6}","{entry.callerprocessid}","{entry.callerprocess}","{entry.deviceinstanceid}","{entry.target}","{entry.filesize}","{entry.user}","{entry.userdomain}","{entry.location}","{process_event_id(int(logEntry[2].decode("utf-8", "ignore"), 16))}","{logEntry[8].decode("utf-8", "ignore")}","{from_win_64_hex(logEntry[9])}","{from_win_64_hex(logEntry[10])}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry[15].decode("utf-8", "ignore")}","{logEntry[20].decode("utf-8", "ignore")}","{logEntry[21].decode("utf-8", "ignore")}","{logEntry[25].decode("utf-8", "ignore")}","{extra}"\n')
         count += 1
 
         if count == logEntries:
@@ -3766,7 +3732,7 @@ def parse_vbn(f, logType, tz):
 
         if dataType == 6:
             if args.hex_dump:
-                print(hexdump_tag(xor(f.read(), 0x5A).encode('latin-1')))
+                print(hexdump(xor(f.read(), 0x5A).encode('latin-1')))
 
         if args.struct:
             if vbnv == 1:
@@ -3776,16 +3742,13 @@ def parse_vbn(f, logType, tz):
 
     if args.quarantine_dump and len(qfile) > 0:
         if (header or qfs) == 0:
-            test = hexdump_tag(qfile.encode('latin-1'))
+            test = hexdump(qfile.encode('latin-1'))
         else:
-            test = hexdump_tag(qfile[header:qfs].encode('latin-1'))
+            test = hexdump(qfile[header:qfs].encode('latin-1'))
         print(test)
 
     if args.extract and len(qfile) > 0:
-        if args.output:
-            output = open(args.output + '/' + os.path.basename(description) + '.vbn', 'wb+')
-        else:
-            output = open(os.path.basename(description) + '.vbn', 'wb+')
+        output = open(args.output + '/' + os.path.basename(description) + '.vbn', 'wb+')
 
         if (header or qfs) == 0:
             output.write(bytes(qfile, encoding='latin-1'))
@@ -3817,14 +3780,11 @@ def extract_sym_submissionsidx(f):
         len2 = struct.unpack('i', f.read(4))[0]
         print(f'\033[1;35m\tSubmission {cnt} len1={len1} len2={len2}\033[1;0m\n')
         f.seek(8, 1)
-        if args.output:
-            if not os.path.exists(args.output + '/ccSubSDK/submissions'):
-                os.makedirs(args.output + '/ccSubSDK/submissions')
-            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
-        else:
-            if not os.path.exists('ccSubSDK/submissions'):
-                os.makedirs('ccSubSDK/submissions')
-            newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
+
+        if not os.path.exists(args.output + '/ccSubSDK/submissions'):
+            os.makedirs(args.output + '/ccSubSDK/submissions')
+        newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
+
         key = f.read(16)
         data = f.read(len1 - 16)
         dec = blowfishit(data, key)
@@ -3838,10 +3798,9 @@ def extract_sym_submissionsidx(f):
             extract_sym_submissionsidx_sub(data, cnt, len1)
             cnt += 1
             continue
-        if args.output:
-            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
-        else:
-            newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
+
+        newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
+
         newfilename.write(dec[6].encode('latin-1'))
         read_submission(dec[8], dec[7])
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
@@ -3851,10 +3810,9 @@ def extract_sym_submissionsidx(f):
 def extract_sym_submissionsidx_sub(f, cnt, len1):
     print(f'\033[1;32m\t\tParsing sub-entries for Submission {cnt}\033[1;0m\n')
     print(f'\033[1;35m\t\tSubmission {cnt}-0\033[1;0m\n')
-    if args.output:
-        newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-0]_idx.out', 'wb')
-    else:
-        newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-0]_idx.out', 'wb')
+
+    newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-0]_idx.out', 'wb')
+
     subcnt = 1
     f = io.BytesIO(f)
     try:
@@ -3877,19 +3835,17 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
         len2 = struct.unpack('i', f.read(4))[0]
         print(f'\033[1;35m\t\tSubmission {cnt}-{subcnt} len1={len1} len2={len2}\033[1;0m\n')
         f.seek(8, 1)
-        if args.output:
-            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.out', 'wb')
-        else:
-            newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.out', 'wb')
+
+        newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.out', 'wb')
+
         key = f.read(16)
         data = f.read(len1 - 16)
         dec = blowfishit(data, key)
         newfilename.write(dec.encode('latin-1'))
         dec = read_sep_tag(dec.encode('latin-1'), sub=True)
-        if args.output:
-            newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
-        else:
-            newfilename = open('ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
+
+        newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
+
         newfilename.write(dec[6].encode('latin-1'))
         read_submission(dec[8], dec[7])
         print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-{subcnt}\033[1;0m\n')
@@ -3907,7 +3863,8 @@ def extract_sym_ccSubSDK(f):
             '6A007A980A5B0A48BDFC4D887AEACAB0': 'IDSxpx86',
             'D40650BD02FDE745889CB15F0693C770': 'IDSxpx86',
             '8EF95B94E971E842BAC952B02E79FB74': 'AVModule',
-            'A72BBCC1E52A39418B8BB591BDD9AE76': 'RepMgtTim'
+            'A72BBCC1E52A39418B8BB591BDD9AE76': 'RepMgtTim',
+            'F2ECB3F7D763AE4DB49322CF763FC270': 'ccSubEng'
            }
 
     f.seek(0)
@@ -3917,14 +3874,10 @@ def extract_sym_ccSubSDK(f):
         if k == GUID.upper():
             GUID = v + '/' + GUID
 
-    if args.output:
-        if not os.path.exists(args.output+'/ccSubSDK/' + GUID):
-            os.makedirs(args.output+'/ccSubSDK/' + GUID)
-        newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '_Symantec_ccSubSDK.out', 'wb')
-    else:
-        if not os.path.exists('ccSubSDK/' + GUID):
-            os.makedirs('ccSubSDK/' + GUID)
-        newfilename = open('ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '_Symantec_ccSubSDK.out', 'wb')
+    if not os.path.exists(args.output+'/ccSubSDK/' + GUID):
+        os.makedirs(args.output+'/ccSubSDK/' + GUID)
+    newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '_Symantec_ccSubSDK.out', 'wb')
+
     key = f.read(16)
     data = f.read()
     dec = blowfishit(data, key)
@@ -3933,11 +3886,13 @@ def extract_sym_ccSubSDK(f):
 
     write_report(dec[6], os.path.basename(f.name))
 
-    if args.output:
-        newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '_Symantec_ccSubSDK.met', 'wb')
-    else:
-        newfilename = open('ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '_Symantec_ccSubSDK.met', 'wb')
+    newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '_Symantec_ccSubSDK.met', 'wb')
+    if dec[9] and args.extract_blob:
+        binary = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '_blob', 'wb')
+
     newfilename.write(dec[6].encode('latin-1'))
+    if dec[9] and args.extract_blob:
+        binary.write(dec[9])
 
 
 def blowfishit(data, key):
@@ -3963,17 +3918,17 @@ def utc_offset(_):
     return int(utc)
 
 
-def logo():
-    print("\033[1;93m____________\033[1;0m")
-    print("\033[1;93m|   |  |   |\033[1;0m")
-    print("\033[1;93m|   |  |   |\033[1;97m   ____  _____ ____")
-    print("\033[1;93m|   |  |   |\033[1;97m  / ___|| ____|  _ \ _ __   __ _ _ __ ___  ___ _ __ ")
-    print("\033[1;93m|   |  |\033[1;92m___\033[1;93m|\033[1;97m  \___ \|  _| | |_) | '_ \ / _` | '__/ __|/ _ \ '__|")
-    print("\033[1;93m \  |  \033[1;92m/ _ \ \033[1;97m  ___) | |___|  __/| |_) | (_| | |  \__ \  __/ |")
-    print("\033[1;93m  \ | \033[1;92m| (_) |\033[1;97m |____/|_____|_|   | .__/ \__,_|_|  |___/\___|_| v2.0")
-    print("\033[1;93m    \  \033[1;92m\___/\033[1;97m                    |_|")
-    print("\033[1;93m     \/\033[1;0m")
-    print("")
+banner = '''
+\033[1;93m____________\033[1;0m
+\033[1;93m|   |  |   |\033[1;0m
+\033[1;93m|   |  |   |\033[1;97m   ____  _____ ____
+\033[1;93m|   |  |   |\033[1;97m  / ___|| ____|  _ \ _ __   __ _ _ __ ___  ___ _ __
+\033[1;93m|   |  |\033[1;92m___\033[1;93m|\033[1;97m  \___ \|  _| | |_) | '_ \ / _` | '__/ __|/ _ \ '__|
+\033[1;93m \  |  \033[1;92m/ _ \ \033[1;97m  ___) | |___|  __/| |_) | (_| | |  \__ \  __/ |
+\033[1;93m  \ | \033[1;92m| (_) |\033[1;97m |____/|_____|_|   | .__/ \__,_|_|  |___/\___|_| v{}
+\033[1;93m    \  \033[1;92m\___/\033[1;97m                    |_|
+\033[1;93m     \/\033[1;0m      by @bmmaloney97
+'''.format(__version__)
 
 
 def main():
@@ -4047,15 +4002,16 @@ def main():
     sys.exit()
 
 
-logo()
+print(banner)
 start = time.time()
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--file", help="File to be parsed")
 parser.add_argument("-d", "--dir", help="Directory to be parsed")
 parser.add_argument("-e", "--extract", help="Extract quarantine file from VBN if present.", action="store_true")
+parser.add_argument("-eb", "--extract-blob", help="Extract potential binary blobs from ccSubSDK", action="store_true")
 parser.add_argument("-hd", "--hex-dump", help="Dump hex output of VBN to screen.", action="store_true")
 parser.add_argument("-qd", "--quarantine-dump", help="Dump hex output of quarantine to screen.", action="store_true")
-parser.add_argument("-o", "--output", help="Directory to output files to. Default is current directory.")
+parser.add_argument("-o", "--output", help="Directory to output files to. Default is current directory.", default=".")
 parser.add_argument("-a", "--append", help="Append to output files.", action="store_true")
 parser.add_argument("-r", "--registrationInfo", help="Path to registrationInfo.xml")
 parser.add_argument("-tz", "--timezone", type=int, help="UTC offset")
@@ -4069,15 +4025,13 @@ if len(sys.argv) == 1:
 
 args = parser.parse_args()
 
-if args.output:
-    if not os.path.exists(args.output):
-        os.makedirs(args.output)
-    logfile = args.output + "/" + datetime.now().strftime("%Y-%m-%dT%H%M%S_console.log")
-else:
-    logfile = datetime.now().strftime("%Y-%m-%dT%H%M%S_console.log")
+if not os.path.exists(args.output):
+    os.makedirs(args.output)
+logfile = args.output + "/" + datetime.now().strftime("%Y-%m-%dT%H%M%S_console.log")
 
 if args.log:
     sys.stdout = Logger()
+    sys.stderr = Logger()
 
 regex = re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine|.*\\Data\\CmnClnt\\ccSubSDK)')
 filenames = []
@@ -4184,60 +4138,6 @@ if args.output and not (args.extract or args.hex_dump):
             rt0v2 = open(args.output + '/VBN(V2)/Record_type_0.csv', 'a')
             rt1v2 = open(args.output + '/VBN(V2)/Record_type_1.csv', 'a')
             rt2v2 = open(args.output + '/VBN(V2)/Record_type_2.csv', 'a')
-
-    if os.stat(timeline.name).st_size == 0:
-        csv_header()
-
-elif not (args.extract or args.hex_dump):
-    if not os.path.exists('ccSubSDK'):
-        os.makedirs('ccSubSDK')
-
-    if not args.append:
-        syslog = open('Symantec_Client_Management_System_Log.csv', 'w')
-        seclog = open('Symantec_Client_Management_Security_Log.csv', 'w')
-        tralog = open('Symantec_Network_and_Host_Exploit_Mitigation_Traffic_Log.csv', 'w')
-        rawlog = open('Symantec_Network_and_Host_Exploit_Mitigation_Packet_Log.csv', 'w')
-        processlog = open('Symantec_Client_Management_Control_Log.csv', 'w')
-        timeline = open('Symantec_Timeline.csv', 'w')
-        packet = open('packets.txt', 'w')
-        tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
-        quarantine = open('quarantine.csv', 'w')
-        settings = open('settings.csv', 'w')
-
-        if args.struct:
-            if not os.path.exists('VBN(V1)'):
-                os.makedirs('VBN(V1)')
-            if not os.path.exists('VBN(V2)'):
-                os.makedirs('VBN(V2)')
-            rt0v1 = open('VBN(V1)/Record_type_0.csv', 'w')
-            rt1v1 = open('VBN(V1)/Record_type_1.csv', 'w')
-            rt2v1 = open('VBN(V1)/Record_type_2.csv', 'w')
-            rt0v2 = open('VBN(V2)/Record_type_0.csv', 'w')
-            rt1v2 = open('VBN(V2)/Record_type_1.csv', 'w')
-            rt2v2 = open('VBN(V2)/Record_type_2.csv', 'w')
-    else:
-        syslog = open('Symantec_Client_Management_System_Log.csv', 'a')
-        seclog = open('Symantec_Client_Management_Security_Log.csv', 'a')
-        tralog = open('Symantec_Network_and_Host_Exploit_Mitigation_Traffic_Log.csv', 'a')
-        rawlog = open('Symantec_Network_and_Host_Exploit_Mitigation_Packet_Log.csv', 'a')
-        processlog = open('Symantec_Client_Management_Control_Log.csv', 'a')
-        timeline = open('Symantec_Timeline.csv', 'a')
-        packet = open('packets.txt', 'a')
-        tamperProtect = open('Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
-        quarantine = open('quarantine.csv', 'a')
-        settings = open('settings.csv', 'a')
-
-        if args.struct:
-            if not os.path.exists('VBN(V1)'):
-                os.makedirs('VBN(V1)')
-            if not os.path.exists('VBN(V2)'):
-                os.makedirs('VBN(V2)')
-            rt0v1 = open('VBN(V1)/Record_type_0.csv', 'a')
-            rt1v1 = open('VBN(V1)/Record_type_1.csv', 'a')
-            rt2v1 = open('VBN(V1)/Record_type_2.csv', 'a')
-            rt0v2 = open('VBN(V2)/Record_type_0.csv', 'a')
-            rt1v2 = open('VBN(V2)/Record_type_1.csv', 'a')
-            rt2v2 = open('VBN(V2)/Record_type_2.csv', 'a')
 
     if os.stat(timeline.name).st_size == 0:
         csv_header()

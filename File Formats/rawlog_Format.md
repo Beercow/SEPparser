@@ -1,6 +1,9 @@
 # Packet Log File Format
 The packet log for SEP can be found at the following location:
+* Windows  
 C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\rawlog.log
+* Linux  
+ /var/symantec/Logs/seclog.log
 
 ## Header
 | Field                 | Type   | Size | Description                      |
