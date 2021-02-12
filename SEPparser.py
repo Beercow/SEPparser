@@ -383,59 +383,58 @@ typedef struct _Quarantine_Metadata_Header {
     int64 QM_Size;
     int64 QM_Size_Header_Size;
     int64 End_of_QM_to_End_of_VBN;
-    char QM[QM_Size]  //Full structure to end
 } Quarantine_Metadata_Header;
 
 typedef struct _ASN1_1 {
-    byte Tag;
-    byte Value;
+    BYTE Tag;
+    BYTE Value;
 } ASN1_1;
 
 typedef struct _ASN1_2 {
-    byte Tag;
+    BYTE Tag;
     short Value;
 } ASN1_2;
 
 typedef struct _ASN1_3 {
-    byte Tag;
+    BYTE Tag;
     char Value[3];
 } ASN1_3;
 
 typedef struct _ASN1_4 {
-    byte Tag;
+    BYTE Tag;
     long Value;
 } ASN1_4;
 
 typedef struct _ASN1_8 {
-    byte Tag;
+    BYTE Tag;
     char Value[8];
 } ASN1_8;
 
 typedef struct _ASN1_16 {
-    byte Tag;
+    BYTE Tag;
     char GUID[16];
 } ASN1_16;
 
 typedef struct _ASN1_String_A {
-    byte Tag;
+    BYTE Tag;
     int32 Data_Length;
     char StringA[Data_Length];
 } ASN1_String_A;
 
 typedef struct _ASN1_String_W {
-    byte Tag;
+    BYTE Tag;
     int32 Data_Length;
     char StringW[Data_Length];
 } ASN1_String_W;
 
 typedef struct _ASN1_GUID {
-    byte Tag;
+    BYTE Tag;
     int32 Data_Length;
     char GUID[Data_Length];
 } ASN1_GUID;
 
 typedef struct _ASN1_BLOB {
-    byte Tag;
+    BYTE Tag;
     int32 Data_Length;
     char BLOB[Data_Length];
 } ASN1_BLOB;
@@ -445,21 +444,21 @@ typedef struct _ASN1_Error {
 } ASN1_Error;
 
 typedef struct _Tag {
-    byte Tag;
+    BYTE Tag;
 } Tag;
 
 typedef struct _Quarantine_SDDL {
-    byte Tag7;
+    BYTE Tag7;
     int32 Security_Descriptor_Size;
     char Security_Descriptor[Security_Descriptor_Size]; //need to fix for wchar
-    byte Tag8;
+    BYTE Tag8;
     int32 Tag8_Data;
-    byte Tag9;
+    BYTE Tag9;
     int64 Quarantine_Data_Size_3;
 } Quarantine_SDDL;
 
 typedef struct _Chunk {
-    byte Data_Type;
+    BYTE Data_Type;
     int32 Chunk_Size;
 } Chunk;
 
@@ -510,8 +509,8 @@ typedef struct _FILE_FULL_EA_INFORMATION {
   UCHAR  Flags;
   UCHAR  EaNameLength;
   USHORT EaValueLength;
-  CHAR   EaName[EaNameLength];
-  CHAR   EaValue[EaValueLength + 1];
+  char   EaName[EaNameLength];
+  char   EaValue[EaValueLength + 1];
 } FILE_FULL_EA_INFORMATION;
 
 typedef struct _QData_Location {
@@ -529,21 +528,21 @@ typedef struct _QData_Info {
 } QData_Info;
 
 typedef struct _Quarantine_Hash {
-    byte Tag1;
+    BYTE Tag1;
     int32 Tag1_Data;
-    byte Tag2;
-    byte Tag2_Data;
+    BYTE Tag2;
+    BYTE Tag2_Data;
 } Quarantine_Hash;
 
 typedef struct _Quarantine_Hash_Continued {
-    byte Tag3;
+    BYTE Tag3;
     int32 SHA1_Hash_Length;
     char SHA1[SHA1_Hash_Length]; //need to fix for wchar
-    byte Tag4;
+    BYTE Tag4;
     int32 Tag4_Data;
-    byte Tag5;
+    BYTE Tag5;
     int32 Tag5_Data;
-    byte Tag6;
+    BYTE Tag6;
     int32 QFS_Size;
     char Quarantine_Data_Size_2[QFS_Size];
 } Quarantine_Hash_Continued;
@@ -2436,6 +2435,8 @@ def read_submission(_, fname):
             value[pos] = hexdump(zlib.decompress(bytearray.fromhex(v[17:]))).replace('"', '""')
         elif k == 'Protocol':
             value[pos] = idsxp_protocol(int(v))
+        elif k == 'Application File CreateTime':
+            value[pos] = from_unix_sec(v.strip()[:10])
         else:
             value[pos] = v
     if len(value) != 0:
@@ -2573,7 +2574,7 @@ def read_log_data(data, tz):
     return f'"{entry.time}","{entry.event}","{entry.category}","{entry.logger}","{entry.computer}","{entry.user}","{entry.virus}","{entry.file}","{entry.wantedaction1}","{entry.wantedaction2}","{entry.realaction}","{entry.virustype}","{entry.flags}","{entry.description}","{entry.scanid}","{entry.newext}","{entry.groupid}","{entry.eventdata}","{entry.vbinid}","{entry.virusid}","{entry.quarantineforwardstatus}","{entry.access}","{entry.sdnstatus}","{entry.compressed}","{entry.depth}","{entry.stillinfected}","{entry.definfo}","{entry.defsequincenumber}","{entry.cleaninfo}","{entry.deleteinfo}","{entry.backupod}","{entry.parent}","{entry.guid}","{entry.clientgroup}","{entry.address}","{entry.domainname}","{entry.ntdomain}","{entry.macaddress}","{entry.version}","{entry.remotemachine}","{entry.remotemachineip}","{entry.action1status}","{entry.action2status}","{entry.licensefeaturename}","{entry.licensefeatureversion}","{entry.licenseserialnumber}","{entry.licensefulfillmentid}","{entry.licensestartdate}","{entry.licenseexpirationdate}","{entry.licenselifecycle}","{entry.licenseseatstotal}","{entry.licenseseats}","{entry.errorcode}","{entry.licenseseatsdelta}","{entry.status}","{entry.domainguid}","{entry.sessionguid}","{entry.vbnsessionid}","{entry.logindomain}","{entry.eventdata2}","{entry.erasercategoryid}","{entry.dynamiccategoryset}","{entry.subcategorysetid}","{entry.displaynametouse}","{entry.reputationdisposition}","{entry.reputationconfidence}","{entry.firsseen}","{entry.reputationprevalence}","{entry.downloadurl}","{entry.categoryfordropper}","{entry.cidsstate}","{entry.behaviorrisklevel}","{entry.detectiontype}","{entry.acknowledgetext}","{entry.vsicstate}","{entry.scanguid}","{entry.scanduration}","{entry.scanstarttime}","{entry.targetapptype}","{entry.scancommandguid}","{field113}","{entry.location}","{field115}","{entry.digitalsigner}","{entry.digitalissuer}","{entry.digitalthumbprint}","{field119}","{entry.digitalsn}","{entry.digitaltime}","{field122}","{field123}","{field124}","{field125}","{field126}"'
 
 
-def read_sep_tag(_, sub=False):
+def read_sep_tag(_, sub=False, vbn=False):
     _ = io.BytesIO(_)
     blob = False
     match = []
@@ -2589,7 +2590,7 @@ def read_sep_tag(_, sub=False):
     hit = None
     virus = ''
     results = ''
-    binary = ''
+    binary = []
     count = 0
     verify = struct.unpack("B", _.read(1))[0]
     _.seek(-1, 1)
@@ -2681,7 +2682,7 @@ def read_sep_tag(_, sub=False):
                         else:
                             dec += f'### BLOB Decompressed\n{hexdump(zlib.decompress(tag.dumps()[9:]))}\n\n'
                     else:
-                        binary = tag.dumps()[5:]
+                        binary.append(tag.dumps()[5:])
                     blob = False
             else:
                 tag = vbnstruct.ASN1_4(_.read(5))
@@ -2735,7 +2736,7 @@ def read_sep_tag(_, sub=False):
             guid = a
             match.remove(a)
 
-    if virus == '' and len(match) >= 6:
+    if virus == '' and (len(match) >= 6 and vbn is True):
         virus = match[0]
         del match[0]
 
@@ -2767,7 +2768,10 @@ def write_report(_, fname):
                         diff = len(header) - len(value)
                         value += ' ' * diff
                     pos = header.index(k)
-                    value[pos] = v
+                    if k == 'Infection_Timestamp' or k == 'Discovery_Timestamp' or k == 'Active_timestamp':
+                        value[pos] = from_unix_sec(v)
+                    else:
+                        value[pos] = v
             if len(value) != 0:
                 value = '","'.join(value)
                 rows += f'"{fname}","{value}"\n'
@@ -2931,10 +2935,13 @@ def from_hex_mac(macHex):
 
 def hexdump(buf, length=16, pcap=False):
     """Return a hexdump output string of the given buffer."""
+    total = len(buf)
     n = 0
     res = []
 
     while buf:
+        if total > 1000000:
+            progress(n, total, status='Dumping hex data')
         line, buf = buf[:length], buf[length:]
         hexa = ' '.join(["{:02x}".format(x) for x in line])
         line = line.translate(__vis_filter).decode('utf-8')
@@ -3552,7 +3559,7 @@ def parse_vbn(f, logType, tz):
             print('           ##                                                   ##')
             print('           #######################################################')
             print('           #######################################################\n')
-        tags, dd, sddl, sid, virus, guid, dec, dbguid, results = read_sep_tag(f.read())
+        tags, dd, sddl, sid, virus, guid, dec, dbguid, results, binary = read_sep_tag(f.read(), vbn=True)
 
         if args.struct:
             if vbnv == 1:
@@ -3589,7 +3596,7 @@ def parse_vbn(f, logType, tz):
             print('           ##                                                   ##')
             print('           #######################################################')
             print('           #######################################################\n')
-        tags, dd, sddl, sid, virus, guid, dec, dbguid, results = read_sep_tag(xor(f.read(qmh.QM_Size), 0x5A).encode('latin-1'))
+        tags, dd, sddl, sid, virus, guid, dec, dbguid, results, bianry = read_sep_tag(xor(f.read(qmh.QM_Size), 0x5A).encode('latin-1'), vbn=True)
 
         pos = qmh.QM_Size_Header_Size + vbnmeta.QM_HEADER_Offset
         f.seek(pos)
@@ -3679,7 +3686,9 @@ def parse_vbn(f, logType, tz):
                     f.seek(-footer, 2)
                     try:
                         attribType = int.from_bytes(xor(f.read(1), 0xA5).encode('latin-1'), 'little')
-                        f.seek(-1, 1)
+                        if f.read(1) == b'':
+                            attribType = ''
+                        f.seek(-2, 1)
                         if attribType == 2:
                             ea1 = vbnstruct.Extended_Attribute(xor(f.read(20), 0xA5).encode('latin-1'))
                             if args.hex_dump:
@@ -3874,33 +3883,62 @@ def extract_sym_ccSubSDK(f):
         if k == GUID.upper():
             GUID = v + '/' + GUID
 
-    if not os.path.exists(args.output+'/ccSubSDK/' + GUID):
-        os.makedirs(args.output+'/ccSubSDK/' + GUID)
-    newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '_Symantec_ccSubSDK.out', 'wb')
+    if not os.path.exists(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name)):
+        os.makedirs(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name))
+    newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '/Symantec_ccSubSDK.out', 'wb')
 
     key = f.read(16)
     data = f.read()
     dec = blowfishit(data, key)
+
+    if len(data) > 1000000:
+        print('')
+
     newfilename.write(dec.encode('latin-1'))
+    newfilename.close()
     dec = read_sep_tag(dec.encode('latin-1'))
+
+    if len(data) > 1000000:
+        print('\n\n')
+
+#    hash_test = list(filter(lambda v: re.match('^([A-F0-9]{32})$|^([A-F0-9]{64})$', v), dec[0]))
 
     write_report(dec[6], os.path.basename(f.name))
 
-    newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '_Symantec_ccSubSDK.met', 'wb')
-    if dec[9] and args.extract_blob:
-        binary = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '_blob', 'wb')
+    newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '/Symantec_ccSubSDK.met', 'wb')
 
     newfilename.write(dec[6].encode('latin-1'))
+    newfilename.close()
     if dec[9] and args.extract_blob:
-        binary.write(dec[9])
+        cnt = 0
+        for i in dec[9]:
+            binary = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '/' + str(cnt) + '.blob', 'wb')
+            binary.write(i)
+            binary.close()
+            cnt += 1
+
+
+def progress(count, total, status=''):
+    bar_len = 60
+    filled_len = int(round(bar_len * count / float(total)))
+
+    percents = round(100.0 * count / float(total), 1)
+    bar = '=' * filled_len + '-' * (bar_len - filled_len)
+
+    sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
+    sys.stdout.flush()
 
 
 def blowfishit(data, key):
     dec = ''
+    total = len(data)
     cipher = blowfish.Cipher(key, byte_order="little")
     data = io.BytesIO(data)
     while data:
         dec += str(cipher.decrypt_block(data.read(8)).decode('latin-1'))
+        i = data.tell()
+        if total > 1000000:
+            progress(i, total, status='Decrypting file')
         check = data.read(1)
         if len(check) == 0:
             break
