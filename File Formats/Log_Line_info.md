@@ -21,7 +21,7 @@ Time,Event,Category,Logger,Computer,User,Virus,File,Wanted Action 1,Wanted Actio
     <tbody>
         <tr>
             <td>Time</td>
-            <td>Time of event.<br><img src="./Images/time.PNG"</img></td>
+            <td>Time of event.<br><img src="file:///Images/time.PNG"</img></td>
         </tr>
         <tr>
             <td>Event</td>
@@ -890,7 +890,7 @@ Time,Event,Category,Logger,Computer,User,Virus,File,Wanted Action 1,Wanted Actio
         </tr>
         <tr>
             <td>Scan Start Time &#42;</td>
-            <td>The time that the scan started.<br><img src="./Images/time.PNG"</img></td>
+            <td>The time that the scan started.<br><img src="file:///Images/time.PNG"</img></td>
         </tr>
         <tr>
             <td>TargetApp Type &#42;</td>

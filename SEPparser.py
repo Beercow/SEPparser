@@ -862,99 +862,99 @@ def log_description(data):
 
 def log_event(_):
     event = {
-              '1': 'IS_ALERT',
-              '2': 'SCAN_STOP',
-              '3': 'SCAN_START',
-              '4': 'PATTERN_UPDATE',
-              '5': 'INFECTION',
-              '6': 'FILE_NOTOPEN',
-              '7': 'LOAD_PATTERN',
-              '8': 'MESSAGE_INFO',
-              '9': 'MESSAGE_ERROR',
-              '10': 'CHECKSUM',
-              '11': 'TRAP',
-              '12': 'CONFIG_CHANGE',
-              '13': 'SHUTDOWN',
-              '14': 'STARTUP',
-              '16': 'PATTERN_DOWNLOAD',
-              '17': 'TOO_MANY_VIRUSES',
-              '18': 'FWD_TO_QSERVER',
-              '19': 'SCANDLVR',
-              '20': 'BACKUP',
-              '21': 'SCAN_ABORT',
-              '22': 'RTS_LOAD_ERROR',
-              '23': 'RTS_LOAD',
-              '24': 'RTS_UNLOAD',
-              '25': 'REMOVE_CLIENT',
-              '26': 'SCAN_DELAYED',
-              '27': 'SCAN_RESTART',
-              '28': 'ADD_SAVROAMCLIENT_TOSERVER',
-              '29': 'REMOVE_SAVROAMCLIENT_FROMSERVER',
-              '30': 'LICENSE_WARNING',
-              '31': 'LICENSE_ERROR',
-              '32': 'LICENSE_GRACE',
-              '33': 'UNAUTHORIZED_COMM',
-              '34': 'LOG:FWD_THRD_ERR',
-              '35': 'LICENSE_INSTALLED',
-              '36': 'LICENSE_ALLOCATED',
-              '37': 'LICENSE_OK',
-              '38': 'LICENSE_DEALLOCATED',
-              '39': 'BAD_DEFS_ROLLBACK',
-              '40': 'BAD_DEFS_UNPROTECTED',
-              '41': 'SAV_PROVIDER_PARSING_ERROR',
-              '42': 'RTS_ERROR',
-              '43': 'COMPLIANCE_FAIL',
-              '44': 'COMPLIANCE_SUCCESS',
-              '45': 'SECURITY_SYMPROTECT_POLICYVIOLATION',
-              '46': 'ANOMALY_START',
-              '47': 'DETECTION_ACTION_TAKEN',
-              '48': 'REMEDIATION_ACTION_PENDING',
-              '49': 'REMEDIATION_ACTION_FAILED',
-              '50': 'REMEDIATION_ACTION_SUCCESSFUL',
-              '51': 'ANOMALY_FINISH',
-              '52': 'COMMS_LOGIN_FAILED',
-              '53': 'COMMS_LOGIN_SUCCESS',
-              '54': 'COMMS_UNAUTHORIZED_COMM',
-              '55': 'CLIENT_INSTALL_AV',
-              '56': 'CLIENT_INSTALL_FW',
-              '57': 'CLIENT_UNINSTALL',
-              '58': 'CLIENT_UNINSTALL_ROLLBACK',
-              '59': 'COMMS_SERVER_GROUP_ROOT_CERT_ISSUE',
-              '60': 'COMMS_SERVER_CERT_ISSUE',
-              '61': 'COMMS_TRUSTED_ROOT_CHANGE',
-              '62': 'COMMS_SERVER_CERT_STARTUP_FAILED',
-              '63': 'CLIENT_CHECKIN',
-              '64': 'CLIENT_NO_CHECKIN',
-              '65': 'SCAN_SUSPENDED',
-              '66': 'SCAN_RESUMED',
-              '67': 'SCAN_DURATION_INSUFFICIENT',
-              '68': 'CLIENT_MOVE',
-              '69': 'SCAN_FAILED_ENHANCED',
-              '70': 'COMPLIANCE_FAILEDAUDIT',
-              '71': 'HEUR_THREAT_NOW_WHITELISTED',
-              '72': 'INTERESTING_PROCESS_DETECTED_START',
-              '73': 'LOAD_ERROR_BASH',
-              '74': 'LOAD_ERROR_BASH_DEFINITIONS',
-              '75': 'INTERESTING_PROCESS_DETECTED_FINISH',
-              '76': 'BASH_NOT_SUPPORTED_FOR_OS',
-              '77': 'HEUR_THREAT_NOW_KNOWN',
-              '78': 'DISABLE_BASH',
-              '79': 'ENABLE_BASH',
-              '80': 'DEFS_LOAD_FAILED',
-              '81': 'LOCALREP_CACHE_SERVER_ERROR',
-              '82': 'REPUTATION_CHECK_TIMEOUT',
-              '83': 'SYMEPSECFILTER_DRIVER_ERROR',
-              '84': 'VSIC_COMMUNICATION_WARNING',
-              '85': 'VSIC_COMMUNICATION_RESTORED',
-              '86': 'ELAM_LOAD_FAILED',
-              '87': 'ELAM_INVALID_OS',
-              '88': 'ELAM_ENABLE',
-              '89': 'ELAM_DISABLE',
-              '90': 'ELAM_BAD',
-              '91': 'ELAM_BAD_REPORTED_AS_UNKNOWN',
-              '92': 'DISABLE_SYMPROTECT',
-              '93': 'ENABLE_SYMPROTECT',
-              '94': 'NETSEC_EOC_PARSE_FAILED'
+             '1': 'IS_ALERT',
+             '2': 'SCAN_STOP',
+             '3': 'SCAN_START',
+             '4': 'PATTERN_UPDATE',
+             '5': 'INFECTION',
+             '6': 'FILE_NOTOPEN',
+             '7': 'LOAD_PATTERN',
+             '8': 'MESSAGE_INFO',
+             '9': 'MESSAGE_ERROR',
+             '10': 'CHECKSUM',
+             '11': 'TRAP',
+             '12': 'CONFIG_CHANGE',
+             '13': 'SHUTDOWN',
+             '14': 'STARTUP',
+             '16': 'PATTERN_DOWNLOAD',
+             '17': 'TOO_MANY_VIRUSES',
+             '18': 'FWD_TO_QSERVER',
+             '19': 'SCANDLVR',
+             '20': 'BACKUP',
+             '21': 'SCAN_ABORT',
+             '22': 'RTS_LOAD_ERROR',
+             '23': 'RTS_LOAD',
+             '24': 'RTS_UNLOAD',
+             '25': 'REMOVE_CLIENT',
+             '26': 'SCAN_DELAYED',
+             '27': 'SCAN_RESTART',
+             '28': 'ADD_SAVROAMCLIENT_TOSERVER',
+             '29': 'REMOVE_SAVROAMCLIENT_FROMSERVER',
+             '30': 'LICENSE_WARNING',
+             '31': 'LICENSE_ERROR',
+             '32': 'LICENSE_GRACE',
+             '33': 'UNAUTHORIZED_COMM',
+             '34': 'LOG:FWD_THRD_ERR',
+             '35': 'LICENSE_INSTALLED',
+             '36': 'LICENSE_ALLOCATED',
+             '37': 'LICENSE_OK',
+             '38': 'LICENSE_DEALLOCATED',
+             '39': 'BAD_DEFS_ROLLBACK',
+             '40': 'BAD_DEFS_UNPROTECTED',
+             '41': 'SAV_PROVIDER_PARSING_ERROR',
+             '42': 'RTS_ERROR',
+             '43': 'COMPLIANCE_FAIL',
+             '44': 'COMPLIANCE_SUCCESS',
+             '45': 'SECURITY_SYMPROTECT_POLICYVIOLATION',
+             '46': 'ANOMALY_START',
+             '47': 'DETECTION_ACTION_TAKEN',
+             '48': 'REMEDIATION_ACTION_PENDING',
+             '49': 'REMEDIATION_ACTION_FAILED',
+             '50': 'REMEDIATION_ACTION_SUCCESSFUL',
+             '51': 'ANOMALY_FINISH',
+             '52': 'COMMS_LOGIN_FAILED',
+             '53': 'COMMS_LOGIN_SUCCESS',
+             '54': 'COMMS_UNAUTHORIZED_COMM',
+             '55': 'CLIENT_INSTALL_AV',
+             '56': 'CLIENT_INSTALL_FW',
+             '57': 'CLIENT_UNINSTALL',
+             '58': 'CLIENT_UNINSTALL_ROLLBACK',
+             '59': 'COMMS_SERVER_GROUP_ROOT_CERT_ISSUE',
+             '60': 'COMMS_SERVER_CERT_ISSUE',
+             '61': 'COMMS_TRUSTED_ROOT_CHANGE',
+             '62': 'COMMS_SERVER_CERT_STARTUP_FAILED',
+             '63': 'CLIENT_CHECKIN',
+             '64': 'CLIENT_NO_CHECKIN',
+             '65': 'SCAN_SUSPENDED',
+             '66': 'SCAN_RESUMED',
+             '67': 'SCAN_DURATION_INSUFFICIENT',
+             '68': 'CLIENT_MOVE',
+             '69': 'SCAN_FAILED_ENHANCED',
+             '70': 'COMPLIANCE_FAILEDAUDIT',
+             '71': 'HEUR_THREAT_NOW_WHITELISTED',
+             '72': 'INTERESTING_PROCESS_DETECTED_START',
+             '73': 'LOAD_ERROR_BASH',
+             '74': 'LOAD_ERROR_BASH_DEFINITIONS',
+             '75': 'INTERESTING_PROCESS_DETECTED_FINISH',
+             '76': 'BASH_NOT_SUPPORTED_FOR_OS',
+             '77': 'HEUR_THREAT_NOW_KNOWN',
+             '78': 'DISABLE_BASH',
+             '79': 'ENABLE_BASH',
+             '80': 'DEFS_LOAD_FAILED',
+             '81': 'LOCALREP_CACHE_SERVER_ERROR',
+             '82': 'REPUTATION_CHECK_TIMEOUT',
+             '83': 'SYMEPSECFILTER_DRIVER_ERROR',
+             '84': 'VSIC_COMMUNICATION_WARNING',
+             '85': 'VSIC_COMMUNICATION_RESTORED',
+             '86': 'ELAM_LOAD_FAILED',
+             '87': 'ELAM_INVALID_OS',
+             '88': 'ELAM_ENABLE',
+             '89': 'ELAM_DISABLE',
+             '90': 'ELAM_BAD',
+             '91': 'ELAM_BAD_REPORTED_AS_UNKNOWN',
+             '92': 'DISABLE_SYMPROTECT',
+             '93': 'ENABLE_SYMPROTECT',
+             '94': 'NETSEC_EOC_PARSE_FAILED'
             }
 
     for k, v in event.items():
@@ -967,11 +967,11 @@ def log_event(_):
 
 def log_category(_):
     category = {
-                  '1': 'Infection',
-                  '2': 'Summary',
-                  '3': 'Pattern',
-                  '4': 'Security'
-                }
+                '1': 'Infection',
+                '2': 'Summary',
+                '3': 'Pattern',
+                '4': 'Security'
+               }
 
     for k, v in category.items():
         if k == _:
@@ -983,28 +983,28 @@ def log_category(_):
 
 def log_logger(_):
     logger = {
-                '0': 'Scheduled',
-                '1': 'Manual',
-                '2': 'Real_Time',
-                '3': 'Integrity_Shield',
-                '6': 'Console',
-                '7': 'VPDOWN',
-                '8': 'System',
-                '9': 'Startup',
-                '10': 'Idle',
-                '11': 'DefWatch',
-                '12': 'Licensing',
-                '13': 'Manual_Quarantine',
-                '14': 'SymProtect',
-                '15': 'Reboot_Processing',
-                '16': 'Bash',
-                '17': 'SymElam',
-                '18': 'PowerEraser',
-                '19': 'EOCScan',
-                '100': 'LOCAL_END',
-                '101': 'Client',
-                '102': 'Forewarded',
-                '256': 'Transport_Client'
+              '0': 'Scheduled',
+              '1': 'Manual',
+              '2': 'Real_Time',
+              '3': 'Integrity_Shield',
+              '6': 'Console',
+              '7': 'VPDOWN',
+              '8': 'System',
+              '9': 'Startup',
+              '10': 'Idle',
+              '11': 'DefWatch',
+              '12': 'Licensing',
+              '13': 'Manual_Quarantine',
+              '14': 'SymProtect',
+              '15': 'Reboot_Processing',
+              '16': 'Bash',
+              '17': 'SymElam',
+              '18': 'PowerEraser',
+              '19': 'EOCScan',
+              '100': 'LOCAL_END',
+              '101': 'Client',
+              '102': 'Forewarded',
+              '256': 'Transport_Client'
              }
 
     for k, v in logger.items():
@@ -1017,44 +1017,44 @@ def log_logger(_):
 
 def log_action(_):
     action = {
-                '4294967295': 'Invalid',
-                '1': 'Quarantine',
-                '2': 'Rename',
-                '3': 'Delete',
-                '4': 'Leave Alone',
-                '5': 'Clean',
-                '6': 'Remove Macros',
-                '7': 'Save file as...',
-                '8': 'Send to backend',
-                '9': 'Restore from Quarantine',
-                '10': 'Rename Back (unused)',
-                '11': 'Undo Action',
-                '12': 'Error',
-                '13': 'Backup to quarantine (backup view)',
-                '14': 'Pending Analysis',
-                '15': 'Partial Analysis',
-                '16': 'Terminate Process Required',
-                '17': 'Exclude from Scanning',
-                '18': 'Reboot Processing',
-                '19': 'Clean by Deletion',
-                '20': 'Access Denied',
-                '21': 'TERMINATE PROCESS ONLY',
-                '22': 'NO REPAIR',
-                '23': 'FAIL',
-                '24': 'RUN POWERTOOL',
-                '25': 'NO REPAIR POWERTOOL',
-                '98': 'Suspicious',
-                '99': 'Details Pending',
-                '100': 'IDS Block',
-                '101': 'Firewall violation',
-                '102': 'Allowed by User',
-                '110': 'INTERESTING PROCESS CAL',
-                '111': 'INTERESTING PROCESS DETECTED',
-                '200': 'Attachment Stripped',
-                '500': 'Not Applicable',
-                '1000': 'INTERESTING PROCESS HASHED DETECTED',
-                '1001': 'DNS HOST FILE EXCEPTOION'
-              }
+              '4294967295': 'Invalid',
+              '1': 'Quarantine',
+              '2': 'Rename',
+              '3': 'Delete',
+              '4': 'Leave Alone',
+              '5': 'Clean',
+              '6': 'Remove Macros',
+              '7': 'Save file as...',
+              '8': 'Send to backend',
+              '9': 'Restore from Quarantine',
+              '10': 'Rename Back (unused)',
+              '11': 'Undo Action',
+              '12': 'Error',
+              '13': 'Backup to quarantine (backup view)',
+              '14': 'Pending Analysis',
+              '15': 'Partial Analysis',
+              '16': 'Terminate Process Required',
+              '17': 'Exclude from Scanning',
+              '18': 'Reboot Processing',
+              '19': 'Clean by Deletion',
+              '20': 'Access Denied',
+              '21': 'TERMINATE PROCESS ONLY',
+              '22': 'NO REPAIR',
+              '23': 'FAIL',
+              '24': 'RUN POWERTOOL',
+              '25': 'NO REPAIR POWERTOOL',
+              '98': 'Suspicious',
+              '99': 'Details Pending',
+              '100': 'IDS Block',
+              '101': 'Firewall violation',
+              '102': 'Allowed by User',
+              '110': 'INTERESTING PROCESS CAL',
+              '111': 'INTERESTING PROCESS DETECTED',
+              '200': 'Attachment Stripped',
+              '500': 'Not Applicable',
+              '1000': 'INTERESTING PROCESS HASHED DETECTED',
+              '1001': 'DNS HOST FILE EXCEPTOION'
+             }
 
     for k, v in action.items():
         if k == _:
@@ -1071,7 +1071,7 @@ def log_c_action(_):
               '2': 'Ask',
               '3': 'Continue',
               '4': 'Terminate'
-              }
+             }
 
     for k, v in action.items():
         if k == str(_):
@@ -1093,7 +1093,7 @@ def log_virus_type(_):
              '160': 'Adware',
              '176': 'Joke Programs',
              '224': 'Heuristic Application',
-             }
+            }
 
     for k, v in virus.items():
         if k == _:
@@ -1232,7 +1232,7 @@ def log_eraser_category_id(_):
               '101': 'CommercialKeyLogger',
               '200': 'Cookie',
               '300': 'Shields'
-              }
+             }
 
     for k, v in eraser.items():
         if k == _:
@@ -1254,7 +1254,7 @@ def log_dynamic_categoryset_id(_):
           '8': 'ADVANCED_HEURISTICS',
           '9': 'REPUTATION_BACKED_ADVANCED_HEURISTICS',
           '10': 'PREVALENCE_BACKED_ADVANCED_HEURISTICS'
-          }
+         }
 
     for k, v in id.items():
         if k == _:
@@ -1266,8 +1266,8 @@ def log_dynamic_categoryset_id(_):
 
 def log_display_name_to_use(_):
     display = {
-              '0': 'Application Name',
-              '1': 'VID Virus Name'
+               '0': 'Application Name',
+               '1': 'VID Virus Name'
               }
 
     for k, v in display.items():
@@ -1296,11 +1296,11 @@ def log_reputation_disposition(_):
 def log_reputation_confidence(_):
     _ = int(_) if _ else ''
     conf = {
-           range(0, 10): 'Unknown',
-           range(10, 25): 'Low',
-           range(25, 65): 'Medium',
-           range(65, 100): 'High',
-           range(100, 200): 'Extremely High'
+            range(0, 10): 'Unknown',
+            range(10, 25): 'Low',
+            range(25, 65): 'Medium',
+            range(65, 100): 'High',
+            range(100, 200): 'Extremely High'
            }
 
     for k in conf:
@@ -1314,13 +1314,13 @@ def log_reputation_confidence(_):
 def log_reputation_prevalence(_):
     _ = int(_) if _ else ''
     prev = {
-           range(0, 1): 'Unknown',
-           range(1, 51): 'Very Low',
-           range(51, 101): 'Low',
-           range(101, 151): 'Moderate',
-           range(151, 201): 'High',
-           range(201, 256): 'Very High',
-           range(256, 356): 'Extremely High'
+            range(0, 1): 'Unknown',
+            range(1, 51): 'Very Low',
+            range(51, 101): 'Low',
+            range(101, 151): 'Moderate',
+            range(151, 201): 'High',
+            range(201, 256): 'Very High',
+            range(256, 356): 'Extremely High'
            }
 
     for k in prev:
@@ -1333,8 +1333,8 @@ def log_reputation_prevalence(_):
 
 def log_detection_type(_):
     dtype = {
-            '0': 'Traditional',
-            '1': 'Heuristic'
+             '0': 'Traditional',
+             '1': 'Heuristic'
             }
 
     for k, v in dtype.items():
@@ -1376,13 +1376,13 @@ def log_target_app_type(_):
 
 def cids_state(_):
     status = {
-             '0': 'Disabled',
-             '1': 'On',
-             '2': 'Not Installed',
-             '3': 'Disabled By Policy',
-             '4': 'Malfunctioning',
-             '5': 'Disabled As Unlicensed',
-             '127': 'Status Not Reported'
+              '0': 'Disabled',
+              '1': 'On',
+              '2': 'Not Installed',
+              '3': 'Disabled By Policy',
+              '4': 'Malfunctioning',
+              '5': 'Disabled As Unlicensed',
+              '127': 'Status Not Reported'
              }
 
     for k, v in status.items():
@@ -1513,7 +1513,7 @@ def remediation_type_desc(_):
                '2009': 'Directory',
                '2010': 'Layered Service Provider',
                '2011': 'Internet Browser Cache'
-               }
+              }
 
     for k, v in remType.items():
         if k == str(_):
@@ -1528,7 +1528,7 @@ def hash_type(_):
                 '0': 'MD5',
                 '1': 'SHA-1',
                 '2': 'SHA-256'
-                }
+               }
 
     for k, v in hashType.items():
         if k == _:
@@ -1568,154 +1568,154 @@ def log_tp_event(eventType, _):
 
 def idsxp_protocol(_):
     protocol = {
-               0: 'HOPOPT',
-               1: 'ICMP',
-               2: 'IGMP',
-               3: 'GGP',
-               4: 'IPv4',
-               5: 'ST',
-               6: 'TCP',
-               7: 'CBT',
-               8: 'EGP',
-               9: 'IGP',
-               10: 'BBN-RCC-MON',
-               11: 'NVP-II',
-               12: 'PUP',
-               13: 'ARGUS (deprecated)',
-               14: 'EMCON',
-               15: 'XNET',
-               16: 'CHAOS',
-               17: 'UDP',
-               18: 'MUX',
-               19: 'DCN-MEAS',
-               20: 'HMP',
-               21: 'PRM',
-               22: 'XNS-IDP',
-               23: 'TRUNK-1',
-               24: 'TRUNK-2',
-               25: 'LEAF-1',
-               26: 'LEAF-2',
-               27: 'RDP',
-               28: 'IRTP',
-               29: 'ISO-TP4',
-               30: 'NETBLT',
-               31: 'MFE-NSP',
-               32: 'MERIT-INP',
-               33: 'DCCP',
-               34: '3PC',
-               35: 'IDPR',
-               36: 'XTP',
-               37: 'DDP',
-               38: 'IDPR-CMTP',
-               39: 'TP++',
-               40: 'IL',
-               41: 'IPv6',
-               42: 'SDRP',
-               43: 'IPv6-Route',
-               44: 'IPv6-Frag',
-               45: 'IDRP',
-               46: 'RSVP',
-               47: 'GRE',
-               48: 'DSR',
-               49: 'BNA',
-               50: 'ESP',
-               51: 'AH',
-               52: 'I-NLSP',
-               53: 'SWIPE (deprecated)',
-               54: 'NARP',
-               55: 'MOBILE',
-               56: 'TLSP',
-               57: 'SKIP',
-               58: 'IPv6-ICMP',
-               59: 'IPv6-NoNxt',
-               60: 'IPv6-Opts',
-               61: 'Any Host Internal Protocol',
-               62: 'CFTP',
-               63: 'Any Local Network',
-               64: 'SAT-EXPAK',
-               65: 'KRYPTOLAN',
-               66: 'RVD',
-               67: 'IPPC',
-               68: 'Any Distributed File System',
-               69: 'SAT-MON',
-               70: 'VISA',
-               71: 'IPCV',
-               72: 'CPNX',
-               73: 'CPHB',
-               74: 'WSN',
-               75: 'PVP',
-               76: 'BR-SAT-MON',
-               77: 'SUN-ND',
-               78: 'WB-MON',
-               79: 'WB-EXPAK',
-               80: 'ISO-IP',
-               81: 'VMTP',
-               82: 'SECURE-VMTP',
-               83: 'VINES',
-               84: 'TTP/IPTM',
-               85: 'NSFNET-IGP',
-               86: 'DGP',
-               87: 'TCF',
-               88: 'EIGRP',
-               89: 'OSPFIGP',
-               90: 'Sprite-RPC',
-               91: 'LARP',
-               92: 'MTP',
-               93: 'AX.25',
-               94: 'IPIP',
-               95: 'MICP (deprecated)',
-               96: 'SCC-SP',
-               97: 'ETHERIP',
-               98: 'ENCAP',
-               99: 'Any Private Encryption Scheme',
-               100: 'GMTP',
-               101: 'IFMP',
-               102: 'PNNI',
-               103: 'PIM',
-               104: 'ARIS',
-               105: 'SCPS',
-               106: 'QNX',
-               107: 'A/N',
-               108: 'IPComp',
-               109: 'SNP',
-               110: 'Compaq-Peer',
-               111: 'IPX-in-IP',
-               112: 'VRRP',
-               113: 'PGM',
-               114: 'Any 0-hop Protocol',
-               115: 'L2TP',
-               116: 'DDX',
-               117: 'IATP',
-               118: 'STP',
-               119: 'SRP',
-               120: 'UTI',
-               121: 'SMP',
-               122: 'SM (deprecated)',
-               123: 'PTP',
-               124: 'ISIS over IPv4',
-               125: 'FIRE',
-               126: 'CRTP',
-               127: 'CRUDP',
-               128: 'SSCOPMCE',
-               129: 'IPLT',
-               130: 'SPS',
-               131: 'PIPE',
-               132: 'SCTP',
-               133: 'FC',
-               134: 'RSVP-E2E-IGNORE',
-               135: 'Mobility Header',
-               136: 'UDPLite',
-               137: 'MPLS-in-IP',
-               138: 'manet',
-               139: 'HIP',
-               140: 'Shim6',
-               141: 'WESP',
-               142: 'ROHC',
-               143: 'Ethernet',
-               range(144, 252): 'Unassigned	',
-               253: 'Experementation/Testing',
-               254: 'Experementation/Testing',
-               255: 'Reserved'
+                0: 'HOPOPT',
+                1: 'ICMP',
+                2: 'IGMP',
+                3: 'GGP',
+                4: 'IPv4',
+                5: 'ST',
+                6: 'TCP',
+                7: 'CBT',
+                8: 'EGP',
+                9: 'IGP',
+                10: 'BBN-RCC-MON',
+                11: 'NVP-II',
+                12: 'PUP',
+                13: 'ARGUS (deprecated)',
+                14: 'EMCON',
+                15: 'XNET',
+                16: 'CHAOS',
+                17: 'UDP',
+                18: 'MUX',
+                19: 'DCN-MEAS',
+                20: 'HMP',
+                21: 'PRM',
+                22: 'XNS-IDP',
+                23: 'TRUNK-1',
+                24: 'TRUNK-2',
+                25: 'LEAF-1',
+                26: 'LEAF-2',
+                27: 'RDP',
+                28: 'IRTP',
+                29: 'ISO-TP4',
+                30: 'NETBLT',
+                31: 'MFE-NSP',
+                32: 'MERIT-INP',
+                33: 'DCCP',
+                34: '3PC',
+                35: 'IDPR',
+                36: 'XTP',
+                37: 'DDP',
+                38: 'IDPR-CMTP',
+                39: 'TP++',
+                40: 'IL',
+                41: 'IPv6',
+                42: 'SDRP',
+                43: 'IPv6-Route',
+                44: 'IPv6-Frag',
+                45: 'IDRP',
+                46: 'RSVP',
+                47: 'GRE',
+                48: 'DSR',
+                49: 'BNA',
+                50: 'ESP',
+                51: 'AH',
+                52: 'I-NLSP',
+                53: 'SWIPE (deprecated)',
+                54: 'NARP',
+                55: 'MOBILE',
+                56: 'TLSP',
+                57: 'SKIP',
+                58: 'IPv6-ICMP',
+                59: 'IPv6-NoNxt',
+                60: 'IPv6-Opts',
+                61: 'Any Host Internal Protocol',
+                62: 'CFTP',
+                63: 'Any Local Network',
+                64: 'SAT-EXPAK',
+                65: 'KRYPTOLAN',
+                66: 'RVD',
+                67: 'IPPC',
+                68: 'Any Distributed File System',
+                69: 'SAT-MON',
+                70: 'VISA',
+                71: 'IPCV',
+                72: 'CPNX',
+                73: 'CPHB',
+                74: 'WSN',
+                75: 'PVP',
+                76: 'BR-SAT-MON',
+                77: 'SUN-ND',
+                78: 'WB-MON',
+                79: 'WB-EXPAK',
+                80: 'ISO-IP',
+                81: 'VMTP',
+                82: 'SECURE-VMTP',
+                83: 'VINES',
+                84: 'TTP/IPTM',
+                85: 'NSFNET-IGP',
+                86: 'DGP',
+                87: 'TCF',
+                88: 'EIGRP',
+                89: 'OSPFIGP',
+                90: 'Sprite-RPC',
+                91: 'LARP',
+                92: 'MTP',
+                93: 'AX.25',
+                94: 'IPIP',
+                95: 'MICP (deprecated)',
+                96: 'SCC-SP',
+                97: 'ETHERIP',
+                98: 'ENCAP',
+                99: 'Any Private Encryption Scheme',
+                100: 'GMTP',
+                101: 'IFMP',
+                102: 'PNNI',
+                103: 'PIM',
+                104: 'ARIS',
+                105: 'SCPS',
+                106: 'QNX',
+                107: 'A/N',
+                108: 'IPComp',
+                109: 'SNP',
+                110: 'Compaq-Peer',
+                111: 'IPX-in-IP',
+                112: 'VRRP',
+                113: 'PGM',
+                114: 'Any 0-hop Protocol',
+                115: 'L2TP',
+                116: 'DDX',
+                117: 'IATP',
+                118: 'STP',
+                119: 'SRP',
+                120: 'UTI',
+                121: 'SMP',
+                122: 'SM (deprecated)',
+                123: 'PTP',
+                124: 'ISIS over IPv4',
+                125: 'FIRE',
+                126: 'CRTP',
+                127: 'CRUDP',
+                128: 'SSCOPMCE',
+                129: 'IPLT',
+                130: 'SPS',
+                131: 'PIPE',
+                132: 'SCTP',
+                133: 'FC',
+                134: 'RSVP-E2E-IGNORE',
+                135: 'Mobility Header',
+                136: 'UDPLite',
+                137: 'MPLS-in-IP',
+                138: 'manet',
+                139: 'HIP',
+                140: 'Shim6',
+                141: 'WESP',
+                142: 'ROHC',
+                143: 'Ethernet',
+                range(144, 252): 'Unassigned	',
+                253: 'Experementation/Testing',
+                254: 'Experementation/Testing',
+                255: 'Reserved'
                }
 
     for k, v in protocol.items():
@@ -1737,7 +1737,7 @@ def protocol(_):
                 '307': 'Ethernet packet',
                 '308': 'IP packet',
                 '309': 'ICMPv6 packet'
-                }
+               }
 
     for k, v in protocol.items():
         if k == str(_):
@@ -1961,7 +1961,7 @@ def eth_type(_):
             65280: 'BBN VITAL-LanBridge cache',
             range(65280, 65296): 'ISC Bunker Ramo',
             65535: 'Reserved'
-            }
+           }
 
     for k, v in type.items():
         if k == _:
@@ -2160,7 +2160,7 @@ def test_mode(_):
     testMode = {
                 '0': 'Production',
                 '1': 'Yes'
-                }
+               }
 
     for k, v in testMode.items():
         if k == str(_):
@@ -2171,143 +2171,143 @@ def test_mode(_):
 
 def sec_event_id(_):
     eventid = {
-                # Installation events Possible values are:
-                '12070001': 'Internal error',
-                '12070101': 'Install complete',
-                '12070102': 'Restart recommended',
-                '12070103': 'Restart required',
-                '12070104': 'Installation failed',
-                '12070105': 'Uninstallation complete',
-                '12070106': 'Uninstallation failed',
-                '12071037': 'Symantec Endpoint Protection installed',
-                '12071038': 'Symantec Firewall installed',
-                '12071039': 'Uninstall',
-                '1207103A': 'Uninstall rolled-back',
-                # Service events Possible values are:
-                '12070201': 'Service starting',
-                '12070202': 'Service started',
-                '12070203': 'Service start failure',
-                '12070204': 'Service stopped',
-                '12070205': 'Service stop failure',
-                '1207021A': 'Attempt to stop service',
-                # Configuration events Possible values are:
-                '12070206': 'Config import complete',
-                '12070207': 'Config import error',
-                '12070208': 'Config export complete',
-                '12070209': 'Config export error',
-                # Host Integrity events Possible values are:
-                '12070210': 'Host Integrity disabled',
-                '12070211': 'Host Integrity enabled',
-                '12070220': 'NAP integration enabled',
-                # Import events Possible values are:
-                '12070214': 'Successfully imported advanced rule',
-                '12070215': 'Failed to import advanced rule',
-                '12070216': 'Successfully exported advanced rule',
-                '12070217': 'Failed to export advanced rule',
-                '1207021B': 'Imported sylink',
-                # Client events Possible values are:
-                '12070218': 'Client Engine enabled',
-                '12070219': 'Client Engine disabled',
-                '12071046': 'Proactive Threat Scanning is not supported on this platform',
-                '12071047': 'Proactive Threat Scanning load error',
-                '12071048': 'SONAR content load error',
-                '12071049': 'Allow application',
-                # Server events Possible values are:
-                '12070301': 'Server connected',
-                '12070302': 'No server response',
-                '12070303': 'Server connection failed',
-                '12070304': 'Server disconnected',
-                '120B0001': 'Cannot reach server',
-                '120B0002': 'Reconnected to the server',
-                '120b0003': 'Automatic upgrade complete',
-                # Policy events Possible values are:
-                '12070306': 'New policy received',
-                '12070307': 'New policy applied',
-                '12070308': 'New policy failed',
-                '12070309': 'Cannot download policy',
-                '120B0005': 'Cannot download policy',
-                '1207030A': 'Have latest policy',
-                '120B0004': 'Have latest policy',
-                # Antivirus engine events Possible values are:
-                '12071006': 'Scan omission',
-                '12071007': 'Definition file loaded',
-                '1207100B': 'Virus behavior detected',
-                '1207100C': 'Configuration changed',
-                '12071010': 'Definition file download',
-                '12071012': 'Sent to quarantine server',
-                '12071013': 'Delivered to Symantec',
-                '12071014': 'Security Response backup',
-                '12071015': 'Scan aborted',
-                '12071016': 'Symantec Endpoint Protection Auto-Protect Load error',
-                '12071017': 'Symantec Endpoint Protection Auto-Protect enabled',
-                '12071018': 'Symantec Endpoint Protection Auto-Protect disabled',
-                '1207101A': 'Scan delayed',
-                '1207101B': 'Scan restarted',
-                '12071027': 'Symantec Endpoint Protection is using old virus definitions',
-                '12071041': 'Scan suspended',
-                '12071042': 'Scan resumed',
-                '12071043': 'Scan duration too short',
-                '12071045': 'Scan enhancements failed',
-                # Licensing events Possible values are:
-                '1207101E': 'License warning',
-                '1207101F': 'License error',
-                '12071020': 'License in grace period',
-                '12071023': 'License installed',
-                '12071025': 'License up-to-date',
-                # Security events Possible values are:
-                '1207102B': 'Computer not compliant with security policy',
-                '1207102C': 'Computer compliant with security policy',
-                '1207102D': 'Tamper attempt',
-                '12071034': 'Login failed',
-                '12071035': 'Login succeeded',
-                # Submission events Possible values are:
-                '12120001': 'System message from centralized reputation',
-                '12120002': 'Authentication token failure',
-                '12120003': 'Reputation failure',
-                '12120004': 'Reputation network failure',
-                '12130001': 'System message from Submissions',
-                '12130002': 'Submissions failure',
-                '12130003': 'Intrusion prevention submission',
-                '12130004': 'Antivirus detection submission',
-                '12130005': 'Antivirus advanced heuristic detection submission',
-                '12130006': 'Manual user submission',
-                '12130007': 'SONAR heuristic submission',
-                '12130008': 'SONAR detection submission',
-                '12130009': 'File Reputation submission',
-                '1213000A': 'Client authentication token request',
-                '1213000B': 'LiveUpdate error submission',
-                '1213000C': 'Process data submission',
-                '1213000D': 'Configuration data submission',
-                '1213000E': 'Network data submission',
-                # Other events Possible values are:
-                '1207020A': 'Email post OK',
-                '1207020B': 'Email post failure',
-                '1207020C': 'Update complete',
-                '1207020D': 'Update failure',
-                '1207020E': 'Manual location change',
-                '1207020F': 'Location changed',
-                '12070212': 'Old rasdll version detected',
-                '12070213': 'Auto-update postponed',
-                '12070305': 'Mode changed',
-                '1207030B': 'Cannot apply HI script',
-                '1207030C': 'Content Update Server',
-                '1207030D': 'Content Update Packet',
-                '12070500': 'System message from device control',
-                '12070600': 'System message from anti-buffer overflow driver',
-                '12070700': 'System message from network access component',
-                '12070800': 'System message from LiveUpdate',
-                '12070900': 'System message from GUP',
-                '12072000': 'System message from Memory Exploit Mitigation',
-                '12072009': 'Intensive Protection disabled',
-                '1207200A': 'Intensive Protection enabled',
-                '12071021': 'Access denied warning',
-                '12071022': 'Log forwarding error',
-                '12071044': 'Client moved',
-                '12071036': 'Access denied warning',
-                '12071000': 'Message from Intrusion Prevention',
-                '12071050': 'SONAR disabled',
-                '12071051': 'SONAR enabled'
-                }
+               # Installation events Possible values are:
+               '12070001': 'Internal error',
+               '12070101': 'Install complete',
+               '12070102': 'Restart recommended',
+               '12070103': 'Restart required',
+               '12070104': 'Installation failed',
+               '12070105': 'Uninstallation complete',
+               '12070106': 'Uninstallation failed',
+               '12071037': 'Symantec Endpoint Protection installed',
+               '12071038': 'Symantec Firewall installed',
+               '12071039': 'Uninstall',
+               '1207103A': 'Uninstall rolled-back',
+               # Service events Possible values are:
+               '12070201': 'Service starting',
+               '12070202': 'Service started',
+               '12070203': 'Service start failure',
+               '12070204': 'Service stopped',
+               '12070205': 'Service stop failure',
+               '1207021A': 'Attempt to stop service',
+               # Configuration events Possible values are:
+               '12070206': 'Config import complete',
+               '12070207': 'Config import error',
+               '12070208': 'Config export complete',
+               '12070209': 'Config export error',
+               # Host Integrity events Possible values are:
+               '12070210': 'Host Integrity disabled',
+               '12070211': 'Host Integrity enabled',
+               '12070220': 'NAP integration enabled',
+               # Import events Possible values are:
+               '12070214': 'Successfully imported advanced rule',
+               '12070215': 'Failed to import advanced rule',
+               '12070216': 'Successfully exported advanced rule',
+               '12070217': 'Failed to export advanced rule',
+               '1207021B': 'Imported sylink',
+               # Client events Possible values are:
+               '12070218': 'Client Engine enabled',
+               '12070219': 'Client Engine disabled',
+               '12071046': 'Proactive Threat Scanning is not supported on this platform',
+               '12071047': 'Proactive Threat Scanning load error',
+               '12071048': 'SONAR content load error',
+               '12071049': 'Allow application',
+               # Server events Possible values are:
+               '12070301': 'Server connected',
+               '12070302': 'No server response',
+               '12070303': 'Server connection failed',
+               '12070304': 'Server disconnected',
+               '120B0001': 'Cannot reach server',
+               '120B0002': 'Reconnected to the server',
+               '120b0003': 'Automatic upgrade complete',
+               # Policy events Possible values are:
+               '12070306': 'New policy received',
+               '12070307': 'New policy applied',
+               '12070308': 'New policy failed',
+               '12070309': 'Cannot download policy',
+               '120B0005': 'Cannot download policy',
+               '1207030A': 'Have latest policy',
+               '120B0004': 'Have latest policy',
+               # Antivirus engine events Possible values are:
+               '12071006': 'Scan omission',
+               '12071007': 'Definition file loaded',
+               '1207100B': 'Virus behavior detected',
+               '1207100C': 'Configuration changed',
+               '12071010': 'Definition file download',
+               '12071012': 'Sent to quarantine server',
+               '12071013': 'Delivered to Symantec',
+               '12071014': 'Security Response backup',
+               '12071015': 'Scan aborted',
+               '12071016': 'Symantec Endpoint Protection Auto-Protect Load error',
+               '12071017': 'Symantec Endpoint Protection Auto-Protect enabled',
+               '12071018': 'Symantec Endpoint Protection Auto-Protect disabled',
+               '1207101A': 'Scan delayed',
+               '1207101B': 'Scan restarted',
+               '12071027': 'Symantec Endpoint Protection is using old virus definitions',
+               '12071041': 'Scan suspended',
+               '12071042': 'Scan resumed',
+               '12071043': 'Scan duration too short',
+               '12071045': 'Scan enhancements failed',
+               # Licensing events Possible values are:
+               '1207101E': 'License warning',
+               '1207101F': 'License error',
+               '12071020': 'License in grace period',
+               '12071023': 'License installed',
+               '12071025': 'License up-to-date',
+               # Security events Possible values are:
+               '1207102B': 'Computer not compliant with security policy',
+               '1207102C': 'Computer compliant with security policy',
+               '1207102D': 'Tamper attempt',
+               '12071034': 'Login failed',
+               '12071035': 'Login succeeded',
+               # Submission events Possible values are:
+               '12120001': 'System message from centralized reputation',
+               '12120002': 'Authentication token failure',
+               '12120003': 'Reputation failure',
+               '12120004': 'Reputation network failure',
+               '12130001': 'System message from Submissions',
+               '12130002': 'Submissions failure',
+               '12130003': 'Intrusion prevention submission',
+               '12130004': 'Antivirus detection submission',
+               '12130005': 'Antivirus advanced heuristic detection submission',
+               '12130006': 'Manual user submission',
+               '12130007': 'SONAR heuristic submission',
+               '12130008': 'SONAR detection submission',
+               '12130009': 'File Reputation submission',
+               '1213000A': 'Client authentication token request',
+               '1213000B': 'LiveUpdate error submission',
+               '1213000C': 'Process data submission',
+               '1213000D': 'Configuration data submission',
+               '1213000E': 'Network data submission',
+               # Other events Possible values are:
+               '1207020A': 'Email post OK',
+               '1207020B': 'Email post failure',
+               '1207020C': 'Update complete',
+               '1207020D': 'Update failure',
+               '1207020E': 'Manual location change',
+               '1207020F': 'Location changed',
+               '12070212': 'Old rasdll version detected',
+               '12070213': 'Auto-update postponed',
+               '12070305': 'Mode changed',
+               '1207030B': 'Cannot apply HI script',
+               '1207030C': 'Content Update Server',
+               '1207030D': 'Content Update Packet',
+               '12070500': 'System message from device control',
+               '12070600': 'System message from anti-buffer overflow driver',
+               '12070700': 'System message from network access component',
+               '12070800': 'System message from LiveUpdate',
+               '12070900': 'System message from GUP',
+               '12072000': 'System message from Memory Exploit Mitigation',
+               '12072009': 'Intensive Protection disabled',
+               '1207200A': 'Intensive Protection enabled',
+               '12071021': 'Access denied warning',
+               '12071022': 'Log forwarding error',
+               '12071044': 'Client moved',
+               '12071036': 'Access denied warning',
+               '12071000': 'Message from Intrusion Prevention',
+               '12071050': 'SONAR disabled',
+               '12071051': 'SONAR enabled'
+              }
 
     for k, v in eventid.items():
 
@@ -2320,7 +2320,7 @@ def sec_event_id(_):
 def raw_event_id(_):
 
     eventid = {
-              '401': 'Raw Ethernet'
+               '401': 'Raw Ethernet'
               }
 
     for k, v in eventid.items():
@@ -2332,9 +2332,9 @@ def raw_event_id(_):
 def process_event_id(_):
 
     eventid = {
-              '501': 'Application Control Driver',
-              '502': 'Application Control Rules',
-              '999': 'Tamper Protection'
+               '501': 'Application Control Driver',
+               '502': 'Application Control Rules',
+               '999': 'Tamper Protection'
               }
 
     for k, v in eventid.items():
@@ -2406,11 +2406,11 @@ def read_submission(_, fname):
     if 'Submission' in test:
         subtype = args.output+'/ccSubSDK/SubmissionsEim.csv'
 
-    elif 'Signature Set Version' in test:
-        subtype = args.output+'/ccSubSDK/IDSxp.csv'
-
     elif 'BASH Plugin' in test:
         subtype = args.output+'/ccSubSDK/BHSvcPlg.csv'
+
+    elif 'Signature Set Version' or 'Signature ID' in test:
+        subtype = args.output+'/ccSubSDK/IDSxp.csv'
 
     else:
         subtype = args.output+'/ccSubSDK/Reports.csv'
@@ -2431,8 +2431,18 @@ def read_submission(_, fname):
             diff = len(header) - len(value)
             value += ' ' * diff
         pos = header.index(k)
-        if k == 'Network Data' or k == 'Attack Data':
-            value[pos] = hexdump(zlib.decompress(bytearray.fromhex(v[17:]))).replace('"', '""')
+        if k == 'Network Data':
+            value[pos] = read_ndca(zlib.decompress(bytearray.fromhex(v[17:]))).replace('"', '""')
+        elif k == 'Attack Data':
+            if os.path.basename(subtype.name) == 'IDSxp.csv':
+                try:
+                    attdata = zlib.decompress(bytearray.fromhex(v[17:])).decode("utf-8", "ignore")
+                    parsed = json.dumps(json.loads(attdata), indent=4)
+                    value[pos] = parsed.replace('"', '""')
+                except:
+                    value[pos] = hexdump(zlib.decompress(bytearray.fromhex(v[17:]))).replace('"', '""')
+            else:
+                value[pos] = hexdump(zlib.decompress(bytearray.fromhex(v[17:]))).replace('"', '""')
         elif k == 'Protocol':
             value[pos] = idsxp_protocol(int(v))
         elif k == 'Application File CreateTime':
@@ -2447,6 +2457,32 @@ def read_submission(_, fname):
     subtype.writelines(data)
     subtype.write(rows)
     subtype.close()
+
+
+def read_ndca(_):
+    _ = io.BytesIO(_)
+    _.seek(20)
+    bodylength = int(flip(_.read(4).hex()), 16)
+    _.seek(4, 1)
+    total = int(flip(_.read(4).hex()), 16)
+    _.seek(9, 1)
+    n = 0
+    msg = []
+    while n != total:
+        header = int(_.read(7)[3:-3].hex(), 16)
+        datalength = int(flip(_.read(2).hex()), 16)
+        entrylength = int(flip(_.read(2).hex()), 16)
+        entry = _.read(entrylength).decode("utf-8", "ignore")
+        if header == 6:
+            data = _.read(datalength).decode("utf-8", "ignore")
+        else:
+            data = int(flip(_.read(datalength).hex()), 16)
+        msg.append(f'{entry}  {data}')
+        _.seek(1, 1)
+        n += 1
+    _.seek(-1, 1)
+    msg.append(_.read(bodylength).decode("utf-8", "ignore"))
+    return '\n'.join(msg)
 
 
 def read_log_data(data, tz):
@@ -2933,20 +2969,16 @@ def from_hex_mac(macHex):
     return '-'.join(map(str, mac))[0:17]
 
 
-def hexdump(buf, length=16, pcap=False):
+def hexdump(buf, pcap=False):
     """Return a hexdump output string of the given buffer."""
-    total = len(buf)
-    n = 0
+    file = io.BytesIO(buf)
     res = []
 
-    while buf:
-        if total > 1000000:
-            progress(n, total, status='Dumping hex data')
-        line, buf = buf[:length], buf[length:]
-        hexa = ' '.join(["{:02x}".format(x) for x in line])
-        line = line.translate(__vis_filter).decode('utf-8')
-        res.append('  %06x  %-*s %s' % (n, length * 3, hexa, line))
-        n += length
+    for length in range(0, len(buf), 16):
+        data = file.read(16)
+        hexa = ' '.join(['{:02x}'.format(i) for i in data])
+        line = ''.join([31 < i < 127 and chr(i) or '.' for i in data])
+        res.append('  {:08x}  {:47}  {}'.format(length, hexa, line))
 
     if pcap:
         packet.write('\n'.join(res))
@@ -3075,11 +3107,11 @@ def parse_seclog(f, logEntries):
         logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t', 16)
         logData = []
         data = ''
+
         if int(logEntry[12], 16) == 0:
             logData = ['']
+
         else:
-            # Field27 might be a better indicator of data type (0=logline ,2=base64)?
-            # Field38 might be a better indicator of data type (0=logline ,1=base64)?
             if re.match(b'^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$', logEntry[16][:int(logEntry[12], 16)]):
                 logData = ['']
                 parsed = json.loads(base64.b64decode(logEntry[16][:int(logEntry[12], 16)]).decode("utf-8", "ignore"))
@@ -3149,6 +3181,7 @@ def parse_seclog(f, logEntries):
             entry.urlhidlevel = logEntry2[23].decode("utf-8", "ignore")
             entry.urlriskscore = logEntry2[24].decode("utf-8", "ignore")
             entry.urlcategories = url_categories(logEntry2[25].decode("utf-8", "ignore").split(","))
+
         except:
             pass
 
@@ -3185,11 +3218,13 @@ def parse_tralog(f, logEntries):
         entry.remotehost = from_hex_ip(logEntry[4])
         entry.localport = int(logEntry[5], 16)
         entry.remoteport = int(logEntry[6], 16)
+
         if entry.protocol == "ICMPv4 packet":
             typeName, codeDescription = icmp_type_code(entry.localport, entry.remoteport)
             entry.protocol = f'{entry.protocol} [type={entry.localport}, code={entry.remoteport}]\r\nName:{typeName}\r\nDescription:{codeDescription}'
             entry.localport = ''
             entry.remoteport = ''
+
         if entry.protocol == "Ethernet packet":
             entry.protocol = f'{entry.protocol} [type={hex(entry.localport)}]\r\nDescription: {eth_type(entry.localport)}'
             entry.localport = ''
@@ -3216,12 +3251,15 @@ def parse_tralog(f, logEntries):
 
         else:
             entry.localmac = from_hex_mac(logEntry[18].hex())
+
         entry.remotemac = logEntry[19].hex()
+
         if len(entry.remotemac) < 32:
             while True:
                 logEntry[19] = logEntry[19] + b'\t'
                 logEntry[19:21] = [b''.join(logEntry[19:21])]
                 entry.remotemac = logEntry[19].hex()
+
                 if len(entry.remotemac) == 32:
                     entry.remotemac = from_hex_mac(logEntry[19].hex())
                     break
@@ -3236,9 +3274,11 @@ def parse_tralog(f, logEntries):
         try:
             field33 = logEntry[32].decode("utf-8", "ignore")
             field34 = logEntry[33].decode("utf-8", "ignore")
+
         except:
             field33 = ''
             field34 = ''
+
         tralog.write(f'"{f.name}","{int(logEntry[0].decode("utf-8", "ignore"), 16)}","{entry.dateAndTime}","{entry.action}","{entry.severity}","{entry.direction}","{entry.protocol}","{entry.remotehost}","{entry.remotemac}","{entry.remoteport}","{entry.localhost}","{entry.localmac}","{entry.localport}","{entry.application}","{entry.user}","{entry.userdomain}","{entry.location}","{entry.occurrences}","{entry.begintime}","{entry.endtime}","{entry.rule}","{logEntry[12].decode("utf-8", "ignore")}","{logEntry[14].decode("utf-8", "ignore")}","{logEntry[15].decode("utf-8", "ignore")}","{logEntry[23].decode("utf-8", "ignore")}","{logEntry[24].decode("utf-8", "ignore")}","{from_hex_ipv6(logEntry[25])}","{from_hex_ipv6(logEntry[26])}","{logEntry[27].decode("utf-8", "ignore")}","{logEntry[28].decode("utf-8", "ignore")}","{logEntry[29].decode("utf-8", "ignore")}","{logEntry[30].decode("utf-8", "ignore")}","{logEntry[31].decode("utf-8", "ignore")}","{field33}","{field34}"\n')
         count += 1
 
@@ -3475,11 +3515,14 @@ def parse_vbn(f, logType, tz):
     if qm_offset == 3676:
         vbnmeta = vbnstruct.VBN_METADATA_V1(f)
         vbnv = 1
+
     if qm_offset == 4752:
         vbnmeta = vbnstruct.VBN_METADATA_V2(f)
         vbnv = 2
+
     if qm_offset == 15100:
         vbnmeta = vbnstruct.VBN_METADATA_Linux(f)
+
     if qm_offset == 15108:
         vbnmeta = vbnstruct.VBN_METADATA_Linux_V2(f)
 
@@ -3512,14 +3555,17 @@ def parse_vbn(f, logType, tz):
             qdata_location_size = struct.unpack('i', qdata_location_size)[0]
             f.seek(-12, 1)
             qdata_location = vbnstruct.QData_Location(xor(f.read(qdata_location_size), 0x5A).encode('latin-1'))
+
             if args.struct:
                 for k, v in qdata_location._values.items():
                     sout += str(v).replace('"', '""')+'","'
+
             if args.hex_dump:
                 cstruct.dumpstruct(qdata_location)
             pos = vbnmeta.QM_HEADER_Offset + qdata_location.Quarantine_Data_Offset
             file_size = qdata_location.QData_Location_Size - qdata_location.Quarantine_Data_Offset
             f.seek(pos)
+
             if args.extract:
                 print('\n           #######################################################')
                 print('           #######################################################')
@@ -3528,25 +3574,31 @@ def parse_vbn(f, logType, tz):
                 print('           ##                                                   ##')
                 print('           #######################################################')
                 print('           #######################################################\n')
+
             if args.extract or args.quarantine_dump:
                 qfile = xor(f.read(file_size), 0x5A)
 
             f.seek(pos + file_size)
             # need to properly parse
             qdata_info = vbnstruct.QData_Info(xor(f.read(), 0x5A).encode('latin-1'))
+
             if args.struct:
                 for k, v in qdata_info._values.items():
                     sout += str(v).replace('"', '""')+'","'
+
             if args.hex_dump:
                 cstruct.dumpstruct(qdata_info)
 
         else:
             f.seek(-8, 1)
+
             if args.extract or args.quarantine_dump:
                 qfile = xor(f.read(), 0x5A)
+
         if args.struct:
             if vbnv == 1:
                 rt0v1.write(f'"{f.name}","{sout[:-2]}\n')
+
             if vbnv == 2:
                 rt0v2.write(f'"{f.name}","{sout[:-2]}\n')
 
@@ -3564,6 +3616,7 @@ def parse_vbn(f, logType, tz):
         if args.struct:
             if vbnv == 1:
                 rt1v1.write(f'"{f.name}","{sout[:-2]}\n')
+
             if vbnv == 2:
                 rt1v2.write(f'"{f.name}","{sout[:-2]}\n')
 
@@ -3577,9 +3630,11 @@ def parse_vbn(f, logType, tz):
         qm_size = struct.unpack('q', qm_size)[0]
         f.seek(-16, 1)
         qmh = vbnstruct.Quarantine_Metadata_Header(xor(f.read(qm_size), 0x5A).encode('latin-1'))
+
         if args.struct:
             for k, v in qmh._values.items():
                 sout += str(v).replace('"', '""')+'","'
+
         if args.hex_dump:
             print('\n           #######################################################')
             print('           #######################################################')
@@ -3605,15 +3660,19 @@ def parse_vbn(f, logType, tz):
 
         if dataType == 3:
             qi = vbnstruct.Quarantine_Hash(xor(f.read(7), 0x5A).encode('latin-1'))
+
             if args.hex_dump:
                 cstruct.dumpstruct(qi)
+
             if args.struct:
                 for k, v in qi._values.items():
                     sout += str(v).replace('"', '""')+'","'
+
             if qi.Tag2_Data == 1:
                 qhc = vbnstruct.Quarantine_Hash_Continued(xor(f.read(110), 0x5A).encode('latin-1'))
                 sha1 = qhc.SHA1.decode('latin-1').replace("\x00", "")
                 qds2 = int.from_bytes(qhc.Quarantine_Data_Size_2, 'little')
+
                 if args.hex_dump:
                     cstruct.dumpstruct(qhc)
 
@@ -3626,13 +3685,17 @@ def parse_vbn(f, logType, tz):
                     qsddl_size = struct.unpack('i', xor(f.read(4), 0x5A).encode('latin-1'))[0] + 18
                     f.seek(-4, 1)
                     qsddl = vbnstruct.Quarantine_SDDL(xor(f.read(qsddl_size), 0x5A).encode('latin-1'))
+
                     if args.struct:
                         for k, v in qsddl._values.items():
                             sout += str(v).replace('"', '""')+'","'
+
                     sddl = sddl_translate(qsddl.Security_Descriptor.decode('latin-1').replace("\x00", ""))
                     qds3 = qsddl.Quarantine_Data_Size_3
+
                     if args.hex_dump:
                         cstruct.dumpstruct(qsddl)
+
                     pos += 19 + qsddl.Security_Descriptor_Size
                     f.seek(pos)
 
@@ -3645,19 +3708,22 @@ def parse_vbn(f, logType, tz):
                     pos += 35 + qhc.SHA1_Hash_Length
                     f.seek(pos)
 
-                chunk = vbnstruct.chunk(xor(f.read(5), 0x5A).encode('latin-1'))
+                chunk = vbnstruct.Chunk(xor(f.read(5), 0x5A).encode('latin-1'))
                 pos += 5
                 f.seek(pos)
+
                 if extraData is not None:
                     uh = vbnstruct.Unknown_Header(xor(f.read(1000), 0xA5).encode('latin-1'))
                     header = uh.Size + 40
                     footer = extraData - header
+
                     if args.struct:
                         for k, v in uh._values.items():
                             sout += str(v).replace('"', '""')+'","'
 
                     if args.hex_dump:
                         cstruct.dumpstruct(uh)
+
                     f.seek(pos)
 
                 if args.hex_dump or args.extract or args.struct or args.quarantine_dump:
@@ -3665,17 +3731,19 @@ def parse_vbn(f, logType, tz):
                         if chunk.Data_Type == 9:
                             if args.hex_dump:
                                 cstruct.dumpstruct(chunk)
+
                             qfile += xor(f.read(chunk.Chunk_Size), 0xA5)
 
                             try:
                                 pos += chunk.Chunk_Size
-                                chunk = vbnstruct.chunk(xor(f.read(5), 0x5A).encode('latin-1'))
+                                chunk = vbnstruct.Chunk(xor(f.read(5), 0x5A).encode('latin-1'))
                                 pos += 5
                                 f.seek(pos)
 
                             except:
                                 if args.log:
                                     traceback.print_exc()
+
                                 break
 
                         else:
@@ -3684,15 +3752,20 @@ def parse_vbn(f, logType, tz):
                 if extraData is not None:
                     qfs = qds2 - footer
                     f.seek(-footer, 2)
+
                     try:
                         attribType = int.from_bytes(xor(f.read(1), 0xA5).encode('latin-1'), 'little')
+
                         if f.read(1) == b'':
                             attribType = ''
                         f.seek(-2, 1)
+
                         if attribType == 2:
                             ea1 = vbnstruct.Extended_Attribute(xor(f.read(20), 0xA5).encode('latin-1'))
+
                             if args.hex_dump:
                                 cstruct.dumpstruct(ea1)
+
                             while True:
                                 neo = int.from_bytes(xor(f.read(4), 0xA5).encode("latin-1"), "little")
                                 f.seek(1, 1)
@@ -3702,41 +3775,51 @@ def parse_vbn(f, logType, tz):
                                 neo2 = nl + vl + 8
                                 neo3 = neo - neo2 - 1
                                 ea = vbnstruct.FILE_FULL_EA_INFORMATION(xor(f.read(neo2 + 1), 0xA5).encode('latin-1'))
+
                                 if args.hex_dump:
                                     cstruct.dumpstruct(ea)
+
                                 if ea.NextEntryOffset == 0:
                                     break
+
                                 f.seek(neo3, 1)
 
                         elif attribType == 4:
                             ads = vbnstruct.ADS_Attribute(xor(f.read(footer), 0xA5).encode('latin-1'))
+
                             if args.hex_dump:
                                 cstruct.dumpstruct(ads)
 
                         elif attribType == 7:
                             oi = vbnstruct.OBJECT_ID_Attribute(xor(f.read(footer), 0xA5).encode('latin-1'))
+
                             if args.hex_dump:
                                 cstruct.dumpstruct(oi)
 
                         else:
                             unknown = vbnstruct.Unknown_Attribute(xor(f.read(footer), 0xA5).encode('latin-1'))
+
                             if args.hex_dump:
                                 cstruct.dumpstruct(unknown)
 
                         if args.struct:
                             for k, v in jf._values.items():
                                 sout += str(v).replace('"', '""')+'","'
+
                     except:
                         if args.log:
                             traceback.print_exc()
+
                         pass
 
             except:
                 if args.log:
                     traceback.print_exc()
+
                 if args.extract:
                     print(f'\033[1;31mDoes not contain quarantine data. Clean by Deletion.\033[1;0m\n')
                     print(f'\033[1;32mFinished parsing {f.name} \033[1;0m\n')
+
                 pass
 
         if dataType == 6:
@@ -3746,21 +3829,23 @@ def parse_vbn(f, logType, tz):
         if args.struct:
             if vbnv == 1:
                 rt2v1.write(f'"{f.name}","{sout[:-2]}\n')
+
             if vbnv == 2:
                 rt2v2.write(f'"{f.name}","{sout[:-2]}\n')
 
     if args.quarantine_dump and len(qfile) > 0:
         if (header or qfs) == 0:
-            test = hexdump(qfile.encode('latin-1'))
+            print(hexdump(qfile.encode('latin-1')))
+
         else:
-            test = hexdump(qfile[header:qfs].encode('latin-1'))
-        print(test)
+            print(hexdump(qfile[header:qfs].encode('latin-1')))
 
     if args.extract and len(qfile) > 0:
         output = open(args.output + '/' + os.path.basename(description) + '.vbn', 'wb+')
 
         if (header or qfs) == 0:
             output.write(bytes(qfile, encoding='latin-1'))
+
         else:
             output.write(bytes(qfile[header:qfs], encoding='latin-1'))
 
@@ -3769,9 +3854,11 @@ def parse_vbn(f, logType, tz):
             modify = from_filetime(vbnmeta.Date_Modified)
             create = from_filetime(vbnmeta.Date_Created)
             access = from_filetime(vbnmeta.Date_Accessed)
+
         except:
             if args.log:
                 traceback.print_exc()
+
             modify = from_unix_sec(vbnmeta.Date_Modified)
             create = from_unix_sec(vbnmeta.Date_Created)
             access = from_unix_sec(vbnmeta.Date_Accessed)
@@ -3783,6 +3870,7 @@ def parse_vbn(f, logType, tz):
 def extract_sym_submissionsidx(f):
     f.seek(48)
     cnt = 0
+
     while f.read(4) == b'@\x99\xc6\x89':
         f.seek(20, 1)
         len1 = struct.unpack('i', f.read(4))[0]
@@ -3792,6 +3880,7 @@ def extract_sym_submissionsidx(f):
 
         if not os.path.exists(args.output + '/ccSubSDK/submissions'):
             os.makedirs(args.output + '/ccSubSDK/submissions')
+
         newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.out', 'wb')
 
         key = f.read(16)
@@ -3799,6 +3888,7 @@ def extract_sym_submissionsidx(f):
         dec = blowfishit(data, key)
         newfilename.write(dec.encode('latin-1'))
         dec = read_sep_tag(dec.encode('latin-1'), sub=True)
+
         if dec[6] == '':
             newfilename.close()
             os.remove(newfilename.name)
@@ -3812,7 +3902,9 @@ def extract_sym_submissionsidx(f):
 
         newfilename.write(dec[6].encode('latin-1'))
         read_submission(dec[8], dec[7])
+
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
+
         cnt += 1
 
 
@@ -3827,17 +3919,21 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
     try:
         pos = [(m.start(0)) for m in re.finditer(b'@\x99\xc6\x89', f.read())][1]
         print(f'\033[1;35m\t\tSubmission {cnt}-0 len1={pos} len2=0\033[1;0m\n')
+
     except:
         if args.log:
             traceback.print_exc()
+
         f.seek(0)
         print(f'\033[1;35m\t\tSubmission {cnt}-0 len1={len1} len2=0\033[1;0m\n')
         newfilename.write(f.read())
         print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-0\033[1;0m\n')
         return
+
     f.seek(0)
     newfilename.write(f.read(pos))
     print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-0\033[1;0m\n')
+
     while f.read(4) == b'@\x99\xc6\x89':
         f.seek(20, 1)
         len1 = struct.unpack('i', f.read(4))[0]
@@ -3871,6 +3967,7 @@ def extract_sym_ccSubSDK(f):
             '95AAE6FD76558D439889B9D02BE0B850': 'IDSxpx86',
             '6A007A980A5B0A48BDFC4D887AEACAB0': 'IDSxpx86',
             'D40650BD02FDE745889CB15F0693C770': 'IDSxpx86',
+            '3DC1B6DEBAE889458213D8B252C465FC': 'IDSxpx86',
             '8EF95B94E971E842BAC952B02E79FB74': 'AVModule',
             'A72BBCC1E52A39418B8BB591BDD9AE76': 'RepMgtTim',
             'F2ECB3F7D763AE4DB49322CF763FC270': 'ccSubEng'
@@ -3909,8 +4006,10 @@ def extract_sym_ccSubSDK(f):
 
     newfilename.write(dec[6].encode('latin-1'))
     newfilename.close()
+
     if dec[9] and args.extract_blob:
         cnt = 0
+
         for i in dec[9]:
             binary = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '/' + str(cnt) + '.blob', 'wb')
             binary.write(i)
@@ -3925,8 +4024,8 @@ def progress(count, total, status=''):
     percents = round(100.0 * count / float(total), 1)
     bar = '=' * filled_len + '-' * (bar_len - filled_len)
 
-    sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
-    sys.stdout.flush()
+    sys.stderr.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
+    sys.stderr.flush()
 
 
 def blowfishit(data, key):
@@ -3934,15 +4033,21 @@ def blowfishit(data, key):
     total = len(data)
     cipher = blowfish.Cipher(key, byte_order="little")
     data = io.BytesIO(data)
+
     while data:
         dec += str(cipher.decrypt_block(data.read(8)).decode('latin-1'))
         i = data.tell()
+
         if total > 1000000:
             progress(i, total, status='Decrypting file')
+
         check = data.read(1)
+
         if len(check) == 0:
             break
+
         data.seek(-1, 1)
+
     return dec
 
 
@@ -3973,12 +4078,15 @@ def main():
 
     for filename in filenames:
         print(f'\033[1;35mStarted parsing {filename} \033[1;0m\n')
+
         try:
             with open(filename, 'rb') as f:
                 logType, maxSize, field3, cLogEntries, field5, field6, tLogEntries, maxDays = parse_header(f)
+
                 try:
                     if logType <= 5:
                         settings.write(f'"{filename}","{maxSize}","{cLogEntries}","{tLogEntries}","{maxDays}","{field3}","{field5}","{field6}"\n')
+
                     if cLogEntries == 0:
                         print(f'\033[1;33mSkipping {filename}. Log is empty. \033[1;0m\n')
                         continue
@@ -4006,11 +4114,13 @@ def main():
 
                     if logType == 7:
                         parse_vbn(f, logType, args.timezone)
+
                         if not (args.extract or args.hex_dump):
                             parse_daily_av(f, logType, args.timezone)
 
                     if logType == 8:
                         parse_vbn(f, logType, args.timezone)
+
                         if not (args.extract or args.hex_dump):
                             parse_daily_av(f, logType, args.timezone)
 
@@ -4028,12 +4138,14 @@ def main():
                 except Exception as e:
                     if args.log:
                         traceback.print_exc()
+
                     print(f'\033[1;31mProblem parsing {filename}: {e} \033[1;0m\n')
                     continue
 
         except Exception as e:
             if args.log:
                 traceback.print_exc()
+
             print(f'\033[1;33mSkipping {filename}. \033[1;31m{e}\033[1;0m\n')
 
     print(f'\033[1;37mProcessed {len(filenames)} file(s) in {format((time.time() - start), ".4f")} seconds \033[1;0m')
@@ -4065,11 +4177,12 @@ args = parser.parse_args()
 
 if not os.path.exists(args.output):
     os.makedirs(args.output)
+
 logfile = args.output + "/" + datetime.now().strftime("%Y-%m-%dT%H%M%S_console.log")
 
 if args.log:
     sys.stdout = Logger()
-    sys.stderr = Logger()
+#    sys.stderr = Logger()
 
 regex = re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine|.*\\Data\\CmnClnt\\ccSubSDK)')
 filenames = []
@@ -4083,35 +4196,45 @@ if args.registrationInfo:
         print('\033[1;36mAttempting to apply timezone offset.\n \033[1;0m')
         args.timezone = utc_offset(args.registrationInfo)
         print(f'\033[1;32mTimezone offset of {args.timezone} applied successfully. \033[1;0m\n')
+
     except Exception as e:
         if args.log:
             traceback.print_exc()
+
         print(f'\033[1;31mUnable to apply offset. Timestamps will not be adjusted. {e}\033[1;0m\n')
         pass
 
 if (args.kape or args.dir) and not args.file:
     print('\nSearching for Symantec logs.\n')
     rootDir = '/'
+
     if args.dir:
         rootDir = args.dir
+
     for path, subdirs, files in os.walk(rootDir):
         if args.kape:
             if 'registrationInfo.xml' in files:
                 pass
+
             elif not regex.findall(path):
                 continue
+
         for name in files:
             if args.timezone is None and (args.registrationInfo or name == 'registrationInfo.xml'):
                 name = os.path.join(path, name)
+
                 if args.registrationInfo:
                     name = args.registrationInfo
+
                 try:
                     print(f'\033[1;36m{name} found. Attempting to apply timezone offset.\n \033[1;0m')
                     args.timezone = utc_offset(name)
                     print(f'\033[1;32mTimezone offset of {args.timezone} applied successfully. \033[1;0m\n')
+
                 except Exception as e:
                     if args.log:
                         traceback.print_exc()
+
                     print(f'\033[1;31mUnable to apply offset. Timestamps will not be adjusted. {e}\033[1;0m\n')
 
             filenames.append(os.path.join(path, name))
@@ -4145,8 +4268,10 @@ if args.output and not (args.extract or args.hex_dump):
         if args.struct:
             if not os.path.exists(args.output + '/VBN(V1)'):
                 os.makedirs(args.output + '/VBN(V1)')
+
             if not os.path.exists(args.output + '/VBN(V2)'):
                 os.makedirs(args.output + '/VBN(V2)')
+
             rt0v1 = open(args.output + '/VBN(V1)/Record_type_0.csv', 'w')
             rt1v1 = open(args.output + '/VBN(V1)/Record_type_1.csv', 'w')
             rt2v1 = open(args.output + '/VBN(V1)/Record_type_2.csv', 'w')
@@ -4168,8 +4293,10 @@ if args.output and not (args.extract or args.hex_dump):
         if args.struct:
             if not os.path.exists(args.output + '/VBN(V1)'):
                 os.makedirs(args.output + '/VBN(V1)')
+
             if not os.path.exists(args.output + '/VBN(V2)'):
                 os.makedirs(args.output + '/VBN(V2)')
+
             rt0v1 = open(args.output + '/VBN(V1)/Record_type_0.csv', 'a')
             rt1v1 = open(args.output + '/VBN(V1)/Record_type_1.csv', 'a')
             rt2v1 = open(args.output + '/VBN(V1)/Record_type_2.csv', 'a')
