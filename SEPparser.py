@@ -2342,6 +2342,20 @@ def process_event_id(_):
             return v
 
 
+def attrib_type(_):
+
+    attid = {
+             2: '$EA',
+             4: '$DATA',
+             7: '$OBJECT_ID'
+            }
+
+    for k, v in attid.items():
+
+        if k == _:
+            return v
+
+
 def read_unpack_hex(f, loc, count):
 
     # jump to the specified location
@@ -2408,9 +2422,13 @@ def read_submission(_, fname):
     elif 'BASH Plugin' in test:
         subtype = args.output+'/ccSubSDK/BHSvcPlg.csv'
 
-    elif 'Signature Set Version' or 'Signature ID' in test:
+    elif ('Signature Set Version' in test or 'Signature ID' in test):
         subtype = args.output+'/ccSubSDK/IDSxp.csv'
 
+    elif 'File Reputation' in test.values():
+        subtype = args.output+'/ccSubSDK/AtpiEim_ReportSubmission.csv'
+    elif 'Client Authentication Token Request' in test.values():
+        subtype = args.output+'/ccSubSDK/RepMgtTim.csv'
     else:
         subtype = args.output+'/ccSubSDK/Reports.csv'
 
@@ -2610,6 +2628,7 @@ def read_log_data(data, tz):
 
 
 def read_sep_tag(_, sub=False, vbn=False):
+    total = len(_)
     _ = io.BytesIO(_)
     blob = False
     match = []
@@ -2629,7 +2648,11 @@ def read_sep_tag(_, sub=False, vbn=False):
     count = 0
     verify = struct.unpack("B", _.read(1))[0]
     _.seek(-1, 1)
+    tagtime = time.time()
     while True:
+        i = _.tell()
+        if (time.time() - tagtime) > 1 and not args.hex_dump:
+            progress(i, total, status='Parsing Quarantine Metadata')
         if sub and verify != 6:
             break
         try:
@@ -2752,6 +2775,9 @@ def read_sep_tag(_, sub=False, vbn=False):
         lasttoken = code
         if args.hex_dump:
             cstruct.dumpstruct(tag)
+
+    if (time.time() - tagtime) > 1 and not args.hex_dump:
+        print('\n')
 
     for a in match:
         if 'Detection Digest:' in a:
@@ -3766,13 +3792,13 @@ def parse_vbn(f, logType, tz):
                     f.seek(-footer, 2)
 
                     try:
-                        attribType = int.from_bytes(xor(f.read(1), 0xA5).encode('latin-1'), 'little')
+                        attribType = attrib_type(int.from_bytes(xor(f.read(1), 0xA5).encode('latin-1'), 'little'))
 
                         if f.read(1) == b'':
                             attribType = ''
                         f.seek(-2, 1)
 
-                        if attribType == 2:
+                        if attribType == '$EA':
                             ea1 = vbnstruct.Extended_Attribute(xor(f.read(20), 0xA5).encode('latin-1'))
 
                             if args.hex_dump:
@@ -3788,6 +3814,12 @@ def parse_vbn(f, logType, tz):
                                 neo3 = neo - neo2 - 1
                                 ea = vbnstruct.FILE_FULL_EA_INFORMATION(xor(f.read(neo2 + 1), 0xA5).encode('latin-1'))
 
+                                eaname = ea.EaName.decode('latin-1')
+                                eavalue = ea.EaValue.hex()[(56 - nl) * 2:]
+                                if eaname == "$KERNEL.PURGE.APPID.VERSIONINFO":
+                                    eavalue = bytes.fromhex(eavalue).decode('latin-1')[::2]
+                                attribData += (f'{eaname}\n{eavalue}\n\n')
+
                                 if args.hex_dump:
                                     cstruct.dumpstruct(ea)
 
@@ -3796,9 +3828,9 @@ def parse_vbn(f, logType, tz):
 
                                 f.seek(neo3, 1)
 
-                        elif attribType == 4:
+                        elif attribType == '$DATA':
                             ads = vbnstruct.ADS_Attribute(xor(f.read(footer), 0xA5).encode('latin-1'))
-                            
+
                             adsname = ads.ADS_Name.replace(b'\x00', b'').decode('latin-1')
                             adsdata = ads.Data.replace(b'\x00', b'').decode('latin-1')
                             attribData = (f'{adsname}\n\n{adsdata}')
@@ -3806,7 +3838,7 @@ def parse_vbn(f, logType, tz):
                             if args.hex_dump:
                                 cstruct.dumpstruct(ads)
 
-                        elif attribType == 7:
+                        elif attribType == '$OBJECT_ID':
                             oi = vbnstruct.OBJECT_ID_Attribute(xor(f.read(footer), 0xA5).encode('latin-1'))
 
                             guid1 = '-'.join([flip(oi.GUID_Object_Id.hex()[0:8]), flip(oi.GUID_Object_Id.hex()[8:12]), flip(oi.GUID_Object_Id.hex()[12:16]), oi.GUID_Object_Id.hex()[16:20], oi.GUID_Object_Id.hex()[20:32]])
