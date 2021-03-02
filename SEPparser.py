@@ -45,20 +45,6 @@ def csv_header():
 
     settings.write('"Log Name","Max Log Size","# of Logs","Running Total of Logs","Max Log Days","Field3","Field5","Field6"\n')
 
-    if args.struct:
-        rt0v1.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_Data_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QData_Location_Header","Quarantine_Data_Offset","QData_Location_Size","EOF","Unknown15","QData_Info_Header","QData_Info_Size","QData"\n')
-
-        rt0v2.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_Data_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QData_Location_Header","Quarantine_Data_Offset","QData_Location_Size","EOF","Unknown15","QData_Info_Header","QData_Info_Size","QData"\n')
-
-        rt1v1.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_Data_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14"\n')
-
-        rt1v2.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_Data_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14"\n')
-
-        rt2v1.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_Data_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QM_Header","QM_Header_Size","QM_Size","QM_Size_Header_Size","End_of_QM_to_End_of_VBN","Tag1","Tag1_Data","Tag2","Tag2_Data","Tag3","SHA1_Hash_Length","SHA1","Tag4","Tag4_Data","Tag5","Tag5_Data","Tag6","QFS_Size","Quarantine_Data_Size_2","Tag7","Security_Descriptor_Size","Security_Descriptor","Tag8","Tag8_Data","Tag9","Quarantine_Data_Size_3","Unknown15","Size","Unknown16","Unknown17","File_Size","Unknown18","Unknown19","Size2","Unknown20","Unknown21"\n')
-
-        rt2v2.write('"File Name","QM_HEADER_Offset","Description","Log_line","Flags","Record_ID","Date_Created","Date_Accessed","Date_Modified","Data_Type1","Unknown1","Storage_Name","Storage_Instance_ID","Storage_Key","Data_Type2","Unknown2","Unknown3","Data_Type3","Quarantine_Data_Size","Date_Accessed_2","Date_Modified_2","Date_Created_2","VBin_Time_2","Unknown4","Unique_ID","Unknown5","Unknown6","Record_Type","Quarantine_Session_ID","Remediation_Type","Unknown7","Unknown8","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13","WDescription","Unknown14","QM_Header","QM_Header_Size","QM_Size","QM_Size_Header_Size","End_of_QM_to_End_of_VBN","Tag1","Tag1_Data","Tag2","Tag2_Data","Tag3","SHA1_Hash_Length","SHA1","Tag4","Tag4_Data","Tag5","Tag5_Data","Tag6","QFS_Size","Quarantine_Data_Size_2","Tag7","Security_Descriptor_Size","Security_Descriptor","Tag8","Tag8_Data","Tag9","Quarantine_Data_Size_3","Unknown15","Size","Unknown16","Unknown17","File_Size","Unknown18","Unknown19","Size2","Unknown20","Unknown21"\n')
-
-
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 __author__ = "Brian Maloney"
 __version__ = "20201120"
@@ -2651,7 +2637,7 @@ def read_sep_tag(_, sub=False, vbn=False):
     tagtime = time.time()
     while True:
         i = _.tell()
-        if (time.time() - tagtime) > 1 and not args.hex_dump:
+        if vbn is True and (time.time() - tagtime) > 1 and not args.hex_dump:
             progress(i, total, status='Parsing Quarantine Metadata')
         if sub and verify != 6:
             break
@@ -2776,7 +2762,7 @@ def read_sep_tag(_, sub=False, vbn=False):
         if args.hex_dump:
             cstruct.dumpstruct(tag)
 
-    if (time.time() - tagtime) > 1 and not args.hex_dump:
+    if vbn is True and (time.time() - tagtime) > 1 and not args.hex_dump:
         print('\n')
 
     for a in match:
@@ -2998,14 +2984,23 @@ def from_hex_mac(macHex):
 
 def hexdump(buf, pcap=False):
     """Return a hexdump output string of the given buffer."""
+    total = len(buf)
     file = io.BytesIO(buf)
     res = []
+    hextime = time.time()
 
     for length in range(0, len(buf), 16):
+        i = file.tell()
+        if (time.time() - hextime) > 1 and not args.hex_dump:
+            progress(i, total, status='Dumping Hex')
+
         data = file.read(16)
         hexa = ' '.join(['{:02x}'.format(i) for i in data])
         line = ''.join([31 < i < 127 and chr(i) or '.' for i in data])
         res.append('  {:08x}  {:47}  {}'.format(length, hexa, line))
+
+    if (time.time() - hextime) > 1 and not args.hex_dump:
+        print('\n')
 
     if pcap:
         packet.write('\n'.join(res))
@@ -3564,11 +3559,6 @@ def parse_vbn(f, logType, tz):
     if qm_offset == 15108:
         vbnmeta = vbnstruct.VBN_METADATA_Linux_V2(f)
 
-    if args.struct:
-        sout = ''
-        for k, v in vbnmeta._values.items():
-            sout += str(v).replace('"', '""')+'","'
-
     wDescription = vbnmeta.WDescription.rstrip('\0')
     description = vbnmeta.Description.rstrip(b'\x00').decode("utf-8", "ignore")
     storageName = vbnmeta.Storage_Name.rstrip(b'\x00').decode("utf-8", "ignore")
@@ -3594,10 +3584,6 @@ def parse_vbn(f, logType, tz):
             f.seek(-12, 1)
             qdata_location = vbnstruct.QData_Location(xor(f.read(qdata_location_size), 0x5A).encode('latin-1'))
 
-            if args.struct:
-                for k, v in qdata_location._values.items():
-                    sout += str(v).replace('"', '""')+'","'
-
             if args.hex_dump:
                 cstruct.dumpstruct(qdata_location)
             pos = vbnmeta.QM_HEADER_Offset + qdata_location.Quarantine_Data_Offset
@@ -3620,10 +3606,6 @@ def parse_vbn(f, logType, tz):
             # need to properly parse
             qdata_info = vbnstruct.QData_Info(xor(f.read(), 0x5A).encode('latin-1'))
 
-            if args.struct:
-                for k, v in qdata_info._values.items():
-                    sout += str(v).replace('"', '""')+'","'
-
             if args.hex_dump:
                 cstruct.dumpstruct(qdata_info)
 
@@ -3632,13 +3614,6 @@ def parse_vbn(f, logType, tz):
 
             if args.extract or args.quarantine_dump:
                 qfile = xor(f.read(), 0x5A)
-
-        if args.struct:
-            if vbnv == 1:
-                rt0v1.write(f'"{f.name}","{sout[:-2]}\n')
-
-            if vbnv == 2:
-                rt0v2.write(f'"{f.name}","{sout[:-2]}\n')
 
     if vbnmeta.Record_Type == 1:
         if args.hex_dump:
@@ -3651,13 +3626,6 @@ def parse_vbn(f, logType, tz):
             print('           #######################################################\n')
         tags, dd, sddl, sid, virus, guid, dec, dbguid, results, binary = read_sep_tag(f.read(), vbn=True)
 
-        if args.struct:
-            if vbnv == 1:
-                rt1v1.write(f'"{f.name}","{sout[:-2]}\n')
-
-            if vbnv == 2:
-                rt1v2.write(f'"{f.name}","{sout[:-2]}\n')
-
         if args.extract or args.quarantine_dump:
             print(f'\033[1;31mRecord type 1 does not contain quarantine data.\033[1;0m\n')
 
@@ -3668,10 +3636,6 @@ def parse_vbn(f, logType, tz):
         qm_size = struct.unpack('q', qm_size)[0]
         f.seek(-16, 1)
         qmh = vbnstruct.Quarantine_Metadata_Header(xor(f.read(qm_size), 0x5A).encode('latin-1'))
-
-        if args.struct:
-            for k, v in qmh._values.items():
-                sout += str(v).replace('"', '""')+'","'
 
         if args.hex_dump:
             print('\n           #######################################################')
@@ -3702,10 +3666,6 @@ def parse_vbn(f, logType, tz):
             if args.hex_dump:
                 cstruct.dumpstruct(qi)
 
-            if args.struct:
-                for k, v in qi._values.items():
-                    sout += str(v).replace('"', '""')+'","'
-
             if qi.Tag2_Data == 1:
                 qhc = vbnstruct.Quarantine_Hash_Continued(xor(f.read(110), 0x5A).encode('latin-1'))
                 sha1 = qhc.SHA1.decode('latin-1').replace("\x00", "")
@@ -3724,10 +3684,6 @@ def parse_vbn(f, logType, tz):
                     f.seek(-4, 1)
                     qsddl = vbnstruct.Quarantine_SDDL(xor(f.read(qsddl_size), 0x5A).encode('latin-1'))
 
-                    if args.struct:
-                        for k, v in qsddl._values.items():
-                            sout += str(v).replace('"', '""')+'","'
-
                     sddl = sddl_translate(qsddl.Security_Descriptor.decode('latin-1').replace("\x00", ""))
                     qds3 = qsddl.Quarantine_Data_Size_3
 
@@ -3736,10 +3692,6 @@ def parse_vbn(f, logType, tz):
 
                     pos += 19 + qsddl.Security_Descriptor_Size
                     f.seek(pos)
-
-                else:
-                    if args.struct:
-                        sout += '","","","","","","","'
 
                 if dataType == 9:
                     extraData = qds2 - vbnmeta.Quarantine_Data_Size
@@ -3755,16 +3707,12 @@ def parse_vbn(f, logType, tz):
                     header = uh.Size + 40
                     footer = extraData - header
 
-                    if args.struct:
-                        for k, v in uh._values.items():
-                            sout += str(v).replace('"', '""')+'","'
-
                     if args.hex_dump:
                         cstruct.dumpstruct(uh)
 
                     f.seek(pos)
 
-                if args.hex_dump or args.extract or args.struct or args.quarantine_dump:
+                if args.hex_dump or args.extract or args.quarantine_dump:
                     while True:
                         if chunk.Data_Type == 9:
                             if args.hex_dump:
@@ -3869,10 +3817,6 @@ def parse_vbn(f, logType, tz):
                             if args.hex_dump:
                                 cstruct.dumpstruct(unknown)
 
-                        if args.struct:
-                            for k, v in jf._values.items():
-                                sout += str(v).replace('"', '""')+'","'
-
                     except:
                         if args.log:
                             traceback.print_exc()
@@ -3892,13 +3836,6 @@ def parse_vbn(f, logType, tz):
         if dataType == 6:
             if args.hex_dump:
                 print(hexdump(xor(f.read(), 0x5A).encode('latin-1')))
-
-        if args.struct:
-            if vbnv == 1:
-                rt2v1.write(f'"{f.name}","{sout[:-2]}\n')
-
-            if vbnv == 2:
-                rt2v2.write(f'"{f.name}","{sout[:-2]}\n')
 
     if args.quarantine_dump and len(qfile) > 0:
         if (header or qfs) == 0:
@@ -4057,15 +3994,9 @@ def extract_sym_ccSubSDK(f):
     data = f.read()
     dec = blowfishit(data, key)
 
-    if len(data) > 1000000:
-        print('')
-
     newfilename.write(dec.encode('latin-1'))
     newfilename.close()
     dec = read_sep_tag(dec.encode('latin-1'))
-
-    if len(data) > 1000000:
-        print('\n\n')
 
 #    hash_test = list(filter(lambda v: re.match('^([A-F0-9]{32})$|^([A-F0-9]{64})$', v), dec[0]))
 
@@ -4116,6 +4047,9 @@ def blowfishit(data, key):
             break
 
         data.seek(-1, 1)
+
+    if total > 1000000:
+        print('\n')
 
     return dec
 
@@ -4236,7 +4170,6 @@ parser.add_argument("-a", "--append", help="Append to output files.", action="st
 parser.add_argument("-r", "--registrationInfo", help="Path to registrationInfo.xml")
 parser.add_argument("-tz", "--timezone", type=int, help="UTC offset")
 parser.add_argument("-k", "--kape", help="Kape mode", action="store_true")
-parser.add_argument("-s", "--struct", help="Output structures to csv", action="store_true")
 parser.add_argument("-l", "--log", help="Save console output to log", action="store_true")
 
 if len(sys.argv) == 1:
@@ -4335,19 +4268,6 @@ if args.output and not (args.extract or args.hex_dump):
         quarantine = open(args.output + '/quarantine.csv', 'w')
         settings = open(args.output + '/settings.csv', 'w')
 
-        if args.struct:
-            if not os.path.exists(args.output + '/VBN(V1)'):
-                os.makedirs(args.output + '/VBN(V1)')
-
-            if not os.path.exists(args.output + '/VBN(V2)'):
-                os.makedirs(args.output + '/VBN(V2)')
-
-            rt0v1 = open(args.output + '/VBN(V1)/Record_type_0.csv', 'w')
-            rt1v1 = open(args.output + '/VBN(V1)/Record_type_1.csv', 'w')
-            rt2v1 = open(args.output + '/VBN(V1)/Record_type_2.csv', 'w')
-            rt0v2 = open(args.output + '/VBN(V2)/Record_type_0.csv', 'w')
-            rt1v2 = open(args.output + '/VBN(V2)/Record_type_1.csv', 'w')
-            rt2v2 = open(args.output + '/VBN(V2)/Record_type_2.csv', 'w')
     else:
         syslog = open(args.output + '/Symantec_Client_Management_System_Log.csv', 'a')
         seclog = open(args.output + '/Symantec_Client_Management_Security_Log.csv', 'a')
@@ -4359,20 +4279,6 @@ if args.output and not (args.extract or args.hex_dump):
         tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
         quarantine = open(args.output + '/quarantine.csv', 'a')
         settings = open(args.output + '/settings.csv', 'a')
-
-        if args.struct:
-            if not os.path.exists(args.output + '/VBN(V1)'):
-                os.makedirs(args.output + '/VBN(V1)')
-
-            if not os.path.exists(args.output + '/VBN(V2)'):
-                os.makedirs(args.output + '/VBN(V2)')
-
-            rt0v1 = open(args.output + '/VBN(V1)/Record_type_0.csv', 'a')
-            rt1v1 = open(args.output + '/VBN(V1)/Record_type_1.csv', 'a')
-            rt2v1 = open(args.output + '/VBN(V1)/Record_type_2.csv', 'a')
-            rt0v2 = open(args.output + '/VBN(V2)/Record_type_0.csv', 'a')
-            rt1v2 = open(args.output + '/VBN(V2)/Record_type_1.csv', 'a')
-            rt2v2 = open(args.output + '/VBN(V2)/Record_type_2.csv', 'a')
 
     if os.stat(timeline.name).st_size == 0:
         csv_header()
