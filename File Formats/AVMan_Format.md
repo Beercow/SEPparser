@@ -1,6 +1,9 @@
 # Antivirus Management Log File Format
 The antivirus managment log for SEP can be found at the following location:  
+* Windows  
 C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs\AVMan.log
+* Linux  
+ /var/symantec/Logs/tralog.log
 
 ## Header
 | Field                 | Type   | Size | Description                      |

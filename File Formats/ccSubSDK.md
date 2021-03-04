@@ -58,13 +58,13 @@ Continues to end of file.
             <td>24</td>
             <td>4</td>
             <td>Lenght 1</td>
-            <td></td>
+            <td>Total size of Data including Blowfish Key</td>
         </tr>
         <tr>
             <td>28</td>
             <td>4</td>
             <td>Lenght 2</td>
-            <td></td>
+            <td>Actual size of Data including Blowfish Key<br><strong style="color:red;">&#42;If length is 0, record is deleted.</strong></td>
         </tr>
         <tr>
             <td>32</td>
@@ -80,7 +80,7 @@ Continues to end of file.
         </tr>
         <tr>
             <td>56</td>
-            <td>Length 1</td>
+            <td>Length 1 - 16</td>
             <td>Data</td>
             <td>Data appears to be in ASN.1 format. It is comprised of a series of tags.
                 <table>
