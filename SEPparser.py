@@ -2683,7 +2683,7 @@ def read_sep_tag(_, sub=False, vbn=False):
 
         except:
             break
-        
+
         dec += '{:02x}\n'.format(code)
 
         if code == 0:
@@ -2721,7 +2721,7 @@ def read_sep_tag(_, sub=False, vbn=False):
             if hit == 'virus':
                 virus = tag.StringA.decode('latin-1').replace("\x00", "")
                 hit = None
- 
+
             else:
                 match.append(tag.StringA.decode('latin-1').replace("\x00", ""))
 
@@ -2775,7 +2775,7 @@ def read_sep_tag(_, sub=False, vbn=False):
                             dec += f'### BLOB Decompressed\n{hexdump(zlib.decompress(tag.dumps()[13:]))}'
 
                         else:
-                            dec += f'### BLOB Decompressed\n{hexdump(zlib.decompress(tag.dumps()[9:]))}\n\n'
+                            dec += f'### BLOB Decompressed\n{read_sep_tag(zlib.decompress(tag.dumps()[9:]))[6]}### BLOB Decompressed End\n\n'
 
                     else:
                         binary.append(tag.dumps()[5:])
@@ -3268,7 +3268,7 @@ def parse_seclog(f, logEntries):
                 logEntry2[1] = logEntry2[1] + b'\t'
                 logEntry2[1:3] = [b''.join(logEntry2[1:3])]
                 entry.localmac = logEntry2[1].hex()
- 
+
                 if len(entry.localmac) == 32:
                     entry.localmac = from_hex_mac(logEntry2[1].hex())
                     break
@@ -4117,7 +4117,10 @@ def extract_sym_ccSubSDK(f):
     newfilename.close()
     dec = read_sep_tag(dec.encode('latin-1'))
 
+#    Look for MD5 or SHA1 of file
 #    hash_test = list(filter(lambda v: re.match('^([A-F0-9]{32})$|^([A-F0-9]{64})$', v), dec[0]))
+#    if hash_test:
+#        print(hash_test)
 
     write_report(dec[6], os.path.basename(f.name))
 
