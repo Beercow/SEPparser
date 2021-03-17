@@ -2362,7 +2362,7 @@ def read_log_entry(f, loc, count):
     return f.read(count)
 
 
-def read_submission(_, fname):
+def read_submission(_, fname, index):
     test = {}
     column = 0
     for x in _.split('\n'):
@@ -2432,7 +2432,9 @@ def read_submission(_, fname):
     if os.path.isfile(subtype):
         data = open(subtype).readlines()
         header = data[0][1:-2].split('","')
+        header.remove('Index')
         header.remove('ccSubSDK File GUID')
+        header.remove('Present')
 
     subtype = open(subtype, 'w')
     rows = ''
@@ -2473,12 +2475,16 @@ def read_submission(_, fname):
         else:
             value[pos] = v
 
+    if any(fname in files for files in filenames):
+        present = 'yes'
+    else:
+        present = 'no'
     if len(value) != 0:
         value = '","'.join(value)
-        rows += f'"{fname}","{value}"\n'
+        rows += f'"{index}","{fname}","{present}","{value}"\n'
 
     header = '","'.join(header)
-    data[0] = f'"ccSubSDK File GUID","{header}"\n'
+    data[0] = f'"Index","ccSubSDK File GUID","Present","{header}"\n'
     subtype.writelines(data)
     subtype.write(rows)
     subtype.close()
@@ -2912,6 +2918,13 @@ def event_data1(_):
         b = [''] * diff
         _.extend(b)
 
+    if ':' in _[0]:
+        var = _[0]
+        _ = _[0].split(':')
+        _.insert(0, var)
+        b = [''] * 7
+        _.extend(b)
+
     labels = event_data1_labels(_[0])
 
     if _[0] == '101':
@@ -2940,6 +2953,9 @@ def event_data1_labels(_):
 
     elif _ == '301':
         labels = ["Actor PID", "Actor", "Event", "Target PID", "Target", "Target Process", "Unknown", "Unknown", "N/A", "N/A", "N/A", "N/A"]
+
+    elif len(_) > 3:
+        labels = ["Scan Status", "Risks", "Scanned", "Files/Folders/Drives Omitted", "Trusted Files Skipped", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A"]
 
     else:
         labels = [''] * 12
@@ -3949,7 +3965,10 @@ def parse_vbn(f, logType, tz):
                 print(hexdump(xor(f.read(), 0x5A).encode('latin-1')))
 
     if len(qfile) > 0 and args.hash_file:
-        qfile_actual_sha1 = hashlib.sha1(qfile.encode('latin-1')).hexdigest()
+        if (header or qfs) == 0:
+            qfile_actual_sha1 = hashlib.sha1(qfile.encode('latin-1')).hexdigest()
+        else:
+            qfile_actual_sha1 = hashlib.sha1(qfile[header:qfs].encode('latin-1')).hexdigest()
 
         if vbnmeta.Record_Type == 0:
             print(f'\033[1;37mSHA1({qfile_actual_sha1}) of the quarantined data.\033[1;0m\n')
@@ -3975,7 +3994,7 @@ def parse_vbn(f, logType, tz):
 
         else:
             output.write(bytes(qfile[header:qfs], encoding='latin-1'))
-
+        print(output.name)
     if not (args.extract or args.hex_dump):
         try:
             modify = from_filetime(vbnmeta.Date_Modified)
@@ -4027,7 +4046,7 @@ def extract_sym_submissionsidx(f):
         newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
 
         newfilename.write(dec[6].encode('latin-1'))
-        read_submission(dec[8], dec[7])
+        read_submission(dec[8], dec[7], cnt)
 
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
 
@@ -4076,7 +4095,7 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
         newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
 
         newfilename.write(dec[6].encode('latin-1'))
-        read_submission(dec[8], dec[7])
+        read_submission(dec[8], dec[7], str(cnt)+'-'+str(subcnt))
         print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-{subcnt}\033[1;0m\n')
         subcnt += 1
 
