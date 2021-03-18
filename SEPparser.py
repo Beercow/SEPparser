@@ -41,7 +41,7 @@ def csv_header():
 
     tamperProtect.write('"File Name","Computer","User","Action Taken","Object Type","Event","Actor","Target","Target Process","Date and Time"\n')
 
-    quarantine.write('"File Name","Virus","Description","Record ID","Creation Date 1 UTC","Access Date 1 UTC","Modify Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","Quarantine Data Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","Record Type","Quarantine Session ID","Remediation Type","Wide Description","SHA1","Actual SHA1","Quarantine Data Size 2","SID","SDDL","Quarantine Data Size 3","Detection Digest","GUID","QData Length","Unknown Header","Attribute Type","Attribute Data","Extra Data","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2_Label","LOG:Event_Data2","LOG:Event_Data3_Label","LOG:Event_Data3","LOG:Event_Data4_Label","LOG:Event_Data4","LOG:Event_Data5_Label","LOG:Event_Data5","LOG:Event_Data6_Label","LOG:Event_Data6","LOG:Event_Data7_Label","LOG:Event_Data7","LOG:Event_Data8_Label","LOG:Event_Data8","LOG:Event_Data9_Label","LOG:Event_Data9","LOG:Event_Data10_Label","LOG:Event_Data10","LOG:Event_Data11_Label","LOG:Event_Data11","LOG:Event_Data12_Label","LOG:Event_Data12","LOG:Event_Data13_Label","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","Log:Eraser Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_SONAR_Engine_Version","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","LOG:Field113","LOG:Location","LOG:Field115","LOG:Digital_Signatures_Signer","LOG:Digital_Signatures_Issuer","LOG:Digital_Signatures_Certificate_Thumbprint","LOG:Field119","LOG:Digital_Signatures_Serial_Number","LOG:Digital_Signatures_Signing_Time","LOG:Field122","LOG:Field123","LOG:Field124","LOG:Field125","LOG:Field126"\n')
+    quarantine.write('"File Name","Virus","Description","Record ID","Creation Date 1 UTC","Access Date 1 UTC","Modify Date 1 UTC","Storage Name","Storage Instance ID","Storage Key","Quarantine Data Size 1","Creation Date 2 UTC","Access Date 2 UTC","Modify Date 2 UTC","VBin Time UTC","Unique ID","Record Type","Quarantine Session ID","Remediation Type","Wide Description","SHA1","Actual SHA1","Actual MD5","Actual SHA256","Quarantine Data Size 2","SID","SDDL","Quarantine Data Size 3","Detection Digest","GUID","QData Length","Unknown Header","Attribute Type","Attribute Data","Extra Data","LOG:Time","LOG:Event","LOG:Category","LOG:Logger","LOG:Computer","LOG:User","LOG:Virus","LOG:File","LOG:WantedAction1","LOG:WantedAction2","LOG:RealAction","LOG:Virus_Type","LOG:Flags","LOG:Description","LOG:ScanID","LOG:New_Ext","LOG:Group_ID","LOG:Event_Data1","LOG:Event_Data2_Label","LOG:Event_Data2","LOG:Event_Data3_Label","LOG:Event_Data3","LOG:Event_Data4_Label","LOG:Event_Data4","LOG:Event_Data5_Label","LOG:Event_Data5","LOG:Event_Data6_Label","LOG:Event_Data6","LOG:Event_Data7_Label","LOG:Event_Data7","LOG:Event_Data8_Label","LOG:Event_Data8","LOG:Event_Data9_Label","LOG:Event_Data9","LOG:Event_Data10_Label","LOG:Event_Data10","LOG:Event_Data11_Label","LOG:Event_Data11","LOG:Event_Data12_Label","LOG:Event_Data12","LOG:Event_Data13_Label","LOG:Event_Data13","LOG:VBin_ID","LOG:Virus_ID","LOG:Quarantine_Forward_Status","LOG:Access","LOG:SDN_Status","LOG:Compressed","LOG:Depth","LOG:Still_Infected","LOG:Def_Info","LOG:Def_Sequence_Number","LOG:Clean_Info","LOG:Delete_Info","LOG:Backup_ID","LOG:Parent","LOG:GUID","LOG:Client_Group","LOG:Address","LOG:Domain_Name","LOG:NT_Domain","LOG:MAC_Address","LOG:Version","LOG:Remote_Machine","LOG:Remote_Machine_IP","LOG:Action_1_Status","LOG:Action_2_Status","LOG:License_Feature_Name","LOG:License_Feature_Version","LOG:License_Serial_Number","LOG:License_Fulfillment_ID","LOG:License_Start_Date","LOG:License_Expiration_Date","LOG:License_LifeCycle","LOG:License_Seats_Total","LOG:License_Seats","LOG:Error_Code","LOG:License_Seats_Delta","Log:Eraser Status","LOG:Domain_GUID","LOG:Session_GUID","LOG:VBin_Session_ID","LOG:Login_Domain","LOG:Event_Data_2_1","LOG:Event_Data_2_Company_Name","LOG:Event_Data_2_Size (bytes)","LOG:Event_Data_2_Hash_Type","LOG:Event_Data_2_Hash","LOG:Event_Data_2_Product_Version","LOG:Event_Data_2_7","LOG:Event_Data_2_8","LOG:Event_Data_2_SONAR_Engine_Version","LOG:Event_Data_2_10","LOG:Event_Data_2_11","LOG:Event_Data_2_12","LOG:Event_Data_2_Product_Name","LOG:Event_Data_2_14","LOG:Event_Data_2_15","LOG:Event_Data_2_16","LOG:Event_Data_2_17","LOG:Eraser_Category_ID","LOG:Dynamic_Categoryset_ID","LOG:Subcategoryset_ID","LOG:Display_Name_To_Use","LOG:Reputation_Disposition","LOG:Reputation_Confidence","LOG:First_Seen","LOG:Reputation_Prevalence","LOG:Downloaded_URL","LOG:Creator_For_Dropper","LOG:CIDS_State","LOG:Behavior_Risk_Level","LOG:Detection_Type","LOG:Acknowledge_Text","LOG:VSIC_State","LOG:Scan_GUID","LOG:Scan_Duration","LOG:Scan_Start_Time","LOG:TargetApp","LOG:Scan_Command_GUID","LOG:Field113","LOG:Location","LOG:Field115","LOG:Digital_Signatures_Signer","LOG:Digital_Signatures_Issuer","LOG:Digital_Signatures_Certificate_Thumbprint","LOG:Field119","LOG:Digital_Signatures_Serial_Number","LOG:Digital_Signatures_Signing_Time","LOG:Field122","LOG:Field123","LOG:Field124","LOG:Field125","LOG:Field126"\n')
 
     settings.write('"Log Name","Max Log Size","# of Logs","Running Total of Logs","Max Log Days","Field3","Field5","Field6"\n')
 
@@ -2652,7 +2652,7 @@ def read_log_data(data, tz):
     return f'"{entry.time}","{entry.event}","{entry.category}","{entry.logger}","{entry.computer}","{entry.user}","{entry.virus}","{entry.file}","{entry.wantedaction1}","{entry.wantedaction2}","{entry.realaction}","{entry.virustype}","{entry.flags}","{entry.description}","{entry.scanid}","{entry.newext}","{entry.groupid}","{entry.eventdata}","{entry.vbinid}","{entry.virusid}","{entry.quarantineforwardstatus}","{entry.access}","{entry.sdnstatus}","{entry.compressed}","{entry.depth}","{entry.stillinfected}","{entry.definfo}","{entry.defsequincenumber}","{entry.cleaninfo}","{entry.deleteinfo}","{entry.backupod}","{entry.parent}","{entry.guid}","{entry.clientgroup}","{entry.address}","{entry.domainname}","{entry.ntdomain}","{entry.macaddress}","{entry.version}","{entry.remotemachine}","{entry.remotemachineip}","{entry.action1status}","{entry.action2status}","{entry.licensefeaturename}","{entry.licensefeatureversion}","{entry.licenseserialnumber}","{entry.licensefulfillmentid}","{entry.licensestartdate}","{entry.licenseexpirationdate}","{entry.licenselifecycle}","{entry.licenseseatstotal}","{entry.licenseseats}","{entry.errorcode}","{entry.licenseseatsdelta}","{entry.status}","{entry.domainguid}","{entry.sessionguid}","{entry.vbnsessionid}","{entry.logindomain}","{entry.eventdata2}","{entry.erasercategoryid}","{entry.dynamiccategoryset}","{entry.subcategorysetid}","{entry.displaynametouse}","{entry.reputationdisposition}","{entry.reputationconfidence}","{entry.firsseen}","{entry.reputationprevalence}","{entry.downloadurl}","{entry.categoryfordropper}","{entry.cidsstate}","{entry.behaviorrisklevel}","{entry.detectiontype}","{entry.acknowledgetext}","{entry.vsicstate}","{entry.scanguid}","{entry.scanduration}","{entry.scanstarttime}","{entry.targetapptype}","{entry.scancommandguid}","{field113}","{entry.location}","{field115}","{entry.digitalsigner}","{entry.digitalissuer}","{entry.digitalthumbprint}","{field119}","{entry.digitalsn}","{entry.digitaltime}","{field122}","{field123}","{field124}","{field125}","{field126}"'
 
 
-def read_sep_tag(_, sub=False, vbn=False):
+def read_sep_tag(_, fname, sub=False, vbn=False):
     total = len(_)
     _ = io.BytesIO(_)
     blob = False
@@ -2781,7 +2781,14 @@ def read_sep_tag(_, sub=False, vbn=False):
                             dec += f'### BLOB Decompressed\n{hexdump(zlib.decompress(tag.dumps()[13:]))}'
 
                         else:
-                            dec += f'### BLOB Decompressed\n{read_sep_tag(zlib.decompress(tag.dumps()[9:]))[6]}### BLOB Decompressed End\n\n'
+                            data = read_sep_tag(zlib.decompress(tag.dumps()[9:]), fname)
+                            dec += f'### BLOB Decompressed\n{data[6]}### BLOB Decompressed End\n\n'
+                            sonar = args.output+'/ccSubSDK/SONAR.txt'
+                            with open(sonar, 'a') as f:
+                                f.write(f'##########{fname}##########\n')
+                                f.write(f'{data[3]}\n')
+                                f.write('\n'.join(data[0]) + '\n')
+                                f.write(f'{"#" * 58}\n\n')
 
                     else:
                         binary.append(tag.dumps()[5:])
@@ -3650,7 +3657,9 @@ def parse_vbn(f, logType, tz):
     guid = ''
     vbnv = ''
     attribData = ''
+    qfile_actual_md5 = ''
     qfile_actual_sha1 = ''
+    qfile_actual_sha256 = ''
     qfs = 0
     extraData = None
     header = 0
@@ -3753,7 +3762,7 @@ def parse_vbn(f, logType, tz):
             print('           #######################################################')
             print('           #######################################################\n')
 
-        tags, dd, sddl, sid, virus, guid, dec, dbguid, results, binary = read_sep_tag(f.read(), vbn=True)
+        tags, dd, sddl, sid, virus, guid, dec, dbguid, results, binary = read_sep_tag(f.read(), f.name, vbn=True)
 
         if args.extract or args.quarantine_dump:
             print(f'\033[1;31mRecord type 1 does not contain quarantine data.\033[1;0m\n')
@@ -3785,7 +3794,7 @@ def parse_vbn(f, logType, tz):
             print('           #######################################################')
             print('           #######################################################\n')
 
-        tags, dd, sddl, sid, virus, guid, dec, dbguid, results, bianry = read_sep_tag(xor(f.read(qmh.QM_Size), 0x5A).encode('latin-1'), vbn=True)
+        tags, dd, sddl, sid, virus, guid, dec, dbguid, results, bianry = read_sep_tag(xor(f.read(qmh.QM_Size), 0x5A).encode('latin-1'), f.name, vbn=True)
 
         pos = qmh.QM_Size_Header_Size + vbnmeta.QM_HEADER_Offset
         f.seek(pos)
@@ -3966,9 +3975,13 @@ def parse_vbn(f, logType, tz):
 
     if len(qfile) > 0 and args.hash_file:
         if (header or qfs) == 0:
+            qfile_actual_md5 = hashlib.md5(qfile.encode('latin-1')).hexdigest()
             qfile_actual_sha1 = hashlib.sha1(qfile.encode('latin-1')).hexdigest()
+            qfile_actual_sha256 = hashlib.sha256(qfile.encode('latin-1')).hexdigest()
         else:
+            qfile_actual_md5 = hashlib.md5(qfile[header:qfs].encode('latin-1')).hexdigest()
             qfile_actual_sha1 = hashlib.sha1(qfile[header:qfs].encode('latin-1')).hexdigest()
+            qfile_actual_sha256 = hashlib.sha256(qfile[header:qfs].encode('latin-1')).hexdigest()
 
         if vbnmeta.Record_Type == 0:
             print(f'\033[1;37mSHA1({qfile_actual_sha1}) of the quarantined data.\033[1;0m\n')
@@ -4009,7 +4022,7 @@ def parse_vbn(f, logType, tz):
 
         attribData = attribData.replace('"', '""')
 
-        quarantine.write(f'"{f.name}","{virus}","{description}","{vbnmeta.Record_ID}","{create}","{access}","{modify}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_Data_Size}","{from_unix_sec(vbnmeta.Date_Created_2)}","{from_unix_sec(vbnmeta.Date_Accessed_2)}","{from_unix_sec(vbnmeta.Date_Modified_2)}","{from_unix_sec(vbnmeta.VBin_Time_2)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Quarantine_Session_ID)[2:].upper()}","{remediation_type_desc(vbnmeta.Remediation_Type)}","{wDescription}","{sha1}","{qfile_actual_sha1}","{qds2}","{sid}","{sddl}","{qds3}","{dd}","{guid}","{"Yes" if qdl == "ce20aaaa06000000" else "No"}","{"Yes" if header > 0 else "No"}","{attribType}","{attribData}","{tags}",{logEntry}\n')
+        quarantine.write(f'"{f.name}","{virus}","{description}","{vbnmeta.Record_ID}","{create}","{access}","{modify}","{storageName}","{vbnmeta.Storage_Instance_ID}","{storageKey}","{vbnmeta.Quarantine_Data_Size}","{from_unix_sec(vbnmeta.Date_Created_2)}","{from_unix_sec(vbnmeta.Date_Accessed_2)}","{from_unix_sec(vbnmeta.Date_Modified_2)}","{from_unix_sec(vbnmeta.VBin_Time_2)}","{uniqueId}","{vbnmeta.Record_Type}","{hex(vbnmeta.Quarantine_Session_ID)[2:].upper()}","{remediation_type_desc(vbnmeta.Remediation_Type)}","{wDescription}","{sha1.upper()}","{qfile_actual_sha1.upper()}","{qfile_actual_md5.upper()}","{qfile_actual_sha256.upper()}","{qds2}","{sid}","{sddl}","{qds3}","{dd}","{guid}","{"Yes" if qdl == "ce20aaaa06000000" else "No"}","{"Yes" if header > 0 else "No"}","{attribType}","{attribData}","{tags}",{logEntry}\n')
 
 
 def extract_sym_submissionsidx(f):
@@ -4032,7 +4045,7 @@ def extract_sym_submissionsidx(f):
         data = f.read(len1 - 16)
         dec = blowfishit(data, key)
         newfilename.write(dec.encode('latin-1'))
-        dec = read_sep_tag(dec.encode('latin-1'), sub=True)
+        dec = read_sep_tag(dec.encode('latin-1'), f.name, sub=True)
 
         if dec[6] == '':
             newfilename.close()
@@ -4090,7 +4103,7 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
         data = f.read(len1 - 16)
         dec = blowfishit(data, key)
         newfilename.write(dec.encode('latin-1'))
-        dec = read_sep_tag(dec.encode('latin-1'), sub=True)
+        dec = read_sep_tag(dec.encode('latin-1'), None, sub=True)
 
         newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
 
@@ -4134,7 +4147,7 @@ def extract_sym_ccSubSDK(f):
 
     newfilename.write(dec.encode('latin-1'))
     newfilename.close()
-    dec = read_sep_tag(dec.encode('latin-1'))
+    dec = read_sep_tag(dec.encode('latin-1'), os.path.basename(f.name))
 
 #    Look for MD5 or SHA1 of file
 #    hash_test = list(filter(lambda v: re.match('^([A-F0-9]{32})$|^([A-F0-9]{64})$', v), dec[0]))
