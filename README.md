@@ -27,7 +27,7 @@ SEPparser is a command line tool for parsing Symantec Endpoint Protection data. 
 To use SEPparser, simply provide a directory or file and SEPparser will take care of the rest.
 > c:\temp\SEPparser.exe -d "C:\ProgramData\Symantec\Symantec Endpoint Protection\CurrentVersion\Data\Logs"  
 
-Once SEPparser runs, a series for files and directories will be created in the location SEPparser was ran from. You can designate a different folder by using the -o option.  
+Once SEPparser runs, a series of files and directories will be created in the location SEPparser was ran from. You can designate a different folder by using the -o option.  
 
 ![](./Images/dir.PNG)  
 
