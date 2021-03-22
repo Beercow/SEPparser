@@ -16,9 +16,12 @@ import json
 import blowfish
 import zlib
 import hashlib
+import csv
+import fileinput
 from scapy.all import Ether
 from scapy.utils import import_hexcap
 from manuf import manuf
+
 
 if os.name == 'nt':
     kernel32 = ctypes.windll.kernel32
@@ -2435,6 +2438,8 @@ def read_submission(_, fname, index):
         header.remove('Index')
         header.remove('ccSubSDK File GUID')
         header.remove('Present')
+        if 'BASH Plugin' in test:
+            header.remove('SONAR')
 
     subtype = open(subtype, 'w')
     rows = ''
@@ -2475,16 +2480,23 @@ def read_submission(_, fname, index):
         else:
             value[pos] = v
 
+#    indices = [i for i, s in enumerate(filenames) if fname in s]
     if any(fname in files for files in filenames):
         present = 'yes'
     else:
         present = 'no'
     if len(value) != 0:
         value = '","'.join(value)
-        rows += f'"{index}","{fname}","{present}","{value}"\n'
+        if 'BASH Plugin' in test:
+            rows += f'"{index}","{fname}","{present}","{value}",""\n'
+        else:
+            rows += f'"{index}","{fname}","{present}","{value}"\n'
 
     header = '","'.join(header)
-    data[0] = f'"Index","ccSubSDK File GUID","Present","{header}"\n'
+    if 'BASH Plugin' in test:
+        data[0] = f'"Index","ccSubSDK File GUID","Present","{header}","SONAR"\n'
+    else:
+        data[0] = f'"Index","ccSubSDK File GUID","Present","{header}"\n'
     subtype.writelines(data)
     subtype.write(rows)
     subtype.close()
@@ -2783,12 +2795,20 @@ def read_sep_tag(_, fname, sub=False, vbn=False):
                         else:
                             data = read_sep_tag(zlib.decompress(tag.dumps()[9:]), fname)
                             dec += f'### BLOB Decompressed\n{data[6]}### BLOB Decompressed End\n\n'
-                            sonar = args.output+'/ccSubSDK/SONAR.txt'
-                            with open(sonar, 'a') as f:
-                                f.write(f'##########{fname}##########\n')
-                                f.write(f'{data[3]}\n')
-                                f.write('\n'.join(data[0]) + '\n')
-                                f.write(f'{"#" * 58}\n\n')
+
+                            with fileinput.input(files=(args.output+'/ccSubSDK/BHSvcPlg.csv'), inplace=True, mode='r') as fn:
+                                reader = csv.DictReader(fn)
+                                header = '","'.join(reader.fieldnames)
+                                print(f'"{header}"')
+
+                                for row in reader:
+                                    if fname in row['ccSubSDK File GUID']:
+                                        row['SONAR'] = data[3] + '\n' + '\n'.join(data[0]) + '\n'
+
+                                    val = '","'.join(str(x).replace('"', '""') for x in row.values())
+                                    print(f'"{val}"')
+
+                            fn.close()
 
                     else:
                         binary.append(tag.dumps()[5:])
