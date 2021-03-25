@@ -21,6 +21,7 @@ import fileinput
 from scapy.all import Ether
 from scapy.utils import import_hexcap
 from manuf import manuf
+import traceback
 
 
 if os.name == 'nt':
@@ -2428,6 +2429,7 @@ def read_submission(_, fname, index):
 
     else:
         subtype = args.output+'/ccSubSDK/Reports.csv'
+        input('paused')
 
     header = []
     data = ['']
@@ -2441,7 +2443,7 @@ def read_submission(_, fname, index):
         if 'BASH Plugin' in test:
             header.remove('SONAR')
 
-    subtype = open(subtype, 'w')
+    subtype = open(subtype, 'w', errors="ignore")
     rows = ''
     value = []
 
@@ -2480,7 +2482,6 @@ def read_submission(_, fname, index):
         else:
             value[pos] = v
 
-#    indices = [i for i, s in enumerate(filenames) if fname in s]
     if any(fname in files for files in filenames):
         present = 'yes'
     else:
@@ -2529,7 +2530,7 @@ def read_ndca(_):
         n += 1
 
     _.seek(-1, 1)
-    msg.append(_.read(bodylength).decode("utf-8", "ignore"))
+    msg.append(_.read(bodylength).decode("utf-8", "ignore").translate(__vis_filter))
 
     return '\n'.join(msg)
 
@@ -2674,7 +2675,7 @@ def read_sep_tag(_, fname, sub=False, vbn=False):
     sid = ''
     guid = ''
     dec = ''
-    dbguid = ''
+    dbguid = None
     lastguid = ''
     lasttoken = 0
     lastvalue = 0
@@ -2796,19 +2797,18 @@ def read_sep_tag(_, fname, sub=False, vbn=False):
                             data = read_sep_tag(zlib.decompress(tag.dumps()[9:]), fname)
                             dec += f'### BLOB Decompressed\n{data[6]}### BLOB Decompressed End\n\n'
 
-                            with fileinput.input(files=(args.output+'/ccSubSDK/BHSvcPlg.csv'), inplace=True, mode='r') as fn:
-                                reader = csv.DictReader(fn)
-                                header = '","'.join(reader.fieldnames)
-                                print(f'"{header}"')
+                            if os.path.exists(args.output+'/ccSubSDK/BHSvcPlg.csv'):
+                                with fileinput.input(files=(args.output+'/ccSubSDK/BHSvcPlg.csv'), inplace=True, mode='r') as fn:
+                                    reader = csv.DictReader(fn)
+                                    header = '","'.join(reader.fieldnames)
+                                    print(f'"{header}"')
 
-                                for row in reader:
-                                    if fname in row['ccSubSDK File GUID']:
-                                        row['SONAR'] = data[3] + '\n' + '\n'.join(data[0]) + '\n'
+                                    for row in reader:
+                                        if fname in row['ccSubSDK File GUID']:
+                                            row['SONAR'] = data[3] + '\n' + '\n'.join(data[0]) + '\n'
 
-                                    val = '","'.join(str(x).replace('"', '""') for x in row.values())
-                                    print(f'"{val}"')
-
-                            fn.close()
+                                        val = '","'.join(str(x).replace('"', '""') for x in row.values())
+                                        print(f'"{val}"')
 
                     else:
                         binary.append(tag.dumps()[5:])
@@ -4079,7 +4079,8 @@ def extract_sym_submissionsidx(f):
         newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+']_idx.met', 'wb')
 
         newfilename.write(dec[6].encode('latin-1'))
-        read_submission(dec[8], dec[7], cnt)
+        if dec[7]:
+            read_submission(dec[8], dec[7], cnt)
 
         print(f'\033[1;32m\tFinished parsing Submission {cnt}\033[1;0m\n')
 
@@ -4128,7 +4129,8 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
         newfilename = open(args.output + '/ccSubSDK/submissions/submissions.idx_Symantec_submission_['+str(cnt)+'-'+str(subcnt)+']_idx.met', 'wb')
 
         newfilename.write(dec[6].encode('latin-1'))
-        read_submission(dec[8], dec[7], str(cnt)+'-'+str(subcnt))
+        if dec[7]:
+            read_submission(dec[8], dec[7], str(cnt)+'-'+str(subcnt))
         print(f'\033[1;32m\t\tFinished parsing Submission {cnt}-{subcnt}\033[1;0m\n')
         subcnt += 1
 
@@ -4136,16 +4138,16 @@ def extract_sym_submissionsidx_sub(f, cnt, len1):
 def extract_sym_ccSubSDK(f):
     guid = {
             '2B5CA624B61E3F408B994BF679001DC2': 'BHSvcPlg',
-            '334FC1F5F2DA574E9BE8A16049417506': 'SubmissionsEim',
-            '38ACED4CA8B2134D83ED4D35F94338BD': 'SubmissionsEim',
-            '5E6E81A4A77338449805BB2B7AB12FB4': 'AtpiEim_ReportSubmission',
+            '334FC1F5F2DA574E9BE8A16049417506': 'SubmissionsEim',  # CLSID_SAVAVSAMPLESUBMISSION
+            '38ACED4CA8B2134D83ED4D35F94338BD': 'SubmissionsEim',  # CLSID_SAVAVPINGSUBMISSION
+            '5E6E81A4A77338449805BB2B7AB12FB4': 'AtpiEim_ReportSubmission',  # OID_REPORTSUBMISSION
             '6AB68FC93C09E744B828A598179EFC83': 'IDSxpx86',
             '95AAE6FD76558D439889B9D02BE0B850': 'IDSxpx86',
             '6A007A980A5B0A48BDFC4D887AEACAB0': 'IDSxpx86',
             'D40650BD02FDE745889CB15F0693C770': 'IDSxpx86',
             '3DC1B6DEBAE889458213D8B252C465FC': 'IDSxpx86',
             '8EF95B94E971E842BAC952B02E79FB74': 'AVModule',
-            'A72BBCC1E52A39418B8BB591BDD9AE76': 'RepMgtTim',
+            'A72BBCC1E52A39418B8BB591BDD9AE76': 'RepMgtTim',  # OID_CATSUBMISSION
             'F2ECB3F7D763AE4DB49322CF763FC270': 'ccSubEng'
            }
 
@@ -4315,6 +4317,7 @@ def main():
 
                 except Exception as e:
                     print(f'\033[1;31mProblem parsing {filename}: {e} \033[1;0m\n')
+                    traceback.print_exc()
                     continue
 
         except Exception as e:
@@ -4390,14 +4393,14 @@ if (args.kape or args.dir) and not args.file:
 
         for name in files:
             if args.timezone is None and (args.registrationInfo or name == 'registrationInfo.xml'):
-                name = os.path.join(path, name)
+                reginfo = os.path.join(path, name)
 
                 if args.registrationInfo:
-                    name = args.registrationInfo
+                    reginfo = args.registrationInfo
 
                 try:
-                    print(f'\033[1;36m{name} found. Attempting to apply timezone offset.\n \033[1;0m')
-                    args.timezone = utc_offset(name)
+                    print(f'\033[1;36m{reginfo} found. Attempting to apply timezone offset.\n \033[1;0m')
+                    args.timezone = utc_offset(reginfo)
                     print(f'\033[1;32mTimezone offset of {args.timezone} applied successfully. \033[1;0m\n')
 
                 except Exception as e:
