@@ -4326,7 +4326,8 @@ def main():
 
                 except Exception as e:
                     print(f'\033[1;31mProblem parsing {filename}: {e} \033[1;0m\n')
-#                    traceback.print_exc()
+                    if args.verbose:
+                        traceback.print_exc()
                     continue
 
         except Exception as e:
@@ -4352,6 +4353,7 @@ parser.add_argument("-r", "--registrationInfo", help="Path to registrationInfo.x
 parser.add_argument("-tz", "--timezone", type=int, help="UTC offset")
 parser.add_argument("-k", "--kape", help="Kape mode", action="store_true")
 parser.add_argument("-l", "--log", help="Save console output to log", action="store_true")
+parser.add_argument("-v", "--verbose", help="More verbose errors", action="store_true")
 
 if len(sys.argv) == 1:
     parser.print_help()
