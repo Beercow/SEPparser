@@ -2796,6 +2796,7 @@ def read_sep_tag(_, fname, sub=False, vbn=False):
                     if b'\x00x\xda' in tag.dumps()[5:15]:
                         if tag.dumps()[5:].startswith(b'CMPR'):
                             dec += f'### BLOB Decompressed\n{hexdump(zlib.decompress(tag.dumps()[13:]))}'
+                            binary.append(zlib.decompress(tag.dumps()[13:]))
 
                         else:
                             data = read_sep_tag(zlib.decompress(tag.dumps()[9:]), fname)
