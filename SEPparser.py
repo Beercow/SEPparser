@@ -2447,7 +2447,7 @@ def read_submission(_, fname, index):
         if 'BASH Plugin' in test:
             header.remove('SONAR')
 
-    subtype = open(subtype, 'w', errors="ignore")
+    subtype = open(subtype, 'w', errors="ignore", encoding='utf-8')
     rows = ''
     value = []
 
@@ -2903,7 +2903,7 @@ def write_report(_, fname):
             header = data[0][1:-2].split('","')
             header.remove('File Name')
 
-        reporttype = open(reportname, 'w')
+        reporttype = open(reportname, 'w', encoding='utf-8')
         tree = ET.fromstring(m.group('XML').translate(__vis_filter))
         rows = ''
 
@@ -4435,28 +4435,28 @@ if args.output and not (args.extract or args.hex_dump):
         os.makedirs(args.output+'/ccSubSDK')
 
     if not args.append:
-        syslog = open(args.output + '/Symantec_Client_Management_System_Log.csv', 'w')
-        seclog = open(args.output + '/Symantec_Client_Management_Security_Log.csv', 'w')
-        tralog = open(args.output + '/Symantec_Network_and_Host_Exploit_Mitigation_Traffic_Log.csv', 'w')
-        rawlog = open(args.output + '/Symantec_Network_and_Host_Exploit_Mitigation_Packet_Log.csv', 'w')
-        processlog = open(args.output + '/Symantec_Client_Management_Control_Log.csv', 'w')
-        timeline = open(args.output + '/Symantec_Timeline.csv', 'w')
-        packet = open(args.output + '/packets.txt', 'w')
-        tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'w')
-        quarantine = open(args.output + '/quarantine.csv', 'w')
-        settings = open(args.output + '/settings.csv', 'w')
+        syslog = open(args.output + '/Symantec_Client_Management_System_Log.csv', 'w', encoding='utf-8')
+        seclog = open(args.output + '/Symantec_Client_Management_Security_Log.csv', 'w', encoding='utf-8')
+        tralog = open(args.output + '/Symantec_Network_and_Host_Exploit_Mitigation_Traffic_Log.csv', 'w', encoding='utf-8')
+        rawlog = open(args.output + '/Symantec_Network_and_Host_Exploit_Mitigation_Packet_Log.csv', 'w', encoding='utf-8')
+        processlog = open(args.output + '/Symantec_Client_Management_Control_Log.csv', 'w', encoding='utf-8')
+        timeline = open(args.output + '/Symantec_Timeline.csv', 'w', encoding='utf-8')
+        packet = open(args.output + '/packets.txt', 'w', encoding='utf-8')
+        tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'w', encoding='utf-8')
+        quarantine = open(args.output + '/quarantine.csv', 'w', encoding='utf-8')
+        settings = open(args.output + '/settings.csv', 'w', encoding='utf-8')
 
     else:
-        syslog = open(args.output + '/Symantec_Client_Management_System_Log.csv', 'a')
-        seclog = open(args.output + '/Symantec_Client_Management_Security_Log.csv', 'a')
-        tralog = open(args.output + '/Symantec_Network_and_Host_Exploit_Mitigation_Traffic_Log.csv', 'a')
-        rawlog = open(args.output + '/Symantec_Network_and_Host_Exploit_Mitigation_Packet_Log.csv', 'a')
-        processlog = open(args.output + '/Symantec_Client_Management_Control_Log.csv', 'a')
-        timeline = open(args.output + '/Symantec_Timeline.csv', 'a')
-        packet = open(args.output + '/packets.txt', 'a')
-        tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'a')
-        quarantine = open(args.output + '/quarantine.csv', 'a')
-        settings = open(args.output + '/settings.csv', 'a')
+        syslog = open(args.output + '/Symantec_Client_Management_System_Log.csv', 'a', encoding='utf-8')
+        seclog = open(args.output + '/Symantec_Client_Management_Security_Log.csv', 'a', encoding='utf-8')
+        tralog = open(args.output + '/Symantec_Network_and_Host_Exploit_Mitigation_Traffic_Log.csv', 'a', encoding='utf-8')
+        rawlog = open(args.output + '/Symantec_Network_and_Host_Exploit_Mitigation_Packet_Log.csv', 'a', encoding='utf-8')
+        processlog = open(args.output + '/Symantec_Client_Management_Control_Log.csv', 'a', encoding='utf-8')
+        timeline = open(args.output + '/Symantec_Timeline.csv', 'a', encoding='utf-8')
+        packet = open(args.output + '/packets.txt', 'a', encoding='utf-8')
+        tamperProtect = open(args.output + '/Symantec_Client_Management_Tamper_Protect_Log.csv', 'a', encoding='utf-8')
+        quarantine = open(args.output + '/quarantine.csv', 'a', encoding='utf-8')
+        settings = open(args.output + '/settings.csv', 'a', encoding='utf-8')
 
     if os.stat(timeline.name).st_size == 0:
         csv_header()
