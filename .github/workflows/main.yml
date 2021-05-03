@@ -5,10 +5,10 @@ name: Package Application with Pyinstaller
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the Dev branch
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  # push:
+   # branches: [ master ]
+  # pull_request:
+    # branches: [ master ] 
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
