@@ -6,9 +6,9 @@ name: Package Application with Pyinstaller
 on:
   # Triggers the workflow on push or pull request events but only for the Dev branch
   push:
-    branches: [ Dev ]
+    branches: [ Master ]
   pull_request:
-    branches: [ Dev ]
+    branches: [ Master ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
