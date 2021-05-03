@@ -23,10 +23,14 @@ if os.name == 'nt':
 
 re_valid_string = re.compile('^[ADO][ADLU]?\:\(.*\)$')
 re_perms = re.compile('\(([^\(\)]+)\)')
-re_type = re.compile('^[DOGS]')
+re_type = re.compile('^[DOGS](?!:\\\)')
 re_owner = re.compile('^O:[^:()]+(?=[DGS]:)')
 re_group = re.compile('G:[^:()]+(?=[DOS]:)')
 re_acl = re.compile('[DS]:.+$')
+re_dacl = re.compile('[D]:.+\)(?=S)|[D]:.+$')
+re_sacl = re.compile('[S]:.+\)(?=D)|[S]:.+$')
+re_acl_flags = re.compile('[DS]:(?!\()(.+?)\(')
+re_flags = ('(AI|AR|P|NO_ACCESS_CONTROL)')
 re_const = re.compile('(\w\w)')
 re_non_acl = re.compile('[^:()]+$')
 
@@ -35,8 +39,12 @@ SDDL_TYPE = {'O': 'Owner',
                          'D': 'DACL',
                          'S': 'SACL'}
 
-ACCESS = {# ACE Types
-                    'A' : 'ACCESS_ALLOWED',
+ACL_FLAGS = {'P': 'PROTECTED',
+                         'AR': 'AUTO_INHERIT_REQ',
+                         'AI': 'AUTO_INHERITED',
+                         'NO_ACCESS_CONTROL': 'NULL_ACL'}
+
+ACE_TYPE = {'A' : 'ACCESS_ALLOWED',
                     'D' : 'ACCESS_DENIED',
                     'OA': 'ACCESS_ALLOWED_OBJECT',
                     'OD': 'ACCESS_DENIED_OBJECT',
@@ -50,18 +58,17 @@ ACCESS = {# ACE Types
                     'RA': 'SYSTEM_RESOURCE_ATTRIBUTE',
                     'SP': 'SYSTEM_SCOPED_POLICY_ID',
                     'XU': 'SYSTEM AUDIT_CALLBACK',
-                    'ZA': 'ACCESS_ALLOWED_CALLBACK',
+                    'ZA': 'ACCESS_ALLOWED_CALLBACK'}
 
-                    # ACE Flags
-                    'CI': 'CONTAINER_INHERIT',
+ACE_FLAGS = {'CI': 'CONTAINER_INHERIT',
                     'OI': 'OBJECT_INHERIT',
                     'NP': 'NO_PROPAGATE_INHERIT',
                     'IO': 'INHERIT_ONLY',
                     'ID': 'INHERITED',
                     'SA': 'SUCCESSFUL_ACCESS',
-                    'FA': 'FAILED_ACCESS',
+                    'FA': 'FAILED_ACCESS'}
 
-                    # Generic Access Rights
+ACCESS = {# Generic Access Rights
                     'GA': 'GENERIC_ALL',
                     'GR': 'GENERIC_READ',
                     'GW': 'GENERIC_WRITE',
@@ -262,7 +269,7 @@ def AccessFromHex(hex):
 class ACE(object):
     """Represents an access control entry."""
 
-    def __init__(self, ace_string, access_constants):
+    def __init__(self, ace_string):
         """Initializes the SDDL::ACE object.
 
         Args:
@@ -274,7 +281,6 @@ class ACE(object):
                 valid.
         """
         self.ace_string = ace_string
-        LOCAL_ACCESS = access_constants
         self.flags = []
         self.perms = []
         fields = ace_string.split(';')
@@ -282,14 +288,14 @@ class ACE(object):
         if len(fields) != 6:
             raise InvalidAceStringError
 
-        if (LOCAL_ACCESS[fields[0]]):
-            self.ace_type = LOCAL_ACCESS[fields[0]]
+        if (ACE_TYPE[fields[0]]):
+            self.ace_type = ACE_TYPE[fields[0]]
         else:
             self.ace_type = fields[0]
 
         for flag in re.findall(re_const, fields[1]):
-            if LOCAL_ACCESS[flag]:
-                self.flags.append(LOCAL_ACCESS[flag])
+            if ACE_FLAGS[flag]:
+                self.flags.append(ACE_FLAGS[flag])
             else:
                 self.flags.append(flag)
 
@@ -297,14 +303,15 @@ class ACE(object):
             fields[2] = AccessFromHex(fields[2])
 
         for perm in re.findall(re_const, fields[2]):
-            if LOCAL_ACCESS[perm]:
-                self.perms.append(LOCAL_ACCESS[perm])
+            if ACCESS[perm]:
+                self.perms.append(ACCESS[perm])
             else:
                 self.perms.append(perm)
 
         self.perms.sort()
         self.object_type = fields[3]
         self.inherited_type = fields[4]
+        self.sid = fields[5]
         self.trustee = None
 
         if TRUSTEE.__contains__(fields[5]):
@@ -336,10 +343,18 @@ class SDDL(object):
         self.target = target
         self.sddl_string = sddl_string
         self.sddl_type = None
+        self.sddl_dacl = None
+        self.sddl_sacl = None
         self.acl = []
+        self.dacl = []
+        self.sacl = []
+        self.dacl_flags = []
+        self.sacl_flags = []
         sddl_owner_part = re.search(re_owner, sddl_string)
         sddl_group_part = re.search(re_group, sddl_string)
         sddl_acl_part = re.search(re_acl, sddl_string)
+        sddl_dacl_part = re.search(re_dacl, sddl_string)
+        sddl_sacl_part = re.search(re_sacl, sddl_string)
         self.ACCESS = ACCESS
         self.group_sid = None
         self.group_account = None
@@ -361,21 +376,34 @@ class SDDL(object):
             self.ACCESS['WD'] = 'Change Permissions'
             self.ACCESS['WO'] = 'Change Owner'
 
-        for match in (sddl_owner_part, sddl_group_part, sddl_acl_part):
-            if not match:
-                continue
-
-            part = match.group()
-            sddl_prefix = re.match(re_type, part).group()
-
-            if sddl_prefix in ('D', 'S'):
-                if sddl_prefix in SDDL_TYPE:
-                    self.sddl_type = SDDL_TYPE[sddl_prefix]
-                else:
-                    raise InvalidSddlTypeError
-
+        for match in (sddl_owner_part, sddl_group_part, sddl_dacl_part, sddl_sacl_part):
+            try:
+                part = match.group()
+                sddl_prefix = re.match(re_type, part).group()
+            except:
+                part = ''
+                pass
+#            sddl_prefix = re.match(re_type, part).group()
+                    
+            if (sddl_prefix == 'D'):
+                self.sddl_dacl = SDDL_TYPE[sddl_prefix]
+                dacl_flags = re.search(re_acl_flags, part)
+                if dacl_flags is not None:
+                    for flag in re.findall(re_flags, dacl_flags.group(1)):
+                        if ACL_FLAGS[flag]:
+                            self.dacl_flags.append(ACL_FLAGS[flag])
                 for perms in re.findall(re_perms, part):
-                    self.acl.append(ACE(perms, self.ACCESS))
+                    self.dacl.append(ACE(perms))
+                    
+            elif (sddl_prefix == 'S'):
+                self.sddl_sacl = SDDL_TYPE[sddl_prefix]
+                sacl_flags = re.search(re_acl_flags, part)
+                if sacl_flags is not None:
+                    for flag in re.findall(re_flags, sacl_flags.group(1)):
+                        if ACL_FLAGS[flag]:
+                            self.sacl_flags.append(ACL_FLAGS[flag])
+                for perms in re.findall(re_perms, part):
+                    self.sacl.append(ACE(perms))
 
             elif (sddl_prefix == 'G'):
                 self.group_sid = re.search(re_non_acl, part).group()
