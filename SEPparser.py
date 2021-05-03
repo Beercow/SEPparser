@@ -52,7 +52,7 @@ def csv_header():
 
 __vis_filter = b'................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~.................................................................................................................................'
 __author__ = "Brian Maloney"
-__version__ = "2021.03.03"
+__version__ = "2021.05.03"
 __email__ = "bmmaloney97@gmail.com"
 
 
