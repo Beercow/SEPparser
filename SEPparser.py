@@ -692,96 +692,96 @@ def sec_severity(_):
 
 def url_categories(_):
     cat = {
-           '16': 'Abortion',
            '1': 'Adult/Mature Content',
-           '23': 'Alcohol',
-           '22': 'Alternative Spirituality/Belief',
-           '30': 'Art/Culture',
-           '59': 'Auctions',
-           '84': 'Audio/Video Clips',
-           '32': 'Brokerage/Trading',
-           '21': 'Business/Economy',
-           '29': 'Charitable/Non-Profit',
-           '51': 'Chat (IM)/SMS',
-           '26': 'Child Pornography',
-           '116': 'Cloud Infrastructure',
-           '124': 'Compromised Sites',
-           '108': 'Computer/Information Security',
-           '97': 'Content Delivery Networks',
-           '25': 'Controlled Substances',
-           '117': 'Cryptocurrency',
-           '103': 'Dynamic DNS Host',
-           '106': 'E-Card/Invitations',
-           '27': 'Education',
-           '52': 'Email',
-           '105': 'Email Marketing',
-           '20': 'Entertainment',
-           '56': 'File Storage/Sharing',
-           '31': 'Finance',
-           '87': 'For Kids',
-           '11': 'Gambling',
-           '33': 'Games',
-           '7': 'Gore/Extreme',
-           '34': 'Government/Legal',
-           '17': 'Hacking',
-           '37': 'Health',
-           '68': 'Humor/Jokes',
-           '107': 'Informational',
-           '109': 'Internet Connected Devices',
-           '110': 'Internet Telephony',
-           '5': 'Intimate Apparel/Swimsuit',
-           '45': 'Job Search/Careers',
-           '44': 'Malicious Outbound Data/Botnets',
-           '43': 'Malicious Sources/Malnets',
-           '121': 'Marijuana',
-           '112': 'Media Sharing',
-           '35': 'Military',
-           '50': 'Mixed Content/Potentially Adult',
-           '46': 'News',
-           '53': 'Newsgroups/Forums',
-           '6': 'Nudity',
-           '85': 'Office/Business Applications',
-           '111': 'Online Meetings',
-           '83': 'Peer-to-Peer (P2P)',
-           '63': 'Personal Sites',
-           '47': 'Personals/Dating',
-           '18': 'Phishing',
-           '118': 'Piracy/Copyright Concerns',
-           '98': 'Placeholders',
-           '36': 'Political/Social Advocacy',
            '3': 'Pornography',
-           '102': 'Potentially Unwanted Software',
-           '86': 'Proxy Avoidance',
-           '113': 'Radio/Audio Streams',
-           '60': 'Real Estate',
-           '49': 'Reference',
-           '54': 'Religion',
-           '57': 'Remote Access',
-           '64': 'Restaurants/Food',
-           '9': 'Scam/Questionable Legality',
-           '40': 'Search Engines/Portals',
            '4': 'Sex Education',
-           '93': 'Sexual Expression',
-           '58': 'Shopping',
-           '55': 'Social Networking',
-           '61': 'Society/Daily Living',
-           '71': 'Software Downloads',
-           '101': 'Spam',
-           '65': 'Sports/Recreation',
-           '92': 'Suspicious',
-           '38': 'Technology/Internet',
-           '24': 'Tobacco',
-           '95': 'Translation',
-           '66': 'Travel',
-           '114': 'TV/Video Streams',
-           '90': 'Uncategorized',
-           '104': 'URL Shorteners',
-           '67': 'Vehicles',
+           '5': 'Intimate Apparel/Swimsuit',
+           '6': 'Nudity',
+           '7': 'Gore/Extreme',
+           '9': 'Scam/Questionable Legality',
+           '11': 'Gambling',
            '14': 'Violence/Intolerance',
            '15': 'Weapons',
+           '16': 'Abortion',
+           '17': 'Hacking',
+           '18': 'Phishing',
+           '20': 'Entertainment',
+           '21': 'Business/Economy',
+           '22': 'Alternative Spirituality/Belief',
+           '23': 'Alcohol',
+           '24': 'Tobacco',
+           '25': 'Controlled Substances',
+           '26': 'Child Pornography',
+           '27': 'Education',
+           '29': 'Charitable/Non-Profit',
+           '30': 'Art/Culture',
+           '31': 'Finance',
+           '32': 'Brokerage/Trading',
+           '33': 'Games',
+           '34': 'Government/Legal',
+           '35': 'Military',
+           '36': 'Political/Social Advocacy',
+           '37': 'Health',
+           '38': 'Technology/Internet',
+           '40': 'Search Engines/Portals',
+           '43': 'Malicious Sources/Malnets',
+           '44': 'Malicious Outbound Data/Botnets',
+           '45': 'Job Search/Careers',
+           '46': 'News',
+           '47': 'Personals/Dating',
+           '49': 'Reference',
+           '50': 'Mixed Content/Potentially Adult',
+           '51': 'Chat (IM)/SMS',
+           '52': 'Email',
+           '53': 'Newsgroups/Forums',
+           '54': 'Religion',
+           '55': 'Social Networking',
+           '56': 'File Storage/Sharing',
+           '57': 'Remote Access',
+           '58': 'Shopping',
+           '59': 'Auctions',
+           '60': 'Real Estate',
+           '61': 'Society/Daily Living',
+           '63': 'Personal Sites',
+           '64': 'Restaurants/Food',
+           '65': 'Sports/Recreation',
+           '66': 'Travel',
+           '67': 'Vehicles',
+           '68': 'Humor/Jokes',
+           '71': 'Software Downloads',
+           '83': 'Peer-to-Peer (P2P)',
+           '84': 'Audio/Video Clips',
+           '85': 'Office/Business Applications',
+           '86': 'Proxy Avoidance',
+           '87': 'For Kids',
            '88': 'Web Ads/Analytics',
            '89': 'Web Hosting',
-           '96': 'Web Infrastructure'
+           '90': 'Uncategorized',
+           '92': 'Suspicious',
+           '93': 'Sexual Expression',
+           '95': 'Translation',
+           '96': 'Web Infrastructure',
+           '97': 'Content Delivery Networks',
+           '98': 'Placeholders',
+           '101': 'Spam',
+           '102': 'Potentially Unwanted Software',
+           '103': 'Dynamic DNS Host',
+           '104': 'URL Shorteners',
+           '105': 'Email Marketing',
+           '106': 'E-Card/Invitations',
+           '107': 'Informational',
+           '108': 'Computer/Information Security',
+           '109': 'Internet Connected Devices',
+           '110': 'Internet Telephony',
+           '111': 'Online Meetings',
+           '112': 'Media Sharing',
+           '113': 'Radio/Audio Streams',
+           '114': 'TV/Video Streams',
+           '116': 'Cloud Infrastructure',
+           '117': 'Cryptocurrency',
+           '118': 'Piracy/Copyright Concerns',
+           '121': 'Marijuana',
+           '124': 'Compromised Sites'
           }
 
     result = ''
@@ -2433,7 +2433,8 @@ def read_submission(_, fname, index):
 
     else:
         subtype = args.output+'/ccSubSDK/Reports.csv'
-        input('paused')
+#        print(test)
+#        input('paused')
 
     header = []
     data = ['']
@@ -2777,7 +2778,10 @@ def read_sep_tag(_, fname, sub=False, vbn=False):
                 tag = vbnstruct.ASN1_GUID(_.read(5 + size))
                 dec += hexdump(tag.dumps()[1:5])
                 dec += f'### GUID\n{hexdump(tag.dumps()[5:])}'
-                blob = False
+                if tag.dumps()[5:] == b'\xbb\x81\x1a:\x8f\xc1\xbeH\x82,\x8bbc\xa5 M':
+                    blob = True
+                else:
+                    blob = False
 
                 if re.match(b'\xb9\x1f\x8a\\\\\xb75\\\D\x98\x03%\xfc\xa1W\^q', tag.GUID):
                     hit = 'virus'
@@ -3231,9 +3235,13 @@ def parse_syslog(f, logEntries):
     startEntry = 72
     nextEntry = read_unpack_hex(f, startEntry, 8)
     entry = LogFields()
+    systime = time.time()
     count = 0
 
     while True:
+        if (time.time() - systime) > 1:
+            progress(count, logEntries, status='Parsing log entries')
+
         data = '""'
         entry.size = ''
         logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t')
@@ -3277,9 +3285,13 @@ def parse_seclog(f, logEntries):
     startEntry = 72
     nextEntry = read_unpack_hex(f, startEntry, 8)
     entry = LogFields()
+    sectime = time.time()
     count = 0
 
     while True:
+        if (time.time() - sectime) > 1:
+            progress(count, logEntries, status='Parsing log entries')
+
         logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t', 16)
         logData = []
         data = ''
@@ -3386,9 +3398,13 @@ def parse_tralog(f, logEntries):
     startEntry = 72
     nextEntry = read_unpack_hex(f, startEntry, 8)
     entry = LogFields()
+    tratime = time.time()
     count = 0
 
     while True:
+        if (time.time() - tratime) > 1:
+            progress(count, logEntries, status='Parsing log entries')
+
         logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t')
         entry.dateAndTime = from_win_64_hex(logEntry[1])
         entry.protocol = protocol(int(logEntry[2].decode("utf-8", "ignore"), 16))
@@ -3489,9 +3505,13 @@ def parse_raw(f, logEntries):
     startEntry = 72
     nextEntry = read_unpack_hex(f, startEntry, 8)
     entry = LogFields()
+    rawtime = time.time()
     count = 0
 
     while True:
+        if (time.time() - rawtime) > 1:
+            progress(count, logEntries, status='Parsing log entries')
+
         logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t')
 
         if len(logEntry) > 20:
@@ -3548,9 +3568,13 @@ def parse_processlog(f, logEntries):
     startEntry = 72
     nextEntry = read_unpack_hex(f, startEntry, 3)
     entry = LogFields()
+    processtime = time.time()
     count = 0
 
     while True:
+        if (time.time() - processtime) > 1:
+            progress(count, logEntries, status='Parsing log entries')
+
         field28 = ''
         field29 = ''
         extra = ''
@@ -3601,9 +3625,13 @@ def parse_processlog(f, logEntries):
 def parse_avman(f, logEntries):
     startEntry = 55
     nextEntry = read_unpack_hex(f, startEntry, 8)
+    avtime = time.time()
     count = 0
 
     while True:
+        if (time.time() - avtime) > 1:
+            progress(count, logEntries, status='Parsing log entries')
+
         logEntry = read_log_entry(f, startEntry, nextEntry).split(b'\t', 5)
         logData = read_log_data(logEntry[5], 0)
 
@@ -4181,11 +4209,6 @@ def extract_sym_ccSubSDK(f):
     newfilename.close()
     dec = read_sep_tag(dec.encode('latin-1'), os.path.basename(f.name))
 
-#    Look for MD5 or SHA1 of file
-#    hash_test = list(filter(lambda v: re.match('^([A-F0-9]{32})$|^([A-F0-9]{64})$', v), dec[0]))
-#    if hash_test:
-#        print(hash_test)
-
     write_report(dec[6], os.path.basename(f.name))
 
     newfilename = open(args.output + '/ccSubSDK/' + GUID + '/' + os.path.basename(f.name) + '/Symantec_ccSubSDK.met', 'wb')
@@ -4369,7 +4392,6 @@ logfile = args.output + "/" + datetime.now().strftime("%Y-%m-%dT%H%M%S_console.l
 
 if args.log:
     sys.stdout = Logger()
-#    sys.stderr = Logger()
 
 regex = re.compile(r'\\Symantec Endpoint Protection\\(Logs|.*\\Data\\Logs|.*\\Data\\Quarantine|.*\\Data\\CmnClnt\\ccSubSDK)')
 filenames = []
