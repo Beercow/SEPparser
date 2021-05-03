@@ -3,3 +3,4 @@ dissect.cstruct==2.0
 ipaddress==1.0.23
 manuf==1.1.1
 scapy==2.4.4
+pywin32==227
