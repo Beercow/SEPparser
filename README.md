@@ -3,6 +3,8 @@ SEPparser was created because I could not find anything to parse Symantec's Endp
 
 SEPparser is a command line tool for parsing Symantec Endpoint Protection data. You can either feed it a single file or an entire directory. This even works remotely. SEPparser will figure out what file it is and parse it correctly.
 
+Please see [the wiki](https://github.com/Beercow/SEPparser/wiki) for information on the format of SEP files. 
+
 # Capabilities
 * Parse settings for log files
 * Parse the following log files:  
