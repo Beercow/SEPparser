@@ -420,7 +420,7 @@ typedef struct _ASN1_String_A {
 typedef struct _ASN1_String_W {
     BYTE Tag;
     int32 Data_Length;
-    char StringW[Data_Length];
+    wchar StringW[Data_Length/2];
 } ASN1_String_W;
 
 typedef struct _ASN1_GUID {
@@ -802,24 +802,6 @@ def sys_severity(_):
                       '1': 'Warning',
                       '2': 'Error',
                       '3': 'Fatal'
-                     }
-
-    for k, v in severity_value.items():
-        if k == str(_):
-            return v
-
-    else:
-        return _
-
-
-def log_severity(_):
-    severity_value = {
-                      '0': 'Information',
-                      '15': 'Information',
-                      '1': 'Warning',
-                      '2': 'Error',
-                      '3': 'Critical',
-                      '7': 'Major'
                      }
 
     for k, v in severity_value.items():
@@ -2764,11 +2746,11 @@ def read_sep_tag(_, fname, sub=False, vbn=False):
             dec += hexdump(tag.dumps()[5:]) + f'### STRING-W\n      {string}\n\n'
 
             if hit == 'virus':
-                virus = tag.StringW.decode('latin-1').replace("\x00", "")
+                virus = tag.StringW.replace("\x00", "")
                 hit = None
 
             else:
-                match.append(tag.StringW.decode('latin-1').replace("\x00", ""))
+                match.append(tag.StringW.replace("\x00", ""))
 
         elif code == 9:
             size = struct.unpack("<I", _.read(4))[0]
@@ -3862,6 +3844,13 @@ def parse_vbn(f, logType, tz):
             qi = vbnstruct.Quarantine_Hash(xor(f.read(7), 0x5A).encode('latin-1'))
 
             if args.hex_dump:
+                print('\n           #######################################################')
+                print('           #######################################################')
+                print('           ##                                                   ##')
+                print('           ##                  Quarantine Hash                  ##')
+                print('           ##                                                   ##')
+                print('           #######################################################')
+                print('           #######################################################\n')
                 cstruct.dumpstruct(qi)
 
             if qi.Tag2_Data == 1:
@@ -3886,6 +3875,13 @@ def parse_vbn(f, logType, tz):
                     qds3 = qsddl.Quarantine_Data_Size_3
 
                     if args.hex_dump:
+                        print('\n           #######################################################')
+                        print('           #######################################################')
+                        print('           ##                                                   ##')
+                        print('           ##                  Quarantine SDDL                  ##')
+                        print('           ##                                                   ##')
+                        print('           #######################################################')
+                        print('           #######################################################\n')
                         cstruct.dumpstruct(qsddl)
 
                     pos += 19 + qsddl.Security_Descriptor_Size
@@ -4028,7 +4024,15 @@ def parse_vbn(f, logType, tz):
 
         if dataType == 6:
             if args.hex_dump:
-                print(hexdump(xor(f.read(), 0x5A).encode('latin-1')))
+                print('\n           #######################################################')
+                print('           #######################################################')
+                print('           ##                                                   ##')
+                print('           ##           Quarantine Metadata 2 (ASN.1)           ##')
+                print('           ##                                                   ##')
+                print('           #######################################################')
+                print('           #######################################################\n')
+                read_sep_tag(xor(f.read(), 0x5A).encode('latin-1'), f.name, vbn=True)
+#                print(hexdump(xor(f.read(), 0x5A).encode('latin-1')))
 
     if len(qfile) > 0 and args.hash_file:
         if (header or qfs) == 0:
@@ -4233,7 +4237,8 @@ def progress(count, total, status=''):
     percents = round(100.0 * count / float(total), 1)
     bar = '=' * filled_len + '-' * (bar_len - filled_len)
 
-    sys.stderr.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
+#    print('[%s] %s%s ...%s' % (bar, percents, '%', status), file=sys.stderr, end='\r')
+    sys.stderr.write(f'[{bar}] {percents}% ...{status}\r')
     sys.stderr.flush()
 
 
