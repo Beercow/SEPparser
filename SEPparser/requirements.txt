@@ -1,0 +1,7 @@
+blowfish
+dissect.cstruct
+ipaddress
+manuf
+scapy
+pywin32
+ttkthemes
