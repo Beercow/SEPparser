@@ -204,7 +204,7 @@ class about:
                                 foreground='#0563C1', cursor="hand2",
                                 justify="left", anchor='w')
         self.text = tk.Text(self.inner_frame, width=27, height=8, wrap=tk.WORD)
-        line = "GUI based application for reconstructing the folder structure of OneDrive from <UserCid>.dat"
+        line = "GUI based application for parsing Symantec VBNs and telemitry data."
         self.text.insert(tk.END, line)
         self.text.config(state='disable')
         self.scrollbv = ttk.Scrollbar(self.inner_frame, orient="vertical",
